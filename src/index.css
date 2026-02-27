@@ -34,7 +34,7 @@ All colors MUST be HSL.
 
     /* Accent - Custom Red */
     --accent: 357 75% 42%;
-    --accent-foreground: 210 40% 98%;
+    --accent-foreground: 222.2 47.4% 11.2%;
     --accent-light: 357 80% 90%;
 
     /* Warning - Academic Orange */
@@ -138,50 +138,37 @@ All colors MUST be HSL.
   h5,
   h6 {
     font-family: 'Outfit', sans-serif;
-    @apply tracking-tight;
   }
 }
 
+/* Glassmorphism Utilities */
 @layer utilities {
   .glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/20 shadow-2xl;
+    @apply bg-white/70 backdrop-blur-lg border border-white/20 shadow-lg;
   }
 
   .glass-dark {
-    @apply bg-slate-950/70 backdrop-blur-xl border border-white/5 shadow-2xl;
+    @apply bg-black/50 backdrop-blur-lg border border-white/10 shadow-lg;
+  }
+
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   .text-glow {
-    text-shadow: 0 0 20px hsla(var(--primary), 0.5);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
   }
 
-  .bg-grid-white {
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 30px 30px;
-  }
-
-  .hover-lift {
-    @apply transition-transform duration-300 hover:-translate-y-2;
-  }
-
+  /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-}
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-slate-950;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-primary/20 hover:bg-primary/40 rounded-full transition-colors;
-}
-
-html {
-  scroll-behavior: smooth;
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+  }
 }
