@@ -25,7 +25,7 @@ const Index = () => {
         <div className="absolute inset-0">
           <img
             src="/clg.jpeg"
-            alt="Smart Campus University"
+            alt="SmartCampus360 Platform"
             className="w-full h-full object-cover"
             // @ts-expect-error - fetchpriority is valid in React 18.3+ but types might be lagging
             fetchpriority="high"
@@ -41,11 +41,11 @@ const Index = () => {
         <div className="relative z-10 container mx-auto px-4 text-center text-white space-y-8 animate-in fade-in zoom-in duration-1000">
 
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight drop-shadow-2xl">
-            Smart Campus <br />
-            <span className="text-primary">University</span>
+            SmartCampus360 <br />
+            <span className="text-primary text-3xl md:text-5xl lg:text-6xl block mt-4 font-normal">AI-Driven College Management Platform</span>
           </h1>
           <p className="text-xl md:text-2xl text-white/80 max-w-2xl mx-auto leading-relaxed font-light">
-            Where innovation meets tradition. precise academic excellence with our world-class education and cutting-edge technology platform.
+            Automating campus operations with precision. Experience the next generation of academic management through our unified AI-driven ecosystem.
           </p>
 
           <motion.div
@@ -54,35 +54,35 @@ const Index = () => {
             transition={{ delay: 0.2, duration: 0.8 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8"
           >
-            <Link to="/admissions/apply">
+            <Link to="/login/student">
               <Button size="lg" className="bg-primary hover:bg-primary-dark text-lg px-8 h-14 rounded-full shadow-lg shadow-primary/25 hover:scale-105 transition-transform">
-                Apply for Admission
+                Login to Dashboard
               </Button>
             </Link>
-            <Link to="/placements">
+            <Link to="/admissions/apply">
               <Button size="lg" variant="outline" className="text-lg px-8 h-14 rounded-full bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20 hover:scale-105 transition-transform">
-                View Placements
+                Apply for Admission
               </Button>
             </Link>
           </motion.div>
         </div>
 
         {/* Floating Stats */}
-        <div className="container mx-auto px-4 relative z-20 -mt-16 hidden md:block">
-          <div className="grid grid-cols-2 xl:grid-cols-4 gap-6">
+        <div className="container mx-auto px-4 relative z-20 -mt-20 lg:-mt-16 sm:mb-12 lg:mb-0">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
             {[
-              { number: "15k+", label: "Students", icon: Users },
-              { number: "500+", label: "Faculty", icon: GraduationCap },
-              { number: "95%", label: "Employment", icon: Briefcase },
-              { number: "50+", label: "Programs", icon: BookOpen },
+              { number: "10+", label: "Departments Managed", icon: BookOpen },
+              { number: "1200+", label: "Classes Scheduled", icon: Calendar },
+              { number: "150+", label: "Faculty Members", icon: Users },
+              { number: "3000+", label: "Students Registered", icon: GraduationCap },
             ].map((stat, i) => (
-              <div key={i} className="bg-white p-5 rounded-2xl shadow-xl flex items-center justify-between animate-in slide-in-from-bottom-5 duration-700 delay-300">
-                <div>
-                  <div className="text-3xl font-bold text-primary">{stat.number}</div>
-                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{stat.label}</div>
+              <div key={i} className="bg-white p-3 sm:p-5 rounded-2xl shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 animate-in slide-in-from-bottom-5 duration-700 delay-300 transform transition-transform hover:-translate-y-1 hover:shadow-2xl">
+                <div className="w-full">
+                  <div className="text-2xl sm:text-3xl font-bold text-primary">{stat.number}</div>
+                  <div className="text-[10px] sm:text-sm font-medium text-muted-foreground uppercase tracking-wider leading-tight sm:leading-normal">{stat.label}</div>
                 </div>
-                <div className="h-12 w-12 rounded-full bg-red-50 flex items-center justify-center text-primary">
-                  <stat.icon className="h-6 w-6" />
+                <div className="h-8 w-8 sm:h-12 sm:w-12 shrink-0 rounded-full bg-red-50 flex items-center justify-center text-primary self-end sm:self-auto">
+                  <stat.icon className="h-4 w-4 sm:h-6 sm:w-6" />
                 </div>
               </div>
             ))}
@@ -90,7 +90,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Spacer was here, but now we use negative margin above so just a normal padding for next section is enough */}
+
 
       {/* Programs Section */}
       <section className="py-24 bg-secondary/30 relative">
@@ -99,25 +99,25 @@ const Index = () => {
             <div className="max-w-xl">
               <div className="flex items-center gap-2 mb-2 text-primary font-semibold">
                 <Sparkles className="h-5 w-5" />
-                <span>Academic Excellence</span>
+                <span>Intelligent Infrastructure</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Featured Programs</h2>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Core AI Modules</h2>
               <p className="text-muted-foreground text-lg">
-                Explore our diverse range of undergraduate and graduate programs designed to prepare you for global success.
+                Explore our sophisticated range of management tools designed to streamline every aspect of institutional operations.
               </p>
             </div>
-            <Link to="/academics/programs">
+            <Link to="/dashboard/admin">
               <Button variant="ghost" className="group">
-                View All Programs <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                Explore All Modules <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { name: "Computer Science", duration: "4 Years", type: "Bachelor's", spots: "Available", image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&auto=format&fit=crop&q=60" },
-              { name: "Business Admin", duration: "3 Years", type: "Bachelor's", spots: "Filling Fast", image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&auto=format&fit=crop&q=60" },
-              { name: "Data Science", duration: "2 Years", type: "Master's", spots: "Available", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&auto=format&fit=crop&q=60" }
+              { name: "Timetable Generator", duration: "Automated", type: "AI-Driven", spots: "Optimized", image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&auto=format&fit=crop&q=60" },
+              { name: "Student Records", duration: "Real-time", type: "Cloud-Based", spots: "Encrypted", image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&auto=format&fit=crop&q=60" },
+              { name: "Faculty Management", duration: "Self-Service", type: "Role-Based", spots: "Integrated", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&auto=format&fit=crop&q=60" }
             ].map((program, index) => (
               <Card key={index} className="group overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300">
                 <div className="h-48 overflow-hidden relative">
@@ -130,10 +130,10 @@ const Index = () => {
                 </CardHeader>
                 <CardContent className="pt-4 px-6 pb-6">
                   <div className="flex justify-between items-center text-sm text-muted-foreground mb-4">
-                    <span className="flex items-center"><Calendar className="h-4 w-4 mr-1" /> {program.duration}</span>
-                    <span className="flex items-center"><GraduationCap className="h-4 w-4 mr-1" /> {program.type}</span>
+                    <span className="flex items-center"><Zap className="h-4 w-4 mr-1" /> {program.duration}</span>
+                    <span className="flex items-center"><Shield className="h-4 w-4 mr-1" /> {program.type}</span>
                   </div>
-                  <Button className="w-full bg-secondary text-secondary-foreground hover:bg-primary hover:text-white transition-colors">Learn More</Button>
+                  <Button className="w-full bg-secondary text-secondary-foreground hover:bg-primary hover:text-white transition-colors">View Feature</Button>
                 </CardContent>
               </Card>
             ))}
@@ -310,11 +310,11 @@ const Index = () => {
             Join a community of innovators and achievers. Applications are now open for the 2025 academic year.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link to="/admissions/apply">
-              <Button size="lg" className="h-12 px-8 text-lg shadow-xl shadow-primary/20">Apply Now</Button>
+            <Link to="/login/student">
+              <Button size="lg" className="h-12 px-8 text-lg shadow-xl shadow-primary/20 bg-primary hover:bg-primary-dark">Login to Dashboard</Button>
             </Link>
             <Link to="/contact">
-              <Button size="lg" variant="outline" className="h-12 px-8 text-lg bg-white hover:bg-gray-50">Schedule a Visit</Button>
+              <Button size="lg" variant="outline" className="h-12 px-8 text-lg bg-white hover:bg-gray-50 text-foreground border-border">Schedule a Demo</Button>
             </Link>
           </div>
         </div>

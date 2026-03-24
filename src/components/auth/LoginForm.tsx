@@ -12,10 +12,12 @@ import { motion } from "framer-motion";
 
 // Import illustration
 import graduationImage from "@/assets/graduation.jpg";
+import { MOCK_STUDENTS } from "@/data/mockStudents";
+import { MOCK_FACULTY } from "@/data/mockFaculty";
 
 interface LoginFormProps {
   onLogin: (userData: { id: string; role: string; name: string }) => void;
-  defaultRole?: 'student' | 'staff' | 'admin';
+  defaultRole?: 'student' | 'faculty' | 'admin';
   title?: string;
   description?: string;
   disableRoleSelection?: boolean;
@@ -30,7 +32,7 @@ export function LoginForm({
 }: LoginFormProps) {
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<'student' | 'staff' | 'admin'>(defaultRole);
+  const [role, setRole] = useState<'student' | 'faculty' | 'admin'>(defaultRole);
 
   // Format ID as user types (e.g., 22K91A6664)
   const formatId = (input: string) => {
@@ -55,16 +57,22 @@ export function LoginForm({
   const { toast } = useToast();
 
   useEffect(() => {
+    setRole(defaultRole);
+  }, [defaultRole]);
+
+  useEffect(() => {
     setIsMounted(true);
     // Check for saved credentials if "Remember me" was checked
     const savedId = localStorage.getItem('savedId');
-    const savedRole = localStorage.getItem('savedRole') as 'student' | 'staff' | 'admin' | null;
-    if (savedId && savedRole && ['student', 'staff', 'admin'].includes(savedRole)) {
+    const savedRole = localStorage.getItem('savedRole') as 'student' | 'faculty' | 'admin' | null;
+    if (savedId && savedRole && ['student', 'faculty', 'admin'].includes(savedRole)) {
       setId(savedId);
-      setRole(savedRole);
+      if (!disableRoleSelection || savedRole === defaultRole) {
+        setRole(savedRole);
+      }
       setRememberMe(true);
     }
-  }, []);
+  }, [disableRoleSelection, defaultRole]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -117,20 +125,38 @@ export function LoginForm({
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
 
-      // Simulate API error for demonstration
+      let userName = "User";
+
+      if (role === 'student') {
+        const student = MOCK_STUDENTS.find(s => s.rollNumber.toUpperCase() === cleanId);
+        if (!student) {
+          throw new Error('Student record not found. Please check your Roll Number.');
+        }
+        userName = student.name;
+      } else if (role === 'faculty') {
+        const faculty = MOCK_FACULTY.find(f => f.rollNumber.toUpperCase() === cleanId);
+        if (!faculty) {
+          throw new Error('Faculty record not found. Please check your Staff ID.');
+        }
+        userName = faculty.name;
+      } else if (role === 'admin') {
+        userName = "Administrator";
+      }
+
+      // Simulate credential check (ID must match password for demo)
       if (loginPassword !== id) {
-        throw new Error('Invalid credentials. Please try again.');
+        throw new Error('Invalid password. For demo purposes, please use your ID as password.');
       }
 
       onLogin({
         id,
         role,
-        name: role === "admin" ? "Admin User" : role === "staff" ? "Staff Member" : "Student Name"
+        name: userName
       });
 
       toast({
-        title: `Welcome back, ${id}!`,
-        description: `Successfully logged in as ${role.charAt(0).toUpperCase() + role.slice(1)}.`,
+        title: `Welcome back, ${userName}!`,
+        description: `Successfully logged in to your ${role} dashboard.`,
       });
     } catch (error) {
       toast({
@@ -193,7 +219,7 @@ export function LoginForm({
                 <div className="space-y-2">
                   <Label htmlFor="id" className="flex items-center gap-1">
                     <Key className="h-4 w-4" />
-                    Student/Staff ID <span className="text-muted-foreground text-xs ml-1">(e.g., 22K91A6664)</span>
+                    Student/Staff ID <span className="text-muted-foreground text-xs ml-1">(e.g., {role === 'faculty' ? '22F91F6604' : '22K91A6664'})</span>
                   </Label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -202,7 +228,7 @@ export function LoginForm({
                     <Input
                       id="id"
                       type="text"
-                      placeholder="22K91A6664"
+                      placeholder={role === 'faculty' ? '22F91F6604' : '22K91A6664'}
                       value={id}
                       onChange={(e) => {
                         const formatted = formatId(e.target.value);
@@ -267,7 +293,7 @@ export function LoginForm({
                     </Label>
                     <Select
                       value={role}
-                      onValueChange={(value: 'student' | 'staff' | 'admin') => setRole(value)}
+                      onValueChange={(value: 'student' | 'faculty' | 'admin') => setRole(value)}
                       disabled={isLoading}
                     >
                       <SelectTrigger>
@@ -278,7 +304,7 @@ export function LoginForm({
                           <GraduationCap className="h-4 w-4" />
                           Student
                         </SelectItem>
-                        <SelectItem value="staff" className="flex items-center gap-2">
+                        <SelectItem value="faculty" className="flex items-center gap-2">
                           <User className="h-4 w-4" />
                           Faculty/Staff
                         </SelectItem>

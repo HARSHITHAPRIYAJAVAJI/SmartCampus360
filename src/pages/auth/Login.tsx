@@ -3,7 +3,7 @@ import Layout from "@/components/common/Layout";
 
 interface LoginProps {
   onLogin: (userData: { id: string; role: string; name: string }) => void;
-  userType?: 'student' | 'staff' | 'admin';
+  userType?: 'student' | 'faculty' | 'admin';
 }
 
 export default function Login({ onLogin, userType = 'student' }: LoginProps) {
@@ -12,7 +12,7 @@ export default function Login({ onLogin, userType = 'student' }: LoginProps) {
       title: "Student Portal Login",
       description: "Access your dashboard, grades, and academic schedule."
     },
-    staff: {
+    faculty: {
       title: "Faculty & Staff Portal",
       description: "Manage your classes, leave applications, and profile."
     },

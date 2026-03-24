@@ -38,7 +38,7 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
 
     const roleSpecificItems = {
       admin: [
-        { title: "Faculty Management", url: "/dashboard/faculty", icon: Users },
+        { title: "Faculty Management", url: "/dashboard/faculty-directory", icon: Users },
         { title: "Course Management", url: "/dashboard/manage-courses", icon: BookOpen },
         { title: "Room Management", url: "/dashboard/manage-rooms", icon: Home },
         { title: "Accreditation", url: "/dashboard/accreditation", icon: FileText },
@@ -49,13 +49,17 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
         { title: "My Classes", url: "/dashboard/classes", icon: BookOpen },
         { title: "Leave Management", url: "/dashboard/leave", icon: Clock },
         { title: "Student Records", url: "/dashboard/students", icon: Users },
-        { title: "Accreditation", url: "/dashboard/accreditation", icon: FileText },
       ],
       student: [
-        { title: "My Courses", url: "/dashboard/courses", icon: BookOpen },
-        { title: "Skill Training", url: "/dashboard/training", icon: Award },
-        { title: "Grades", url: "/dashboard/grades", icon: BarChart3 },
-        { title: "Faculty", url: "/dashboard/faculty", icon: Users },
+        { title: "Basic Information", url: "/dashboard/student/basic-info", icon: UserCheck },
+        { title: "Academic Information", url: "/dashboard/student/academic-info", icon: BookOpen },
+        { title: "Exam Time Tables", url: "/dashboard/timetable", icon: Calendar },
+        { title: "Online Fee Payments", url: "/dashboard/student/fees", icon: Award },
+        { title: "Script Uploading", url: "/dashboard/student/scripts", icon: FileText },
+        { title: "Marks Details", url: "/dashboard/grades", icon: BarChart3 },
+        { title: "Downloads", url: "/dashboard/student/downloads", icon: FileText },
+        { title: "Suggestions", url: "/dashboard/student/suggestions", icon: Bell },
+        { title: "Contact Us", url: "/contact", icon: Users },
       ],
     };
 
@@ -114,32 +118,36 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
           </Button>
         </div>
 
-        <div className="flex-1 p-4 overflow-y-auto">
-          <div className="space-y-1">
+        <div className="flex-1 p-4 overflow-y-auto flex flex-col justify-between custom-scrollbar">
+          <div className="space-y-1.5">
             {navigationItems.map((item) => (
               <NavLink
                 key={item.title}
                 to={item.url}
+                end={item.url === '/dashboard'}
                 onClick={() => mobileOpen && onMobileClose()} // Close on navigation on mobile
                 className={({ isActive }) =>
-                  `flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${isActive
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                  `group flex items-center space-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${isActive
+                    ? "bg-gradient-to-r from-primary to-primary/90 text-primary-foreground shadow-md shadow-primary/25 font-semibold"
+                    : "text-muted-foreground hover:bg-primary/5 hover:text-primary font-medium"
                   }`
                 }
               >
-                <item.icon className="h-5 w-5 flex-shrink-0" />
-                {(!collapsed || mobileOpen) && <span className="font-medium lg:block">{item.title}</span>}
+                <item.icon className={`h-5 w-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110`} />
+                {(!collapsed || mobileOpen) && <span className="lg:block">{item.title}</span>}
               </NavLink>
             ))}
           </div>
 
           {(!collapsed || mobileOpen) && (
-            <div className="mt-8">
-              <div className="bg-primary/10 rounded-lg p-3">
-                <div className="text-sm font-medium text-primary">Role: {userRole}</div>
-                <div className="text-xs text-muted-foreground capitalize">
-                  {userRole} Dashboard
+            <div className="mt-8 mb-2">
+              <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-xl p-4 border border-primary/10 shadow-sm backdrop-blur-sm">
+                <div className="text-sm font-bold text-primary flex items-center gap-2 mb-1">
+                  <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
+                  Role: <span className="uppercase tracking-wider">{userRole}</span>
+                </div>
+                <div className="text-[11px] text-muted-foreground/80 font-bold uppercase tracking-widest pl-4">
+                  {userRole} Portal UI
                 </div>
               </div>
             </div>

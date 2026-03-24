@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, Mail, Phone, BookOpen, GraduationCap, Users, ArrowLeft, Building2, Plus, Edit, Trash2, LayoutGrid, List, Grip, X } from "lucide-react";
+import { Search, Mail, Phone, BookOpen, GraduationCap, Users, ArrowLeft, Building2, Plus, Edit, Trash2, LayoutGrid, List, Grip, X, Clock, Check, X as XIcon } from "lucide-react";
 import { FACULTY_LOAD } from "@/data/aimlTimetable";
+import { MOCK_FACULTY } from "@/data/mockFaculty";
 import {
     Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger
 } from "@/components/ui/dialog";
@@ -14,12 +15,15 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MOCK_LEAVE_REQUESTS, LeaveRequest } from "@/data/mockLeaves";
 
 // Types
 interface FacultyMember {
     id: string;
     name: string;
-    designation: string; // Inferred or generic
+    rollNumber: string;
+    designation: string;
     department: string;
     subjects: string[];
     totalLoad: number;
@@ -27,39 +31,75 @@ interface FacultyMember {
     phone?: string;
 }
 
-const FacultyManagement = () => {
-    const [searchQuery, setSearchQuery] = useState("");
+interface FacultyManagementProps {
+    userRole?: string;
+}
 
+const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
+    const [searchQuery, setSearchQuery] = useState("");
     const [selectedDept, setSelectedDept] = useState<string | null>(null);
 
     const departments = [
-        { id: "AIML", name: "Artificial Intelligence & Machine Learning", icon: Building2, color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30", description: "Departement of AI & ML" },
-        { id: "CSE", name: "Computer Science & Engineering", icon: Building2, color: "text-purple-600 bg-purple-100 dark:bg-purple-900/30", description: "Department of CSE" },
-        { id: "ECE", name: "Electronics & Communication", icon: Building2, color: "text-green-600 bg-green-100 dark:bg-green-900/30", description: "Department of ECE" },
-        { id: "EEE", name: "Electrical & Electronics", icon: Building2, color: "text-yellow-600 bg-yellow-100 dark:bg-yellow-900/30", description: "Department of EEE" },
-        { id: "CIVIL", name: "Civil Engineering", icon: Building2, color: "text-orange-600 bg-orange-100 dark:bg-orange-900/30", description: "Department of Civil Eng" },
-        { id: "MECH", name: "Mechanical Engineering", icon: Building2, color: "text-red-600 bg-red-100 dark:bg-red-900/30", description: "Department of Mechanical Eng" },
+        { id: "CSM", name: "CSE (AI & Machine Learning)", icon: BookOpen, color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30", description: "Department of AI & ML" },
+        { id: "IT", name: "Information Technology", icon: Building2, color: "text-cyan-600 bg-cyan-100 dark:bg-cyan-900/30", description: "Department of IT" },
+        { id: "CSE", name: "Computer Science & Engineering", icon: GraduationCap, color: "text-purple-600 bg-purple-100 dark:bg-purple-900/30", description: "Department of CSE" },
+        { id: "ECE", name: "Electronics & Communication", icon: Clock, color: "text-green-600 bg-green-100 dark:bg-green-100/30", description: "Department of ECE" },
     ];
 
-    // Process FACULTY_LOAD to extract unique faculty members
     const { toast } = useToast();
     const [facultyList, setFacultyList] = useState<FacultyMember[]>([]);
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [currentFaculty, setCurrentFaculty] = useState<FacultyMember | null>(null);
     const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
-
-    // Form State
     const [formData, setFormData] = useState<Partial<FacultyMember>>({});
 
-    // Initialize Data
+    // Leave Management State
+    const [pendingLeaves, setPendingLeaves] = useState<LeaveRequest[]>(MOCK_LEAVE_REQUESTS);
+
+    // Swap/Replacement Requests from localStorage
+    interface SwapRequest { id: string; senderName: string; targetName: string; type: string; date: string; period: string; status: string; }
+    const [swapRequests, setSwapRequests] = useState<SwapRequest[]>([]);
+
+    useEffect(() => {
+        const saved = localStorage.getItem('FACULTY_REQUESTS');
+        if (saved) setSwapRequests(JSON.parse(saved));
+    }, []);
+
+    const handleSwapAction = (id: string, status: 'approved' | 'rejected') => {
+        const updated = swapRequests.map(r => r.id === id ? { ...r, status } : r);
+        setSwapRequests(updated);
+        localStorage.setItem('FACULTY_REQUESTS', JSON.stringify(updated));
+        toast({
+            title: status === 'approved' ? 'Swap Approved' : 'Swap Rejected',
+            description: status === 'approved' ? 'The timetable override has been applied.' : 'The request has been dismissed.',
+            variant: status === 'rejected' ? 'destructive' : 'default'
+        });
+    };
+
+    const handleLeaveAction = (id: string, status: 'Approved' | 'Rejected') => {
+        setPendingLeaves(prev => prev.map(l => l.id === id ? { ...l, status } : l));
+        toast({
+            title: `Leave ${status}`,
+            description: `The request has been marked as ${status.toLowerCase()}.`,
+            variant: status === 'Rejected' ? 'destructive' : 'default'
+        });
+    };
+
     useEffect(() => {
         if (!selectedDept) return;
 
-        // This simulates fetching data from an API
-        if (selectedDept === 'AIML' && facultyList.length === 0) {
+        if (selectedDept === 'CSM' && facultyList.length === 0) {
             const facultyMap = new Map<string, FacultyMember>();
-            const hodName = "Dr. B. Sunil Srinivas"; // Updated HOD
+            const hodName = "Dr. B. Sunil Srinivas";
+
+            MOCK_FACULTY.forEach(faculty => {
+                facultyMap.set(faculty.name, {
+                    ...faculty,
+                    subjects: [],
+                    totalLoad: 0
+                });
+            });
 
             Object.entries(FACULTY_LOAD).forEach(([semester, subjects]) => {
                 subjects.forEach((subj) => {
@@ -75,8 +115,9 @@ const FacultyManagement = () => {
                         facultyMap.set(name, {
                             id: name.toLowerCase().replace(/[^a-z0-9]/g, '-'),
                             name: name,
+                            rollNumber: `F-${Math.floor(1000 + Math.random() * 9000)}`,
                             designation: designation,
-                            department: "AIML",
+                            department: "CSM",
                             subjects: [],
                             totalLoad: 0,
                             email: `${name.split(' ').pop()?.toLowerCase()}@smartcampus.edu`,
@@ -84,94 +125,79 @@ const FacultyManagement = () => {
                         });
                     }
 
-                    const member = facultyMap.get(name)!;
-                    const subjectEntry = `${subj.code} (${semester})`;
-                    if (!member.subjects.includes(subjectEntry)) {
-                        member.subjects.push(subjectEntry);
+                    const f = facultyMap.get(name)!;
+                    if (!f.subjects.includes(subj.code)) {
+                        f.subjects.push(subj.code);
+                        f.totalLoad += 3;
                     }
-                    member.totalLoad += 1;
                 });
             });
 
-            // Convert map to array
-            const initialList = Array.from(facultyMap.values());
-            setFacultyList(initialList);
+            setFacultyList(Array.from(facultyMap.values()));
         }
     }, [selectedDept]);
 
-    const sortedFaculty = useMemo(() => {
-        const hodName = "Dr. B. Sunil Srinivas";
-        const list = [...facultyList];
-        return list.sort((a, b) => {
-            if (a.name === hodName) return -1;
-            if (b.name === hodName) return 1;
-            return a.name.localeCompare(b.name);
-        });
-    }, [facultyList]);
+    const filteredFaculty = useMemo(() => {
+        return facultyList.filter(f =>
+            f.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            f.subjects.some(s => s.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+    }, [facultyList, searchQuery]);
 
-    const allSubjects = useMemo(() => {
-        const subjects = new Set<string>();
-        Object.values(FACULTY_LOAD).forEach(semData => {
-            semData.forEach(item => subjects.add(item.code));
-        });
-        return Array.from(subjects).sort();
-    }, []);
-
-    // Handlers
     const handleAdd = () => {
-        const newFaculty: FacultyMember = {
-            id: `new-${Date.now()}`,
-            name: formData.name || "New Faculty",
-            designation: formData.designation || "Assistant Professor",
-            department: selectedDept || "AIML",
-            subjects: formData.subjects ? (typeof formData.subjects === 'string' ? (formData.subjects as string).split(',') : formData.subjects) : [],
+        if (!formData.name || !formData.rollNumber) {
+            toast({ title: "Error", description: "Name and Staff ID are required", variant: "destructive" });
+            return;
+        }
+        const newFaculty = {
+            ...formData,
+            id: Date.now().toString(),
+            subjects: [],
             totalLoad: 0,
-            email: formData.email,
-            phone: formData.phone
-        };
-        setFacultyList([...facultyList, newFaculty]);
+            department: selectedDept || "CSM"
+        } as FacultyMember;
+
+        setFacultyList([newFaculty, ...facultyList]);
         setIsAddOpen(false);
         setFormData({});
-        toast({ title: "Faculty Added", description: `${newFaculty.name} has been added.` });
+        toast({ title: "Success", description: "Faculty member added successfully" });
     };
 
     const handleEdit = () => {
         if (!currentFaculty) return;
-
-        const updatedList = facultyList.map(f =>
-            f.id === currentFaculty.id ? { ...f, ...formData } : f
-        );
-        setFacultyList(updatedList as FacultyMember[]);
+        setFacultyList(prev => prev.map(f => f.id === currentFaculty.id ? { ...f, ...formData } : f));
         setIsEditOpen(false);
         setCurrentFaculty(null);
         setFormData({});
-        toast({ title: "Faculty Updated", description: "Details saved successfully." });
+        toast({ title: "Success", description: "Faculty record updated" });
     };
 
     const handleDelete = (id: string) => {
-        setFacultyList(facultyList.filter(f => f.id !== id));
-        toast({ title: "Faculty Removed", variant: "destructive", description: "Faculty member has been removed." });
+        setFacultyList(prev => prev.filter(f => f.id !== id));
+        toast({ title: "Deleted", description: "Faculty member removed", variant: "destructive" });
     };
-
-    const openEdit = (faculty: FacultyMember) => {
-        setCurrentFaculty(faculty);
-        setFormData({ ...faculty });
-        setIsEditOpen(true);
-    };
-
-    const filteredFaculty = sortedFaculty.filter(f =>
-        f.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        f.subjects.some(s => s.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
 
     if (!selectedDept) {
         return (
-            <div className="space-y-8 animate-in fade-in-50">
-                <div className="text-center space-y-4">
-                    <h1 className="text-4xl font-extrabold tracking-tight">Faculty Departments</h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                        Select a department to view faculty members, teaching assignments, and contact information.
-                    </p>
+            <div className="space-y-8 animate-in fade-in-50 duration-500">
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h1 className="text-4xl font-black tracking-tight text-primary">Departmental Faculty</h1>
+                        <p className="text-muted-foreground mt-1">Select a department to manage staff and academic load.</p>
+                    </div>
+                    {userRole === 'admin' && (
+                        <div className="flex bg-muted p-1 rounded-xl shadow-inner">
+                            <Button variant={viewMode === 'grid' ? "secondary" : "ghost"} size="sm" onClick={() => setViewMode('grid')} className="rounded-lg h-9 w-9 p-0">
+                                <LayoutGrid className="h-4 w-4" />
+                            </Button>
+                            <Button variant={viewMode === 'list' ? "secondary" : "ghost"} size="sm" onClick={() => setViewMode('list')} className="rounded-lg h-9 w-9 p-0">
+                                <List className="h-4 w-4" />
+                            </Button>
+                            <Button variant={viewMode === 'compact' ? "secondary" : "ghost"} size="sm" onClick={() => setViewMode('compact')} className="rounded-lg h-9 w-9 p-0">
+                                <Grip className="h-4 w-4" />
+                            </Button>
+                        </div>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -216,7 +242,6 @@ const FacultyManagement = () => {
                     </p>
                 </div>
                 <div className="flex gap-2 w-full md:w-auto">
-                    {/* Search and Add Buttons */}
                     <div className="relative w-full md:w-64">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
@@ -227,307 +252,294 @@ const FacultyManagement = () => {
                         />
                     </div>
 
-                    <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-                        <DialogTrigger asChild>
-                            <Button>
-                                <Plus className="mr-2 h-4 w-4" /> Add Faculty
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Add New Faculty</DialogTitle>
-                                <DialogDescription>Enter details for the new faculty member.</DialogDescription>
-                            </DialogHeader>
-                            <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="name" className="text-right">Name</Label>
-                                    <Input id="name" value={formData.name || ''} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="col-span-3" />
+                    {userRole === 'admin' && (
+                        <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+                            <DialogTrigger asChild>
+                                <Button>
+                                    <Plus className="mr-2 h-4 w-4" /> Add Faculty
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Add New Faculty Member</DialogTitle>
+                                    <DialogDescription>Enter the professional details to register staff.</DialogDescription>
+                                </DialogHeader>
+                                <div className="grid gap-4 py-4">
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-2 text-left">
+                                            <Label>Full Name</Label>
+                                            <Input placeholder="Dr. John Doe" onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                                        </div>
+                                        <div className="space-y-2 text-left">
+                                            <Label>Staff ID (Roll Number)</Label>
+                                            <Input placeholder="22F91F6601" onChange={e => setFormData({ ...formData, rollNumber: e.target.value })} />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2 text-left">
+                                        <Label>Email</Label>
+                                        <Input type="email" placeholder="john.doe@smartcampus.edu" onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                                    </div>
+                                    <div className="space-y-2 text-left">
+                                        <Label>Designation</Label>
+                                        <Select onValueChange={v => setFormData({ ...formData, designation: v })}>
+                                            <SelectTrigger><SelectValue placeholder="Select designation" /></SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="Professor">Professor</SelectItem>
+                                                <SelectItem value="Associate Professor">Associate Professor</SelectItem>
+                                                <SelectItem value="Assistant Professor">Assistant Professor</SelectItem>
+                                                <SelectItem value="Adjunct Faculty">Adjunct Faculty</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
                                 </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="desig" className="text-right">Designation</Label>
-                                    <Select onValueChange={(v) => setFormData({ ...formData, designation: v })}>
-                                        <SelectTrigger className="col-span-3">
-                                            <SelectValue placeholder="Select designation" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="Professor">Professor</SelectItem>
-                                            <SelectItem value="Associate Professor">Associate Professor</SelectItem>
-                                            <SelectItem value="Assistant Professor">Assistant Professor</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="email" className="text-right">Email</Label>
-                                    <Input id="email" value={formData.email || ''} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="col-span-3" />
-                                </div>
-                            </div>
-                            <DialogFooter>
-                                <Button onClick={handleAdd}>Save Faculty</Button>
-                            </DialogFooter>
-                        </DialogContent>
-
-                    </Dialog>
-
-                    <div className="flex bg-muted p-1 rounded-lg border">
-                        <Button
-                            variant={viewMode === 'grid' ? 'secondary' : 'ghost'}
-                            size="icon"
-                            className="h-9 w-9"
-                            onClick={() => setViewMode('grid')}
-                            title="Grid View"
-                        >
-                            <LayoutGrid className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant={viewMode === 'list' ? 'secondary' : 'ghost'}
-                            size="icon"
-                            className="h-9 w-9"
-                            onClick={() => setViewMode('list')}
-                            title="List View"
-                        >
-                            <List className="h-4 w-4" />
-                        </Button>
-                        <Button
-                            variant={viewMode === 'compact' ? 'secondary' : 'ghost'}
-                            size="icon"
-                            className="h-9 w-9"
-                            onClick={() => setViewMode('compact')}
-                            title="Compact View"
-                        >
-                            <Grip className="h-4 w-4" />
-                        </Button>
-                    </div>
+                                <DialogFooter>
+                                    <Button variant="outline" onClick={() => setIsAddOpen(false)}>Cancel</Button>
+                                    <Button onClick={handleAdd}>Save Member</Button>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
+                    )}
                 </div>
             </div>
 
-            {/* Edit Dialog (Hidden) */}
+            <Tabs defaultValue="directory" className="w-full">
+                <TabsList className="grid w-full grid-cols-3 max-w-[560px]">
+                    <TabsTrigger value="directory">Active Directory</TabsTrigger>
+                    <TabsTrigger value="leaves">
+                        Leave Requests
+                        {pendingLeaves.filter(l => l.status === 'Pending').length > 0 && (
+                            <Badge className="ml-2 bg-destructive text-white h-5 w-5 flex items-center justify-center p-0 rounded-full">
+                                {pendingLeaves.filter(l => l.status === 'Pending').length}
+                            </Badge>
+                        )}
+                    </TabsTrigger>
+                    <TabsTrigger value="swaps">
+                        Swap Requests
+                        {swapRequests.filter(r => r.status === 'pending').length > 0 && (
+                            <Badge className="ml-2 bg-indigo-600 text-white h-5 w-5 flex items-center justify-center p-0 rounded-full">
+                                {swapRequests.filter(r => r.status === 'pending').length}
+                            </Badge>
+                        )}
+                    </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="directory" className="mt-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredFaculty.map((faculty) => (
+                            <Card key={faculty.id} className="group hover:border-primary/50 transition-all hover:shadow-lg overflow-hidden border-muted/60">
+                                <CardHeader className="pb-2">
+                                    <div className="flex justify-between items-start">
+                                        <Avatar className="h-12 w-12 border-2 border-primary/20">
+                                            <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${faculty.name}`} />
+                                            <AvatarFallback>{faculty.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                                        </Avatar>
+                                        <div className="flex gap-1">
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50" onClick={() => { setCurrentFaculty(faculty); setFormData(faculty); setIsEditOpen(true); }}>
+                                                <Edit className="h-4 w-4" />
+                                            </Button>
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => handleDelete(faculty.id)}>
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                    <div className="mt-4">
+                                        <CardTitle className="text-xl font-black">{faculty.name}</CardTitle>
+                                        <CardDescription className="text-primary font-bold">{faculty.designation}</CardDescription>
+                                        <div className="text-[10px] text-muted-foreground mt-1 font-mono uppercase tracking-tighter opacity-70">
+                                            Staff ID: {faculty.rollNumber}
+                                        </div>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                                        <Mail className="h-4 w-4 text-primary/60" />
+                                        <span className="truncate">{faculty.email}</span>
+                                    </div>
+                                    <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                                        <Phone className="h-4 w-4 text-primary/60" />
+                                        {faculty.phone}
+                                    </div>
+                                    <div className="space-y-2 pt-2 border-t border-muted/40">
+                                        <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                                            <span>Current Load</span>
+                                            <span className="text-primary">{faculty.totalLoad} hrs/week</span>
+                                        </div>
+                                        <div className="w-full bg-muted rounded-full h-1.5">
+                                            <div className="bg-primary h-full rounded-full transition-all duration-1000" style={{ width: `${Math.min((faculty.totalLoad / 20) * 100, 100)}%` }}></div>
+                                        </div>
+                                    </div>
+                                    <div className="flex flex-wrap gap-1.5 pt-2">
+                                        {faculty.subjects.map((sub, i) => (
+                                            <Badge key={i} variant="secondary" className="px-1.5 py-0 text-[10px] bg-primary/5 text-primary border-primary/10">
+                                                {sub}
+                                            </Badge>
+                                        ))}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="leaves" className="mt-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Leave Approval Queue</CardTitle>
+                            <CardDescription>Review and manage faculty leave requests.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="space-y-4">
+                                {pendingLeaves.filter(l => l.status === 'Pending').length === 0 ? (
+                                    <div className="text-center py-12 text-muted-foreground">
+                                        <Check className="h-12 w-12 mx-auto mb-4 opacity-20" />
+                                        <p>No pending leave requests.</p>
+                                    </div>
+                                ) : (
+                                    <div className="grid gap-4">
+                                        {pendingLeaves.filter(l => l.status === 'Pending').map((leave) => (
+                                            <div key={leave.id} className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-xl bg-muted/20 hover:bg-muted/30 transition-colors">
+                                                <div className="flex items-start gap-4">
+                                                    <div className="mt-1">
+                                                        <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                                                            {leave.facultyName.charAt(0)}
+                                                        </div>
+                                                    </div>
+                                                    <div className="space-y-1">
+                                                        <div className="flex items-center gap-2">
+                                                            <h4 className="font-bold">{leave.facultyName}</h4>
+                                                            <Badge variant="outline" className="text-[10px]">{leave.type}</Badge>
+                                                        </div>
+                                                        <p className="text-sm text-muted-foreground line-clamp-1 italic">"{leave.reason}"</p>
+                                                        <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground">
+                                                            <span className="flex items-center gap-1">
+                                                                <Clock className="h-3.5 w-3.5" />
+                                                                {leave.fromDate} to {leave.toDate} ({leave.days} days)
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="flex gap-2 mt-4 md:mt-0 ml-14 md:ml-0">
+                                                    <Button 
+                                                        size="sm" 
+                                                        className="bg-green-600 hover:bg-green-700 text-white"
+                                                        onClick={() => handleLeaveAction(leave.id, 'Approved')}
+                                                    >
+                                                        <Check className="h-4 w-4 mr-2" /> Approve
+                                                    </Button>
+                                                    <Button 
+                                                        size="sm" 
+                                                        variant="destructive"
+                                                        onClick={() => handleLeaveAction(leave.id, 'Rejected')}
+                                                    >
+                                                        <XIcon className="h-4 w-4 mr-2" /> Reject
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+
+                <TabsContent value="swaps" className="mt-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Period Swap & Replacement Requests</CardTitle>
+                            <CardDescription>Faculty-submitted swap/replacement requests requiring admin oversight.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            {swapRequests.length === 0 ? (
+                                <div className="text-center py-12 text-muted-foreground">
+                                    <Check className="h-12 w-12 mx-auto mb-4 opacity-20" />
+                                    <p>No swap or replacement requests found.</p>
+                                </div>
+                            ) : (
+                                <div className="grid gap-4">
+                                    {swapRequests.map((req) => (
+                                        <div key={req.id} className={`flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-xl transition-colors ${
+                                            req.status === 'pending' ? 'bg-indigo-50/50 border-indigo-200 dark:bg-indigo-950/20 dark:border-indigo-900' :
+                                            req.status === 'approved' ? 'bg-green-50/30 border-green-200 dark:bg-green-950/10' :
+                                            'bg-muted/20 opacity-60'
+                                        }`}>
+                                            <div className="flex items-start gap-4">
+                                                <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-700 dark:text-indigo-300 font-bold text-sm shrink-0">
+                                                    {req.senderName.charAt(0)}
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <div className="flex items-center gap-2 flex-wrap">
+                                                        <h4 className="font-bold">{req.senderName}</h4>
+                                                        <span className="text-muted-foreground text-sm">→</span>
+                                                        <h4 className="font-bold text-indigo-600 dark:text-indigo-400">{req.targetName}</h4>
+                                                        <Badge variant="outline" className="text-[10px] capitalize border-indigo-200 text-indigo-700 dark:text-indigo-300">{req.type}</Badge>
+                                                    </div>
+                                                    <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground">
+                                                        <span className="flex items-center gap-1">
+                                                            <Clock className="h-3.5 w-3.5" />
+                                                            {req.date} &bull; {req.period}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="flex gap-2 mt-4 md:mt-0 ml-14 md:ml-0 shrink-0">
+                                                {req.status === 'pending' ? (
+                                                    <>
+                                                        <Button
+                                                            size="sm"
+                                                            className="bg-green-600 hover:bg-green-700 text-white"
+                                                            onClick={() => handleSwapAction(req.id, 'approved')}
+                                                        >
+                                                            <Check className="h-4 w-4 mr-1" /> Approve
+                                                        </Button>
+                                                        <Button
+                                                            size="sm"
+                                                            variant="destructive"
+                                                            onClick={() => handleSwapAction(req.id, 'rejected')}
+                                                        >
+                                                            <XIcon className="h-4 w-4 mr-1" /> Reject
+                                                        </Button>
+                                                    </>
+                                                ) : (
+                                                    <Badge variant={req.status === 'approved' ? 'default' : 'destructive'} className={req.status === 'approved' ? 'bg-green-500' : ''}>
+                                                        {req.status}
+                                                    </Badge>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </CardContent>
+                    </Card>
+                </TabsContent>
+            </Tabs>
+
+            {/* Edit Dialog */}
             <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>Edit Faculty Details</DialogTitle>
                     </DialogHeader>
                     <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="edit-name" className="text-right">Name</Label>
-                            <Input id="edit-name" value={formData.name || ''} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="col-span-3" />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="edit-desig" className="text-right">Designation</Label>
-                            <Select value={formData.designation} onValueChange={(v) => setFormData({ ...formData, designation: v })}>
-                                <SelectTrigger className="col-span-3">
-                                    <SelectValue placeholder="Select designation" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="Professor">Professor</SelectItem>
-                                    <SelectItem value="Associate Professor">Associate Professor</SelectItem>
-                                    <SelectItem value="Assistant Professor">Assistant Professor</SelectItem>
-                                    <SelectItem value="Head of Department (HOD)">Head of Department (HOD)</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="edit-email" className="text-right">Email</Label>
-                            <Input id="edit-email" value={formData.email || ''} onChange={(e) => setFormData({ ...formData, email: e.target.value })} className="col-span-3" />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="edit-phone" className="text-right">Phone</Label>
-                            <Input id="edit-phone" value={formData.phone || ''} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} className="col-span-3" />
-                        </div>
-                        <div className="grid grid-cols-4 items-start gap-4">
-                            <Label className="text-right mt-2">Subjects</Label>
-                            <div className="col-span-3 space-y-3">
-                                <div className="flex flex-wrap gap-2">
-                                    {formData.subjects?.map((subject, index) => (
-                                        <Badge key={index} variant="secondary" className="flex items-center gap-1 cursor-default">
-                                            {subject}
-                                            <button
-                                                onClick={() => {
-                                                    const newSubjects = formData.subjects?.filter(s => s !== subject);
-                                                    setFormData({ ...formData, subjects: newSubjects });
-                                                }}
-                                                className="ml-1 ring-offset-background rounded-full outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
-                                            >
-                                                <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
-                                            </button>
-                                        </Badge>
-                                    ))}
-                                </div>
-                                <Select onValueChange={(value) => {
-                                    if (formData.subjects?.includes(value)) return;
-                                    setFormData({ ...formData, subjects: [...(formData.subjects || []), value] });
-                                }}>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Add Subject..." />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {allSubjects.map(sub => <SelectItem key={sub} value={sub}>{sub}</SelectItem>)}
-                                    </SelectContent>
-                                </Select>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label>Full Name</Label>
+                                <Input value={formData.name || ''} onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Staff ID</Label>
+                                <Input value={formData.rollNumber || ''} onChange={e => setFormData({ ...formData, rollNumber: e.target.value })} />
                             </div>
                         </div>
                     </div>
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setIsEditOpen(false)}>Cancel</Button>
-                        <Button onClick={handleEdit}>Save Changes</Button>
+                        <Button onClick={handleEdit}>Update Record</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
-
-            {/* Stats Row */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <Card className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 border-none shadow-sm">
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Total Faculty</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-3xl font-bold text-blue-700 dark:text-blue-400">{facultyList.length}</div>
-                    </CardContent>
-                </Card>
-                <Card className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 border-none shadow-sm">
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Total Courses</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-3xl font-bold text-purple-700 dark:text-purple-400">
-                            {facultyList.reduce((acc, curr) => acc + curr.subjects.length, 0)}
-                        </div>
-                    </CardContent>
-                </Card>
-                <Card className="bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 border-none shadow-sm">
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm font-medium text-muted-foreground">Active Load</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-3xl font-bold text-emerald-700 dark:text-emerald-400">100%</div>
-                    </CardContent>
-                </Card>
-            </div>
-
-            {/* Faculty Grid */}
-            <div className={`grid gap-6 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' :
-                viewMode === 'list' ? 'grid-cols-1' :
-                    'grid-cols-2 lg:grid-cols-4 xl:grid-cols-5'
-                }`}>
-                {filteredFaculty.map((faculty) => (
-                    <Card key={faculty.id} className={`group hover:shadow-lg transition-all border-muted/60 overflow-hidden ${faculty.designation.includes('HOD') ? 'ring-2 ring-primary relative' : ''
-                        } ${viewMode === 'list' ? 'flex flex-row items-center' : ''}`}>
-
-                        {/* HOD Label */}
-                        {faculty.designation.includes('HOD') && (
-                            <div className={`absolute top-0 right-0 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-bl-xl z-20 shadow-md ${viewMode === 'list' ? 'rounded-tr-none' : ''}`}>
-                                HOD
-                            </div>
-                        )}
-
-                        <CardContent className={`p-0 w-full ${viewMode === 'list' ? 'flex items-center gap-6 p-4' : ''}`}>
-
-                            {/* Avatar Section */}
-                            <div className={`
-                                ${viewMode === 'list' ? 'relative shrink-0' : 'bg-gradient-to-r from-slate-100 to-slate-200 dark:from-slate-800 dark:to-slate-900 relative'}
-                                ${viewMode === 'grid' ? 'h-24' : viewMode === 'compact' ? 'h-16' : ''}
-                            `}>
-                                <div className={`
-                                    ${viewMode === 'grid' ? 'absolute -bottom-10 left-6 border-4 border-background rounded-full shadow-md' : ''}
-                                    ${viewMode === 'compact' ? 'absolute -bottom-8 left-1/2 -translate-x-1/2 border-4 border-background rounded-full shadow-md' : ''}
-                                    ${viewMode === 'list' ? 'border-2 border-background rounded-full shadow-sm' : ''}
-                                `}>
-                                    <Avatar className={`
-                                        ${viewMode === 'grid' ? 'h-20 w-20' : ''}
-                                        ${viewMode === 'compact' ? 'h-16 w-16' : ''}
-                                        ${viewMode === 'list' ? 'h-14 w-14' : ''}
-                                    `}>
-                                        <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${faculty.name}`} />
-                                        <AvatarFallback>{faculty.name.substring(0, 2)}</AvatarFallback>
-                                    </Avatar>
-                                </div>
-                            </div>
-
-                            {/* Content Section */}
-                            <div className={`
-                                ${viewMode === 'grid' ? 'pt-12 px-6 pb-6 space-y-4' : ''}
-                                ${viewMode === 'compact' ? 'pt-10 px-3 pb-3 space-y-2 text-center' : ''}
-                                ${viewMode === 'list' ? 'flex-1 grid grid-cols-1 md:grid-cols-4 gap-4 items-center' : ''}
-                            `}>
-                                {/* Name & Desig */}
-                                <div className={viewMode === 'list' ? 'col-span-1' : ''}>
-                                    <h3 className={`font-bold line-clamp-1 group-hover:text-primary transition-colors ${viewMode === 'compact' ? 'text-sm' : 'text-xl'}`}>{faculty.name}</h3>
-                                    <p className={`text-sm text-muted-foreground flex items-center gap-2 font-medium ${viewMode === 'compact' ? 'justify-center text-xs' : ''}`}>
-                                        {!viewMode.includes('compact') && <GraduationCap className="h-3 w-3" />} {faculty.designation}
-                                    </p>
-                                </div>
-
-                                {/* Contact Details (Hidden in Compact) */}
-                                {viewMode !== 'compact' && (
-                                    <div className={`space-y-2 ${viewMode === 'list' ? 'col-span-1 border-l pl-4 space-y-1' : ''}`}>
-                                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                            <Mail className="h-3 w-3" /> {faculty.email}
-                                        </div>
-                                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                            <Phone className="h-3 w-3" /> {faculty.phone}
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Subjects (Hidden in Compact) */}
-                                {viewMode !== 'compact' && (
-                                    <div className={`${viewMode === 'list' ? 'col-span-1 border-l pl-4' : 'pt-2'}`}>
-                                        {viewMode === 'grid' && (
-                                            <div className="text-xs font-semibold uppercase text-muted-foreground mb-2 flex items-center gap-2">
-                                                <BookOpen className="h-3 w-3" /> Teaching Subjects
-                                            </div>
-                                        )}
-                                        <div className="flex flex-wrap gap-1.5">
-                                            {faculty.subjects.slice(0, viewMode === 'list' ? 3 : 5).map((subject, i) => (
-                                                <Badge key={i} variant="secondary" className="px-2 py-0.5 text-xs font-normal">
-                                                    {subject}
-                                                </Badge>
-                                            ))}
-                                            {faculty.subjects.length > (viewMode === 'list' ? 3 : 5) && (
-                                                <Badge variant="outline" className="text-xs">+{faculty.subjects.length - (viewMode === 'list' ? 3 : 5)}</Badge>
-                                            )}
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Load & Actions */}
-                                <div className={`
-                                    ${viewMode === 'grid' ? 'pt-4 mt-2 border-t flex justify-between items-center text-sm' : ''}
-                                    ${viewMode === 'compact' ? 'pt-2 mt-2 border-t flex justify-center items-center text-xs' : ''}
-                                    ${viewMode === 'list' ? 'col-span-1 flex justify-end gap-4 items-center' : ''}
-                                `}>
-                                    {viewMode !== 'compact' && <span className="text-muted-foreground">Total Classes:</span>}
-                                    <Badge variant="outline" className="font-mono">{faculty.totalLoad}</Badge>
-
-                                    <div className={`flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity ${viewMode === 'grid' ? '' : 'ml-2'}`}>
-                                        <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); openEdit(faculty); }} className="h-8 w-8 p-0">
-                                            <Edit className="h-4 w-4 text-primary" />
-                                        </Button>
-                                        <Button variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); handleDelete(faculty.id); }} className="h-8 w-8 p-0">
-                                            <Trash2 className="h-4 w-4 text-destructive" />
-                                        </Button>
-                                    </div>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
-
-            {
-                filteredFaculty.length === 0 && (
-                    <div className="text-center py-12">
-                        {selectedDept === 'AIML' ? (
-                            <p className="text-muted-foreground">No faculty members found matching your search.</p>
-                        ) : (
-                            <div className="text-center space-y-4">
-                                <p className="text-xl text-muted-foreground">No data available for this department yet.</p>
-                                <p className="text-sm text-muted-foreground">Please select "Artificial Intelligence & Machine Learning" to view demo data.</p>
-                            </div>
-                        )}
-                    </div>
-                )
-            }
-        </div >
+        </div>
     );
 };
 

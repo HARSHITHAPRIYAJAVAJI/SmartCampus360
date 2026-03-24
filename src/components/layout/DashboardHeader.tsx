@@ -12,6 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { MOCK_LEAVE_REQUESTS } from "@/data/mockLeaves";
+import { Link } from "react-router-dom";
 
 interface DashboardHeaderProps {
   user: {
@@ -24,11 +26,23 @@ interface DashboardHeaderProps {
 }
 
 export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHeaderProps) {
-  const [notifications] = useState([
-    { id: 1, title: "New assignment posted", type: "info", read: false },
-    { id: 2, title: "Class rescheduled", type: "warning", read: false },
-    { id: 3, title: "Grade updated", type: "success", read: true },
+  const [baseNotifications] = useState([
+    { id: '1', title: "New assignment posted", type: "info", read: false },
+    { id: '2', title: "Class rescheduled", type: "warning", read: false },
+    { id: '3', title: "Grade updated", type: "success", read: true },
   ]);
+
+  const notifications: any[] = [
+    ...baseNotifications,
+    ...(user.role === 'admin' ? MOCK_LEAVE_REQUESTS.filter(l => l.status === 'Pending').map(l => ({
+      id: `leave-${l.id}`,
+      title: `Leave request: ${l.facultyName}`,
+      message: `${l.type} for ${l.days} days`,
+      type: "warning",
+      read: false,
+      isLeave: true
+    })) : [])
+  ];
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
@@ -37,19 +51,20 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
       .split(" ")
       .map(n => n[0])
       .join("")
-      .toUpperCase();
+      .toUpperCase()
+      .slice(0, 2); // Prevent 3 letters like "DSH" crowding the avatar
   };
 
-  const getRoleColor = (role: string) => {
+  const getRoleBadgeClasses = (role: string) => {
     switch (role) {
       case "admin":
-        return "bg-destructive text-destructive-foreground";
+        return "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 border border-red-200 dark:border-red-800";
       case "faculty":
-        return "bg-warning text-warning-foreground";
+        return "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-200 dark:border-amber-800";
       case "student":
-        return "bg-success text-success-foreground";
+        return "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 border border-green-200 dark:border-green-800";
       default:
-        return "bg-secondary text-secondary-foreground";
+        return "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-400 border border-slate-200 dark:border-slate-800";
     }
   };
 
@@ -80,15 +95,14 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
         {/* Notifications */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="relative">
-              <Bell className="h-5 w-5" />
+            <Button variant="ghost" size="icon" className="relative h-9 w-9 rounded-full hover:bg-muted/60 transition-colors">
+              <Bell className="h-[22px] w-[22px] text-muted-foreground" />
               {unreadCount > 0 && (
-                <Badge
-                  variant="destructive"
-                  className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+                <span
+                  className="absolute -top-0.5 -right-0.5 h-[18px] w-[18px] rounded-full bg-red-500 flex items-center justify-center text-[10px] font-bold text-white shadow-sm ring-2 ring-card"
                 >
                   {unreadCount}
-                </Badge>
+                </span>
               )}
             </Button>
           </DropdownMenuTrigger>
@@ -98,11 +112,19 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
             {notifications.map((notification) => (
               <DropdownMenuItem key={notification.id} className="flex flex-col items-start p-3">
                 <div className="flex w-full items-center justify-between">
-                  <span className="font-medium">{notification.title}</span>
+                  <div className="flex flex-col">
+                    <span className="font-medium">{notification.title}</span>
+                    {notification.message && <span className="text-xs text-muted-foreground">{notification.message}</span>}
+                  </div>
                   {!notification.read && (
                     <div className="w-2 h-2 bg-primary rounded-full" />
                   )}
                 </div>
+                {notification.isLeave && (
+                    <Link to="/admin/faculty" className="text-[10px] text-primary mt-1 font-bold hover:underline">
+                        Approve/Reject Requests →
+                    </Link>
+                )}
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator />
@@ -115,17 +137,17 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
         {/* User menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center space-x-2 p-2">
-              <Avatar className="h-8 w-8">
-                <AvatarFallback className="bg-primary text-primary-foreground">
+            <Button variant="ghost" className="flex items-center gap-3 px-2 py-1.5 h-auto hover:bg-muted/60 rounded-full md:rounded-lg">
+              <Avatar className="h-10 w-10 border border-primary/20 shadow-sm transition-transform group-hover:scale-105">
+                <AvatarFallback className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground font-bold tracking-tight">
                   {getInitials(user.name)}
                 </AvatarFallback>
               </Avatar>
-              <div className="hidden md:flex flex-col items-start">
-                <span className="text-sm font-medium">{user.name}</span>
-                <Badge variant="outline" className={`text-xs ${getRoleColor(user.role)}`}>
+              <div className="hidden md:flex flex-col items-start text-left">
+                <span className="text-sm font-bold text-foreground leading-none mb-1.5">{user.name}</span>
+                <span className={`text-[10px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full leading-none shadow-sm ${getRoleBadgeClasses(user.role)}`}>
                   {user.role}
-                </Badge>
+                </span>
               </div>
             </Button>
           </DropdownMenuTrigger>

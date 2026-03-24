@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
-import { Bell, Send, FileText, Clock, Trash2, Edit2, CheckCircle2, AlertTriangle, Info } from "lucide-react";
+import { Bell, Send, FileText, Clock, Trash2, Edit2, CheckCircle2, AlertTriangle, Info, Inbox } from "lucide-react";
 import {
     Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger
 } from "@/components/ui/dialog";
@@ -16,8 +16,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { MOCK_NOTIFICATIONS, NOTIFICATION_TEMPLATES, Notification } from "@/data/mockNotifications";
 import { format } from "date-fns";
+import { useOutletContext } from 'react-router-dom';
 
 const NotificationsPage = () => {
+    const { user } = useOutletContext<{ user: { role: string; name: string } }>();
+    const isAdmin = user?.role === 'admin';
+    const userAudience = user?.role === 'student' ? 'students' : user?.role === 'faculty' ? 'faculty' : 'all';
     const { toast } = useToast();
     const [notifications, setNotifications] = useState<Notification[]>(MOCK_NOTIFICATIONS);
     const [activeTab, setActiveTab] = useState("all");
@@ -84,6 +88,58 @@ const NotificationsPage = () => {
         if (activeTab === 'scheduled') return n.status === 'scheduled';
         return true;
     });
+
+    // For non-admins: filter to their audience only
+    const myNotifications = isAdmin
+        ? filteredNotifications
+        : notifications.filter(n => n.status === 'sent' && (n.targetAudience === 'all' || n.targetAudience === userAudience));
+
+    // --- Student / Faculty read-only inbox ---
+    if (!isAdmin) {
+        return (
+            <div className="space-y-6 animate-in fade-in-50">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3">
+                        <Inbox className="h-8 w-8 text-primary" /> My Inbox
+                    </h1>
+                    <p className="text-muted-foreground mt-1">Notifications addressed to you from the administration.</p>
+                </div>
+
+                <div className="space-y-4">
+                    {myNotifications.length === 0 ? (
+                        <div className="p-12 text-center text-muted-foreground border border-dashed rounded-xl">
+                            <Bell className="h-12 w-12 mx-auto mb-4 opacity-20" />
+                            <p className="text-lg font-medium">No notifications yet</p>
+                            <p className="text-sm">You're all caught up! Check back later.</p>
+                        </div>
+                    ) : (
+                        myNotifications.map(item => (
+                            <div key={item.id} className={`flex items-start gap-4 p-5 rounded-xl border bg-card hover:shadow-md transition-all ${
+                                item.type === 'destructive' ? 'border-red-200 bg-red-50/30 dark:bg-red-950/10' :
+                                item.type === 'warning' ? 'border-amber-200 bg-amber-50/30 dark:bg-amber-950/10' :
+                                item.type === 'success' ? 'border-green-200 bg-green-50/30 dark:bg-green-950/10' : ''
+                            }`}>
+                                <div className="mt-1 shrink-0">{getIcon(item.type)}</div>
+                                <div className="flex-1 space-y-1">
+                                    <div className="flex items-center justify-between gap-2">
+                                        <h3 className="font-bold text-base">{item.title}</h3>
+                                        <span className="text-xs text-muted-foreground whitespace-nowrap">
+                                            {format(new Date(item.date), "MMM d, h:mm a")}
+                                        </span>
+                                    </div>
+                                    <p className="text-sm text-muted-foreground">{item.message}</p>
+                                    <div className="flex items-center gap-2 mt-2">
+                                        <Badge variant="secondary" className="text-xs capitalize">{item.targetAudience}</Badge>
+                                        <span className="text-xs text-muted-foreground">From: {item.sender}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6 animate-in fade-in-50">

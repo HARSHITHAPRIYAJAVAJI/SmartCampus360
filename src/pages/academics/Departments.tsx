@@ -18,8 +18,8 @@ const Departments = () => {
             specializations: ["Artificial Intelligence", "Cybersecurity", "Cloud Computing"]
         },
         {
-            id: "aiml",
-            name: "AI & Machine Learning",
+            id: "csm",
+            name: "Artificial Intelligence & ML",
             icon: Binary,
             description: "Dedicated to the study of intelligent systems and data-driven decision making.",
             stats: { faculty: "30+", students: "800+", labs: "8" },
@@ -34,28 +34,12 @@ const Departments = () => {
             specializations: ["VLSI Design", "Embedded Systems", "5G Networks"]
         },
         {
-            id: "me",
-            name: "Mechanical Engineering",
-            icon: Landmark,
-            description: "The core of robotics, thermodynamics, and high-performance manufacturing.",
-            stats: { faculty: "35+", students: "900+", labs: "20" },
-            specializations: ["Robotics", "Aerospace", "Automotive Design"]
-        },
-        {
-            id: "ee",
-            name: "Electrical Engineering",
-            icon: Lightbulb,
-            description: "Powering the future with renewable energy systems and smart grid technologies.",
-            stats: { faculty: "32+", students: "750+", labs: "10" },
-            specializations: ["Renewable Energy", "Smart Grids", "Power Systems"]
-        },
-        {
-            id: "bs",
-            name: "Business & Management",
+            id: "it",
+            name: "Information Technology",
             icon: Globe,
-            description: "Developing world leaders through strategic thinking and entrepreneurial mindset.",
-            stats: { faculty: "25+", students: "600+", labs: "4" },
-            specializations: ["Finance", "Data Analytics", "HR Management"]
+            description: "Developing robust software infrastructure and managing enterprise-grade networks.",
+            stats: { faculty: "32+", students: "750+", labs: "10" },
+            specializations: ["Web Technologies", "Network Security", "Database Admins"]
         }
     ];
 

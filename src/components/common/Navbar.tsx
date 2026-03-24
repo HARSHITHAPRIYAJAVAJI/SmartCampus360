@@ -16,6 +16,12 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 
@@ -37,7 +43,7 @@ const Navbar = () => {
     )}>
       {/* Top Bar - Hidden on scroll to save space, or keep it small */}
       <div className={cn(
-        "container mx-auto px-4 flex justify-between items-center text-sm transition-all duration-300 overflow-hidden",
+        "max-w-[1920px] mx-auto px-6 w-full flex justify-between items-center text-sm transition-all duration-300 overflow-hidden",
         isScrolled ? "h-0 opacity-0" : "h-10 opacity-100 border-b mb-2"
       )}>
         <div className="flex items-center space-x-6">
@@ -56,16 +62,12 @@ const Navbar = () => {
             <a href="#" className="text-muted-foreground hover:text-primary" aria-label="LinkedIn"><Linkedin className="h-4 w-4" /></a>
           </div>
           <div className="flex items-center gap-2">
-            <Link to="/login/student" className="text-xs font-medium hover:text-primary">Student Login</Link>
-            <span className="text-muted-foreground">|</span>
-            <Link to="/login/staff" className="text-xs font-medium hover:text-primary">Staff Login</Link>
-            <span className="text-muted-foreground">|</span>
-            <Link to="/login/admin" className="text-xs font-medium hover:text-primary">Admin Login</Link>
+            <span className="text-xs text-muted-foreground mr-2 hidden md:block">Support: +1 (555) 123-4567</span>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 flex items-center justify-between">
+      <div className="max-w-[1920px] mx-auto px-6 w-full flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-3 group" aria-label="Smart Campus University Home">
           <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
@@ -89,23 +91,7 @@ const Navbar = () => {
             <NavigationMenuItem>
               <NavigationMenuTrigger>About</NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
-                  <li className="row-span-3">
-                    <NavigationMenuLink asChild>
-                      <Link
-                        className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                        to="/"
-                      >
-                        <GraduationCap className="h-6 w-6" />
-                        <div className="mb-2 mt-4 text-lg font-medium">
-                          Smart Campus
-                        </div>
-                        <p className="text-sm leading-tight text-muted-foreground">
-                          Empowering students with knowledge and innovation since 1990.
-                        </p>
-                      </Link>
-                    </NavigationMenuLink>
-                  </li>
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                   <ListItem href="/about/vision" title="Vision & Mission">
                     Our core values and future goals.
                   </ListItem>
@@ -140,6 +126,38 @@ const Navbar = () => {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
+              <NavigationMenuTrigger>Student Services</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[600px] md:grid-cols-2 lg:w-[800px] lg:grid-cols-3">
+                  <ListItem href="/services/basic-information" title="Basic Information">
+                    View student profile and records.
+                  </ListItem>
+                  <ListItem href="/services/academic-information" title="Academic Information">
+                    Access course history and standing.
+                  </ListItem>
+                  <ListItem href="/services/exam-time-tables" title="Exam Time Tables">
+                    Check your semester exam schedules.
+                  </ListItem>
+                  <ListItem href="/services/fee-payments" title="Online Fee Payments">
+                    Securely pay academic fees online.
+                  </ListItem>
+                  <ListItem href="/services/script-uploading" title="Script Uploading">
+                    Upload answer scripts and assignments.
+                  </ListItem>
+                  <ListItem href="/services/marks-details" title="Marks Details">
+                    View comprehensive grade reports.
+                  </ListItem>
+                  <ListItem href="/services/downloads" title="Downloads">
+                    Resource materials and forms.
+                  </ListItem>
+                  <ListItem href="/services/suggestions" title="Suggestions">
+                    Submit feedback to administration.
+                  </ListItem>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
               <Link to="/admissions" className={navigationMenuTriggerStyle()}>
                 Admissions
               </Link>
@@ -164,8 +182,39 @@ const Navbar = () => {
           <Button variant="ghost" size="icon" className="rounded-full" aria-label="Search">
             <Search className="h-5 w-5" />
           </Button>
+          
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" className="rounded-full flex items-center gap-2">
+                <User className="h-4 w-4" />
+                Login
+                <ChevronDown className="h-4 w-4 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 bg-white shadow-xl rounded-xl border-border/50">
+              <DropdownMenuItem asChild className="cursor-pointer hover:bg-primary/5 py-3">
+                <Link to="/login/student" className="flex items-center w-full">
+                  <User className="mr-3 h-4 w-4 text-primary" />
+                  <span className="font-medium">Student Login</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="cursor-pointer hover:bg-primary/5 py-3">
+                <Link to="/login/staff" className="flex items-center w-full">
+                  <Users className="mr-3 h-4 w-4 text-primary" />
+                  <span className="font-medium">Faculty Login</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild className="cursor-pointer hover:bg-primary/5 py-3">
+                <Link to="/login/admin" className="flex items-center w-full">
+                  <Shield className="mr-3 h-4 w-4 text-primary" />
+                  <span className="font-medium">Admin Login</span>
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Link to="/admissions/apply">
-            <Button className="rounded-full px-6 bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/25 transition-all duration-300">
+            <Button className="rounded-full px-6 bg-gradient-to-r from-red-600 to-red-800 hover:shadow-lg hover:shadow-red-600/25 transition-all duration-300">
               Apply Now
             </Button>
           </Link>
@@ -188,6 +237,20 @@ const Navbar = () => {
                 <Link to="/" className="text-lg font-medium">Home</Link>
                 <Link to="/about/vision" className="text-lg font-medium">About</Link>
                 <Link to="/academics/programs" className="text-lg font-medium">Academics</Link>
+                
+                {/* Mobile Student Services Dropdown alternative */}
+                <div className="flex flex-col space-y-3 pl-4 border-l-2 border-primary/20">
+                  <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Student Services</span>
+                  <Link to="/services/basic-information" className="text-base font-medium">Basic Information</Link>
+                  <Link to="/services/academic-information" className="text-base font-medium">Academic Information</Link>
+                  <Link to="/services/exam-time-tables" className="text-base font-medium">Exam Time Tables</Link>
+                  <Link to="/services/fee-payments" className="text-base font-medium">Online Fee Payments</Link>
+                  <Link to="/services/script-uploading" className="text-base font-medium">Script Uploading</Link>
+                  <Link to="/services/marks-details" className="text-base font-medium">Marks Details</Link>
+                  <Link to="/services/downloads" className="text-base font-medium">Downloads</Link>
+                  <Link to="/services/suggestions" className="text-base font-medium">Suggestions</Link>
+                </div>
+
                 <Link to="/admissions/apply" className="text-lg font-medium">Admissions</Link>
                 <Link to="/placements" className="text-lg font-medium">Placements</Link>
                 <Link to="/contact" className="text-lg font-medium">Contact</Link>
@@ -230,7 +293,7 @@ const ListItem = React.forwardRef<
           to={props.href || "#"}
           ref={ref as any}
           className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            "group block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-all hover:bg-primary/5 hover:text-primary focus:bg-primary/5 focus:text-primary",
             className
           )}
           {...props}

@@ -16,9 +16,10 @@ class TimetableSolver:
         faculty_map = {c.code: getattr(c, 'instructor_id', 'Unknown') for c in self.courses}
         room_cap = {r.name: getattr(r, 'capacity', 60) for r in self.rooms}
         batch_size = {c.code: getattr(c, 'batch_size', 40) for c in self.courses} # Default batch size
+        course_credits = {c.code: int(getattr(c, 'credits', 3)) for c in self.courses}
 
         model, x = build_timetable_csp(
-            course_ids, slot_ids, room_ids, faculty_map, room_cap, batch_size
+            course_ids, slot_ids, room_ids, faculty_map, room_cap, batch_size, course_credits
         )
         
         solver = cp_model.CpSolver()

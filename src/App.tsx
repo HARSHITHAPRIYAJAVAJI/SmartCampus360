@@ -10,6 +10,9 @@ const Index = lazy(() => import("./pages/Index"));
 const Admissions = lazy(() => import("./pages/Admissions"));
 const Login = lazy(() => import("./pages/auth/Login"));
 const Signup = lazy(() => import("./pages/auth/Signup"));
+const AdminDashboard = lazy(() => import("./pages/dashboard/AdminDashboard"));
+const FacultyDashboard = lazy(() => import("./pages/dashboard/FacultyDashboard"));
+const StudentDashboard = lazy(() => import("./pages/dashboard/StudentDashboard"));
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 const Timetable = lazy(() => import("./pages/dashboard/Timetable"));
 const NotificationsPage = lazy(() => import("./pages/admin/NotificationsPage"));
@@ -36,6 +39,7 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Programs = lazy(() => import("./pages/academics/Programs"));
 const Vision = lazy(() => import("./pages/about/Vision"));
 const Leadership = lazy(() => import("./pages/about/Leadership"));
+const ExamManagement = lazy(() => import("./pages/admin/ExamManagement"));
 
 
 // Lazy load UI overlays to reduce initial bundle size
@@ -99,7 +103,7 @@ const App = () => {
                 <Route
                   path="staff"
                   element={
-                    user ? <Navigate to="/dashboard" replace /> : <Login userType="staff" onLogin={handleLogin} />
+                    user ? <Navigate to="/dashboard" replace /> : <Login userType="faculty" onLogin={handleLogin} />
                   }
                 />
                 <Route
@@ -127,12 +131,16 @@ const App = () => {
                   )
                 }
               >
-                <Route index element={<Dashboard userRole={user?.role || ""} />} />
-                <Route path="timetable" element={<TimetableGenerator />} />
-                <Route path="faculty" element={<FacultyManagement />} />
+                <Route index element={<Dashboard userRole={user?.role || ''} />} />
+                <Route path="admin" element={<Dashboard userRole="admin" />} />
+                <Route path="faculty" element={<Dashboard userRole="faculty" />} />
+                <Route path="student" element={<Dashboard userRole="student" />} />
+                <Route path="timetable" element={user?.role === 'admin' ? <TimetableGenerator /> : <Timetable userRole={user?.role || 'student'} />} />
+                <Route path="faculty-directory" element={<FacultyManagement userRole={user?.role || 'student'} />} />
                 <Route path="manage-courses" element={<CourseManagement />} />
                 <Route path="manage-rooms" element={<RoomManagement />} />
                 <Route path="accreditation" element={<ComplianceDashboard />} />
+                <Route path="exams" element={<ExamManagement />} />
                 <Route path="training" element={<LearningPortal />} />
                 <Route path="notifications" element={<NotificationsPage />} />
                 <Route path="settings" element={<Settings />} />

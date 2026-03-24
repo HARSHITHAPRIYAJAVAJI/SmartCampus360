@@ -20,8 +20,8 @@ api.interceptors.request.use((config) => {
 });
 
 export const timetableService = {
-    generate: (semester: number, department: string) =>
-        api.post('/timetable/generate', { semester, department }),
+    generate: (year: number, semester: number, department: string) =>
+        api.post('/timetable/generate', { year, semester, department }),
     reallocate: () =>
         api.post('/timetable/reallocate'),
 };

@@ -11,6 +11,7 @@ from pydantic import BaseModel
 router = APIRouter()
 
 class TimetableGenerateRequest(BaseModel):
+    year: int
     semester: int
     department: str
 
@@ -24,32 +25,68 @@ def generate_timetable(
     Generate optimal timetable using AI (Constraint Satisfaction Problem).
     """
     # 1. Fetch Resources
+    # In a real app, we would filter by department and sem/year in DB:
+    # courses = db.query(models.Course).filter(
+    #     models.Course.department == request.department,
+    #     models.Course.year == request.year,
+    #     models.Course.semester == request.semester
+    # ).all()
     courses = crud.course.get_multi(db) 
     rooms = crud.room.get_multi(db)
     
     # --- MOCK DATA FALLBACK (For Demo/Testing without DB population) ---
     if not courses:
         class MockCourse:
-            def __init__(self, code, name, credits=3): 
+            def __init__(self, code, name, year, sem, credits=3): 
                 self.code = code
                 self.name = name
-                self.credits = credits # 3 sessions per week
-        # Full set of courses matching AIML Year 1 Semester 1
-        courses = [
-            MockCourse("ED&CAD", "Engineering Drawing", 5),
-            MockCourse("AEP", "Advanced English Practice", 3),
-            MockCourse("AEP Lab", "Advanced English Lab", 2),
-            MockCourse("M&C", "Maths & Calculus", 5),
-            MockCourse("PPS", "Programming for Problem Solving", 4),
-            MockCourse("PPS Lab", "PPS Lab", 3),
-            MockCourse("EDC", "Electron Devices & Circuits", 4),
-            MockCourse("EWS", "Engineering Workshop", 2),
-            MockCourse("ITWS", "IT Workshop", 2),
-            MockCourse("RL", "Reinforcement Learning", 4),
-            MockCourse("QC", "Quantum Computing", 3),
-            MockCourse("FDS", "Fundamentals of Data Science", 3),
-            MockCourse("ITE", "IT Essentials", 3),
+                self.year = year
+                self.sem = sem
+                self.credits = credits
+
+        all_mock_courses = [
+            # Year 1, Semester 1
+            MockCourse("ED&CAD", "Engineering Drawing", 1, 1, 5),
+            MockCourse("AEP", "Advanced English Practice", 1, 1, 3),
+            MockCourse("M&C", "Maths & Calculus", 1, 1, 5),
+            MockCourse("PPS", "Programming for Problem Solving", 1, 1, 4),
+            
+            # Year 1, Semester 2
+            MockCourse("DS", "Data Structures", 1, 2, 4),
+            MockCourse("PP", "Python Programming", 1, 2, 3),
+
+            # Year 2, Semester 1
+            MockCourse("CAO", "Computer Organization", 2, 1, 3),
+            MockCourse("MFCS", "Math Foundations", 2, 1, 4),
+            MockCourse("CN", "Computer Networks", 2, 1, 3),
+            
+            # Year 2, Semester 2
+            MockCourse("JAVA", "Java Programming", 2, 2, 4),
+            MockCourse("DBMS", "Database Systems", 2, 2, 4),
+            MockCourse("DAA", "Algorithms", 2, 2, 3),
+
+            # Year 3, Semester 1
+            MockCourse("ML", "Machine Learning", 3, 1, 4),
+            MockCourse("AI", "Artificial Intelligence", 3, 1, 3),
+            MockCourse("OS", "Operating Systems", 3, 1, 3),
+            
+            # Year 3, Semester 2
+            MockCourse("DL", "Deep Learning", 3, 2, 4),
+            MockCourse("NLP", "Natural Language Processing", 3, 2, 3),
+
+            # Year 4, Semester 1
+            MockCourse("BDA", "Big Data Analytics", 4, 1, 4),
+            MockCourse("IS", "Information Security", 4, 1, 3),
+
+            # Year 4, Semester 2
+            MockCourse("RL", "Reinforcement Learning", 4, 2, 4),
+            MockCourse("QC", "Quantum Computing", 4, 2, 3),
+            MockCourse("FDS", "Fundamentals of Data Science", 4, 2, 3),
+            MockCourse("ITE", "IT Essentials", 4, 2, 3),
         ]
+        
+        # Filter based on request
+        courses = [c for c in all_mock_courses if c.year == request.year and c.sem == request.semester]
         
     if not rooms:
         class MockRoom:

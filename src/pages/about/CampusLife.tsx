@@ -3,6 +3,7 @@ import Layout from "@/components/common/Layout";
 import { motion } from "framer-motion";
 import { Music, Trophy, Users, Heart, Camera, Coffee, Utensils, Zap, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
