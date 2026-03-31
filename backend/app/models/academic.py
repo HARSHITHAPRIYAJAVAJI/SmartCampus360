@@ -67,6 +67,9 @@ class TimetableSlot(Base):
     time_slot_id = Column(Integer, ForeignKey("time_slots.id"), nullable=False)
     
     # Additional metadata
+    section = Column(String, nullable=False, default="A")
+    semester = Column(Integer, nullable=False)
+    is_published = Column(Boolean, default=False)
     is_active = Column(Boolean, default=True)
     start_date = Column(Date)
     end_date = Column(Date)

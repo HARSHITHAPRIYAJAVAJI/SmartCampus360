@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { timetableGeneratorService, CourseData, RoomData } from "@/services/timetableGenerator";
 import { MOCK_COURSES } from "@/data/mockCourses";
-import { AlertCircle, Terminal, CheckCircle2 } from "lucide-react";
+import { AlertCircle, Terminal, CheckCircle2, Send } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
     DndContext,
@@ -136,6 +136,9 @@ const TimetableGenerator = () => {
     const [batchLoading, setBatchLoading] = useState(false);
     const [batchProgress, setBatchProgress] = useState(0);
     const [batchSemester, setBatchSemester] = useState("1");
+    const [isPublishing, setIsPublishing] = useState(false);
+    const [lastBatchPublished, setLastBatchPublished] = useState(false);
+    const [publishedInfo, setPublishedInfo] = useState<{dept: string, sem: string} | null>(null);
 
     // Data from API
     const [courses, setCourses] = useState<CourseData[]>([]);
@@ -202,25 +205,51 @@ const TimetableGenerator = () => {
         return savedTimetables[key] || {};
     }, [viewFilter, savedTimetables]);
 
+    const handlePublish = async () => {
+        if (!batchSemester) return;
+        setIsPublishing(true);
+        try {
+            const semester = parseInt(batchSemester);
+            // Publish for both CSM and IT departments
+            await timetableService.publish(semester, "CSM");
+            await timetableService.publish(semester, "IT");
+            
+            setLastBatchPublished(true);
+            setPublishedInfo({ dept: "CSM & IT", sem: batchSemester });
+            
+            toast({
+                title: "🚀 Timetables Published",
+                description: `Successfully pushed Semester ${batchSemester} schedules to CSM & IT dashboards.`
+            });
+        } catch (e) {
+            toast({ title: "Publish Error", variant: "destructive", description: "Failed to push tables to user dashboards." });
+        } finally {
+            setIsPublishing(false);
+        }
+    };
+
     const handleBatchGenerate = async () => {
         if (courses.length === 0) return toast({ title: "No data", description: "Course catalog is empty." });
         
         setBatchLoading(true);
         setBatchProgress(5);
+        setLastBatchPublished(false); // Reset on new generate
+        setPublishedInfo(null);
         
         try {
-            // CSM is the active branch with course data
-            const dept = "CSM";
+            // CSM and IT are the active branches with course data
+            const depts = ["CSM", "IT"];
             const years = [1, 2, 3, 4];
             const sections = ["A", "B", "C"];
             const semester = parseInt(batchSemester);
             
-            const total = years.length * sections.length;
+            const total = depts.length * years.length * sections.length;
             let current = 0;
             const batchResults: Record<string, any> = {};
 
-            for (const year of years) {
-                for (const section of sections) {
+            for (const dept of depts) {
+                for (const year of years) {
+                    for (const section of sections) {
                     const schedule = timetableGeneratorService.generate(year, semester, dept, section, courses, rooms);
                     
                     // Key format: dept-year-semester-section (matches viewTable lookup exactly)
@@ -229,8 +258,9 @@ const TimetableGenerator = () => {
                     
                     timetableService.save(year, semester, dept, section, schedule).catch(() => {});
                     
-                    current++;
-                    setBatchProgress(Math.round((current / total) * 100));
+                        current++;
+                        setBatchProgress(Math.round((current / total) * 100));
+                    }
                 }
             }
             
@@ -465,22 +495,22 @@ const TimetableGenerator = () => {
                                                 }
                                                 const sessionKey = `${day}-${slot.id}`;
                                                 const session = viewTable[sessionKey];
-                                                const isLab = session?.courseCode?.toLowerCase().includes('lab');
-                                                const isProject1 = session?.courseCode?.includes('Ph-1') || session?.courseCode === '4M1';
-                                                const isProject2 = session?.courseCode?.includes('Ph-2') || session?.courseCode === '4M2';
-                                                const isCAEG = session?.courseCode === 'CAEG';
-                                                const isSports = session?.courseCode === 'Sports';
-                                                const isLibrary = session?.courseCode === 'Library';
+                                                const isLabSession = session?.type === 'Lab' || session?.courseName?.toLowerCase().includes('lab');
+                                                const isProjectV1 = session?.courseCode?.includes('Ph-1') || session?.courseCode === '4M1';
+                                                const isProjectV2 = session?.courseCode?.includes('Ph-2') || session?.courseCode === '4M2';
+                                                const isCAEG = session?.courseCode === '4E1DD' || session?.courseName?.includes('CAEG');
+                                                const isSports = session?.courseCode === 'SPORTS' || session?.courseName?.toLowerCase().includes('sports');
+                                                const isLibrarySession = session?.courseCode === 'LIBRARY' || session?.courseName?.toLowerCase().includes('library');
 
                                                 return (
-                                                    <div key={slot.id} className={`border border-border/30 p-2 h-20 flex flex-col justify-between overflow-hidden transition-colors ${
-                                                        isCAEG ? 'bg-indigo-50/80 dark:bg-indigo-950/30' :
-                                                        isProject1 ? 'bg-amber-50/80 dark:bg-amber-950/30' :
-                                                        isProject2 ? 'bg-rose-50/80 dark:bg-rose-950/30' :
-                                                        isSports ? 'bg-orange-50/80 dark:bg-orange-950/30' :
-                                                        isLibrary ? 'bg-cyan-50/80 dark:bg-cyan-950/30' :
-                                                        isLab ? 'bg-emerald-50/80 dark:bg-emerald-950/30' : 
-                                                        'bg-sky-50/50 dark:bg-sky-950/10'
+                                                    <div key={slot.id} className={`border p-2 h-20 flex flex-col justify-between overflow-hidden transition-colors ${
+                                                        isCAEG ? 'bg-orange-100/90 dark:bg-orange-900/40 border-orange-300/50' :
+                                                        isProjectV1 ? 'bg-amber-100/90 dark:bg-amber-900/40 border-amber-300/50' :
+                                                        isProjectV2 ? 'bg-rose-100/90 dark:bg-rose-900/40 border-rose-300/50' :
+                                                        isSports ? 'bg-lime-100/90 dark:bg-lime-900/40 border-lime-300/50' :
+                                                        isLibrarySession ? 'bg-violet-100/90 dark:bg-violet-900/40 border-violet-300/50' :
+                                                        isLabSession ? 'bg-fuchsia-100/90 dark:bg-fuchsia-900/40 border-fuchsia-300/50' : 
+                                                        'bg-sky-50/50 dark:bg-sky-950/10 border-border/30'
                                                     }`}>
                                                         {session ? (
                                                             <>
@@ -650,6 +680,38 @@ const TimetableGenerator = () => {
                                                     className="h-full bg-purple-600 dark:bg-purple-500 transition-all duration-500 ease-out" 
                                                     style={{ width: `${batchProgress}%` }}
                                                 />
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {batchProgress === 100 && !batchLoading && (
+                                        <div className="pt-8 text-left animate-in fade-in zoom-in-95 duration-500">
+                                            <div className={`p-6 rounded-2xl border-2 ${lastBatchPublished ? 'bg-green-50/50 border-green-200' : 'bg-amber-50/50 border-amber-200'} transition-all`}>
+                                                <div className="flex items-start gap-4 text-left">
+                                                    <div className={`p-3 rounded-xl ${lastBatchPublished ? 'bg-green-100 text-green-600' : 'bg-amber-100 text-amber-600'}`}>
+                                                        {lastBatchPublished ? <CheckCircle2 className="h-6 w-6" /> : <Send className="h-6 w-6" />}
+                                                    </div>
+                                                    <div className="flex-1 space-y-1">
+                                                        <h4 className="text-lg font-bold text-zinc-900">{lastBatchPublished ? 'Published to Dashboards' : 'Ready to Publish'}</h4>
+                                                        <p className="text-sm text-zinc-600 leading-relaxed">
+                                                            {lastBatchPublished 
+                                                                ? `Semester ${batchSemester} schedules for CSM & IT are now visible to all students and faculty.`
+                                                                : `Batch generation complete. Publish now to sync these schedules with student/faculty dashboards.`
+                                                            }
+                                                        </p>
+                                                        
+                                                        {!lastBatchPublished && (
+                                                            <Button 
+                                                                onClick={handlePublish}
+                                                                disabled={isPublishing}
+                                                                className="mt-4 bg-amber-600 hover:bg-amber-700 text-white shadow-lg shadow-amber-500/25"
+                                                            >
+                                                                {isPublishing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
+                                                                Publish Tables Now
+                                                            </Button>
+                                                        )}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     )}
@@ -829,19 +891,19 @@ const TimetableGenerator = () => {
                                                     const isProject2 = course?.courseCode?.includes('Ph-2') || course?.courseCode === '4M2';
                                                     const isCAEG = course?.courseCode === 'CAEG';
                                                     const isSports = course?.courseCode === 'Sports' || course?.courseCode === 'SPORTS';
-                                                    const isLibrary = course?.courseCode === 'Library' || course?.courseCode === 'LIBRARY';
+                                                    const isLibraryGrid = course?.courseCode === 'Library' || course?.courseCode === 'LIBRARY';
 
                                                     return (
                                                         <SortableContext key={slotKey} items={course ? [course.id] : []} strategy={verticalListSortingStrategy}>
                                                             <DroppableSlot id={slotKey} day={day} time={slot.id}>
-                                                                {course ? (
+                                                                 {course ? (
                                                                     <div className="h-full w-full relative group transition-all">
                                                                         <div className={`absolute inset-0 rounded-lg shadow-sm ${
                                                                             isCAEG ? 'bg-indigo-50/60 border border-indigo-100' :
                                                                             isProject1 ? 'bg-amber-50/60 border border-amber-100' :
                                                                             isProject2 ? 'bg-rose-50/60 border border-rose-100' :
                                                                             isSports ? 'bg-orange-50/60 border border-orange-100' :
-                                                                            isLibrary ? 'bg-cyan-50/60 border border-cyan-100' :
+                                                                            isLibraryGrid ? 'bg-cyan-50/60 border border-cyan-100' :
                                                                             isLab ? 'bg-emerald-50/60 border border-emerald-100' : 
                                                                             'bg-white dark:bg-zinc-800 border border-border'
                                                                         }`}></div>

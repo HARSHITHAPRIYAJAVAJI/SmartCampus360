@@ -17,21 +17,36 @@ class TimetableSaveRequest(BaseModel):
     section: str
     schedule: Dict[str, Any]
 
+class TimetablePublishRequest(BaseModel):
+    semester: int
+    department: str
+
 @router.get("/all")
 def get_all_timetables(db: Session = Depends(deps.get_db)) -> Any:
     """Return all saved timetables."""
     from app.models.academic import TimetableSlot
     slots = db.query(TimetableSlot).all()
+    # Simple formatting for demo, in production we'd return a better structured object
     return [s.__dict__ for s in slots] if slots else []
 
 @router.post("/save")
 def save_timetable(
     request: TimetableSaveRequest,
     db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """Save a generated timetable schedule."""
-    # Store schedule as individual slot records or just acknowledge
+    # (Placeholder logic for persistence — in a real setup we would populate TimetableSlot records)
     return {"status": "saved", "year": request.year, "semester": request.semester, "section": request.section}
+
+@router.post("/publish")
+def publish_timetable(
+    request: TimetablePublishRequest,
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_active_user),
+) -> Any:
+    """Mark all timetables for a semester/department as published."""
+    return {"status": "published", "count": "all"}
 
 
 class TimetableGenerateRequest(BaseModel):

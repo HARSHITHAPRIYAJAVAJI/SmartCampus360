@@ -91,7 +91,7 @@ export class TimetableEngine {
         const labs = currentCourses.filter(c => 
             c.type === 'Lab' || 
             c.name.toLowerCase().includes('lab') || 
-            (c.credits === 1 || c.credits === 2 && !c.name.includes("Economic"))
+            c.name.includes("Computer Aided") || c.name.includes("CAEG")
         );
         let theories = currentCourses.filter(c => !labs.includes(c));
 
@@ -108,20 +108,21 @@ export class TimetableEngine {
         this.applyProjectBlocks(year, semester, section, grid);
 
         // 4. PRIORITY 1: LABS (3 Continuous Slots)
-        this.assignLabs(labs, labRooms, section, grid);
+        this.assignLabs(labs, labRooms, section, year, grid);
 
-        // 5. PRIORITY 2: THEORIES (Spread and Backtrack)
-        this.assignTheories(theories, lectureRooms, section, grid);
-
-        // 6. POLICY: Non-Final Years
+        // 5. POLICY: Non-Final Years (Sports, Library) - Assigned before Theories so they grab the 3:20 slots
         if (year !== 4) {
             this.assignPolicyFields(grid, section);
         }
 
+        // 6. PRIORITY 2: THEORIES (Spread and Backtrack)
+        // Aggressively fills every remaining slot in the grid using the replenish pool
+        this.assignTheories(theories, lectureRooms, section, year, grid);
+
         return grid;
     }
 
-    private assignLabs(labs: CourseData[], rooms: RoomData[], section: string, grid: TimetableGrid) {
+    private assignLabs(labs: CourseData[], rooms: RoomData[], section: string, year: number, grid: TimetableGrid) {
         const sectionOffset = section.charCodeAt(0) - 'A'.charCodeAt(0);
         let labDays = [...this.days.slice(0, 5)]; // Avoid Sat for routine labs
         for(let i=0; i<sectionOffset; i++) {
@@ -129,99 +130,139 @@ export class TimetableEngine {
             if(first) labDays.push(first);
         }
 
-        const sessionQueue: CourseData[] = [];
-        labs.forEach(lab => {
-            const sessions = (lab.credits >= 2 && labs.length < 4) ? 2 : 1;
-            for(let i=0; i<sessions; i++) sessionQueue.push(lab);
-        });
+        // Users requested CAEG and all actual Labs to strictly occur exactly once per week
+        // for 3 continuous hours, so we allocate exactly 1 block of 3 slots for each item in the queue.
+        const sessionQueue: CourseData[] = [...labs];
 
-        const blocks = [true, false]; // Morning/Afternoon
         let placed = 0;
+        
+        const blockPrefix = year === 1 ? 'T' : 'N';
+        const floorLvl = year * 100;
+        const matchingRooms = rooms.filter(r => r.name.startsWith(blockPrefix));
 
-        blocks.forEach(isMorning => {
-            labDays.forEach(day => {
-                if (placed >= sessionQueue.length) return;
+        let combinations: {day: string, isMorning: boolean}[] = [];
+        labDays.forEach(d => {
+            combinations.push({day: d, isMorning: true});
+            combinations.push({day: d, isMorning: false});
+        });
+        
+        // Randomize so labs aren't all forced into Monday-Tuesday mornings
+        combinations.sort(() => Math.random() - 0.5);
+
+        combinations.forEach(({day, isMorning}) => {
+            if (placed >= sessionQueue.length) return;
 
                 const blockSlots = isMorning ? this.slots.slice(0, 3) : this.slots.slice(3, 6);
                 const course = sessionQueue[placed];
                 const faculty = course.instructor?.full_name || "Faculty Staff";
                 
                 // Find available room
-                const room = rooms.find(r => 
+                const fallbackName = `${blockPrefix}-Lab-${1 + (placed % 3)}`;
+                let room = matchingRooms.find(r => 
                     blockSlots.every(s => !this.roomSchedule[`${day}-${s}`].has(r.name))
-                ) || { name: `Lab-${1 + (placed % 3)}` };
+                );
+                const roomName = room ? room.name : fallbackName;
 
-                if (this.isBlockFree(day, blockSlots, faculty, room.name, grid)) {
+                if (this.isBlockFree(day, blockSlots, faculty, roomName, grid)) {
                     blockSlots.forEach(slot => {
-                        this.reserve(day, slot, faculty, room.name);
+                        this.reserve(day, slot, faculty, roomName);
+                        const isActuallyALab = course.type === 'Lab' || course.name.toLowerCase().includes('lab');
+                        const baseName = this.abbreviate(course.name.replace(" Lab", ""));
                         grid[`${day}-${slot}`] = {
                             id: `lab-${day}-${slot}-${course.id}`,
                             courseCode: course.code,
-                            courseName: this.abbreviate(course.name.replace(" Lab", "")) + " Lab",
+                            courseName: baseName + (isActuallyALab ? " Lab" : ""),
                             faculty,
-                            room: room.name,
+                            room: roomName,
                             type: 'Lab'
                         };
                     });
                     placed++;
                 }
-            });
         });
     }
 
-    private assignTheories(theories: CourseData[], rooms: RoomData[], section: string, grid: TimetableGrid) {
+    private assignTheories(theories: CourseData[], rooms: RoomData[], section: string, year: number, grid: TimetableGrid) {
         let pool: CourseData[] = [];
         const replenish = () => {
             theories.forEach(t => {
-                const instances = t.credits || 3;
+                const instances = (t.credits && t.credits > 0) ? t.credits : 3;
                 for(let i=0; i<instances; i++) pool.push(t);
             });
             pool.sort(() => Math.random() - 0.5);
         };
 
-        replenish();
+        if (theories.length > 0) replenish();
 
-        this.days.forEach(day => {
+        const blockPrefix = year === 1 ? 'T' : 'N';
+        const floorLvl = year * 100;
+        const matchingRooms = rooms.filter(r => r.name.startsWith(blockPrefix));
+
+        const sectionRoomIdx = section.charCodeAt(0) - 'A'.charCodeAt(0);
+        let defaultRoomStr = `${blockPrefix}-${floorLvl + 1 + sectionRoomIdx}`;
+        if (matchingRooms.length > 0) {
+            defaultRoomStr = matchingRooms[sectionRoomIdx % matchingRooms.length].name;
+        }
+
+        // Loop until NO more empty slots exist or we are totally stuck
+        let stillPlacing = true;
+        while (stillPlacing) {
+            stillPlacing = false;
+            
             this.slots.forEach(slot => {
-                const key = `${day}-${slot}`;
-                if (grid[key] !== null) return;
-                if (pool.length === 0) replenish();
+                this.days.forEach(day => {
+                    const key = `${day}-${slot}`;
+                    if (grid[key] !== null) return;
+                    
+                    if (pool.length === 0) {
+                        if (theories.length === 0) return;
+                        replenish();
+                    }
 
-                const usedToday = this.slots.map(s => grid[`${day}-${s}`]?.courseCode).filter(Boolean);
-                const sectionRoomIdx = section.charCodeAt(0) - 'A'.charCodeAt(0);
-                const defaultRoom = rooms[sectionRoomIdx % rooms.length]?.name || `Room ${101 + sectionRoomIdx}`;
+                    const usedToday = this.slots.map(s => grid[`${day}-${s}`]?.courseCode).filter(Boolean);
 
-                let bestIdx = pool.findIndex(c => {
-                    const faculty = c.instructor?.full_name || "Staff";
-                    return !usedToday.includes(c.code) && 
-                           !this.facultySchedule[key].has(faculty) && 
-                           !this.roomSchedule[key].has(defaultRoom);
-                });
-
-                if (bestIdx === -1) {
-                    bestIdx = pool.findIndex(c => {
+                    // Try 1: Ideal distribution (No same subject twice a day)
+                    let bestIdx = pool.findIndex(c => {
                         const faculty = c.instructor?.full_name || "Staff";
-                        return !this.facultySchedule[key].has(faculty) && 
-                               !this.roomSchedule[key].has(defaultRoom);
+                        return !usedToday.includes(c.code) && 
+                               !this.facultySchedule[key].has(faculty) && 
+                               !this.roomSchedule[key].has(defaultRoomStr);
                     });
-                }
 
-                if (bestIdx !== -1) {
-                    const course = pool[bestIdx];
-                    const faculty = course.instructor?.full_name || "Staff";
-                    this.reserve(day, slot, faculty, defaultRoom);
-                    grid[key] = {
-                        id: `th-${key}-${course.id}`,
-                        courseCode: course.code,
-                        courseName: this.abbreviate(course.name),
-                        faculty,
-                        room: defaultRoom,
-                        type: 'Theory'
-                    };
-                    pool.splice(bestIdx, 1);
-                }
+                    // Try 2: Fill-in (Allow same subject twice a day if needed to fill gaps)
+                    if (bestIdx === -1) {
+                        bestIdx = pool.findIndex(c => {
+                            const faculty = c.instructor?.full_name || "Staff";
+                            return !this.facultySchedule[key].has(faculty) && 
+                                   !this.roomSchedule[key].has(defaultRoomStr);
+                        });
+                    }
+
+                    if (bestIdx !== -1) {
+                        const course = pool[bestIdx];
+                        const faculty = course.instructor?.full_name || "Staff";
+                        this.reserve(day, slot, faculty, defaultRoomStr);
+                        grid[key] = {
+                            id: `th-${key}-${course.id}-${Math.random().toString(36).substr(2, 5)}`,
+                            courseCode: course.code,
+                            courseName: this.abbreviate(course.name),
+                            faculty,
+                            room: defaultRoomStr,
+                            type: 'Theory'
+                        };
+                        pool.splice(bestIdx, 1);
+                        stillPlacing = true;
+                    }
+                });
             });
-        });
+
+            // If we still have nulls and pool is empty, force replenish and loop again
+            const hasNulls = Object.values(grid).some(v => v === null);
+            if (hasNulls && pool.length === 0 && theories.length > 0) {
+                replenish();
+                stillPlacing = true;
+            }
+        }
     }
 
     private isBlockFree(day: string, slots: string[], faculty: string, room: string, grid: TimetableGrid): boolean {
@@ -257,8 +298,24 @@ export class TimetableEngine {
     }
 
     private assignPolicyFields(grid: TimetableGrid, section: string) {
-        this.forceAssign(grid, "Friday-03:20", "SPORTS", "Sports", "PET", "Ground", section);
-        this.forceAssign(grid, "Saturday-03:20", "LIBRARY", "Library", "Librarian", "Central Lib", section);
+        // Collect all days where 03:20 slot is currently empty (not taken by 3-hour Labs)
+        const emptyAfternoons = this.days.filter(day => grid[`${day}-03:20`] === null);
+        
+        let availableDays = [...emptyAfternoons];
+        
+        // Shift array based on section so A, B, C don't all go to sports on the exact same day
+        const sectionOffset = section.charCodeAt(0) - 'A'.charCodeAt(0);
+        for (let i = 0; i < sectionOffset; i++) {
+            const first = availableDays.shift();
+            if (first) availableDays.push(first);
+        }
+
+        if (availableDays.length >= 1) {
+            this.forceAssign(grid, `${availableDays[0]}-03:20`, "SPORTS", "Sports", "PET", "Ground", section);
+        }
+        if (availableDays.length >= 2) {
+            this.forceAssign(grid, `${availableDays[1]}-03:20`, "LIBRARY", "Library", "Librarian", "Central Lib", section);
+        }
     }
 
     private forceAssign(grid: TimetableGrid, key: string, code: string, name: string, faculty: string, room: string, section: string) {
@@ -276,7 +333,9 @@ export class TimetableEngine {
             "Python Programming": "Python",
             "Advanced English Communication Skills": "AECS",
             "Database Management Systems": "DBMS",
-            "Design and Analysis of Algorithms": "DAA"
+            "Design and Analysis of Algorithms": "DAA",
+            "IT Workshop and Elements of Computer Engineering": "ITWS",
+            "English for Skill Enhancement": "English"
         };
         if (overrides[name]) return overrides[name];
         const exclude = ["and", "of", "for", "the", "in", "&"];

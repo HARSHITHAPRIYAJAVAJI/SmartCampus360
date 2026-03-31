@@ -26,6 +26,8 @@ export const timetableService = {
         api.post('/timetable/generate', { year, semester, department }),
     save: (year: number, semester: number, department: string, section: string, schedule: any) =>
         api.post('/timetable/save', { year, semester, department, section, schedule }),
+    publish: (semester: number, department: string) =>
+        api.post('/timetable/publish', { semester, department }),
     reallocate: () =>
         api.post('/timetable/reallocate'),
 };
