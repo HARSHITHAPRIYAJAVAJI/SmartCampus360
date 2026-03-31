@@ -29,3 +29,24 @@ class Room(RoomBase):
     id: int
     class Config:
         from_attributes = True
+
+from datetime import date
+
+class AttendanceBase(BaseModel):
+    student_id: int
+    course_code: str
+    attendance_date: date
+    status: str
+
+class AttendanceCreate(AttendanceBase):
+    period: Optional[int] = 1
+
+class Attendance(AttendanceBase):
+    id: int
+    period: int
+    marked_by_id: Optional[int] = None
+    class Config:
+        from_attributes = True
+
+
+

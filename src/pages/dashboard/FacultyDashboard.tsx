@@ -35,45 +35,61 @@ export default function FacultyDashboard() {
         const facultyName = user.name;
         const facultyId = user.id;
 
-        // 1. Get Base Schedule from master
-        Object.entries(AIML_TIMETABLES).forEach(([key, table]) => {
-            // key will be like "1-1", "1-1-B", "2-1-C" etc.
+        // 1. Get Base Schedule from static and published stores
+        const publishedStoreStr = localStorage.getItem('published_timetables');
+        const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
+        const allTimetables = { ...AIML_TIMETABLES, ...publishedTimetables };
+
+        Object.entries(allTimetables).forEach(([key, table]: [string, any]) => {
             const parts = key.split('-');
-            const semKey = `${parts[0]}-${parts[1]}`;
-            const section = parts[2] || 'A';
+            
+            // Format can be year-sem-sec (static) or dept-year-sem-sec (published)
+            let dept = "AIML";
+            let year, sem, section;
+
+            if (parts.length === 4) {
+                [dept, year, sem, section] = parts;
+            } else {
+                [year, sem, section] = parts;
+                section = section || 'A';
+            }
+
+            const semKey = `${year}-${sem}`;
             const load = FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || [];
             
-            Object.entries(table).forEach(([dayTime, session]) => {
+            Object.entries(table).forEach(([dayTime, session]: [string, any]) => {
                 if (!session) return;
                 const [day, time] = dayTime.split('-');
                 if (day !== today) return;
                 
-                const assigned = load.find(l => l.code === session.courseCode && l.faculty === facultyName);
-                if (assigned) {
-                    const hour = parseInt(time.split(':')[0]);
+                // Check assignment
+                const isAssigned = session.faculty === facultyName || load.find(l => l.code === (session.courseCode || session.name) && l.faculty === facultyName);
+                
+                if (isAssigned) {
+                    const hourStr = time.split(':')[0];
+                    const hour = parseInt(hourStr);
                     const period = (hour >= 9 && hour < 12) ? "AM" : "PM";
                     
                     schedule.push({
-                        id: `${key}-${dayTime}-${session.courseCode}`,
+                        id: `${key}-${dayTime}-${session.courseCode || session.name}`,
                         time: `${time} ${period}`,
                         rawTime: time,
-                        title: `${session.courseCode} (Sec ${section})`,
-                        room: assigned.room,
-                        type: session.courseCode.toLowerCase().includes('lab') ? 'lab' : 'lecture',
-                        originalFaculty: facultyName
+                        title: `${session.courseCode || session.name} (Sec ${section})`,
+                        room: session.room || "TBD",
+                        type: (session.courseCode || session.name || '').toLowerCase().includes('lab') ? 'lab' : 'lecture',
+                        isLive: !!publishedTimetables[key]
                     });
                 }
             });
         });
 
-        // 2. Apply Overrides from localStorage (Swaps/Replacements)
+        // 2. Apply Overrides (Swaps/Replacements)
         const savedRequests = localStorage.getItem('FACULTY_REQUESTS');
         if (savedRequests) {
             const requests = JSON.parse(savedRequests);
             const approvedForToday = requests.filter((r: any) => r.status === 'approved' && r.date === todayISO);
 
             approvedForToday.forEach((req: any) => {
-                // If I am the SENDER, I am GIVING AWAY this class
                 if (req.senderId === facultyId) {
                     const idx = schedule.findIndex(s => s.rawTime === req.period);
                     if (idx !== -1) {
@@ -82,7 +98,6 @@ export default function FacultyDashboard() {
                     }
                 }
                 
-                // If I am the TARGET, I am TAKING OVER this class
                 if (req.targetId === facultyId) {
                     const hour = parseInt(req.period.split(':')[0]);
                     const period = (hour >= 9 && hour < 12) ? "AM" : "PM";
@@ -98,15 +113,6 @@ export default function FacultyDashboard() {
                     });
                 }
             });
-        }
-        
-        if (schedule.length === 0) {
-            return [
-                { time: "09:40 AM", title: "Advanced Algorithms", room: "Room 301", type: "lecture" },
-                { time: "11:40 AM", title: "Database Systems", room: "Lab 2", type: "lab" },
-                { time: "01:20 PM", title: "Software Engineering", room: "Room 205", type: "lecture" },
-                { time: "03:20 PM", title: "Faculty Meeting", room: "Conference Room", type: "meeting" },
-            ];
         }
         
         return schedule.sort((a, b) => a.time.localeCompare(b.time));
@@ -237,7 +243,7 @@ export default function FacultyDashboard() {
                             </div>
                         ))}
                     </div>
-                    <Button variant="outline" className="w-full mt-4">
+                    <Button variant="outline" className="w-full mt-4" onClick={() => navigate('/dashboard/timetable')}>
                         View Full Timetable
                     </Button>
                 </CardContent>

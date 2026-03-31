@@ -30,6 +30,8 @@ class Course(Base):
     instructor = relationship("Faculty", back_populates="courses")
     enrollments = relationship("Enrollment", back_populates="course")
     timetable_slots = relationship("TimetableSlot", back_populates="course")
+    attendance_records = relationship("Attendance", back_populates="course")
+
 
 class Room(Base):
     __tablename__ = "rooms"
@@ -92,3 +94,21 @@ class Enrollment(Base):
     # Relationships
     student = relationship("Student", back_populates="enrollments")
     course = relationship("Course", back_populates="enrollments")
+
+class Attendance(Base):
+    __tablename__ = "attendance"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    student_id = Column(Integer, ForeignKey("students.id"), nullable=False)
+    course_id = Column(Integer, ForeignKey("courses.id"), nullable=True) # Optional if we have code
+    course_code = Column(String, index=True) # Added for easier mock/code sync
+    attendance_date = Column(Date, nullable=False)
+
+    period = Column(Integer, nullable=False)
+    status = Column(String, nullable=False)  # "Present", "Absent", "Late"
+    marked_by_id = Column(Integer, ForeignKey("faculty.id"))
+    
+    # Relationships
+    student = relationship("Student", back_populates="attendance_records")
+    course = relationship("Course", back_populates="attendance_records")
+

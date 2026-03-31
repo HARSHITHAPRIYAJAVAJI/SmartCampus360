@@ -47,7 +47,16 @@ export default function StudentDashboard() {
         if (!studentData) return defaultSchedule;
 
         const currentSem = studentData.semester % 2 === 0 ? 2 : 1;
-        const table = getTimetable(studentData.year, currentSem, studentData.section || 'A');
+        
+        // 1. Get Base Schedule from static and published stores
+        const publishedStoreStr = localStorage.getItem('published_timetables');
+        const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
+        
+        // Look for exact match in published store: Branch-Year-Sem-Section
+        const publishedKey = `${studentData.branch}-${studentData.year}-${currentSem}-${studentData.section || 'A'}`;
+        const liveTable = publishedTimetables[publishedKey];
+        
+        const table = liveTable || getTimetable(studentData.year, currentSem, studentData.section || 'A');
 
         if (!table || Object.keys(table).length === 0) return defaultSchedule;
 
@@ -72,10 +81,11 @@ export default function StudentDashboard() {
 
                 result.push({
                     time: `${time} ${period}`,
-                    title: session.courseCode,
+                    title: session.courseCode || session.name,
                     room: session.room,
-                    type: session.courseCode.toLowerCase().includes('lab') ? 'lab' : 'lecture',
-                    status: status
+                    type: (session.courseCode || session.name || '').toLowerCase().includes('lab') ? 'lab' : 'lecture',
+                    status: status,
+                    isLive: !!liveTable
                 });
             }
         });

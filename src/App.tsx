@@ -32,7 +32,7 @@ const LeaveManagement = lazy(() => import("./pages/faculty/LeaveManagement"));
 const StudentRecords = lazy(() => import("./pages/faculty/StudentRecords"));
 const MyCourses = lazy(() => import("./pages/student/MyCourses"));
 const Grades = lazy(() => import("./pages/student/Grades"));
-const Profile = lazy(() => import("./pages/student/Profile"));
+const Profile = lazy(() => import("./pages/Profile"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Library = lazy(() => import("./pages/academics/Library"));
 const Departments = lazy(() => import("./pages/academics/Departments"));
@@ -60,14 +60,24 @@ const PageLoader = () => (
 );
 
 const App = () => {
-  const [user, setUser] = useState<{ name: string; id: string; role: string } | null>(null);
+  const [user, setUser] = useState<{ name: string; id: string; role: string } | null>(() => {
+    try {
+      const savedUser = localStorage.getItem('smartcampus_user');
+      return savedUser ? JSON.parse(savedUser) : null;
+    } catch (e) {
+      console.error("Failed to parse saved user:", e);
+      return null;
+    }
+  });
 
   const handleLogin = (userData: { id: string; role: string; name: string }) => {
     setUser(userData);
+    localStorage.setItem('smartcampus_user', JSON.stringify(userData));
   };
 
   const handleLogout = () => {
     setUser(null);
+    localStorage.removeItem('smartcampus_user');
   };
 
   return (

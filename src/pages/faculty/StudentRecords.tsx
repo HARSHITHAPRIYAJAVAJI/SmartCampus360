@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
@@ -11,10 +11,30 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { MOCK_STUDENTS, Student } from "@/data/mockStudents";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Check, X, ClipboardCheck, GraduationCap, ArrowLeft, MoreVertical } from "lucide-react";
+import { Check, X, ClipboardCheck, GraduationCap, ArrowLeft, MoreVertical, Book } from "lucide-react";
+import { attendanceService } from "@/services/attendanceService";
+import { MOCK_COURSES } from "@/data/mockCourses";
 
 const StudentRecords = () => {
     const { toast } = useToast();
+    // Calculate dynamic attendance based on (Attended / Total) formula
+    const getStudentAttendance = (student: Student) => {
+        // We use a base of 240 classes for the semester baseline to keep numbers realistic
+        const baselineTotal = 240; 
+        const baselineAttended = Math.round((student.attendance / 100) * baselineTotal);
+        
+        // Add current session's live data
+        const history = student.periodAttendance || {};
+        const sessionTotal = Object.keys(history).length;
+        const sessionAttended = Object.values(history).filter(v => v === true).length;
+        
+        const total = baselineTotal + sessionTotal;
+        const attended = baselineAttended + sessionAttended;
+        const percentage = Math.round((attended / total) * 100);
+        
+        return { attended, total, percentage };
+    };
+
     const [students, setStudents] = useState<Student[]>(() => {
         const saved = localStorage.getItem('smartcampus_student_directory');
         return saved ? JSON.parse(saved) : MOCK_STUDENTS;
@@ -28,17 +48,56 @@ const StudentRecords = () => {
     const [searchQuery, setSearchQuery] = useState("");
     
     // Navigation State
-    const [view, setView] = useState<'branches' | 'years' | 'sections' | 'students'>('branches');
+    const [view, setView] = useState<'branches' | 'years' | 'sections' | 'courses' | 'students'>('branches');
     const [activeMode, setActiveMode] = useState<'view' | 'attendance' | 'marks'>('view');
     const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
     const [selectedYear, setSelectedYear] = useState<number | null>(null);
     const [selectedSection, setSelectedSection] = useState<string | null>(null);
+    const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
 
     // Attendance/Marks Session State
     const [currentPeriod, setCurrentPeriod] = useState("1");
     const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
     const [sessionAttendance, setSessionAttendance] = useState<Record<string, boolean | undefined>>({});
+    const [isSyncing, setIsSyncing] = useState(false);
     const [sessionMarks, setSessionMarks] = useState<Record<string, { assignment1: number, mid1: number, assignment2: number, mid2: number }>>({});
+
+    // Fetch attendance records from backend when filter changes
+    useEffect(() => {
+        // Only fetch if required conditions are met
+        if (selectedCourse && currentDate && currentPeriod && activeMode === 'attendance') {
+            const fetchAttendance = async () => {
+                try {
+                    const data = await attendanceService.getAttendance({
+                        course_code: selectedCourse,
+                        attendance_date: currentDate
+                    });
+                    
+                    if (!data || !Array.isArray(data)) {
+                        console.warn("No attendance array returned from server:", data);
+                        setSessionAttendance({});
+                        return;
+                    }
+                    
+                    // Filter for specific period and map to session state
+                    const periodData = data.filter((r: any) => String(r.period) === String(currentPeriod));
+                    const mapped: Record<string, boolean> = {};
+                    periodData.forEach((r: any) => {
+                        // Map pure numeric backend student_id back to frontend "stud-X" format
+                        mapped[`stud-${r.student_id}`] = r.status === "Present";
+                    });
+                    setSessionAttendance(mapped);
+                } catch (error) {
+                    console.error("Failed to fetch attendance:", error);
+                }
+            };
+            fetchAttendance();
+        } else if (activeMode !== 'attendance') {
+            // Clear session attendance when not in attendance mode to avoid leakage
+            setSessionAttendance({});
+        }
+    }, [selectedCourse, currentDate, currentPeriod, activeMode]);
+
 
     // Dialogs State
     const [isAddOpen, setIsAddOpen] = useState(false);
@@ -85,6 +144,11 @@ const StudentRecords = () => {
 
     const handleSectionSelect = (section: string) => {
         setSelectedSection(section);
+        setView('courses');
+    };
+
+    const handleCourseSelect = (courseCode: string) => {
+        setSelectedCourse(courseCode);
         setView('students');
     };
 
@@ -92,11 +156,15 @@ const StudentRecords = () => {
         setSelectedBranch(null);
         setSelectedYear(null);
         setSelectedSection(null);
+        setSelectedCourse(null);
         setView('branches');
     };
 
     const goBack = () => {
         if (view === 'students') {
+            setSelectedCourse(null);
+            setView('courses');
+        } else if (view === 'courses') {
             setSelectedSection(null);
             setView('sections');
         } else if (view === 'sections') {
@@ -140,22 +208,82 @@ const StudentRecords = () => {
         toast({ title: "Record Updated", description: "Attendance and grade updated." });
     };
 
-    const handleSaveBatchAttendance = () => {
-        const slotKey = `${currentDate}-P${currentPeriod}`;
-        setStudents(prev => prev.map(s => {
-            if (filteredStudents.some(fs => fs.id === s.id)) {
-                return {
-                    ...s,
-                    periodAttendance: {
-                        ...(s.periodAttendance || {}),
-                        [slotKey]: sessionAttendance[s.id] === true
-                    }
-                };
-            }
-            return s;
-        }));
-        toast({ title: "Attendance Saved", description: `Attendance recorded for Period ${currentPeriod} on ${currentDate}.` });
-        setActiveMode('view');
+    const handleSaveBatchAttendance = async () => {
+        // Enforce Indian Time Policy: 9:40 AM to 5:00 PM
+        const now = new Date();
+        const hour = now.getHours();
+        const minute = now.getMinutes();
+        const currentTime = hour * 60 + minute;
+        const startTime = 9 * 60 + 40; // 9:40 AM
+        const endTime = 17 * 60; // 5:00 PM
+
+        if (currentTime < startTime || currentTime > endTime) {
+            toast({ 
+                title: "Access Restricted", 
+                description: "Attendance can only be marked between 9:40 AM and 5:00 PM (IST).", 
+                variant: "destructive" 
+            });
+            return;
+        }
+
+        if (!selectedCourse) {
+            toast({ title: "Error", description: "No course selected.", variant: "destructive" });
+            return;
+        }
+
+        setIsSyncing(true);
+        try {
+            const records = filteredStudents.map(s => ({
+                student_id: parseInt(s.id.replace('stud-', '')) || 0,
+                course_code: selectedCourse,
+                attendance_date: currentDate,
+                period: parseInt(currentPeriod),
+                status: (sessionAttendance[s.id] ? "Present" : "Absent") as "Present" | "Absent"
+            }));
+
+            await attendanceService.saveBulkAttendance(records);
+
+            // Optimistically update local directory
+            const slotKey = `${currentDate}-P${currentPeriod}-${selectedCourse}`;
+            setStudents(prev => prev.map(s => {
+                if (filteredStudents.some(fs => fs.id === s.id)) {
+                    return {
+                        ...s,
+                        periodAttendance: {
+                            ...(s.periodAttendance || {}),
+                            [slotKey]: sessionAttendance[s.id] === true
+                        }
+                    };
+                }
+                return s;
+            }));
+
+            toast({ title: "Attendance Saved", description: `Attendance recorded for ${selectedCourse} on ${currentDate}.` });
+            setActiveMode('view');
+        } catch (error) {
+            console.error("Attendance Backend Error:", error);
+            toast({ 
+                title: "Backend Sync Failed", 
+                description: "Attendance saved locally, but server was unreachable or rejected data format (422).", 
+                variant: "destructive" 
+            });
+            // Still update local state for better UX
+            const slotKey = `${currentDate}-P${currentPeriod}-${selectedCourse}`;
+            setStudents(prev => prev.map(s => {
+                if (filteredStudents.some(fs => fs.id === s.id)) {
+                    return {
+                        ...s,
+                        periodAttendance: {
+                            ...(s.periodAttendance || {}),
+                            [slotKey]: sessionAttendance[s.id] === true
+                        }
+                    };
+                }
+                return s;
+            }));
+        } finally {
+            setIsSyncing(false);
+        }
     };
 
     const handleSaveBatchMarks = () => {
@@ -326,7 +454,15 @@ const StudentRecords = () => {
                 {selectedSection && (
                     <>
                         <span>/</span>
-                        <span className="h-7 px-2 flex items-center text-foreground font-bold">Section {selectedSection}</span>
+                        <Button variant="ghost" size="sm" onClick={() => { setView('courses'); setSelectedCourse(null); }} className="h-7 px-2 hover:text-primary text-foreground font-medium">
+                            Section {selectedSection}
+                        </Button>
+                    </>
+                )}
+                {selectedCourse && (
+                    <>
+                        <span>/</span>
+                        <span className="h-7 px-2 flex items-center text-foreground font-bold italic">{selectedCourse}</span>
                     </>
                 )}
                 {view !== 'branches' && (
@@ -457,7 +593,32 @@ const StudentRecords = () => {
                         ))}
                     </div>
                 )}
-
+                {view === 'courses' && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in zoom-in-95 duration-300">
+                        {MOCK_COURSES
+                            .filter(c => c.department === selectedBranch && c.semester === (selectedYear! * 2 - 1))
+                            .map((course) => (
+                            <Card key={course.code} className="group hover:border-primary/50 cursor-pointer transition-all hover:shadow-lg overflow-hidden bg-white" onClick={() => handleCourseSelect(course.code)}>
+                                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                                    <Book className="w-20 h-20" />
+                                </div>
+                                <CardHeader className="pb-2">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <Badge variant="secondary" className="font-mono text-[10px]">{course.code}</Badge>
+                                        <Badge variant="outline" className="text-[10px]">{course.type || 'Theory'}</Badge>
+                                    </div>
+                                    <CardTitle className="text-lg group-hover:text-primary transition-colors line-clamp-1">{course.name}</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="flex justify-between items-center text-xs text-muted-foreground font-bold uppercase tracking-wider">
+                                        <span>{course.credits} Credits</span>
+                                        <span className="text-primary group-hover:underline">Select Subject →</span>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                )}
                 {view === 'students' && (
                     <Card className="border-none shadow-md animate-in fade-in slide-in-from-bottom-4 duration-500">
                         <CardHeader className="bg-muted/30 pb-4 border-b flex flex-row items-center justify-between">
@@ -511,9 +672,11 @@ const StudentRecords = () => {
                                     <Button variant="ghost" onClick={() => setActiveMode('view')}>Cancel</Button>
                                     <Button 
                                         onClick={activeMode === 'attendance' ? handleSaveBatchAttendance : handleSaveBatchMarks}
-                                        className="bg-green-600 hover:bg-green-700 text-white"
+                                        disabled={isSyncing}
+                                        className="bg-green-600 hover:bg-green-700 text-white min-w-[120px]"
                                     >
-                                        <Save className="h-4 w-4 mr-2" /> Save All
+                                        {isSyncing ? <Save className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+                                        {isSyncing ? "Saving..." : "Save All"}
                                     </Button>
                                 </div>
                             )}
@@ -585,14 +748,19 @@ const StudentRecords = () => {
                                                                 <span className="font-bold underline decoration-primary/30 underline-offset-4">{student.grade.toFixed(2)}</span>
                                                             </TableCell>
                                                             <TableCell>
-                                                                <div className="flex flex-col gap-1">
-                                                                    <span className={`text-xs font-bold ${student.attendance < 75 ? "text-red-500" : "text-green-600"}`}>
-                                                                        {student.attendance}%
-                                                                    </span>
-                                                                    <div className="w-20 h-1.5 bg-muted rounded-full overflow-hidden">
+                                                                <div className="flex flex-col gap-1.5">
+                                                                    <div className="flex items-center justify-between">
+                                                                         <span className={`text-xs font-black tracking-tight ${getStudentAttendance(student).percentage < 75 ? "text-red-600" : "text-green-700"}`}>
+                                                                             {getStudentAttendance(student).percentage}%
+                                                                         </span>
+                                                                         <span className="text-[9px] font-bold text-muted-foreground uppercase opacity-70">
+                                                                             ({getStudentAttendance(student).attended}/{getStudentAttendance(student).total})
+                                                                         </span>
+                                                                    </div>
+                                                                    <div className="w-24 h-2 bg-muted rounded-full overflow-hidden shadow-inner">
                                                                         <div 
-                                                                            className={`h-full ${student.attendance < 75 ? "bg-red-500" : "bg-green-500"}`} 
-                                                                            style={{ width: `${student.attendance}%` }}
+                                                                            className={`h-full transition-all duration-500 rounded-full ${getStudentAttendance(student).percentage < 75 ? "bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.4)]" : "bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]"}`} 
+                                                                            style={{ width: `${getStudentAttendance(student).percentage}%` }}
                                                                         />
                                                                     </div>
                                                                 </div>
@@ -634,6 +802,7 @@ const StudentRecords = () => {
                                                                     <Button 
                                                                         variant={sessionAttendance[student.id] === true ? "default" : "outline"}
                                                                         size="sm"
+                                                                        disabled={(new Date().getHours() * 60 + new Date().getMinutes()) < (9 * 60 + 40) || (new Date().getHours() * 60 + new Date().getMinutes()) > (17 * 60)}
                                                                         onClick={() => setSessionAttendance(prev => ({...prev, [student.id]: true}))}
                                                                         className={`h-8 w-10 p-0 ${sessionAttendance[student.id] === true ? 'bg-green-600 hover:bg-green-700' : ''}`}
                                                                     >
@@ -642,6 +811,7 @@ const StudentRecords = () => {
                                                                     <Button 
                                                                         variant={sessionAttendance[student.id] === false ? "destructive" : "outline"}
                                                                         size="sm"
+                                                                        disabled={(new Date().getHours() * 60 + new Date().getMinutes()) < (9 * 60 + 40) || (new Date().getHours() * 60 + new Date().getMinutes()) > (17 * 60)}
                                                                         onClick={() => setSessionAttendance(prev => ({...prev, [student.id]: false}))}
                                                                         className="h-8 w-10 p-0"
                                                                     >
@@ -710,23 +880,25 @@ const StudentRecords = () => {
                     </DialogHeader>
                     <div className="grid gap-6 py-4">
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
+                            <div className="space-y-2 opacity-70">
                                 <Label>Overall Attendance (%)</Label>
                                 <Input 
                                     type="number" 
-                                    min="0" max="100" 
+                                    disabled
+                                    className="bg-muted cursor-not-allowed font-bold"
                                     value={editAttendance} 
-                                    onChange={e => setEditAttendance(e.target.value)} 
                                 />
+                                <p className="text-[9px] text-muted-foreground font-medium uppercase tracking-tight">System Calculated</p>
                             </div>
-                            <div className="space-y-2">
+                            <div className="space-y-2 opacity-70">
                                 <Label>Cumulative CGPA</Label>
                                 <Input 
                                     type="number" 
-                                    step="0.01" min="0" max="10" 
+                                    disabled
+                                    className="bg-muted cursor-not-allowed font-bold"
                                     value={editGrade} 
-                                    onChange={e => setEditGrade(e.target.value)} 
                                 />
+                                <p className="text-[9px] text-muted-foreground font-medium uppercase tracking-tight">System Calculated</p>
                             </div>
                         </div>
                         

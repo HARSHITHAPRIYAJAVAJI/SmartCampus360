@@ -210,16 +210,19 @@ const TimetableGenerator = () => {
         setIsPublishing(true);
         try {
             const semester = parseInt(batchSemester);
-            // Publish for both CSM and IT departments
+            // Simulate backend push
             await timetableService.publish(semester, "CSM");
             await timetableService.publish(semester, "IT");
+            
+            // Critical: Ensure the currently saved timetables are pushed to the live dashboard store
+            localStorage.setItem('published_timetables', JSON.stringify(savedTimetables));
             
             setLastBatchPublished(true);
             setPublishedInfo({ dept: "CSM & IT", sem: batchSemester });
             
             toast({
                 title: "🚀 Timetables Published",
-                description: `Successfully pushed Semester ${batchSemester} schedules to CSM & IT dashboards.`
+                description: `Successfully pushed Semester ${batchSemester} schedules to student & faculty dashboards.`
             });
         } catch (e) {
             toast({ title: "Publish Error", variant: "destructive", description: "Failed to push tables to user dashboards." });
@@ -233,11 +236,10 @@ const TimetableGenerator = () => {
         
         setBatchLoading(true);
         setBatchProgress(5);
-        setLastBatchPublished(false); // Reset on new generate
+        setLastBatchPublished(false); 
         setPublishedInfo(null);
         
         try {
-            // CSM, IT, CSE and ECE are the active branches with course data
             const depts = ["CSM", "IT", "CSE", "ECE"];
             const years = [1, 2, 3, 4];
             const sections = ["A", "B", "C"];
@@ -250,14 +252,13 @@ const TimetableGenerator = () => {
             for (const dept of depts) {
                 for (const year of years) {
                     for (const section of sections) {
-                    const schedule = timetableGeneratorService.generate(year, semester, dept, section, courses, rooms);
-                    
-                    // Key format: dept-year-semester-section (matches viewTable lookup exactly)
-                    const key = `${dept}-${year}-${semester}-${section}`;
-                    batchResults[key] = schedule;
-                    
-                    timetableService.save(year, semester, dept, section, schedule).catch(() => {});
-                    
+                        const schedule = timetableGeneratorService.generate(year, semester, dept, section, courses, rooms);
+                        const key = `${dept}-${year}-${semester}-${section}`;
+                        batchResults[key] = schedule;
+                        
+                        // Non-blocking save to API
+                        timetableService.save(year, semester, dept, section, schedule).catch(() => {});
+                        
                         current++;
                         setBatchProgress(Math.round((current / total) * 100));
                     }
@@ -266,18 +267,17 @@ const TimetableGenerator = () => {
             
             setSavedTimetables((prev: any) => {
                 const newState = { ...prev, ...batchResults };
-                // Also persist to localStorage for the student/faculty dashboard to pick up
+                // Persist locally for immediate dashboard visibility
                 localStorage.setItem('published_timetables', JSON.stringify(newState));
                 return newState;
             });
 
-            // Auto-switch to View tab with CSM Year 1 Sem selected
             setViewFilter({ department: "CSM", year: "1", semester: batchSemester, section: "A" });
             setViewTab('view');
 
             toast({
                 title: "✅ Batch Complete",
-                description: `Generated ${total} schedules for CSM, IT, CSE & ECE — Semester ${batchSemester} (Y1-Y4, Sec A/B/C). Viewing Y1 Sec-A now.`
+                description: `Generated ${total} schedules. Live dashboards updated for all years/sections.`
             });
         } catch (e) {
             toast({ title: "Batch Error", variant: "destructive", description: "Failed to complete batch process." });
@@ -298,7 +298,12 @@ const TimetableGenerator = () => {
             setGridState(newGrid as any);
 
             const vKey = `${formData.department}-${formData.year}-${formData.semester}-${formData.section}`;
-            setSavedTimetables((prev: any) => ({ ...prev, [vKey]: newGrid }));
+            setSavedTimetables((prev: any) => {
+                const newState = { ...prev, [vKey]: newGrid };
+                // Persist locally for immediate dashboard visibility
+                localStorage.setItem('published_timetables', JSON.stringify(newState));
+                return newState;
+            });
 
             // Auto-switch to View tab with correct filters
             setViewFilter({ 

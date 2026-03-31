@@ -41,6 +41,7 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
   const getNavigationItems = (): NavItem[] => {
     const commonItems: NavItem[] = [
       { title: "Dashboard", url: "/dashboard", icon: Home },
+      { title: "My Profile", url: "/dashboard/profile", icon: UserCircle },
       { title: "Timetable", url: "/dashboard/timetable", icon: Calendar },
       { title: "Notifications", url: "/dashboard/notifications", icon: Bell },
       { title: "Settings", url: "/dashboard/settings", icon: Settings },
@@ -61,7 +62,6 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
         { title: "Student Records", url: "/dashboard/students", icon: Users },
       ],
       student: [
-        { title: "My Profile", url: "/dashboard/profile", icon: UserCircle },
         { title: "Exam Time Tables", url: "/dashboard/timetable", icon: Calendar },
         {
           title: "Online Fee Payments",
@@ -87,9 +87,9 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
     };
 
     return [
-      ...commonItems.slice(0, 2),
+      ...commonItems.slice(0, 3),
       ...(roleSpecificItems[userRole] || []),
-      ...commonItems.slice(2),
+      ...commonItems.slice(3),
     ];
   };
 

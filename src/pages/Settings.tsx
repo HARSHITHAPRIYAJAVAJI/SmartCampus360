@@ -8,8 +8,20 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { User, Bell, Shield, Moon, Globe, Lock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
+import { useOutletContext } from "react-router-dom";
+
 const Settings = () => {
     const { toast } = useToast();
+    const { user } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
+
+    const getRoleLabel = () => {
+        switch(user?.role) {
+            case 'admin': return "System Administrator";
+            case 'faculty': return "Faculty Member";
+            case 'student': return "Student";
+            default: return "User";
+        }
+    };
 
     const handleSave = () => {
         toast({ title: "Settings Saved", description: "Your preferences have been updated." });
@@ -38,28 +50,32 @@ const Settings = () => {
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div className="flex items-center gap-6">
-                                <Avatar className="h-24 w-24">
-                                    <AvatarImage src="/placeholder-avatar.jpg" />
-                                    <AvatarFallback className="text-2xl">AD</AvatarFallback>
+                                <Avatar className="h-24 w-24 border-2 border-primary/20">
+                                    <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`} />
+                                    <AvatarFallback className="text-2xl">{user?.name?.[0]}</AvatarFallback>
                                 </Avatar>
-                                <Button variant="outline">Change Avatar</Button>
+                                <div className="space-y-1">
+                                    <h4 className="font-bold text-lg">{user?.name}</h4>
+                                    <p className="text-sm text-muted-foreground font-medium uppercase tracking-wider">{getRoleLabel()}</p>
+                                    <Button variant="outline" size="sm" className="mt-2">Change Avatar</Button>
+                                </div>
                             </div>
-                            <div className="grid gap-4 md:grid-cols-2">
+                            <div className="grid gap-4 md:grid-cols-2 pt-4">
                                 <div className="space-y-2">
                                     <Label>Full Name</Label>
-                                    <Input defaultValue="Admin User" />
+                                    <Input defaultValue={user?.name} />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Email</Label>
-                                    <Input defaultValue="admin@smartcampus.edu" disabled />
+                                    <Label>User ID / Roll Number</Label>
+                                    <Input defaultValue={user?.id} disabled />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Department</Label>
-                                    <Input defaultValue="Administration" />
+                                    <Label>College Email</Label>
+                                    <Input defaultValue={`${user?.id}@smartcampus.edu`} disabled />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Role</Label>
-                                    <Input defaultValue="System Administrator" disabled />
+                                    <Label>Designated Role</Label>
+                                    <Input defaultValue={getRoleLabel()} disabled />
                                 </div>
                             </div>
                         </CardContent>

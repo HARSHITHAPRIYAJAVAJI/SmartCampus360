@@ -306,214 +306,135 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
                 <TabsList className="grid w-full grid-cols-3 max-w-[560px]">
                     <TabsTrigger value="directory">Active Directory</TabsTrigger>
                     <TabsTrigger value="leaves">
-                        Leave Requests
-                        {pendingLeaves.filter(l => l.status === 'Pending').length > 0 && (
-                            <Badge className="ml-2 bg-destructive text-white h-5 w-5 flex items-center justify-center p-0 rounded-full">
-                                {pendingLeaves.filter(l => l.status === 'Pending').length}
-                            </Badge>
-                        )}
-                    </TabsTrigger>
-                    <TabsTrigger value="swaps">
-                        Swap Requests
-                        {swapRequests.filter(r => r.status === 'pending').length > 0 && (
-                            <Badge className="ml-2 bg-indigo-600 text-white h-5 w-5 flex items-center justify-center p-0 rounded-full">
-                                {swapRequests.filter(r => r.status === 'pending').length}
-                            </Badge>
-                        )}
-                    </TabsTrigger>
-                </TabsList>
+                    Leave Requests
+                    {pendingLeaves.filter(l => l.status === 'Pending').length > 0 && (
+                        <Badge className="ml-2 bg-destructive text-white h-5 w-5 flex items-center justify-center p-0 rounded-full">
+                            {pendingLeaves.filter(l => l.status === 'Pending').length}
+                        </Badge>
+                    )}
+                </TabsTrigger>
+            </TabsList>
 
-                <TabsContent value="directory" className="mt-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {filteredFaculty.map((faculty) => (
-                            <Card key={faculty.id} className="group hover:border-primary/50 transition-all hover:shadow-lg overflow-hidden border-muted/60">
-                                <CardHeader className="pb-2">
-                                    <div className="flex justify-between items-start">
-                                        <Avatar className="h-12 w-12 border-2 border-primary/20">
-                                            <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${faculty.name}`} />
-                                            <AvatarFallback>{faculty.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                                        </Avatar>
-                                        <div className="flex gap-1">
-                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50" onClick={() => { setCurrentFaculty(faculty); setFormData(faculty); setIsEditOpen(true); }}>
-                                                <Edit className="h-4 w-4" />
-                                            </Button>
-                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => handleDelete(faculty.id)}>
-                                                <Trash2 className="h-4 w-4" />
-                                            </Button>
-                                        </div>
+            <TabsContent value="directory" className="mt-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {filteredFaculty.map((faculty) => (
+                        <Card key={faculty.id} className="group hover:border-primary/50 transition-all hover:shadow-lg overflow-hidden border-muted/60">
+                            <CardHeader className="pb-2">
+                                <div className="flex justify-between items-start">
+                                    <Avatar className="h-12 w-12 border-2 border-primary/20">
+                                        <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${faculty.name}`} />
+                                        <AvatarFallback>{faculty.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex gap-1">
+                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50" onClick={() => { setCurrentFaculty(faculty); setFormData(faculty); setIsEditOpen(true); }}>
+                                            <Edit className="h-4 w-4" />
+                                        </Button>
+                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => handleDelete(faculty.id)}>
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
                                     </div>
-                                    <div className="mt-4">
-                                        <CardTitle className="text-xl font-black">{faculty.name}</CardTitle>
-                                        <CardDescription className="text-primary font-bold">{faculty.designation}</CardDescription>
-                                        <div className="text-[10px] text-muted-foreground mt-1 font-mono uppercase tracking-tighter opacity-70">
-                                            Staff ID: {faculty.rollNumber}
-                                        </div>
+                                </div>
+                                <div className="mt-4">
+                                    <CardTitle className="text-xl font-black">{faculty.name}</CardTitle>
+                                    <CardDescription className="text-primary font-bold">{faculty.designation}</CardDescription>
+                                    <div className="text-[10px] text-muted-foreground mt-1 font-mono uppercase tracking-tighter opacity-70">
+                                        Staff ID: {faculty.rollNumber}
                                     </div>
-                                </CardHeader>
-                                <CardContent className="space-y-4">
-                                    <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                                        <Mail className="h-4 w-4 text-primary/60" />
-                                        <span className="truncate">{faculty.email}</span>
+                                </div>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                                    <Mail className="h-4 w-4 text-primary/60" />
+                                    <span className="truncate">{faculty.email}</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                                    <Phone className="h-4 w-4 text-primary/60" />
+                                    {faculty.phone}
+                                </div>
+                                <div className="space-y-2 pt-2 border-t border-muted/40">
+                                    <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                                        <span>Current Load</span>
+                                        <span className="text-primary">{faculty.totalLoad} hrs/week</span>
                                     </div>
-                                    <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                                        <Phone className="h-4 w-4 text-primary/60" />
-                                        {faculty.phone}
+                                    <div className="w-full bg-muted rounded-full h-1.5">
+                                        <div className="bg-primary h-full rounded-full transition-all duration-1000" style={{ width: `${Math.min((faculty.totalLoad / 20) * 100, 100)}%` }}></div>
                                     </div>
-                                    <div className="space-y-2 pt-2 border-t border-muted/40">
-                                        <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                                            <span>Current Load</span>
-                                            <span className="text-primary">{faculty.totalLoad} hrs/week</span>
-                                        </div>
-                                        <div className="w-full bg-muted rounded-full h-1.5">
-                                            <div className="bg-primary h-full rounded-full transition-all duration-1000" style={{ width: `${Math.min((faculty.totalLoad / 20) * 100, 100)}%` }}></div>
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-wrap gap-1.5 pt-2">
-                                        {faculty.subjects.map((sub, i) => (
-                                            <Badge key={i} variant="secondary" className="px-1.5 py-0 text-[10px] bg-primary/5 text-primary border-primary/10">
-                                                {sub}
-                                            </Badge>
-                                        ))}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
-                </TabsContent>
+                                </div>
+                                <div className="flex flex-wrap gap-1.5 pt-2">
+                                    {faculty.subjects.map((sub, i) => (
+                                        <Badge key={i} variant="secondary" className="px-1.5 py-0 text-[10px] bg-primary/5 text-primary border-primary/10">
+                                            {sub}
+                                        </Badge>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            </TabsContent>
 
-                <TabsContent value="leaves" className="mt-6">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Leave Approval Queue</CardTitle>
-                            <CardDescription>Review and manage faculty leave requests.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-4">
-                                {pendingLeaves.filter(l => l.status === 'Pending').length === 0 ? (
-                                    <div className="text-center py-12 text-muted-foreground">
-                                        <Check className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                                        <p>No pending leave requests.</p>
-                                    </div>
-                                ) : (
-                                    <div className="grid gap-4">
-                                        {pendingLeaves.filter(l => l.status === 'Pending').map((leave) => (
-                                            <div key={leave.id} className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-xl bg-muted/20 hover:bg-muted/30 transition-colors">
-                                                <div className="flex items-start gap-4">
-                                                    <div className="mt-1">
-                                                        <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-                                                            {leave.facultyName.charAt(0)}
-                                                        </div>
-                                                    </div>
-                                                    <div className="space-y-1">
-                                                        <div className="flex items-center gap-2">
-                                                            <h4 className="font-bold">{leave.facultyName}</h4>
-                                                            <Badge variant="outline" className="text-[10px]">{leave.type}</Badge>
-                                                        </div>
-                                                        <p className="text-sm text-muted-foreground line-clamp-1 italic">"{leave.reason}"</p>
-                                                        <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground">
-                                                            <span className="flex items-center gap-1">
-                                                                <Clock className="h-3.5 w-3.5" />
-                                                                {leave.fromDate} to {leave.toDate} ({leave.days} days)
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="flex gap-2 mt-4 md:mt-0 ml-14 md:ml-0">
-                                                    <Button 
-                                                        size="sm" 
-                                                        className="bg-green-600 hover:bg-green-700 text-white"
-                                                        onClick={() => handleLeaveAction(leave.id, 'Approved')}
-                                                    >
-                                                        <Check className="h-4 w-4 mr-2" /> Approve
-                                                    </Button>
-                                                    <Button 
-                                                        size="sm" 
-                                                        variant="destructive"
-                                                        onClick={() => handleLeaveAction(leave.id, 'Rejected')}
-                                                    >
-                                                        <XIcon className="h-4 w-4 mr-2" /> Reject
-                                                    </Button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        </CardContent>
-                    </Card>
-                </TabsContent>
-
-                <TabsContent value="swaps" className="mt-6">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Period Swap & Replacement Requests</CardTitle>
-                            <CardDescription>Faculty-submitted swap/replacement requests requiring admin oversight.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            {swapRequests.length === 0 ? (
+            <TabsContent value="leaves" className="mt-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Leave Approval Queue</CardTitle>
+                        <CardDescription>Review and manage faculty leave requests. Period swaps are handled directly between faculty colleagues.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="space-y-4">
+                            {pendingLeaves.filter(l => l.status === 'Pending').length === 0 ? (
                                 <div className="text-center py-12 text-muted-foreground">
                                     <Check className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                                    <p>No swap or replacement requests found.</p>
+                                    <p>No pending leave requests.</p>
                                 </div>
                             ) : (
                                 <div className="grid gap-4">
-                                    {swapRequests.map((req) => (
-                                        <div key={req.id} className={`flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-xl transition-colors ${
-                                            req.status === 'pending' ? 'bg-indigo-50/50 border-indigo-200 dark:bg-indigo-950/20 dark:border-indigo-900' :
-                                            req.status === 'approved' ? 'bg-green-50/30 border-green-200 dark:bg-green-950/10' :
-                                            'bg-muted/20 opacity-60'
-                                        }`}>
+                                    {pendingLeaves.filter(l => l.status === 'Pending').map((leave) => (
+                                        <div key={leave.id} className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-xl bg-muted/20 hover:bg-muted/30 transition-colors">
                                             <div className="flex items-start gap-4">
-                                                <div className="h-10 w-10 rounded-full bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-indigo-700 dark:text-indigo-300 font-bold text-sm shrink-0">
-                                                    {req.senderName.charAt(0)}
+                                                <div className="mt-1">
+                                                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                                                        {leave.facultyName.charAt(0)}
+                                                    </div>
                                                 </div>
                                                 <div className="space-y-1">
-                                                    <div className="flex items-center gap-2 flex-wrap">
-                                                        <h4 className="font-bold">{req.senderName}</h4>
-                                                        <span className="text-muted-foreground text-sm">→</span>
-                                                        <h4 className="font-bold text-indigo-600 dark:text-indigo-400">{req.targetName}</h4>
-                                                        <Badge variant="outline" className="text-[10px] capitalize border-indigo-200 text-indigo-700 dark:text-indigo-300">{req.type}</Badge>
+                                                    <div className="flex items-center gap-2">
+                                                        <h4 className="font-bold">{leave.facultyName}</h4>
+                                                        <Badge variant="outline" className="text-[10px]">{leave.type}</Badge>
                                                     </div>
+                                                    <p className="text-sm text-muted-foreground line-clamp-1 italic">"{leave.reason}"</p>
                                                     <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground">
                                                         <span className="flex items-center gap-1">
                                                             <Clock className="h-3.5 w-3.5" />
-                                                            {req.date} &bull; {req.period}
+                                                            {leave.fromDate} to {leave.toDate} ({leave.days} days)
                                                         </span>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="flex gap-2 mt-4 md:mt-0 ml-14 md:ml-0 shrink-0">
-                                                {req.status === 'pending' ? (
-                                                    <>
-                                                        <Button
-                                                            size="sm"
-                                                            className="bg-green-600 hover:bg-green-700 text-white"
-                                                            onClick={() => handleSwapAction(req.id, 'approved')}
-                                                        >
-                                                            <Check className="h-4 w-4 mr-1" /> Approve
-                                                        </Button>
-                                                        <Button
-                                                            size="sm"
-                                                            variant="destructive"
-                                                            onClick={() => handleSwapAction(req.id, 'rejected')}
-                                                        >
-                                                            <XIcon className="h-4 w-4 mr-1" /> Reject
-                                                        </Button>
-                                                    </>
-                                                ) : (
-                                                    <Badge variant={req.status === 'approved' ? 'default' : 'destructive'} className={req.status === 'approved' ? 'bg-green-500' : ''}>
-                                                        {req.status}
-                                                    </Badge>
-                                                )}
+                                            <div className="flex gap-2 mt-4 md:mt-0 ml-14 md:ml-0">
+                                                <Button 
+                                                    size="sm" 
+                                                    className="bg-green-600 hover:bg-green-700 text-white"
+                                                    onClick={() => handleLeaveAction(leave.id, 'Approved')}
+                                                >
+                                                    <Check className="h-4 w-4 mr-2" /> Approve
+                                                </Button>
+                                                <Button 
+                                                    size="sm" 
+                                                    variant="destructive"
+                                                    onClick={() => handleLeaveAction(leave.id, 'Rejected')}
+                                                >
+                                                    <XIcon className="h-4 w-4 mr-2" /> Reject
+                                                </Button>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
                             )}
-                        </CardContent>
-                    </Card>
-                </TabsContent>
-            </Tabs>
+                        </div>
+                    </CardContent>
+                </Card>
+            </TabsContent>
+        </Tabs>
 
             {/* Edit Dialog */}
             <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>

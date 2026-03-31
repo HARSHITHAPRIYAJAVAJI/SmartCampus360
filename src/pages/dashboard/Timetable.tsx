@@ -66,17 +66,22 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
 
       Object.entries(allTimetables).forEach(([key, table]: [string, any]) => {
         const parts = key.split('-');
-        const dept = parts[0];
-        const year = parts[1];
-        const sem = parts[2];
-        const section = parts[3] || 'A';
+        let dept, year, sem, section;
+
+        if (parts.length === 4) {
+          [dept, year, sem, section] = parts;
+        } else {
+          [year, sem, section] = parts;
+          dept = "AIML";
+          section = section || 'A';
+        }
+
         const semKey = `${year}-${sem}`;
-        
         const load = FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || [];
         
         Object.entries(table).forEach(([dayTime, session]: [string, any]) => {
           if (!session) return;
-          // Check if the faculty is assigned to this course (either in generator's session or in FACULTY_LOAD registry)
+          // Check if the faculty is assigned to this course
           const isAssigned = session.faculty === facultyName || load.find(l => l.code === (session.courseCode || session.name) && l.faculty === facultyName);
           
           if (isAssigned) {
