@@ -237,8 +237,8 @@ const TimetableGenerator = () => {
         setPublishedInfo(null);
         
         try {
-            // CSM, IT and CSE are the active branches with course data
-            const depts = ["CSM", "IT", "CSE"];
+            // CSM, IT, CSE and ECE are the active branches with course data
+            const depts = ["CSM", "IT", "CSE", "ECE"];
             const years = [1, 2, 3, 4];
             const sections = ["A", "B", "C"];
             const semester = parseInt(batchSemester);
@@ -277,7 +277,7 @@ const TimetableGenerator = () => {
 
             toast({
                 title: "✅ Batch Complete",
-                description: `Generated ${total} schedules for CSM, IT & CSE — Semester ${batchSemester} (Y1-Y4, Sec A/B/C). Viewing Y1 Sec-A now.`
+                description: `Generated ${total} schedules for CSM, IT, CSE & ECE — Semester ${batchSemester} (Y1-Y4, Sec A/B/C). Viewing Y1 Sec-A now.`
             });
         } catch (e) {
             toast({ title: "Batch Error", variant: "destructive", description: "Failed to complete batch process." });

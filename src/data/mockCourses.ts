@@ -227,4 +227,78 @@ export const MOCK_COURSES: Course[] = [
     { id: "cse-s7-4", code: "4O7EA", name: "Disaster Management", credits: 3, type: "Theory", department: "CSE", semester: 7 },
     { id: "cse-s7-5", code: "4P7EA", name: "Robotic Process Automation", credits: 3, type: "Theory", department: "CSE", semester: 7 },
     { id: "cse-s7-6", code: "4P7P1", name: "Project Work Phase 1", credits: 7, type: "Theory", department: "CSE", semester: 7 },
+
+    // --- ECE BRANCH ---
+    // Semester 1
+    { id: "ece-s1-1", code: "4B108", name: "Engineering Physics Lab", credits: 1.5, type: "Lab", department: "ECE", semester: 1 },
+    { id: "ece-s1-2", code: "4B110", name: "Engineering Workshop", credits: 2.5, type: "Lab", department: "ECE", semester: 1 },
+    { id: "ece-s1-3", code: "4B1AA", name: "Linear Algebra and Ordinary Differential Equations", credits: 4, type: "Theory", department: "ECE", semester: 1 },
+    { id: "ece-s1-4", code: "4B1AB", name: "Engineering Physics", credits: 4, type: "Theory", department: "ECE", semester: 1 },
+    { id: "ece-s1-5", code: "4E111", name: "Fundamentals of Electrical Engineering Lab", credits: 1, type: "Lab", department: "ECE", semester: 1 },
+    { id: "ece-s1-6", code: "4E112", name: "C Programming for Problem Solving Lab", credits: 1, type: "Lab", department: "ECE", semester: 1 },
+    { id: "ece-s1-7", code: "4E113", name: "IT Workshop", credits: 1, type: "Lab", department: "ECE", semester: 1 },
+    { id: "ece-s1-8", code: "4E1AA", name: "Fundamentals of Electrical Engineering", credits: 2, type: "Theory", department: "ECE", semester: 1 },
+    { id: "ece-s1-9", code: "4E1AC", name: "C Programming for Problem Solving", credits: 3, type: "Theory", department: "ECE", semester: 1 },
+
+    // Semester 2
+    { id: "ece-s2-1", code: "4B206", name: "Engineering Chemistry Lab", credits: 1, type: "Lab", department: "ECE", semester: 2 },
+    { id: "ece-s2-2", code: "4B2AF", name: "Mathematical Transforms", credits: 4, type: "Theory", department: "ECE", semester: 2 },
+    { id: "ece-s2-3", code: "4B2AJ", name: "Engineering Chemistry", credits: 4, type: "Theory", department: "ECE", semester: 2 },
+    { id: "ece-s2-4", code: "4E207", name: "Electronic Devices and Circuits Lab", credits: 1, type: "Lab", department: "ECE", semester: 2 },
+    { id: "ece-s2-5", code: "4E208", name: "Applied Python Programming Lab", credits: 2, type: "Lab", department: "ECE", semester: 2 },
+    { id: "ece-s2-6", code: "4E2AJ", name: "Electronic Devices and Circuits", credits: 2, type: "Theory", department: "ECE", semester: 2 },
+    { id: "ece-s2-7", code: "4E2AK", name: "Computer Aided Engineering Graphics", credits: 3, type: "Theory", department: "ECE", semester: 2 },
+    { id: "ece-s2-8", code: "4H203", name: "English Language and Communication Skills Lab", credits: 1, type: "Lab", department: "ECE", semester: 2 },
+    { id: "ece-s2-9", code: "4H2AC", name: "English for Skill Enhancement", credits: 2, type: "Theory", department: "ECE", semester: 2 },
+
+    // Semester 3
+    { id: "ece-s3-1", code: "4B3BA", name: "Complex Analysis and Vector Calculus", credits: 4, type: "Theory", department: "ECE", semester: 3 },
+    { id: "ece-s3-2", code: "4E307", name: "Digital Logic Design Lab", credits: 1, type: "Lab", department: "ECE", semester: 3 },
+    { id: "ece-s3-3", code: "4E308", name: "Electronic Circuit Design Lab", credits: 1, type: "Lab", department: "ECE", semester: 3 },
+    { id: "ece-s3-4", code: "4E309", name: "Electronic Circuit Simulation Lab", credits: 1, type: "Lab", department: "ECE", semester: 3 },
+    { id: "ece-s3-5", code: "4E310", name: "Basic Simulation Lab", credits: 1, type: "Lab", department: "ECE", semester: 3 },
+    { id: "ece-s3-6", code: "4E3DB", name: "Digital Logic Design", credits: 2, type: "Theory", department: "ECE", semester: 3 },
+    { id: "ece-s3-7", code: "4E3DC", name: "Network Theory", credits: 2, type: "Theory", department: "ECE", semester: 3 },
+    { id: "ece-s3-8", code: "4E3DD", name: "Electronic Circuit Analysis", credits: 4, type: "Theory", department: "ECE", semester: 3 },
+    { id: "ece-s3-9", code: "4E3DE", name: "Signals and Systems", credits: 4, type: "Theory", department: "ECE", semester: 3 },
+
+    // Semester 4
+    { id: "ece-s4-1", code: "4E407", name: "Analog and Digital Communications Lab", credits: 1, type: "Lab", department: "ECE", semester: 4 },
+    { id: "ece-s4-2", code: "4E408", name: "Pulse and Digital Circuits Lab", credits: 1, type: "Lab", department: "ECE", semester: 4 },
+    { id: "ece-s4-3", code: "4E409", name: "Linear and Digital IC Applications Lab", credits: 1, type: "Lab", department: "ECE", semester: 4 },
+    { id: "ece-s4-4", code: "4E410", name: "Real Time Based Projects", credits: 2, type: "Lab", department: "ECE", semester: 4 },
+    { id: "ece-s4-5", code: "4E4DA", name: "Probability Theory and Stochastic Processes", credits: 3, type: "Theory", department: "ECE", semester: 4 },
+    { id: "ece-s4-6", code: "4E4DB", name: "Analog and Digital Communications", credits: 3, type: "Theory", department: "ECE", semester: 4 },
+    { id: "ece-s4-7", code: "4E4DC", name: "Pulse and Digital Circuits", credits: 3, type: "Theory", department: "ECE", semester: 4 },
+    { id: "ece-s4-8", code: "4E4DD", name: "Linear and Digital IC Applications", credits: 3, type: "Theory", department: "ECE", semester: 4 },
+    { id: "ece-s4-9", code: "4E4DE", name: "Electromagnetic Theory and Transmission Lines", credits: 3, type: "Theory", department: "ECE", semester: 4 },
+
+    // Semester 5
+    { id: "ece-s5-1", code: "4E507", name: "Microprocessor Lab", credits: 1, type: "Lab", department: "ECE", semester: 5 },
+    { id: "ece-s5-2", code: "4E508", name: "Advanced Communications Lab", credits: 1, type: "Lab", department: "ECE", semester: 5 },
+    { id: "ece-s5-3", code: "4E5DA", name: "Control Systems", credits: 4, type: "Theory", department: "ECE", semester: 5 },
+    { id: "ece-s5-4", code: "4E5DB", name: "Microprocessors and Microcontrollers", credits: 3, type: "Theory", department: "ECE", semester: 5 },
+    { id: "ece-s5-5", code: "4H502", name: "Advanced English Communication Skills Lab", credits: 2, type: "Lab", department: "ECE", semester: 5 },
+    { id: "ece-s5-6", code: "4H5DE", name: "Business Economics and Financial Analysis", credits: 3, type: "Theory", department: "ECE", semester: 5 },
+    { id: "ece-s5-7", code: "4O5DA", name: "Python Programming", credits: 3, type: "Theory", department: "ECE", semester: 5 },
+    { id: "ece-s5-8", code: "4P5DB", name: "Data Communications and Computer Networks", credits: 3, type: "Theory", department: "ECE", semester: 5 },
+
+    // Semester 6
+    { id: "ece-s6-1", code: "4E605", name: "Digital Signal Processing Lab", credits: 1, type: "Lab", department: "ECE", semester: 6 },
+    { id: "ece-s6-2", code: "4E606", name: "VLSI Design Lab", credits: 1, type: "Lab", department: "ECE", semester: 6 },
+    { id: "ece-s6-3", code: "4E607", name: "Internet of Things Lab", credits: 1, type: "Lab", department: "ECE", semester: 6 },
+    { id: "ece-s6-4", code: "4E608", name: "Mini Projects", credits: 1, type: "Lab", department: "ECE", semester: 6 },
+    { id: "ece-s6-5", code: "4E6DA", name: "Antennas and Wave Propagation", credits: 3, type: "Theory", department: "ECE", semester: 6 },
+    { id: "ece-s6-6", code: "4E6DB", name: "Digital Signal Processing", credits: 4, type: "Theory", department: "ECE", semester: 6 },
+    { id: "ece-s6-7", code: "4E6DC", name: "VLSI Design", credits: 3, type: "Theory", department: "ECE", semester: 6 },
+    { id: "ece-s6-8", code: "4O6DA", name: "Internet of Things", credits: 3, type: "Theory", department: "ECE", semester: 6 },
+    { id: "ece-s6-9", code: "4P6DD", name: "Digital Image Processing", credits: 3, type: "Theory", department: "ECE", semester: 6 },
+
+    // Semester 7
+    { id: "ece-s7-1", code: "4E703", name: "Microwave Engineering Lab", credits: 1, type: "Lab", department: "ECE", semester: 7 },
+    { id: "ece-s7-2", code: "4E7DA", name: "Microwave Engineering", credits: 4, type: "Theory", department: "ECE", semester: 7 },
+    { id: "ece-s7-3", code: "4H7DA", name: "Professional Ethics", credits: 2, type: "Theory", department: "ECE", semester: 7 },
+    { id: "ece-s7-4", code: "4P7DC", name: "Embedded System Design", credits: 3, type: "Theory", department: "ECE", semester: 7 },
+    { id: "ece-s7-5", code: "4P7DF", name: "Satellite Communications", credits: 3, type: "Theory", department: "ECE", semester: 7 },
+    { id: "ece-s7-6", code: "4P7PW", name: "Project Work Phase 1", credits: 7, type: "Theory", department: "ECE", semester: 7 },
 ];
