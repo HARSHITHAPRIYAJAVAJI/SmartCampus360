@@ -42,6 +42,8 @@ const Programs = lazy(() => import("./pages/academics/Programs"));
 const Vision = lazy(() => import("./pages/about/Vision"));
 const Leadership = lazy(() => import("./pages/about/Leadership"));
 const ExamManagement = lazy(() => import("./pages/admin/ExamManagement"));
+const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
+const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 
 
 // Lazy load UI overlays to reduce initial bundle size
@@ -120,6 +122,18 @@ const App = () => {
                 path="signup"
                 element={
                   user ? <Navigate to="/dashboard" replace /> : <Signup onSignup={handleLogin} />
+                }
+              />
+              <Route
+                path="forgot-password"
+                element={
+                  user ? <Navigate to="/dashboard" replace /> : <ForgotPassword />
+                }
+              />
+              <Route
+                path="reset-password"
+                element={
+                  user ? <Navigate to="/dashboard" replace /> : <ResetPassword />
                 }
               />
 
