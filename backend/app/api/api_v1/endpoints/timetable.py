@@ -33,17 +33,15 @@ def get_all_timetables(db: Session = Depends(deps.get_db)) -> Any:
 def save_timetable(
     request: TimetableSaveRequest,
     db: Session = Depends(deps.get_db),
-    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """Save a generated timetable schedule."""
-    # (Placeholder logic for persistence — in a real setup we would populate TimetableSlot records)
+    # (Placeholder logic for persistence)
     return {"status": "saved", "year": request.year, "semester": request.semester, "section": request.section}
 
 @router.post("/publish")
 def publish_timetable(
     request: TimetablePublishRequest,
     db: Session = Depends(deps.get_db),
-    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """Mark all timetables for a semester/department as published."""
     return {"status": "published", "count": "all"}
@@ -58,7 +56,6 @@ class TimetableGenerateRequest(BaseModel):
 def generate_timetable(
     request: TimetableGenerateRequest,
     db: Session = Depends(deps.get_db),
-    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
     Generate optimal timetable using AI (Constraint Satisfaction Problem).

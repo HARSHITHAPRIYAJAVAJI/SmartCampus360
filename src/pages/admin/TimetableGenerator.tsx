@@ -468,6 +468,17 @@ const TimetableGenerator = () => {
                                 <Badge className="h-10 px-4 text-sm flex items-center bg-primary/10 text-primary border-primary/20">
                                     {viewFilter.department} | Y{viewFilter.year} S{viewFilter.semester} | Sec-{viewFilter.section}
                                 </Badge>
+
+                                <div className="ml-auto">
+                                    <Button 
+                                        onClick={handlePublish}
+                                        disabled={isPublishing}
+                                        className={`${lastBatchPublished ? 'bg-green-600 hover:bg-green-700' : 'bg-amber-600 hover:bg-amber-700'} text-white shadow-lg h-10 px-6 whitespace-nowrap`}
+                                    >
+                                        {isPublishing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
+                                        {lastBatchPublished ? 'Tables are Live' : 'Publish All Tables'}
+                                    </Button>
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
@@ -685,33 +696,10 @@ const TimetableGenerator = () => {
                                     )}
 
                                     {batchProgress === 100 && !batchLoading && (
-                                        <div className="pt-8 text-left animate-in fade-in zoom-in-95 duration-500">
-                                            <div className={`p-6 rounded-2xl border-2 ${lastBatchPublished ? 'bg-green-50/50 border-green-200' : 'bg-amber-50/50 border-amber-200'} transition-all`}>
-                                                <div className="flex items-start gap-4 text-left">
-                                                    <div className={`p-3 rounded-xl ${lastBatchPublished ? 'bg-green-100 text-green-600' : 'bg-amber-100 text-amber-600'}`}>
-                                                        {lastBatchPublished ? <CheckCircle2 className="h-6 w-6" /> : <Send className="h-6 w-6" />}
-                                                    </div>
-                                                    <div className="flex-1 space-y-1">
-                                                        <h4 className="text-lg font-bold text-zinc-900">{lastBatchPublished ? 'Published to Dashboards' : 'Ready to Publish'}</h4>
-                                                        <p className="text-sm text-zinc-600 leading-relaxed">
-                                                            {lastBatchPublished 
-                                                                ? `Semester ${batchSemester} schedules for CSM & IT are now visible to all students and faculty.`
-                                                                : `Batch generation complete. Publish now to sync these schedules with student/faculty dashboards.`
-                                                            }
-                                                        </p>
-                                                        
-                                                        {!lastBatchPublished && (
-                                                            <Button 
-                                                                onClick={handlePublish}
-                                                                disabled={isPublishing}
-                                                                className="mt-4 bg-amber-600 hover:bg-amber-700 text-white shadow-lg shadow-amber-500/25"
-                                                            >
-                                                                {isPublishing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Send className="mr-2 h-4 w-4" />}
-                                                                Publish Tables Now
-                                                            </Button>
-                                                        )}
-                                                    </div>
-                                                </div>
+                                        <div className="pt-6 animate-in fade-in slide-in-from-bottom-2">
+                                            <div className="flex items-center gap-3 text-green-600 dark:text-green-400 font-bold bg-green-50 dark:bg-green-950/20 p-4 rounded-xl border border-green-100 dark:border-green-900/50">
+                                                <CheckCircle2 className="h-5 w-5" />
+                                                Batch Generation Complete! Verify and Publish in the 'View' tab.
                                             </div>
                                         </div>
                                     )}
