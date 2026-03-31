@@ -15,7 +15,16 @@ import { Check, X, ClipboardCheck, GraduationCap, ArrowLeft, MoreVertical } from
 
 const StudentRecords = () => {
     const { toast } = useToast();
-    const [students, setStudents] = useState<Student[]>(MOCK_STUDENTS);
+    const [students, setStudents] = useState<Student[]>(() => {
+        const saved = localStorage.getItem('smartcampus_student_directory');
+        return saved ? JSON.parse(saved) : MOCK_STUDENTS;
+    });
+    
+    // Persist student directory changes
+    useEffect(() => {
+        localStorage.setItem('smartcampus_student_directory', JSON.stringify(students));
+    }, [students]);
+
     const [searchQuery, setSearchQuery] = useState("");
     
     // Navigation State

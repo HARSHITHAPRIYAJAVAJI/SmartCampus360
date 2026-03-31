@@ -14,7 +14,12 @@ import { AIML_TIMETABLES, getTimetable } from "@/data/aimlTimetable";
 export default function StudentDashboard() {
     const { user } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
     const navigate = useNavigate();
-    const studentData = MOCK_STUDENTS.find(s => s.rollNumber.toUpperCase() === user.id.toUpperCase());
+    
+    const studentData = useMemo(() => {
+        const saved = localStorage.getItem('smartcampus_student_directory');
+        const students = saved ? JSON.parse(saved) : MOCK_STUDENTS;
+        return students.find((s: any) => s.rollNumber.toUpperCase() === user.id.toUpperCase());
+    }, [user.id]);
 
     const stats = [
         { title: "Current Courses", value: "6", icon: BookOpen, change: "Active this Sem", color: "text-blue-500", bg: "bg-blue-500/10" },
