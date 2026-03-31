@@ -3,8 +3,8 @@ from typing import Any, Dict, Optional, Union
 from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
-from app.models.faculty import Faculty
-from app.schemas.faculty import FacultyCreate, FacultyUpdate
+from app.models.user import Faculty
+from app.schemas.user import FacultyCreate, FacultyBase as FacultyUpdate
 
 class CRUDFaculty(CRUDBase[Faculty, FacultyCreate, FacultyUpdate]):
     def get_by_user_id(self, db: Session, *, user_id: int) -> Optional[Faculty]:

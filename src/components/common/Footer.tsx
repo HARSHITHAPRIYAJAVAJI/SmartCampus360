@@ -80,7 +80,9 @@ const Footer = () => {
                             </li>
                         </ul>
                         <div className="mt-6">
-                            <Button className="w-full bg-primary hover:bg-primary-dark">Get in Touch</Button>
+                            <Link to="/contact">
+                                <Button className="w-full bg-primary hover:bg-primary-dark shadow-md hover:shadow-lg transition-all">Get in Touch</Button>
+                            </Link>
                         </div>
                     </div>
                 </div>

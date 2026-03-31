@@ -48,6 +48,19 @@ const CourseManagement = () => {
 
     // Handlers
     const handleAdd = () => {
+        // Validation: Required fields
+        if (!formData.code || !formData.name) {
+            toast({ title: "Error", description: "Course code and name are required.", variant: "destructive" });
+            return;
+        }
+
+        // Validation: No duplicate entries
+        const exists = courses.some(c => c.code.toUpperCase() === formData.code?.toUpperCase());
+        if (exists) {
+            toast({ title: "Duplicate Entry", description: `Course code ${formData.code} already exists in the system.`, variant: "destructive" });
+            return;
+        }
+
         const newCourse: Course = {
             id: `new-${Date.now()}`,
             name: formData.name || "New Course",
@@ -214,37 +227,38 @@ const CourseManagement = () => {
                                         {semesterCourses.length > 0 ? (
                                             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                                                 {semesterCourses.map(course => (
-                                                    <Card key={course.id} className="hover:shadow-lg transition-all group border-muted/50 overflow-hidden relative">
-                                                        <div className={`absolute top-0 right-0 h-1.5 w-full ${course.type === 'Lab' ? 'bg-orange-500' : 'bg-blue-500'}`} />
-                                                        <CardContent className="p-5 flex flex-col justify-between h-full gap-4 pt-6">
-                                                            <div className="flex items-start gap-4">
-                                                                <div className={`p-3 rounded-xl shrink-0 ${course.type === 'Lab' ? 'bg-orange-100 text-orange-600' : 'bg-blue-100 text-blue-600'} shadow-sm`}>
-                                                                    <BookOpen className="h-6 w-6" />
+                                                    <Card key={course.id} className={`hover:shadow-md transition-shadow border-border/50 group overflow-hidden ${course.type === 'Lab' ? 'bg-orange-50/40 border-orange-100/50' : 'bg-card/50'}`}>
+                                                        <CardContent className="p-4 flex flex-col justify-between h-full gap-3">
+                                                            <div className="flex items-start justify-between gap-4">
+                                                                <div className="space-y-1">
+                                                                    <h3 className="font-bold text-base leading-tight group-hover:text-primary transition-colors line-clamp-2 min-h-[2.5rem]">{course.name}</h3>
+                                                                    <div className="flex flex-wrap items-center gap-2">
+                                                                        <span className="text-[10px] font-black text-muted-foreground/70 uppercase tracking-widest">{course.code}</span>
+                                                                        <span className="h-1 w-1 rounded-full bg-border" />
+                                                                        <span className="text-[10px] font-bold text-primary uppercase tracking-tight">{course.department}</span>
+                                                                    </div>
                                                                 </div>
-                                                                <div className="space-y-1.5">
-                                                                    <div className="flex flex-wrap items-center gap-2">
-                                                                        <h3 className="font-bold text-lg leading-tight group-hover:text-primary transition-colors pr-2">{course.name}</h3>
-                                                                    </div>
-                                                                    <div className="flex flex-wrap items-center gap-2">
-                                                                        <Badge variant="outline" className="text-[10px] font-black uppercase tracking-widest">{course.code}</Badge>
-                                                                        <Badge className="text-[10px] font-bold bg-primary/10 text-primary border-primary/20 hover:bg-primary/20">{course.department}</Badge>
-                                                                        {course.type === 'Lab' && <Badge variant="secondary" className="text-[10px] font-bold bg-orange-100 text-orange-700 hover:bg-orange-200 uppercase tracking-tighter">Lab</Badge>}
-                                                                    </div>
+                                                                <div className={`p-2 rounded-lg shrink-0 ${course.type === 'Lab' ? 'bg-orange-50 text-orange-500' : 'bg-blue-50 text-blue-500'}`}>
+                                                                    {course.type === 'Lab' ? <Clock className="h-4 w-4" /> : <BookOpen className="h-4 w-4" />}
                                                                 </div>
                                                             </div>
 
-                                                            <div className="flex items-center justify-between pt-3 mt-auto border-t border-muted/60">
-                                                                <div className="text-xs text-muted-foreground flex items-center gap-3">
-                                                                    <span className="flex items-center gap-1.5 bg-muted/50 px-3 py-1.5 rounded-full font-semibold text-foreground/80">
-                                                                        <GraduationCap className="h-3.5 w-3.5" /> 
+                                                            <div className="flex items-center justify-between pt-2 mt-auto border-t border-dashed border-muted">
+                                                                <div className="flex items-center gap-2">
+                                                                    <Badge variant="secondary" className="px-2 py-0 h-5 text-[10px] font-bold bg-muted/50 text-muted-foreground border-none">
                                                                         {course.credits} Credits
-                                                                    </span>
+                                                                    </Badge>
+                                                                    {course.type === 'Lab' && (
+                                                                        <Badge variant="outline" className="px-2 py-0 h-5 text-[10px] font-bold border-orange-100 text-orange-600 bg-orange-50/30 uppercase tracking-tighter">
+                                                                            Lab
+                                                                        </Badge>
+                                                                    )}
                                                                 </div>
-                                                                <div className="flex gap-2">
-                                                                    <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-primary/10 hover:text-primary transition-colors" onClick={() => openEdit(course)}>
+                                                                <div className="flex gap-1">
+                                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors" onClick={() => openEdit(course)}>
                                                                         <Edit className="h-4 w-4" />
                                                                     </Button>
-                                                                    <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-destructive/10 hover:text-destructive transition-colors" onClick={() => handleDelete(course.id)}>
+                                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-colors" onClick={() => handleDelete(course.id)}>
                                                                         <Trash2 className="h-4 w-4" />
                                                                     </Button>
                                                                 </div>

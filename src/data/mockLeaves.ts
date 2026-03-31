@@ -24,17 +24,5 @@ export const MOCK_LEAVE_REQUESTS: LeaveRequest[] = [
         reason: 'Personal family event',
         status: 'Pending',
         appliedAt: '2025-03-15T09:00:00'
-    },
-    {
-        id: 'lv-2',
-        facultyId: 'ksr-radhika',
-        facultyName: 'Dr. KSR Radhika',
-        type: 'Sick Leave',
-        fromDate: '2025-03-20',
-        toDate: '2025-03-22',
-        days: 3,
-        reason: 'Medical treatment',
-        status: 'Pending',
-        appliedAt: '2025-03-16T11:30:00'
     }
 ];

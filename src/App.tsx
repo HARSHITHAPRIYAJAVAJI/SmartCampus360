@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
+import ScrollToTop from "./components/common/ScrollToTop";
 
 // Lazy load pages
 const Index = lazy(() => import("./pages/Index"));
@@ -31,6 +32,7 @@ const LeaveManagement = lazy(() => import("./pages/faculty/LeaveManagement"));
 const StudentRecords = lazy(() => import("./pages/faculty/StudentRecords"));
 const MyCourses = lazy(() => import("./pages/student/MyCourses"));
 const Grades = lazy(() => import("./pages/student/Grades"));
+const Profile = lazy(() => import("./pages/student/Profile"));
 const Settings = lazy(() => import("./pages/Settings"));
 const Library = lazy(() => import("./pages/academics/Library"));
 const Departments = lazy(() => import("./pages/academics/Departments"));
@@ -74,6 +76,7 @@ const App = () => {
           <Sonner />
         </Suspense>
         <BrowserRouter>
+          <ScrollToTop />
           <Suspense fallback={<PageLoader />}>
             <Routes>
               <Route path="/" element={<Index />} />
@@ -150,6 +153,7 @@ const App = () => {
                 <Route path="students" element={<StudentRecords />} />
                 <Route path="courses" element={<MyCourses />} />
                 <Route path="grades" element={<Grades />} />
+                <Route path="profile" element={<Profile />} />
                 <Route path="analytics" element={<Analytics />} />
                 <Route path="users" element={<UserManagement />} />
               </Route>

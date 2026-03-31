@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar, Clock, Plus, Edit, Filter, BookOpen, User } from "lucide-react";
+import { Calendar, Clock, Plus, Edit, Filter, BookOpen, User, Wand2 } from "lucide-react";
 import { useOutletContext } from "react-router-dom";
 import { AIML_TIMETABLES, FACULTY_LOAD, getTimetable } from "@/data/aimlTimetable";
 import { MOCK_STUDENTS } from "@/data/mockStudents";
@@ -16,12 +16,8 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
   const { user } = useOutletContext<{ user: { id: string, name: string, role: string } }>();
   const userRole = propRole || user?.role || "student";
   
-  const [selectedWeek, setSelectedWeek] = useState("current");
-  const [viewMode, setViewMode] = useState("week");
-
-  // Exactly 6 periods including lunch
-  const timeSlots = ["09:40", "10:40", "11:40", "12:40", "01:20", "02:20", "03:20"];
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const timeSlots = ["09:40", "10:40", "11:40", "12:40", "01:20", "02:20", "03:20"];
 
   const processedData = useMemo(() => {
     if (userRole === "student") {
@@ -54,7 +50,10 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
       const result: any = {};
       const facultyName = user.name;
 
-      Object.entries(AIML_TIMETABLES).forEach(([semKey, table]) => {
+      Object.entries(AIML_TIMETABLES).forEach(([key, table]) => {
+        const parts = key.split('-');
+        const semKey = `${parts[0]}-${parts[1]}`;
+        const section = parts[2] || 'A';
         const load = FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || [];
         
         Object.entries(table).forEach(([dayTime, session]) => {
@@ -65,9 +64,9 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
             const [day, time] = dayTime.split('-');
             if (!result[day]) result[day] = {};
             result[day][time] = {
-              subject: session.courseCode,
+              subject: `${session.courseCode} (${section})`,
               room: assigned.room,
-              branch: semKey,
+              branch: `${parts[0]}-${parts[1]}`, // Use semKey for branch display
               type: session.courseCode.toLowerCase().includes('lab') ? 'lab' : 'lecture',
               duration: 1
             };
@@ -114,8 +113,11 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
     // Lunch break special case
     if (time === "12:40") {
       return (
-        <div className="h-16 flex items-center justify-center bg-muted font-semibold text-sm border border-border/50">
-          Lunch Break
+        <div className="h-[84px] border border-border/30 bg-yellow-50/40 dark:bg-yellow-900/10 flex items-center justify-center relative overflow-hidden group">
+          <span className="text-[10px] text-yellow-600 dark:text-yellow-500 font-black uppercase tracking-[0.3em] font-mono transform -rotate-0 transition-transform duration-500 group-hover:scale-110">
+            Lunch
+          </span>
+          <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#eab308_1px,transparent_1px)] [background-size:16px_16px]" />
         </div>
       );
     }
@@ -123,56 +125,45 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
     const session = timetableData[day as keyof typeof timetableData]?.[time];
     if (!session) {
       return (
-        <div className={`h-16 border border-border/50 ${userRole !== 'student' ? 'bg-muted/20 hover:bg-muted/40 cursor-pointer group' : 'bg-muted/10'} transition-colors flex items-center justify-center`}>
-          {userRole !== 'student' && (
-            <Plus className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-          )}
+        <div className={`h-[84px] border border-border/30 bg-muted/5 flex items-center justify-center transition-colors`}>
+           <span className="text-muted-foreground/10 text-xl font-bold">—</span>
         </div>
       );
     }
+
+    const isLab = session.type === 'lab' || session.subject?.toLowerCase().includes('lab');
+
     return (
       <div
-        className={`relative h-16 border border-border/50 ${getSubjectColor(session.type)} hover:shadow-md transition-all cursor-pointer p-2 rounded-sm group overflow-hidden`}
-        style={{ gridRowEnd: `span ${session.duration}` }}
+        className={`relative h-[84px] border border-border/30 ${
+          isLab ? 'bg-green-50/80 dark:bg-green-950/20' : 'bg-primary/5 dark:bg-primary/10'
+        } p-2 flex flex-col justify-between overflow-hidden group transition-all duration-200 border-l-4 ${
+          isLab ? 'border-l-green-500' : 'border-l-primary'
+        }`}
       >
-        <div className="flex flex-col h-full relative z-10">
-          <div className="font-bold text-[10px] leading-tight flex items-center gap-1 mb-1">
-            <Clock className="h-2 w-2" />
-            {time}
+        <div className="flex flex-col gap-0.5">
+          <div className="font-extrabold text-[11px] leading-tight text-slate-900 dark:text-slate-100 truncate flex items-center gap-1">
+            {session.subject}
+            {isLab && <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shrink-0" />}
           </div>
-          <div className="font-bold text-xs truncate leading-tight">{session.subject}</div>
-          <div className="text-[10px] opacity-90 mt-0.5 flex items-center gap-1 font-medium italic">
-             {userRole === 'student' ? (
-                <>
-                  <User className="h-2.5 w-2.5" />
-                  {session.faculty}
-                </>
-             ) : (
-                <>
-                  <BookOpen className="h-2.5 w-2.5" />
-                  {session.branch}
-                </>
-             )}
-          </div>
-          <div className="text-[10px] bg-black/10 px-1 absolute bottom-0 right-0 rounded-tl-sm font-mono">
-            {session.room}
+          <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium truncate flex items-center gap-1">
+             {userRole === 'student' ? session.faculty : session.branch}
           </div>
         </div>
         
-        {/* Subtle Background Pattern */}
-        <div className="absolute top-0 right-0 p-1 opacity-10 scale-150 rotate-12">
-            <BookOpen className="h-8 w-8 text-black" />
+        <div className="flex items-center justify-between">
+           <div className="text-[9px] font-mono bg-primary/10 text-primary dark:bg-primary/20 px-1.5 py-0.5 rounded font-bold uppercase tracking-tighter">
+             {session.room}
+           </div>
+           <div className="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest group-hover:text-primary transition-colors">
+             {time}
+           </div>
         </div>
 
-        {userRole === 'admin' && (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="absolute top-1 right-1 h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity bg-white/20 hover:bg-white/40 text-white"
-          >
-            <Edit className="h-3 w-3" />
-          </Button>
-        )}
+        {/* Decorative corner accent */}
+        <div className={`absolute top-0 right-0 p-1 opacity-5 scale-150 rotate-12 transition-transform duration-500 group-hover:scale-[2] group-hover:opacity-10`}>
+            {isLab ? <Wand2 className="h-4 w-4" /> : <BookOpen className="h-4 w-4" />}
+        </div>
       </div>
     );
   };
@@ -182,33 +173,22 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center space-y-4 md:space-y-0">
         <div>
-          <h1 className="text-3xl font-bold">Timetable</h1>
+          <h1 className="text-3xl font-bold">Semester Timetable</h1>
           <p className="text-muted-foreground">
-            {userRole === 'student' ? `Class Schedule for ${user.id}` : `Teaching Schedule for ${user.name}`}
+            {userRole === 'student' ? `Master Academic Schedule for ${user.id}` : `Consolidated Teaching Schedule for ${user.name}`}
           </p>
         </div>
 
         <div className="flex items-center space-x-3">
-          <Select value={selectedWeek} onValueChange={setSelectedWeek}>
-            <SelectTrigger className="w-40">
-              <SelectValue placeholder="Select week" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="current">Current Week</SelectItem>
-              <SelectItem value="next">Next Week</SelectItem>
-              <SelectItem value="custom">Custom Range</SelectItem>
-            </SelectContent>
-          </Select>
-
-          <Button variant="outline" size="sm">
-            <Filter className="h-4 w-4 mr-2" />
-            Filter
-          </Button>
+          <Badge variant="outline" className="px-4 py-2 bg-primary/5 border-primary/20 text-primary font-semibold flex gap-2 items-center">
+             <Calendar className="h-4 w-4" />
+             Semester Session: 2024-25
+          </Badge>
 
           {userRole !== 'student' && (
             <Button>
               <Plus className="h-4 w-4 mr-2" />
-              Add Session
+              Adjust Schedule
             </Button>
           )}
         </div>
@@ -257,7 +237,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between relative">
-            <span>Weekly Timetable</span>
+            <span>Semester Academic Schedule</span>
             <div className="flex items-center space-x-2 mr-40">
               <Badge variant="outline" className="bg-primary text-primary-foreground">Lecture</Badge>
               <Badge variant="outline" className="bg-green-600 text-white">Lab</Badge>
@@ -290,7 +270,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
               {/* Day Rows */}
               {days.map((day) => (
                 <div key={day} className="contents text-xs">
-                  <div className="p-3 bg-muted/50 font-black text-center flex items-center justify-center border-r-2 border-muted h-full uppercase min-h-[100px]">
+                  <div className="p-3 bg-muted/50 font-black text-center flex items-center justify-center border-r-2 border-muted h-full uppercase min-h-[84px] tracking-widest text-[10px]">
                     {day}
                   </div>
                   {timeSlots.map((time) => (

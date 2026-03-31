@@ -211,9 +211,33 @@ const NotificationsPage = () => {
                                         <SelectItem value="students">Students Only</SelectItem>
                                         <SelectItem value="faculty">Faculty Only</SelectItem>
                                         <SelectItem value="staff">Staff Only</SelectItem>
+                                        <SelectItem value="specific">Direct Target (UID/Phone)</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
+
+                            {formData.targetAudience === 'specific' && (
+                                <>
+                                    <div className="grid grid-cols-4 items-center gap-4">
+                                        <Label className="text-right">UIDs</Label>
+                                        <Input
+                                            value={formData.targetUids?.join(', ') || ''}
+                                            onChange={e => setFormData({ ...formData, targetUids: e.target.value.split(',').map(s => s.trim()) })}
+                                            className="col-span-3"
+                                            placeholder="e.g. 22K91A6664, 22F91F6604"
+                                        />
+                                    </div>
+                                    <div className="grid grid-cols-4 items-center gap-4">
+                                        <Label className="text-right">Phones</Label>
+                                        <Input
+                                            value={formData.targetPhoneNumbers?.join(', ') || ''}
+                                            onChange={e => setFormData({ ...formData, targetPhoneNumbers: e.target.value.split(',').map(s => s.trim()) })}
+                                            className="col-span-3"
+                                            placeholder="e.g. 9876543210, 8876543210"
+                                        />
+                                    </div>
+                                </>
+                            )}
 
                             <div className="grid grid-cols-4 items-center gap-4">
                                 <Label className="text-right">Priority</Label>
@@ -385,8 +409,18 @@ const NotificationList = ({ items, onDelete, getIcon, isDraft, onEdit }: any) =>
                             </span>
                         </div>
                         <p className="text-sm text-muted-foreground">{item.message}</p>
-                        <div className="flex items-center gap-2 mt-2">
+                        <div className="flex flex-wrap items-center gap-2 mt-2">
                             <Badge variant="secondary" className="text-xs capitalize">{item.targetAudience}</Badge>
+                            {item.targetAudience === 'specific' && (
+                                <>
+                                    {item.targetUids && item.targetUids.length > 0 && (
+                                        <Badge variant="outline" className="text-[10px] font-mono">UIDs: {item.targetUids.length}</Badge>
+                                    )}
+                                    {item.targetPhoneNumbers && item.targetPhoneNumbers.length > 0 && (
+                                        <Badge variant="outline" className="text-[10px] font-mono">SMS: {item.targetPhoneNumbers.length}</Badge>
+                                    )}
+                                </>
+                            )}
                             {isDraft && <Badge variant="outline" className="text-xs">Draft</Badge>}
                         </div>
                     </div>

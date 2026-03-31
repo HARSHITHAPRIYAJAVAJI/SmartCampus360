@@ -40,11 +40,13 @@ const Index = () => {
 
         <div className="relative z-10 container mx-auto px-4 text-center text-white space-y-8 animate-in fade-in zoom-in duration-1000">
 
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight drop-shadow-2xl">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight drop-shadow-2xl">
             SmartCampus360 <br />
-            <span className="text-primary text-3xl md:text-5xl lg:text-6xl block mt-4 font-normal">AI-Driven College Management Platform</span>
+            <span className="text-primary text-xl md:text-3xl lg:text-4xl block mt-2 font-medium drop-shadow-lg filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+              AI-Driven College Management Platform
+            </span>
           </h1>
-          <p className="text-xl md:text-2xl text-white/80 max-w-2xl mx-auto leading-relaxed font-light">
+          <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto leading-relaxed font-normal bg-black/20 backdrop-blur-[2px] rounded-lg p-2">
             Automating campus operations with precision. Experience the next generation of academic management through our unified AI-driven ecosystem.
           </p>
 
@@ -55,20 +57,21 @@ const Index = () => {
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8"
           >
             <Link to="/login/student">
-              <Button size="lg" className="bg-primary hover:bg-primary-dark text-lg px-8 h-14 rounded-full shadow-lg shadow-primary/25 hover:scale-105 transition-transform">
+              <Button size="lg" className="bg-primary hover:bg-primary-dark text-base px-6 h-12 rounded-full shadow-lg shadow-primary/25 hover:scale-105 transition-transform">
                 Login to Dashboard
               </Button>
             </Link>
             <Link to="/admissions/apply">
-              <Button size="lg" variant="outline" className="text-lg px-8 h-14 rounded-full bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20 hover:scale-105 transition-transform">
+              <Button size="lg" variant="outline" className="text-base px-6 h-12 rounded-full bg-white/10 backdrop-blur-md border-white/20 text-white hover:bg-white/20 hover:scale-105 transition-transform">
                 Apply for Admission
               </Button>
             </Link>
           </motion.div>
+          <div className="h-12 md:h-20 lg:h-24"></div> {/* Spacing to prevent overlap */}
         </div>
 
         {/* Floating Stats */}
-        <div className="container mx-auto px-4 relative z-20 -mt-20 lg:-mt-16 sm:mb-12 lg:mb-0">
+        <div className="container mx-auto px-4 relative z-20 -mt-12 lg:-mt-8 sm:mb-6 lg:mb-0">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
             {[
               { number: "10+", label: "Departments Managed", icon: BookOpen },
@@ -76,13 +79,13 @@ const Index = () => {
               { number: "150+", label: "Faculty Members", icon: Users },
               { number: "3000+", label: "Students Registered", icon: GraduationCap },
             ].map((stat, i) => (
-              <div key={i} className="bg-white p-3 sm:p-5 rounded-2xl shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4 animate-in slide-in-from-bottom-5 duration-700 delay-300 transform transition-transform hover:-translate-y-1 hover:shadow-2xl">
-                <div className="w-full">
-                  <div className="text-2xl sm:text-3xl font-bold text-primary">{stat.number}</div>
-                  <div className="text-[10px] sm:text-sm font-medium text-muted-foreground uppercase tracking-wider leading-tight sm:leading-normal">{stat.label}</div>
+              <div key={i} className="bg-white p-2 sm:p-4 rounded-xl shadow-xl flex flex-row items-center justify-between gap-3 animate-in slide-in-from-bottom-5 duration-700 delay-300 transform transition-transform hover:-translate-y-1 hover:shadow-2xl">
+                <div className="flex-1">
+                  <div className="text-xl sm:text-2xl font-black text-primary leading-none">{stat.number}</div>
+                  <div className="text-[9px] sm:text-[11px] font-bold text-muted-foreground uppercase tracking-tight mt-1">{stat.label}</div>
                 </div>
-                <div className="h-8 w-8 sm:h-12 sm:w-12 shrink-0 rounded-full bg-red-50 flex items-center justify-center text-primary self-end sm:self-auto">
-                  <stat.icon className="h-4 w-4 sm:h-6 sm:w-6" />
+                <div className="h-8 w-8 sm:h-10 sm:w-10 shrink-0 rounded-lg bg-red-50 flex items-center justify-center text-primary">
+                  <stat.icon className="h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
               </div>
             ))}
@@ -95,19 +98,19 @@ const Index = () => {
       {/* Programs Section */}
       <section className="py-24 bg-secondary/30 relative">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
             <div className="max-w-xl">
-              <div className="flex items-center gap-2 mb-2 text-primary font-semibold">
-                <Sparkles className="h-5 w-5" />
-                <span>Intelligent Infrastructure</span>
+              <div className="flex items-center gap-2 mb-2 text-primary font-semibold text-sm tracking-wide">
+                <Sparkles className="h-4 w-4" />
+                <span>INTELLIGENT INFRASTRUCTURE</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">Core AI Modules</h2>
-              <p className="text-muted-foreground text-lg">
-                Explore our sophisticated range of management tools designed to streamline every aspect of institutional operations.
+              <h2 className="text-3xl md:text-4xl font-bold mb-3 text-foreground tracking-tight">Core AI Modules</h2>
+              <p className="text-muted-foreground text-base">
+                Explore our sophisticated range of management tools designed to streamline institutional operations.
               </p>
             </div>
             <Link to="/dashboard/admin">
-              <Button variant="ghost" className="group">
+              <Button variant="outline" size="sm" className="group rounded-full px-5 border-primary/20 text-primary hover:bg-primary hover:text-white transition-all duration-300">
                 Explore All Modules <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
@@ -121,12 +124,15 @@ const Index = () => {
             ].map((program, index) => (
               <Card key={index} className="group overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300">
                 <div className="h-48 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent z-10" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
                   <img src={program.image} alt={program.name} loading="lazy" width="500" height="300" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                  <Badge className="absolute top-4 right-4 z-20 bg-white/90 text-foreground hover:bg-white">{program.spots}</Badge>
+                  <Badge className="absolute top-4 right-4 z-20 bg-white/90 text-foreground hover:bg-white text-[10px] font-bold uppercase tracking-wider">{program.spots}</Badge>
+                  <div className="absolute bottom-4 left-6 z-20">
+                    <CardTitle className="text-white text-xl font-bold">{program.name}</CardTitle>
+                  </div>
                 </div>
-                <CardHeader className="relative -mt-12 z-20 px-6 pb-2">
-                  <CardTitle className="text-white text-2xl">{program.name}</CardTitle>
+                <CardHeader className="hidden">
+                  <CardTitle>{program.name}</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-4 px-6 pb-6">
                   <div className="flex justify-between items-center text-sm text-muted-foreground mb-4">

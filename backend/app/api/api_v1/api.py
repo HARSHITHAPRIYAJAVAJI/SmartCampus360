@@ -1,3 +1,4 @@
+from fastapi import APIRouter
 from app.api.api_v1.endpoints import auth, placements, admissions, academic, timetable, training, reports, utils
 
 api_router = APIRouter()

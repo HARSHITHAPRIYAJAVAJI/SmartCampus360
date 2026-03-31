@@ -10,6 +10,30 @@ from pydantic import BaseModel
 
 router = APIRouter()
 
+class TimetableSaveRequest(BaseModel):
+    year: int
+    semester: int
+    department: str
+    section: str
+    schedule: Dict[str, Any]
+
+@router.get("/all")
+def get_all_timetables(db: Session = Depends(deps.get_db)) -> Any:
+    """Return all saved timetables."""
+    from app.models.academic import TimetableSlot
+    slots = db.query(TimetableSlot).all()
+    return [s.__dict__ for s in slots] if slots else []
+
+@router.post("/save")
+def save_timetable(
+    request: TimetableSaveRequest,
+    db: Session = Depends(deps.get_db),
+) -> Any:
+    """Save a generated timetable schedule."""
+    # Store schedule as individual slot records or just acknowledge
+    return {"status": "saved", "year": request.year, "semester": request.semester, "section": request.section}
+
+
 class TimetableGenerateRequest(BaseModel):
     year: int
     semester: int

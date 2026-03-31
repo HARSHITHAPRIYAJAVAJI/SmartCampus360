@@ -36,7 +36,11 @@ export default function FacultyDashboard() {
         const facultyId = user.id;
 
         // 1. Get Base Schedule from master
-        Object.entries(AIML_TIMETABLES).forEach(([semKey, table]) => {
+        Object.entries(AIML_TIMETABLES).forEach(([key, table]) => {
+            // key will be like "1-1", "1-1-B", "2-1-C" etc.
+            const parts = key.split('-');
+            const semKey = `${parts[0]}-${parts[1]}`;
+            const section = parts[2] || 'A';
             const load = FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || [];
             
             Object.entries(table).forEach(([dayTime, session]) => {
@@ -50,10 +54,10 @@ export default function FacultyDashboard() {
                     const period = (hour >= 9 && hour < 12) ? "AM" : "PM";
                     
                     schedule.push({
-                        id: `${dayTime}-${session.courseCode}`,
+                        id: `${key}-${dayTime}-${session.courseCode}`,
                         time: `${time} ${period}`,
                         rawTime: time,
-                        title: session.courseCode,
+                        title: `${session.courseCode} (Sec ${section})`,
                         room: assigned.room,
                         type: session.courseCode.toLowerCase().includes('lab') ? 'lab' : 'lecture',
                         originalFaculty: facultyName

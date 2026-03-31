@@ -9,66 +9,80 @@ export interface Course {
 }
 
 export const MOCK_COURSES: Course[] = [
-    // Year 1, Sem 1
-    { id: "c1", code: "C", name: "Programming in C", credits: 3, type: "Theory", department: "CSM", semester: 1 },
-    { id: "c2", code: "C Lab", name: "Programming in C Lab", credits: 1.5, type: "Lab", department: "CSM", semester: 1 },
-    { id: "c3", code: "ITWS Lab", name: "IT Workshop Lab", credits: 1.5, type: "Lab", department: "CSM", semester: 1 },
-    { id: "c4", code: "M&C", name: "Maths & Calculus", credits: 4, type: "Theory", department: "CSM", semester: 1 },
-    { id: "c5", code: "EDC", name: "Electron Devices & Circuits", credits: 3, type: "Theory", department: "CSM", semester: 1 },
+    // --- SEMESTER 1 ---
+    { id: "s1-1", code: "4B108", name: "English Language and Communication Skills Lab – 1", credits: 1, type: "Lab", department: "CSM", semester: 1 },
+    { id: "s1-2", code: "4B1AA", name: "Linear Algebra and Ordinary Differential Equations", credits: 4, type: "Theory", department: "CSM", semester: 1 },
+    { id: "s1-3", code: "4B1AG", name: "English for Skill Enhancement", credits: 2, type: "Theory", department: "CSM", semester: 1 },
+    { id: "s1-4", code: "4E112", name: "C Programming for Problem Solving Lab", credits: 1, type: "Lab", department: "CSM", semester: 1 },
+    { id: "s1-5", code: "4E114", name: "Engineering Chemistry Lab", credits: 1, type: "Lab", department: "CSM", semester: 1 },
+    { id: "s1-6", code: "4E115", name: "IT Workshop and Elements of Computer Engineering", credits: 1, type: "Lab", department: "CSM", semester: 1 },
+    { id: "s1-7", code: "4E1AJ", name: "C Programming for Problem Solving", credits: 3, type: "Theory", department: "CSM", semester: 1 },
+    { id: "s1-8", code: "4E1DD", name: "Computer Aided Engineering Graphics", credits: 3, type: "Theory", department: "CSM", semester: 1 },
+    { id: "s1-9", code: "4H1AH", name: "Engineering Chemistry", credits: 4, type: "Theory", department: "CSM", semester: 1 },
 
-    // Year 1, Sem 2
-    { id: "c11", code: "DS", name: "Data Structures", credits: 3, type: "Theory", department: "CSM", semester: 2 },
-    { id: "c12", code: "DS Lab", name: "Data Structures Lab", credits: 1.5, type: "Lab", department: "CSM", semester: 2 },
-    { id: "c13", code: "PP", name: "Python Programming", credits: 3, type: "Theory", department: "CSM", semester: 2 },
-    { id: "c14", code: "PP Lab", name: "Python Programming Lab", credits: 1.5, type: "Lab", department: "CSM", semester: 2 },
+    // --- SEMESTER 2 ---
+    { id: "s2-1", code: "4B209", name: "Applied Physics Lab", credits: 1, type: "Lab", department: "CSM", semester: 2 },
+    { id: "s2-2", code: "4B2AM", name: "Statistical Methods and Vector Calculus", credits: 4, type: "Theory", department: "CSM", semester: 2 },
+    { id: "s2-3", code: "4B2AN", name: "Applied Physics", credits: 4, type: "Theory", department: "CSM", semester: 2 },
+    { id: "s2-4", code: "4E210", name: "Basic Electrical and Simulation Lab", credits: 1, type: "Lab", department: "CSM", semester: 2 },
+    { id: "s2-5", code: "4E211", name: "Data Structures Lab", credits: 1, type: "Lab", department: "CSM", semester: 2 },
+    { id: "s2-6", code: "4E2AP", name: "Basic Electrical Engineering", credits: 3, type: "Theory", department: "CSM", semester: 2 },
+    { id: "s2-7", code: "4E2AQ", name: "Data Structures", credits: 3, type: "Theory", department: "CSM", semester: 2 },
+    { id: "s2-8", code: "4H2AL", name: "Business Economics and Financial Analysis", credits: 3, type: "Theory", department: "CSM", semester: 2 },
 
-    // Year 2, Sem 1
-    { id: "c21", code: "CAO", name: "Computer Architecture & Organization", credits: 3, type: "Theory", department: "CSM", semester: 3 },
-    { id: "c22", code: "MFCS", name: "Mathematical Foundations of CS", credits: 3, type: "Theory", department: "CSM", semester: 3 },
-    { id: "c23", code: "CN", name: "Computer Networks", credits: 3, type: "Theory", department: "CSM", semester: 3 },
-    { id: "c24", code: "PP", name: "Python Programming", credits: 3, type: "Theory", department: "CSM", semester: 3 },
-    { id: "c25", code: "PP Lab", name: "Python Programming Lab", credits: 1.5, type: "Lab", department: "CSM", semester: 3 },
+    // --- SEMESTER 3 ---
+    { id: "s3-1", code: "4B30D", name: "Probability and Statistics", credits: 4, type: "Theory", department: "CSM", semester: 3 },
+    { id: "s3-2", code: "4E303", name: "Python Programming Lab", credits: 1, type: "Lab", department: "CSM", semester: 3 },
+    { id: "s3-3", code: "4E312", name: "Semiconductor Devices and Circuits Lab", credits: 1, type: "Lab", department: "CSM", semester: 3 },
+    { id: "s3-4", code: "4E3EA", name: "Semiconductor Devices and Circuits", credits: 3, type: "Theory", department: "CSM", semester: 3 },
+    { id: "s3-5", code: "4E3EB", name: "Python Programming", credits: 2, type: "Theory", department: "CSM", semester: 3 },
+    { id: "s3-6", code: "4E3EC", name: "Mathematical Foundations of Computer Science", credits: 3, type: "Theory", department: "CSM", semester: 3 },
+    { id: "s3-7", code: "4E3ED", name: "Computer Architecture and Organization", credits: 3, type: "Theory", department: "CSM", semester: 3 },
+    { id: "s3-8", code: "4E3EE", name: "Computer Networks", credits: 3, type: "Theory", department: "CSM", semester: 3 },
 
-    // Year 2, Sem 2
-    { id: "c31", code: "DAA", name: "Design and Analysis of Algorithms", credits: 3, type: "Theory", department: "CSM", semester: 4 },
-    { id: "c32", code: "DBMS", name: "Database Management Systems", credits: 3, type: "Theory", department: "CSM", semester: 4 },
-    { id: "c33", code: "DBMS Lab", name: "Database Lab", credits: 1.5, type: "Lab", department: "CSM", semester: 4 },
-    { id: "c34", code: "JAVA", name: "Java Programming", credits: 3, type: "Theory", department: "CSM", semester: 4 },
-    { id: "c35", code: "JAVA Lab", name: "Java Lab", credits: 1.5, type: "Lab", department: "CSM", semester: 4 },
-    { id: "c36", code: "ML", name: "Machine Learning", credits: 3, type: "Theory", department: "CSM", semester: 4 },
-    { id: "c37", code: "OOPS", name: "Object Oriented Programming", credits: 3, type: "Theory", department: "CSM", semester: 4 },
-    { id: "c38", code: "SE", name: "Software Engineering", credits: 3, type: "Theory", department: "CSM", semester: 4 },
-    { id: "c39", code: "WT", name: "Web Technologies", credits: 3, type: "Theory", department: "CSM", semester: 4 },
-    { id: "c40", code: "WT Lab", name: "Web Technologies Lab", credits: 1.5, type: "Lab", department: "CSM", semester: 4 },
+    // --- SEMESTER 4 ---
+    { id: "s4-1", code: "4E411", name: "Database Management Systems Lab", credits: 1, type: "Lab", department: "CSM", semester: 4 },
+    { id: "s4-2", code: "4E412", name: "Object Oriented Programming through Java Lab", credits: 1, type: "Lab", department: "CSM", semester: 4 },
+    { id: "s4-3", code: "4E413", name: "Advanced English Communication Skills Lab", credits: 2, type: "Lab", department: "CSM", semester: 4 },
+    { id: "s4-4", code: "4E414", name: "Web Technologies Lab", credits: 1, type: "Lab", department: "CSM", semester: 4 },
+    { id: "s4-5", code: "4E4EA", name: "Object Oriented Programming through Java", credits: 3, type: "Theory", department: "CSM", semester: 4 },
+    { id: "s4-6", code: "4E4EB", name: "Design and Analysis of Algorithms", credits: 4, type: "Theory", department: "CSM", semester: 4 },
+    { id: "s4-7", code: "4E4EC", name: "Database Management Systems", credits: 3, type: "Theory", department: "CSM", semester: 4 },
+    { id: "s4-8", code: "4E4ED", name: "Software Engineering", credits: 3, type: "Theory", department: "CSM", semester: 4 },
+    { id: "s4-9", code: "4E4EE", name: "Web Technologies", credits: 2, type: "Theory", department: "CSM", semester: 4 },
 
-    // Year 3, Sem 1
-    { id: "c51", code: "AI", name: "Artificial Intelligence", credits: 3, type: "Theory", department: "CSM", semester: 5 },
-    { id: "c52", code: "ATCD", name: "ATCD", credits: 3, type: "Theory", department: "CSM", semester: 5 },
-    { id: "c53", code: "DevOps", name: "DevOps", credits: 3, type: "Lab", department: "CSM", semester: 5 },
-    { id: "c54", code: "ML", name: "Machine Learning", credits: 4, type: "Theory", department: "CSM", semester: 5 },
-    { id: "c55", code: "OOAD", name: "Object Oriented Analysis & Design", credits: 3, type: "Theory", department: "CSM", semester: 5 },
-    { id: "c56", code: "OS", name: "Operating Systems", credits: 3, type: "Theory", department: "CSM", semester: 5 },
+    // --- SEMESTER 5 ---
+    { id: "s5-1", code: "4E513", name: "Machine Learning Lab", credits: 1, type: "Lab", department: "CSM", semester: 5 },
+    { id: "s5-2", code: "4E514", name: "Skill Development Course", credits: 1, type: "Lab", department: "CSM", semester: 5 },
+    { id: "s5-3", code: "4E5GA", name: "Automata Theory and Compiler Design", credits: 3, type: "Theory", department: "CSM", semester: 5 },
+    { id: "s5-4", code: "4E5GB", name: "Operating Systems", credits: 3, type: "Theory", department: "CSM", semester: 5 },
+    { id: "s5-5", code: "4E5GC", name: "Artificial Intelligence", credits: 3, type: "Theory", department: "CSM", semester: 5 },
+    { id: "s5-6", code: "4E5GD", name: "Machine Learning", credits: 3, type: "Theory", department: "CSM", semester: 5 },
+    { id: "s5-7", code: "4P5GC", name: "DevOps", credits: 3, type: "Theory", department: "CSM", semester: 5 },
+    { id: "s5-8", code: "4P5GD", name: "Object Oriented Analysis & Design", credits: 3, type: "Theory", department: "CSM", semester: 5 },
 
-    // Year 3, Sem 2
-    { id: "c61", code: "Conv. AI", name: "Conversational AI", credits: 3, type: "Theory", department: "CSM", semester: 6 },
-    { id: "c62", code: "NLP", name: "Natural Language Processing", credits: 3, type: "Theory", department: "CSM", semester: 6 },
-    { id: "c63", code: "NLP Lab", name: "Natural Language Processing Lab", credits: 1.5, type: "Lab", department: "CSM", semester: 6 },
-    { id: "c64", code: "DL", name: "Deep Learning", credits: 3, type: "Theory", department: "CSM", semester: 6 },
-    { id: "c65", code: "DL Lab", name: "Deep Learning Lab", credits: 1.5, type: "Lab", department: "CSM", semester: 6 },
-    { id: "c66", code: "RPA", name: "Robotic Process Automation", credits: 3, type: "Lab", department: "CSM", semester: 6 },
-    { id: "c67", code: "IS", name: "Information Security", credits: 3, type: "Theory", department: "CSM", semester: 6 },
-    { id: "c68", code: "OE", name: "Open Elective", credits: 3, type: "Theory", department: "CSM", semester: 6 },
+    // --- SEMESTER 6 ---
+    { id: "s6-1", code: "4E614", name: "Natural Language Processing Lab", credits: 1, type: "Lab", department: "CSM", semester: 6 },
+    { id: "s6-2", code: "4E615", name: "Deep Learning Lab", credits: 1, type: "Lab", department: "CSM", semester: 6 },
+    { id: "s6-3", code: "4E6GA", name: "Natural Language Processing", credits: 3, type: "Theory", department: "CSM", semester: 6 },
+    { id: "s6-4", code: "4E6GB", name: "Deep Learning", credits: 3, type: "Theory", department: "CSM", semester: 6 },
+    { id: "s6-5", code: "4H6GA", name: "Fundamentals of Management", credits: 3, type: "Theory", department: "CSM", semester: 6 },
+    { id: "s6-6", code: "4O6GA", name: "Embedded Systems Design", credits: 3, type: "Theory", department: "CSM", semester: 6 },
+    { id: "s6-7", code: "4P6GC", name: "Internet of Things", credits: 3, type: "Theory", department: "CSM", semester: 6 },
+    { id: "s6-8", code: "4P6GE", name: "Expert Systems", credits: 3, type: "Theory", department: "CSM", semester: 6 },
 
-    // Year 4, Sem 1
-    { id: "c71", code: "BDA", name: "Big Data Analytics", credits: 4, type: "Theory", department: "CSM", semester: 7 },
-    { id: "c72", code: "BDA Lab", name: "Big Data Analytics Lab", credits: 1.5, type: "Lab", department: "CSM", semester: 7 },
-    { id: "c73", code: "DM", name: "Disaster Management", credits: 3, type: "Theory", department: "CSM", semester: 7 },
-    { id: "c74", code: "IS", name: "Information Security", credits: 3, type: "Theory", department: "CSM", semester: 7 },
-    { id: "c75", code: "KRR", name: "Knowledge Representation & Reasoning", credits: 3, type: "Theory", department: "CSM", semester: 7 },
+    // --- SEMESTER 7 ---
+    { id: "s7-1", code: "4E706", name: "Big Data Analytics Lab", credits: 1, type: "Lab", department: "CSM", semester: 7 },
+    { id: "s7-2", code: "4E7GA", name: "Knowledge Representation and Reasoning", credits: 3, type: "Theory", department: "CSM", semester: 7 },
+    { id: "s7-3", code: "4E7GB", name: "Big Data Analytics", credits: 3, type: "Theory", department: "CSM", semester: 7 },
+    { id: "s7-4", code: "4O7GB", name: "Disaster Management", credits: 3, type: "Theory", department: "CSM", semester: 7 },
+    { id: "s7-5", code: "4P7GB", name: "Information Security", credits: 3, type: "Theory", department: "CSM", semester: 7 },
+    { id: "s7-6", code: "4P7PP1", name: "Project Work Phase 1", credits: 7, type: "Theory", department: "CSM", semester: 7 },
 
-    // Year 4, Sem 2
-    { id: "c81", code: "RL", name: "Reinforcement Learning", credits: 4, type: "Theory", department: "CSM", semester: 8 },
-    { id: "c82", code: "QC", name: "Quantum Computing", credits: 3, type: "Theory", department: "CSM", semester: 8 },
-    { id: "c83", code: "OE", name: "Open Elective", credits: 3, type: "Theory", department: "CSM", semester: 8 },
-    { id: "c84", code: "DS OE", name: "Data Science Open Elective", credits: 3, type: "Theory", department: "CSM", semester: 8 },
+    // --- SEMESTER 8 ---
+    { id: "s8-1", code: "RL", name: "Reinforcement Learning", credits: 3, type: "Theory", department: "CSM", semester: 8 },
+    { id: "s8-2", code: "FDS", name: "Foundations of Data Science", credits: 3, type: "Theory", department: "CSM", semester: 8 },
+    { id: "s8-3", code: "ITE", name: "Internet Technology and Engineering", credits: 3, type: "Theory", department: "CSM", semester: 8 },
+    { id: "s8-4", code: "QC", name: "Quantum Computing", credits: 3, type: "Theory", department: "CSM", semester: 8 },
+    { id: "s8-5", code: "PW2", name: "Project Work Phase 2", credits: 10, type: "Theory", department: "CSM", semester: 8 },
 ];

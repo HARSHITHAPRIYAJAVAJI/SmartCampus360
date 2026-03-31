@@ -3,7 +3,9 @@ export interface Notification {
     title: string;
     message: string;
     type: 'info' | 'warning' | 'success' | 'destructive';
-    targetAudience: 'all' | 'students' | 'faculty' | 'staff';
+    targetAudience: 'all' | 'students' | 'faculty' | 'staff' | 'specific';
+    targetUids?: string[];
+    targetPhoneNumbers?: string[];
     date: string;
     status: 'sent' | 'draft' | 'scheduled';
     sender: string;

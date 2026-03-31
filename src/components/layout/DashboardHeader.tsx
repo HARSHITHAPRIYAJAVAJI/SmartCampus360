@@ -159,9 +159,11 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <User className="mr-2 h-4 w-4" />
-              Profile
+            <DropdownMenuItem asChild>
+              <Link to={user.role === 'student' ? "/dashboard/profile" : "#"} className="cursor-pointer w-full flex items-center">
+                <User className="mr-2 h-4 w-4" />
+                Profile
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Bell className="mr-2 h-4 w-4" />

@@ -5,9 +5,13 @@ from sqlalchemy.orm import Session
 
 from app.api.api_v1.api import api_router
 from app.core.config import settings
-from app.db.session import engine, Base
+from app.db.session import engine
 from app.db.session import get_db
-from app.core.security import get_current_active_user
+from app.api.deps import get_current_active_user
+
+from app.models.base import Base
+# Import all models to ensure they are registered with SQLAlchemy's metadata
+from app.models import *
 
 # Create database tables
 Base.metadata.create_all(bind=engine)

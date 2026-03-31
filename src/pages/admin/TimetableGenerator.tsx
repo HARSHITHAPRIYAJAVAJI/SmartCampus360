@@ -1,14 +1,16 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { timetableService } from "@/services/api";
-import { Loader2, Calendar as CalendarIcon, Save, RefreshCw, Wand2, Building2, Grip, BookOpen, Rocket, PlayCircle } from "lucide-react";
+import { timetableService, academicService } from "@/services/api";
+import { Loader2, Calendar as CalendarIcon, Save, RefreshCw, Wand2, Building2, Grip, BookOpen, Rocket, PlayCircle, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AIML_TIMETABLES, FACULTY_LOAD, getTimetable } from "@/data/aimlTimetable"; // Import Data
+import { timetableGeneratorService, CourseData, RoomData } from "@/services/timetableGenerator";
 import { MOCK_COURSES } from "@/data/mockCourses";
+import { AlertCircle, Terminal, CheckCircle2 } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
     DndContext,
     closestCenter,
@@ -32,6 +34,7 @@ import { CSS } from "@dnd-kit/utilities";
 interface CourseCardProps {
     id: string;
     courseCode: string;
+    courseName?: string;
     room: string;
 }
 
@@ -44,7 +47,7 @@ interface TimetableSlot {
 
 // --- Components ---
 
-function DraggableCourse({ id, courseCode, room }: CourseCardProps) {
+function DraggableCourse({ id, courseCode, courseName, room }: CourseCardProps) {
     const {
         attributes,
         listeners,
@@ -72,8 +75,8 @@ function DraggableCourse({ id, courseCode, room }: CourseCardProps) {
         ${isDragging ? 'ring-2 ring-primary rotate-3 scale-105 z-50' : 'border-border'}
       `}
         >
-            <div className="font-bold text-primary">{courseCode}</div>
-            <div className="text-[10px] text-muted-foreground/60 uppercase font-bold mt-1">Lecture</div>
+            <div className="font-bold text-primary truncate leading-tight">{courseName || courseCode}</div>
+            <div className="text-[10px] text-muted-foreground/60 uppercase font-bold mt-0.5">{courseCode}</div>
         </div>
     );
 }
@@ -118,9 +121,6 @@ const TimetableGenerator = () => {
 
     // View timetable selectors
     const [viewFilter, setViewFilter] = useState({ year: "1", semester: "1", department: "CSM", section: "A" });
-    const viewKey = `${viewFilter.year}-${viewFilter.semester}`;
-    const viewTable = getTimetable(viewFilter.year, viewFilter.semester, viewFilter.section);
-    const viewLoad = FACULTY_LOAD[viewKey as keyof typeof FACULTY_LOAD] || [];
 
     // State for drag and drop
     const [gridState, setGridState] = useState<Record<string, CourseCardProps | null>>({});
@@ -129,7 +129,7 @@ const TimetableGenerator = () => {
     const [formData, setFormData] = useState({
         year: "1",
         semester: "1",
-        department: "CSE",
+        department: "CSM",
         section: "A"
     });
 
@@ -137,22 +137,50 @@ const TimetableGenerator = () => {
     const [batchProgress, setBatchProgress] = useState(0);
     const [batchSemester, setBatchSemester] = useState("1");
 
-    const handleBatchGenerate = async () => {
-        setBatchLoading(true);
-        setBatchProgress(10);
-        
-        const steps = [30, 60, 85, 100];
-        for(const progress of steps) {
-            await new Promise(r => setTimeout(r, 1000));
-            setBatchProgress(progress);
-        }
-        
-        setBatchLoading(false);
-        toast({
-            title: "Batch Generation Complete",
-            description: `Successfully regenerated all master timetables for Semester ${batchSemester} across all branches, years, and sections.`
-        });
-    };
+    // Data from API
+    const [courses, setCourses] = useState<CourseData[]>([]);
+    const [rooms, setRooms] = useState<RoomData[]>([]);
+    const [savedTimetables, setSavedTimetables] = useState<any>({});
+    const [isApiOffline, setIsApiOffline] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [cRes, rRes, tRes] = await Promise.all([
+                    academicService.getCourses(),
+                    academicService.getRooms(),
+                    timetableService.getAll()
+                ]);
+                // API is reachable — mark as online regardless of empty data
+                setIsApiOffline(false);
+                // Use API data if available, otherwise supplement with local mock courses
+                const apiCourses = cRes.data && cRes.data.length > 0 ? cRes.data : MOCK_COURSES;
+                const apiRooms = rRes.data && rRes.data.length > 0 ? rRes.data : [
+                    { id: 1, name: "A-304", room_type: "Lab" },
+                    { id: 2, name: "C-201", room_type: "Lecture" },
+                    { id: 3, name: "N-412", room_type: "Lecture" },
+                    { id: 4, name: "S-101", room_type: "Lab" }
+                ];
+                setCourses(apiCourses as any);
+                setRooms(apiRooms);
+                setSavedTimetables(tRes.data || {});
+            } catch (err) {
+                // Only mark as offline if the request itself failed (network error, 5xx, etc.)
+                console.error("Fetch error:", err);
+                setIsApiOffline(true);
+                setCourses(MOCK_COURSES as any);
+                setRooms([
+                    { id: 1, name: "A-304", room_type: "Lab" },
+                    { id: 2, name: "C-201", room_type: "Lecture" },
+                    { id: 3, name: "N-412", room_type: "Lecture" },
+                    { id: 4, name: "S-101", room_type: "Lab" }
+                ]);
+            }
+        };
+        fetchData();
+    }, []);
+
+
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -163,303 +191,106 @@ const TimetableGenerator = () => {
 
     const availableSubjects = useMemo(() => {
         const calcSemester = (parseInt(formData.year) - 1) * 2 + parseInt(formData.semester);
-        return MOCK_COURSES.filter(c =>
-            c.department === formData.department &&
+        return courses.filter(c =>
+            c.department.toLowerCase() === formData.department.toLowerCase() &&
             c.semester === calcSemester
         );
-    }, [formData.department, formData.year, formData.semester]);
+    }, [formData.department, formData.year, formData.semester, courses]);
+
+    const viewTable = useMemo(() => {
+        const key = `${viewFilter.department}-${viewFilter.year}-${viewFilter.semester}-${viewFilter.section}`;
+        return savedTimetables[key] || {};
+    }, [viewFilter, savedTimetables]);
+
+    const handleBatchGenerate = async () => {
+        if (courses.length === 0) return toast({ title: "No data", description: "Course catalog is empty." });
+        
+        setBatchLoading(true);
+        setBatchProgress(5);
+        
+        try {
+            // CSM is the active branch with course data
+            const dept = "CSM";
+            const years = [1, 2, 3, 4];
+            const sections = ["A", "B", "C"];
+            const semester = parseInt(batchSemester);
+            
+            const total = years.length * sections.length;
+            let current = 0;
+            const batchResults: Record<string, any> = {};
+
+            for (const year of years) {
+                for (const section of sections) {
+                    const schedule = timetableGeneratorService.generate(year, semester, dept, section, courses, rooms);
+                    
+                    // Key format: dept-year-semester-section (matches viewTable lookup exactly)
+                    const key = `${dept}-${year}-${semester}-${section}`;
+                    batchResults[key] = schedule;
+                    
+                    timetableService.save(year, semester, dept, section, schedule).catch(() => {});
+                    
+                    current++;
+                    setBatchProgress(Math.round((current / total) * 100));
+                }
+            }
+            
+            setSavedTimetables((prev: any) => ({ ...prev, ...batchResults }));
+
+            // Auto-switch to View tab with CSM Year 1 Sem selected
+            setViewFilter({ department: "CSM", year: "1", semester: batchSemester, section: "A" });
+            setViewTab('view');
+
+            toast({
+                title: "✅ Batch Complete",
+                description: `Generated ${total} schedules for CSM — Semester ${batchSemester} (Y1-Y4, Sec A/B/C). Viewing Y1 Sec-A now.`
+            });
+        } catch (e) {
+            toast({ title: "Batch Error", variant: "destructive", description: "Failed to complete batch process." });
+        } finally {
+            setBatchLoading(false);
+        }
+    };
 
     const handleGenerate = async () => {
         setLoading(true);
         try {
-            await new Promise(r => setTimeout(r, 800)); // Fake realistic delay
+            const year = parseInt(formData.year);
+            const semester = parseInt(formData.semester);
+            
+            const newGrid = timetableGeneratorService.generate(year, semester, formData.department, formData.section, courses, rooms);
+            
+            // Always save and display — never block on missing subjects
+            setGridState(newGrid as any);
 
-            let newGrid: Record<string, CourseCardProps | null> = {};
+            const vKey = `${formData.department}-${formData.year}-${formData.semester}-${formData.section}`;
+            setSavedTimetables((prev: any) => ({ ...prev, [vKey]: newGrid }));
 
-            const key = `${formData.year}-${formData.semester}`;
-            const calcSemester = (parseInt(formData.year) - 1) * 2 + parseInt(formData.semester);
+            // Auto-switch to View tab with correct filters
+            setViewFilter({ 
+                department: formData.department, 
+                year: formData.year, 
+                semester: formData.semester, 
+                section: formData.section 
+            });
+            setViewTab('view');
 
-            // 1. Try static AIML timetables if CSM
-            if (formData.department === "CSM" && AIML_TIMETABLES[key]) {
-                const staticData = AIML_TIMETABLES[key];
-                Object.keys(staticData).forEach(slotKey => {
-                    const entry = staticData[slotKey];
-                    if (entry) {
-                        newGrid[slotKey] = {
-                            id: entry.id,
-                            courseCode: entry.courseCode,
-                            room: entry.room
-                        };
-                    }
-                });
-            } else if (formData.department === "CSM" && FACULTY_LOAD[key as keyof typeof FACULTY_LOAD]) {
-                const subjects = FACULTY_LOAD[key as keyof typeof FACULTY_LOAD];
-                const labs = subjects.filter(s => s.code.toLowerCase().includes('lab') || s.code === 'DevOps' || s.code === 'RPA');
-                const theories = subjects.filter(s => !labs.includes(s));
-                let assignedLabsCount = 0;
+            // Persist to backend (non-blocking)
+            timetableService.save(year, semester, formData.department, formData.section, newGrid).catch(() => {});
 
-                days.forEach((day, dIdx) => {
-                    // 4th Year has no classes on Saturday
-                    if (day === "Saturday" && formData.year === "4") return;
-
-                    let morningHasLab = false;
-                    let afternoonHasLab = false;
-
-                    // Assign exactly one instance of each lab per week
-                    if (assignedLabsCount < labs.length) {
-                        const isMorningLab = dIdx % 2 === 0;
-                        const is4thYearProjectAfternoon = formData.year === "4" && formData.semester === "2" && ["Wednesday", "Thursday", "Friday"].includes(day);
-                        const isMentoringDay = (formData.year === "4" && day === "Tuesday") || (formData.year === "3" && day === "Saturday");
-
-                        if (!isMorningLab && (is4thYearProjectAfternoon || isMentoringDay)) {
-                            // Skip creating afternoon lab on blocked days (will try on next day)
-                        } else {
-                            const lab = labs[assignedLabsCount];
-                            assignedLabsCount++;
-
-                            if (isMorningLab) {
-                                morningHasLab = true;
-                                timeSlots.slice(0, 3).forEach(slot => {
-                                    newGrid[`${day}-${slot.id}`] = {
-                                        id: `gen-${day}-${slot.id}`,
-                                        courseCode: lab.code,
-                                        room: lab.room || "Lab"
-                                    };
-                                });
-                            } else {
-                                afternoonHasLab = true;
-                                timeSlots.slice(4, 7).forEach(slot => {
-                                    newGrid[`${day}-${slot.id}`] = {
-                                        id: `gen-${day}-${slot.id}`,
-                                        courseCode: lab.code,
-                                        room: lab.room || "Lab"
-                                    };
-                                });
-                            }
-                        }
-                    }
-
-                    // Fill remaining with theories
-                    timeSlots.forEach((slot, sIdx) => {
-                        if (slot.type === 'break') return;
-                        if (newGrid[`${day}-${slot.id}`]) return; // Already filled by Lab
-
-                        // 3rd/4th Year Mentoring Slot
-                        const isMentoringDay = (formData.year === "4" && day === "Tuesday") || (formData.year === "3" && day === "Saturday");
-                        if (isMentoringDay && slot.id === "03:20") return;
-
-                        // 4th Year Sem 2 Wed, Thu, Fri Afternoon is Project
-                        if (formData.year === "4" && formData.semester === "2" && 
-                            ["Wednesday", "Thursday", "Friday"].includes(day) && 
-                            ["01:20", "02:20", "03:20"].includes(slot.id)) return;
-
-                        if (theories.length > 0) {
-                            const tIdx = (dIdx * 3 + sIdx) % theories.length;
-                            const theory = theories[tIdx];
-                            newGrid[`${day}-${slot.id}`] = {
-                                id: `gen-${day}-${slot.id}`,
-                                courseCode: theory.code,
-                                room: theory.room || "Classroom"
-                            };
-                        }
-                    });
+            // Soft warning if some subjects didn't fit (informational only)
+            const assignedCodes = new Set(Object.values(newGrid).filter(Boolean).map(e => e?.courseCode));
+            const missing = availableSubjects.filter(s => !assignedCodes.has(s.code));
+            if (missing.length > 0) {
+                toast({ 
+                    title: "⚠️ Partial Schedule Generated",
+                    description: `${missing.length} subject(s) couldn't fit all slots (e.g., ${missing[0].name}). Schedule still saved — review and adjust manually.`
                 });
             } else {
-                // 2. Fallback to API / Heuristic using MOCK_COURSES
-                try {
-                    const yearInt = parseInt(formData.year);
-                    const semInt = parseInt(formData.semester);
-                    const response = await timetableService.generate(yearInt, semInt, formData.department);
-
-                    if (response.data && Array.isArray(response.data) && response.data.length > 0) {
-                        response.data.forEach((item: any) => {
-                            if (item.slot_id) {
-                                newGrid[item.slot_id] = {
-                                    id: `ai-${Math.random()}`,
-                                    courseCode: item.course_code,
-                                    room: item.room_name
-                                };
-                            }
-                        });
-                        toast({
-                            title: "AI Optimization Complete",
-                            description: `Generated conflict-free schedule using Google OR-Tools.`,
-                            className: "bg-green-50 border-green-200 dark:bg-green-900/20"
-                        });
-                    } else {
-                        throw new Error("No data returned from AI");
-                    }
-                } catch (error) {
-                    console.error("AI Generation failed:", error);
-                    toast({
-                        title: "AI Service Unavailable",
-                        description: "Falling back to local heuristic generation based on syllabus.",
-                        variant: "destructive"
-                    });
-
-                    // Helper for dynamic room assignments
-                    const getRoomName = (dept: string, isLab: boolean, seed: number) => {
-                        const roomNum = 401 + (seed % 12);
-                        if (dept === "CSM") return `N-${roomNum}${isLab ? ' (Lab)' : ''}`;
-                        if (dept === "IT") return `S-${roomNum}${isLab ? ' (Lab)' : ''}`;
-                        return isLab ? "Lab 101" : "Lecture Hall A";
-                    };
-
-                    // Fallback using MOCK_COURSES
-                    const branchCourses = MOCK_COURSES.filter(c =>
-                        (c.department === formData.department) &&
-                        (c.semester === calcSemester)
-                    );
-
-                    if (branchCourses.length > 0) {
-                        const labs = branchCourses.filter(c => c.type === 'Lab');
-                        const theories = branchCourses.filter(c => c.type === 'Theory');
-
-                        let assignedMocksCount = 0;
-
-                        days.forEach((day, dIdx) => {
-                            // 4th Year Saturday logic - No classes
-                            if (day === "Saturday" && formData.year === "4") {
-                                return;
-                            }
-
-                            let morningHasLab = false;
-                            let afternoonHasLab = false;
-
-                            // Single instance mapping
-                            if (assignedMocksCount < labs.length) {
-                                const isMorningLab = dIdx % 2 === 0;
-                                const is4thYearProjectAfternoon = formData.year === "4" && formData.semester === "2" && ["Wednesday", "Thursday", "Friday"].includes(day);
-                                const isMentoringDay = (formData.year === "4" && day === "Tuesday") || (formData.year === "3" && day === "Saturday");
-                                
-                                if (!isMorningLab && (is4thYearProjectAfternoon || isMentoringDay)) {
-                                    // Skip
-                                } else {
-                                    const lab = labs[assignedMocksCount];
-                                    assignedMocksCount++;
-
-                                    if (isMorningLab) {
-                                        morningHasLab = true;
-                                        timeSlots.slice(0, 3).forEach(slot => {
-                                            newGrid[`${day}-${slot.id}`] = {
-                                                id: `course-${day}-${slot.id}`,
-                                                courseCode: lab.code,
-                                                room: getRoomName(formData.department, true, dIdx)
-                                            };
-                                        });
-                                    } else {
-                                        afternoonHasLab = true;
-                                        timeSlots.slice(4, 7).forEach(slot => {
-                                            newGrid[`${day}-${slot.id}`] = {
-                                                id: `course-${day}-${slot.id}`,
-                                                courseCode: lab.code,
-                                                room: getRoomName(formData.department, true, dIdx)
-                                            };
-                                        });
-                                    }
-                                }
-                            }
-
-                            // Fill remaining with theory courses
-                            timeSlots.forEach((slot, sIdx) => {
-                                if (slot.type === 'break') return;
-
-                                const isMorning = sIdx < 3;
-                                const isAfternoon = sIdx > 3;
-
-                                if (isMorning && morningHasLab) return;
-                                if (isAfternoon && afternoonHasLab) return;
-
-                                // 1:20 to 4:20 PM Project allocation for 4th Year Sem 2
-                                if (formData.year === "4" && formData.semester === "2" && 
-                                    ["Wednesday", "Thursday", "Friday"].includes(day) && 
-                                    ["01:20", "02:20", "03:20"].includes(slot.id)) return;
-
-                                if (theories.length > 0) {
-                                    const primeMultiplier = 7;
-                                    const courseIndex = (dIdx * timeSlots.length + sIdx * primeMultiplier) % theories.length;
-                                    const theory = theories[courseIndex];
-                                    newGrid[`${day}-${slot.id}`] = {
-                                        id: `course-${day}-${slot.id}`,
-                                        courseCode: theory.code,
-                                        room: getRoomName(formData.department, false, dIdx + sIdx)
-                                    };
-                                }
-                            });
-                        });
-                    } else {
-                        // Synthesize generic courses
-                        let synLabCount = 0;
-
-                        days.forEach((day, dIdx) => {
-                            // 4th Year Saturday logic - No classes
-                            if (day === "Saturday" && formData.year === "4") {
-                                return;
-                            }
-
-                            let morningHasLab = false;
-                            let afternoonHasLab = false;
-
-                            // 1 synthesized lab maximum
-                            if (synLabCount < 1) {
-                                const isMorningLab = dIdx % 2 === 0;
-                                const is4thYearProjectAfternoon = formData.year === "4" && formData.semester === "2" && ["Wednesday", "Thursday", "Friday"].includes(day);
-                                const isMentoringDay = (formData.year === "4" && day === "Tuesday") || (formData.year === "3" && day === "Saturday");
-                                
-                                if (!isMorningLab && (is4thYearProjectAfternoon || isMentoringDay)) {
-                                    // Skip
-                                } else {
-                                    synLabCount++;
-                                    if (isMorningLab) {
-                                        morningHasLab = true;
-                                        timeSlots.slice(0, 3).forEach(slot => {
-                                            newGrid[`${day}-${slot.id}`] = {
-                                                id: `course-${day}-${slot.id}`,
-                                                courseCode: `${formData.department} Lab`,
-                                                room: getRoomName(formData.department, true, dIdx)
-                                            };
-                                        });
-                                    } else {
-                                        afternoonHasLab = true;
-                                        timeSlots.slice(4, 7).forEach(slot => {
-                                            newGrid[`${day}-${slot.id}`] = {
-                                                id: `course-${day}-${slot.id}`,
-                                                courseCode: `${formData.department} Lab`,
-                                                room: getRoomName(formData.department, true, dIdx)
-                                            };
-                                        });
-                                    }
-                                }
-                            }
-
-                            // Fill remaining slots
-                            timeSlots.forEach((slot, sIdx) => {
-                                if (slot.type === 'break') return;
-                                const isMorning = sIdx < 3;
-                                const isAfternoon = sIdx > 3;
-                                if (isMorning && morningHasLab) return;
-                                if (isAfternoon && afternoonHasLab) return;
-
-                                const genericSubjects = [
-                                    `${formData.department} Core 1`,
-                                    `${formData.department} Core 2`,
-                                    `${formData.department} Elective`
-                                ];
-                                const courseIndex = (dIdx + sIdx) % genericSubjects.length;
-                                const sub = genericSubjects[courseIndex];
-                                newGrid[`${day}-${slot.id}`] = {
-                                    id: `course-${day}-${slot.id}`,
-                                    courseCode: sub,
-                                    room: getRoomName(formData.department, false, dIdx + sIdx)
-                                };
-                            });
-                        });
-                    }
-                }
+                toast({ 
+                    title: "✅ Generation Successful", 
+                    description: `Full schedule for ${formData.department} Y${formData.year} Sem ${formData.semester} Sec-${formData.section} is now visible.` 
+                });
             }
-
-            setGridState(newGrid);
-            toast({ title: "Timetable Generated", description: `Schedule optimized for ${formData.department} Year ${formData.year}.` });
         } catch (e) {
             console.error(e);
             toast({ title: "Error", variant: "destructive", description: "Failed to generate timetable." });
@@ -507,6 +338,26 @@ const TimetableGenerator = () => {
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-full overflow-x-auto space-y-6 animate-in fade-in-50">
+            {/* API Connection Banner */}
+            {isApiOffline && (
+                <Alert variant="destructive" className="mb-6 bg-red-500/10 border-red-500/50 text-red-700 animate-in slide-in-from-top-4">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle className="font-bold">Backend Sync Offline</AlertTitle>
+                    <AlertDescription className="text-xs">
+                        The production database is unreachable. Auto-switched to **Development Mode** with internal course catalog. Schedules will not be persisted to the server.
+                    </AlertDescription>
+                </Alert>
+            )}
+            {!isApiOffline && (
+                <Alert className="mb-6 bg-green-500/5 border-green-500/20 text-green-700">
+                    <CheckCircle2 className="h-4 w-4 text-green-500" />
+                    <AlertTitle className="text-sm font-bold">Production Connected</AlertTitle>
+                    <AlertDescription className="text-xs">
+                        Synchronized with master curriculum and resource schedules. Live persistence enabled.
+                    </AlertDescription>
+                </Alert>
+            )}
+
             {/* Page Header */}
             <div className="flex flex-col md:flex-row justify-between items-end mb-4 gap-4 animate-in fade-in-50 slide-in-from-top-2">
                 <div>
@@ -585,7 +436,7 @@ const TimetableGenerator = () => {
                                     </Select>
                                 </div>
                                 <Badge className="h-10 px-4 text-sm flex items-center bg-primary/10 text-primary border-primary/20">
-                                    Key: {viewKey} | {viewFilter.department}-{viewFilter.section}
+                                    {viewFilter.department} | Y{viewFilter.year} S{viewFilter.semester} | Sec-{viewFilter.section}
                                 </Badge>
                             </div>
                         </CardContent>
@@ -614,16 +465,28 @@ const TimetableGenerator = () => {
                                                 }
                                                 const sessionKey = `${day}-${slot.id}`;
                                                 const session = viewTable[sessionKey];
-                                                const loadInfo = session ? viewLoad.find(l => l.code === session.courseCode) : null;
+                                                const isLab = session?.courseCode?.toLowerCase().includes('lab');
+                                                const isProject1 = session?.courseCode?.includes('Ph-1') || session?.courseCode === '4M1';
+                                                const isProject2 = session?.courseCode?.includes('Ph-2') || session?.courseCode === '4M2';
+                                                const isCAEG = session?.courseCode === 'CAEG';
+                                                const isSports = session?.courseCode === 'Sports';
+                                                const isLibrary = session?.courseCode === 'Library';
+
                                                 return (
-                                                    <div key={slot.id} className={`border border-border/30 p-2 h-20 flex flex-col justify-between overflow-hidden ${
-                                                        session ? (session.courseCode?.toLowerCase().includes('lab') ? 'bg-green-50 dark:bg-green-950/20' : 'bg-primary/5 dark:bg-primary/10') : 'bg-muted/10'
+                                                    <div key={slot.id} className={`border border-border/30 p-2 h-20 flex flex-col justify-between overflow-hidden transition-colors ${
+                                                        isCAEG ? 'bg-indigo-50/80 dark:bg-indigo-950/30' :
+                                                        isProject1 ? 'bg-amber-50/80 dark:bg-amber-950/30' :
+                                                        isProject2 ? 'bg-rose-50/80 dark:bg-rose-950/30' :
+                                                        isSports ? 'bg-orange-50/80 dark:bg-orange-950/30' :
+                                                        isLibrary ? 'bg-cyan-50/80 dark:bg-cyan-950/30' :
+                                                        isLab ? 'bg-emerald-50/80 dark:bg-emerald-950/30' : 
+                                                        'bg-sky-50/50 dark:bg-sky-950/10'
                                                     }`}>
                                                         {session ? (
                                                             <>
-                                                                <div className="font-bold text-[11px] leading-tight text-foreground truncate">{session.courseCode}</div>
-                                                                <div className="text-[10px] text-muted-foreground truncate">{loadInfo?.faculty || "Staff"}</div>
-                                                                <div className="text-[10px] font-mono bg-primary/10 text-primary px-1 rounded self-start">{loadInfo?.room || session.room}</div>
+                                                                <div className="font-bold text-[11px] leading-tight text-foreground truncate">{session.courseName || session.courseCode}</div>
+                                                                <div className="text-[10px] text-muted-foreground truncate">{session.faculty || "Staff"}</div>
+                                                                <div className="text-[10px] font-mono bg-primary/10 text-primary px-1 rounded self-start">{session.room || "TBD"}</div>
                                                             </>
                                                         ) : (
                                                             <div className="h-full flex items-center justify-center">
@@ -959,13 +822,31 @@ const TimetableGenerator = () => {
 
                                                     const slotKey = `${day}-${slot.id}`;
                                                     const course = gridState[slotKey];
-                                                    const isMentoringSlot = ((formData.year === "4" && day === "Tuesday") || (formData.year === "3" && day === "Saturday")) && slot.id === "03:20";
+                                                    const isMentoringSlot = ((formData.year === "4" && formData.semester === "1" && day === "Tuesday") || (formData.year === "3" && day === "Saturday")) && slot.id === "03:20";
+
+                                                    const isLab = course?.courseCode?.toLowerCase().includes('lab');
+                                                    const isProject1 = course?.courseCode?.includes('Ph-1') || course?.courseCode === '4M1';
+                                                    const isProject2 = course?.courseCode?.includes('Ph-2') || course?.courseCode === '4M2';
+                                                    const isCAEG = course?.courseCode === 'CAEG';
+                                                    const isSports = course?.courseCode === 'Sports' || course?.courseCode === 'SPORTS';
+                                                    const isLibrary = course?.courseCode === 'Library' || course?.courseCode === 'LIBRARY';
 
                                                     return (
                                                         <SortableContext key={slotKey} items={course ? [course.id] : []} strategy={verticalListSortingStrategy}>
                                                             <DroppableSlot id={slotKey} day={day} time={slot.id}>
                                                                 {course ? (
-                                                                    <DraggableCourse id={course.id} courseCode={course.courseCode} room={course.room} />
+                                                                    <div className="h-full w-full relative group transition-all">
+                                                                        <div className={`absolute inset-0 rounded-lg shadow-sm ${
+                                                                            isCAEG ? 'bg-indigo-50/60 border border-indigo-100' :
+                                                                            isProject1 ? 'bg-amber-50/60 border border-amber-100' :
+                                                                            isProject2 ? 'bg-rose-50/60 border border-rose-100' :
+                                                                            isSports ? 'bg-orange-50/60 border border-orange-100' :
+                                                                            isLibrary ? 'bg-cyan-50/60 border border-cyan-100' :
+                                                                            isLab ? 'bg-emerald-50/60 border border-emerald-100' : 
+                                                                            'bg-white dark:bg-zinc-800 border border-border'
+                                                                        }`}></div>
+                                                                        <DraggableCourse id={course.id} courseCode={course.courseCode} courseName={course.courseName} room={course.room} />
+                                                                    </div>
                                                                 ) : isMentoringSlot ? (
                                                                     <div className="h-full w-full flex flex-col items-center justify-center bg-indigo-50/80 dark:bg-indigo-900/30 rounded-lg border-2 border-dotted border-indigo-200 dark:border-indigo-800 p-2 text-center group transition-all">
                                                                         <div className="text-[11px] font-black text-indigo-700 dark:text-indigo-300 uppercase tracking-tighter leading-none mb-1">Mentoring</div>

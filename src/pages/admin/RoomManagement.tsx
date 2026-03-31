@@ -27,10 +27,18 @@ const MOCK_ROOMS: Room[] = [
     { id: "t201", name: "Drawing Hall", capacity: 80, type: "Lab", building: "T Block (1st Year)" },
 
     // North Block (AIML Dept - 4th Floor)
-    { id: "n401", name: "N-401 (AIML)", capacity: 60, type: "Classroom", building: "North Block" },
-    { id: "n402", name: "N-402 (AIML)", capacity: 60, type: "Classroom", building: "North Block" },
-    { id: "n403", name: "N-403 (AIML)", capacity: 60, type: "Classroom", building: "North Block" },
-    { id: "n404", name: "N-404 (AI Lab)", capacity: 40, type: "Lab", building: "North Block" },
+    { id: "n401", name: "N-401", capacity: 60, type: "Classroom", building: "North Block" },
+    { id: "n402", name: "N-402", capacity: 60, type: "Classroom", building: "North Block" },
+    { id: "n403", name: "N-403", capacity: 60, type: "Classroom", building: "North Block" },
+    { id: "n404", name: "N-404", capacity: 60, type: "Classroom", building: "North Block" },
+    { id: "n405", name: "N-405", capacity: 60, type: "Classroom", building: "North Block" },
+    { id: "n406", name: "N-406", capacity: 60, type: "Classroom", building: "North Block" },
+    { id: "n407", name: "N-407", capacity: 60, type: "Classroom", building: "North Block" },
+    { id: "n408", name: "N-408", capacity: 60, type: "Classroom", building: "North Block" },
+    { id: "n409", name: "N-409", capacity: 60, type: "Classroom", building: "North Block" },
+    { id: "n410", name: "N-410", capacity: 60, type: "Classroom", building: "North Block" },
+    { id: "n411", name: "N-411", capacity: 60, type: "Classroom", building: "North Block" },
+    { id: "n412", name: "N-412", capacity: 60, type: "Classroom", building: "North Block" },
 
     // Other Blocks
     { id: "s201", name: "S-201", capacity: 60, type: "Classroom", building: "South Block" },
@@ -47,6 +55,18 @@ const RoomManagement = () => {
     const [formData, setFormData] = useState<Partial<Room>>({});
 
     const handleAdd = () => {
+        if (!formData.name) {
+            toast({ title: "Error", description: "Room name is required.", variant: "destructive" });
+            return;
+        }
+
+        // Duplicate Check
+        const exists = rooms.some(r => r.name.toLowerCase() === formData.name?.toLowerCase() && r.building === (formData.building || "Main Block"));
+        if (exists) {
+            toast({ title: "Duplicate Room", description: `Room ${formData.name} already exists in this building.`, variant: "destructive" });
+            return;
+        }
+
         const newRoom: Room = {
             id: `room-${Date.now()}`,
             name: formData.name || "New Room",

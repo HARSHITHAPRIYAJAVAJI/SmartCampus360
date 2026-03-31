@@ -41,9 +41,9 @@ const Navbar = () => {
       "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
       isScrolled ? "bg-white/80 backdrop-blur-md shadow-md py-2" : "bg-white py-4"
     )}>
-      {/* Top Bar - Hidden on scroll to save space, or keep it small */}
+      {/* Top Bar - Standardized wider width */}
       <div className={cn(
-        "max-w-[1920px] mx-auto px-6 w-full flex justify-between items-center text-sm transition-all duration-300 overflow-hidden",
+        "max-w-screen-2xl mx-auto px-4 md:px-8 w-full flex justify-between items-center text-[11px] font-medium transition-all duration-300 overflow-hidden",
         isScrolled ? "h-0 opacity-0" : "h-10 opacity-100 border-b mb-2"
       )}>
         <div className="flex items-center space-x-6">
@@ -67,20 +67,27 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="max-w-[1920px] mx-auto px-6 w-full flex items-center justify-between">
+      <div className="max-w-screen-2xl mx-auto px-4 md:px-8 w-full flex items-center justify-between">
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-3 group" aria-label="Smart Campus University Home">
-          <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary-dark rounded-xl flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
-            <GraduationCap className="h-6 w-6 text-white" />
+        <Link to="/" className="flex items-center gap-3.5 shrink-0 group transition-all duration-300" aria-label="Smart Campus University Home">
+          <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-primary/20 group-hover:scale-105 transition-all duration-300">
+            <GraduationCap className="h-6 w-6 md:h-7 md:w-7 text-white" />
           </div>
-          <div className="flex flex-col">
-            <span className="text-xl font-bold font-heading leading-tight tracking-tight">Smart Campus</span>
-            <span className="text-[10px] font-semibold text-primary tracking-widest uppercase">Autonomous</span>
+          <div className="flex flex-col justify-center">
+            <span className="text-xl md:text-2xl font-extrabold tracking-tight text-slate-900 leading-none mb-1">
+              Smart<span className="text-primary">Campus</span>
+            </span>
+            <div className="flex items-center gap-2">
+              <div className="h-[1px] w-3 bg-primary/40" />
+              <span className="text-[9px] md:text-[10px] font-medium text-slate-500 tracking-[0.4em] uppercase leading-none">
+                Autonomous
+              </span>
+            </div>
           </div>
         </Link>
 
         {/* Desktop Navigation */}
-        <NavigationMenu className="hidden lg:flex mx-6">
+        <NavigationMenu className="hidden lg:flex mx-2">
           <NavigationMenuList>
             <NavigationMenuItem>
               <Link to="/" className={navigationMenuTriggerStyle()}>
@@ -129,11 +136,8 @@ const Navbar = () => {
               <NavigationMenuTrigger>Student Services</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[600px] md:grid-cols-2 lg:w-[800px] lg:grid-cols-3">
-                  <ListItem href="/services/basic-information" title="Basic Information">
-                    View student profile and records.
-                  </ListItem>
-                  <ListItem href="/services/academic-information" title="Academic Information">
-                    Access course history and standing.
+                  <ListItem href="/dashboard/profile" title="My Profile">
+                    View and update your personal student profile.
                   </ListItem>
                   <ListItem href="/services/exam-time-tables" title="Exam Time Tables">
                     Check your semester exam schedules.
@@ -192,22 +196,22 @@ const Navbar = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48 bg-white shadow-xl rounded-xl border-border/50">
-              <DropdownMenuItem asChild className="cursor-pointer hover:bg-primary/5 py-3">
-                <Link to="/login/student" className="flex items-center w-full">
-                  <User className="mr-3 h-4 w-4 text-primary" />
-                  <span className="font-medium">Student Login</span>
+              <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/5 hover:bg-primary/5 py-3 transition-colors">
+                <Link to="/login/student" className="flex items-center w-full group/item">
+                  <User className="mr-3 h-4 w-4 text-primary group-hover/item:text-primary transition-colors" />
+                  <span className="font-normal text-slate-700">Student Login</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="cursor-pointer hover:bg-primary/5 py-3">
-                <Link to="/login/staff" className="flex items-center w-full">
-                  <Users className="mr-3 h-4 w-4 text-primary" />
-                  <span className="font-medium">Faculty Login</span>
+              <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/5 hover:bg-primary/5 py-3 transition-colors">
+                <Link to="/login/staff" className="flex items-center w-full group/item">
+                  <Users className="mr-3 h-4 w-4 text-primary group-hover/item:text-primary transition-colors" />
+                  <span className="font-normal text-slate-700">Faculty Login</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild className="cursor-pointer hover:bg-primary/5 py-3">
-                <Link to="/login/admin" className="flex items-center w-full">
-                  <Shield className="mr-3 h-4 w-4 text-primary" />
-                  <span className="font-medium">Admin Login</span>
+              <DropdownMenuItem asChild className="cursor-pointer focus:bg-primary/5 hover:bg-primary/5 py-3 transition-colors">
+                <Link to="/login/admin" className="flex items-center w-full group/item">
+                  <Shield className="mr-3 h-4 w-4 text-primary group-hover/item:text-primary transition-colors" />
+                  <span className="font-normal text-slate-700">Admin Login</span>
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -241,8 +245,7 @@ const Navbar = () => {
                 {/* Mobile Student Services Dropdown alternative */}
                 <div className="flex flex-col space-y-3 pl-4 border-l-2 border-primary/20">
                   <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Student Services</span>
-                  <Link to="/services/basic-information" className="text-base font-medium">Basic Information</Link>
-                  <Link to="/services/academic-information" className="text-base font-medium">Academic Information</Link>
+                  <Link to="/dashboard/profile" className="text-base font-medium">My Profile</Link>
                   <Link to="/services/exam-time-tables" className="text-base font-medium">Exam Time Tables</Link>
                   <Link to="/services/fee-payments" className="text-base font-medium">Online Fee Payments</Link>
                   <Link to="/services/script-uploading" className="text-base font-medium">Script Uploading</Link>

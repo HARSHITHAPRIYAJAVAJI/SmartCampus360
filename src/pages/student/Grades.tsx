@@ -5,18 +5,53 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TrendingUp, Award, BookOpen } from "lucide-react";
 
 // Mock Data
-const SEMESTER_GRADES = {
+// Mock Data with detailed components
+const SEMESTER_RESULTS = {
     sem1: [
-        { code: "CS101", subject: "Programming Fundamentals", credits: 4, grade: "A", points: 9 },
-        { code: "MA101", subject: "Engineering Mathematics I", credits: 4, grade: "B+", points: 8 },
-        { code: "PH101", subject: "Engineering Physics", credits: 3, grade: "A-", points: 8.5 },
-        { code: "EG101", subject: "Engineering Graphics", credits: 2, grade: "O", points: 10 },
+        { 
+            code: "4E1AJ", 
+            subject: "C Programming for Problem Solving", 
+            mid1: 28, assgn1: 5, mid2: 25, assgn2: 4, 
+            labInternal: null, labExternal: null,
+            exam: 55, total: 100, status: "Pass" 
+        },
+        { 
+            code: "4B1AA", 
+            subject: "Linear Algebra and ODE", 
+            mid1: 22, assgn1: 4, mid2: 20, assgn2: 5, 
+            labInternal: null, labExternal: null,
+            exam: 42, total: 100, status: "Pass" 
+        },
+        { 
+            code: "4E112", 
+            subject: "C Programming Lab", 
+            mid1: null, assgn1: null, mid2: null, assgn2: null, 
+            labInternal: 28, labExternal: 62,
+            exam: null, total: 100, status: "Pass" 
+        },
     ],
     sem2: [
-        { code: "CS102", subject: "Data Structures", credits: 4, grade: "A+", points: 9.5 },
-        { code: "MA102", subject: "Engineering Mathematics II", credits: 4, grade: "A", points: 9 },
-        { code: "EE101", subject: "Basic Electrical Engg", credits: 3, grade: "B", points: 7 },
-        { code: "CS103", subject: "Digital Logic Design", credits: 3, grade: "A", points: 9 },
+        { 
+            code: "4E2AQ", 
+            subject: "Data Structures", 
+            mid1: 27, assgn1: 5, mid2: 26, assgn2: 5, 
+            labInternal: null, labExternal: null,
+            exam: 58, total: 100, status: "Pass" 
+        },
+        { 
+            code: "4B2AM", 
+            subject: "Statistical Methods & Vector Calculus", 
+            mid1: 24, assgn1: 4, mid2: 18, assgn2: 4, 
+            labInternal: null, labExternal: null,
+            exam: 45, total: 100, status: "Pass" 
+        },
+        { 
+            code: "4E211", 
+            subject: "Data Structures Lab", 
+            mid1: null, assgn1: null, mid2: null, assgn2: null, 
+            labInternal: 29, labExternal: 65,
+            exam: null, total: 100, status: "Pass" 
+        },
     ]
 };
 
@@ -74,45 +109,82 @@ const Grades = () => {
                             <TabsTrigger value="sem1">Semester 1</TabsTrigger>
                         </TabsList>
 
-                        {Object.entries(SEMESTER_GRADES).map(([key, grades]) => (
+                        {Object.entries(SEMESTER_RESULTS).map(([key, results]) => (
                             <TabsContent key={key} value={key}>
-                                <div className="rounded-md border">
+                                <div className="rounded-xl border shadow-sm overflow-hidden bg-white">
                                     <Table>
                                         <TableHeader>
-                                            <TableRow>
-                                                <TableHead>Course Code</TableHead>
-                                                <TableHead>Subject Name</TableHead>
-                                                <TableHead className="text-center">Credits</TableHead>
-                                                <TableHead className="text-center">Grade</TableHead>
-                                                <TableHead className="text-right">Points</TableHead>
+                                            <TableRow className="bg-slate-50/50">
+                                                <TableHead rowSpan={2} className="w-[100px] font-bold border-r">Code</TableHead>
+                                                <TableHead rowSpan={2} className="w-[200px] font-bold border-r">Subject</TableHead>
+                                                <TableHead colSpan={3} className="text-center font-bold border-r bg-blue-50/30 text-blue-700">Internal Marks (35M)</TableHead>
+                                                <TableHead colSpan={3} className="text-center font-bold border-r bg-green-50/30 text-green-700">Practical/Lab Marks</TableHead>
+                                                <TableHead colSpan={3} className="text-center font-bold bg-amber-50/30 text-amber-700">Semester Summary</TableHead>
+                                            </TableRow>
+                                            <TableRow className="bg-slate-50/50">
+                                                {/* Internal Headers */}
+                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 border-r">Mid 1+2</TableHead>
+                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 border-r">Assgn</TableHead>
+                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 font-bold border-r bg-blue-50/50">Total</TableHead>
+                                                
+                                                {/* Lab Headers */}
+                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 border-r">Int</TableHead>
+                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 border-r">Ext</TableHead>
+                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 font-bold border-r bg-green-50/50">Total</TableHead>
+
+                                                {/* Final Headers */}
+                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 border-r">Exam</TableHead>
+                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 border-r">Grand</TableHead>
+                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 font-bold bg-amber-50/50 underline decoration-amber-500/30 text-center">%</TableHead>
                                             </TableRow>
                                         </TableHeader>
-                                        <TableBody>
-                                            {grades.map((subject) => (
-                                                <TableRow key={subject.code}>
-                                                    <TableCell className="font-medium">{subject.code}</TableCell>
-                                                    <TableCell>{subject.subject}</TableCell>
-                                                    <TableCell className="text-center">{subject.credits}</TableCell>
-                                                    <TableCell className="text-center">
-                                                        <Badge variant={
-                                                            subject.grade.startsWith('A') || subject.grade === 'O' ? "default" : "secondary"
-                                                        }>
-                                                            {subject.grade}
-                                                        </Badge>
-                                                    </TableCell>
-                                                    <TableCell className="text-right">{subject.points}</TableCell>
-                                                </TableRow>
-                                            ))}
+                                        <TableBody className="text-xs">
+                                            {results.map((sub) => {
+                                                const internalTotal = sub.mid1 !== null ? (Math.max(sub.mid1 || 0, sub.mid2 || 0) + (sub.assgn1 || 0) + (sub.assgn2 || 0)) : 0;
+                                                const labTotal = (sub.labInternal || 0) + (sub.labExternal || 0);
+                                                const semesterExam = sub.exam || 0;
+                                                const grandTotal = internalTotal + labTotal + semesterExam;
+                                                const percentage = grandTotal; // Simplified as total is likely 100
+
+                                                return (
+                                                    <TableRow key={sub.code} className="hover:bg-slate-50/80 transition-colors">
+                                                        <TableCell className="font-medium border-r">{sub.code}</TableCell>
+                                                        <TableCell className="border-r font-medium text-slate-700">{sub.subject}</TableCell>
+                                                        
+                                                        {/* Internals */}
+                                                        <TableCell className="text-center border-r font-mono">{sub.mid1 !== null ? `${sub.mid1}/${sub.mid2}` : '-'}</TableCell>
+                                                        <TableCell className="text-center border-r font-mono">{sub.assgn1 !== null ? `${sub.assgn1}/${sub.assgn2}` : '-'}</TableCell>
+                                                        <TableCell className="text-center border-r font-bold bg-blue-50/20 text-blue-600">{sub.mid1 !== null ? internalTotal : '-'}</TableCell>
+
+                                                        {/* Labs */}
+                                                        <TableCell className="text-center border-r font-mono">{sub.labInternal || '-'}</TableCell>
+                                                        <TableCell className="text-center border-r font-mono">{sub.labExternal || '-'}</TableCell>
+                                                        <TableCell className="text-center border-r font-bold bg-green-50/20 text-green-600">{labTotal > 0 ? labTotal : '-'}</TableCell>
+
+                                                        {/* Final */}
+                                                        <TableCell className="text-center border-r font-mono">{sub.exam || '-'}</TableCell>
+                                                        <TableCell className="text-center border-r font-bold text-slate-900">{grandTotal}</TableCell>
+                                                        <TableCell className="text-center bg-amber-50/20 font-black text-amber-600">
+                                                            {percentage}%
+                                                        </TableCell>
+                                                    </TableRow>
+                                                );
+                                            })}
                                         </TableBody>
                                     </Table>
                                 </div>
-                                <div className="mt-4 flex justify-end">
-                                    <div className="bg-muted p-4 rounded-lg flex gap-8">
-                                        <div>
-                                            <span className="text-sm text-muted-foreground block">SGPA</span>
-                                            <span className="text-xl font-bold">{key === 'sem1' ? '8.9' : '8.8'}</span>
+                                <div className="mt-6 flex justify-between items-center bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-inner">
+                                    <div className="flex gap-12">
+                                        <div className="space-y-1">
+                                            <span className="text-[10px] uppercase font-bold text-slate-500 tracking-widest">Attendance</span>
+                                            <span className="text-2xl font-black text-slate-900 block">94%</span>
+                                        </div>
+                                        <div className="space-y-1">
+                                            <span className="text-[10px] uppercase font-bold text-slate-500 tracking-widest">SGPA</span>
+                                            <span className="text-2xl font-black text-primary block">{key === 'sem1' ? '8.92' : '8.85'}</span>
                                         </div>
                                     </div>
+                                    <Badge className="px-6 py-2 rounded-full text-sm font-bold bg-green-600 shadow-sm">PASS / FIRST CLASS WITH DISTINCTION</Badge>
                                 </div>
                             </TabsContent>
                         ))}

@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { GraduationCap, Eye, EyeOff, Loader2, Mail, Lock, User, Smartphone, Shield, Key } from "lucide-react";
+import { GraduationCap, Eye, EyeOff, Loader2, Mail, Lock, User, Smartphone, Shield, Key, Copy, ClipboardPaste, Check } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -54,7 +54,26 @@ export function LoginForm({
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [idCopied, setIdCopied] = useState(false);
   const { toast } = useToast();
+
+  const handleCopyId = () => {
+    if (id) {
+      navigator.clipboard.writeText(id);
+      setIdCopied(true);
+      setTimeout(() => setIdCopied(false), 2000);
+    }
+  };
+
+  const handlePasteToPassword = async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      if (text) setPassword(text);
+    } catch {
+      // Fallback: paste ID directly if clipboard access is denied
+      if (id) setPassword(id);
+    }
+  };
 
   useEffect(() => {
     setRole(defaultRole);
@@ -235,9 +254,24 @@ export function LoginForm({
                         setId(formatted);
                       }}
                       maxLength={10}
-                      className="pl-10 font-mono tracking-widest"
+                      className="pl-10 pr-10 font-mono tracking-widest"
                       disabled={isLoading}
                     />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      title="Copy ID to clipboard"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      onClick={handleCopyId}
+                      tabIndex={-1}
+                    >
+                      {idCopied ? (
+                        <Check className="h-4 w-4 text-green-500" />
+                      ) : (
+                        <Copy className="h-4 w-4 text-muted-foreground" />
+                      )}
+                    </Button>
                   </div>
                 </div>
 
@@ -265,23 +299,36 @@ export function LoginForm({
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="pl-10 pr-10"
+                      className="pl-10 pr-20"
                       disabled={isLoading}
                     />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                      onClick={() => setShowPassword(!showPassword)}
-                      tabIndex={-1}
-                    >
-                      {showPassword ? (
-                        <EyeOff className="h-4 w-4 text-muted-foreground" />
-                      ) : (
-                        <Eye className="h-4 w-4 text-muted-foreground" />
-                      )}
-                    </Button>
+                    <div className="absolute right-0 top-0 h-full flex items-center">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        title="Paste from clipboard"
+                        className="h-full px-2 py-2 hover:bg-transparent"
+                        onClick={handlePasteToPassword}
+                        tabIndex={-1}
+                      >
+                        <ClipboardPaste className="h-4 w-4 text-muted-foreground" />
+                      </Button>
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        className="h-full px-2 py-2 hover:bg-transparent"
+                        onClick={() => setShowPassword(!showPassword)}
+                        tabIndex={-1}
+                      >
+                        {showPassword ? (
+                          <EyeOff className="h-4 w-4 text-muted-foreground" />
+                        ) : (
+                          <Eye className="h-4 w-4 text-muted-foreground" />
+                        )}
+                      </Button>
+                    </div>
                   </div>
                 </div>
 

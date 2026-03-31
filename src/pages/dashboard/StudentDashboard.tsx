@@ -1,4 +1,4 @@
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import { MOCK_STUDENTS } from "@/data/mockStudents";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -9,10 +9,11 @@ import {
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { format } from "date-fns";
-import { AIML_TIMETABLES } from "@/data/aimlTimetable";
+import { AIML_TIMETABLES, getTimetable } from "@/data/aimlTimetable";
 
 export default function StudentDashboard() {
     const { user } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
+    const navigate = useNavigate();
     const studentData = MOCK_STUDENTS.find(s => s.rollNumber.toUpperCase() === user.id.toUpperCase());
 
     const stats = [
@@ -23,10 +24,10 @@ export default function StudentDashboard() {
     ];
 
     const quickActions = [
-        { title: "View Timetable", description: "Check today's schedule", icon: CalendarDays, color: "text-blue-500", bg: "bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/50 hover:dark:bg-blue-900/50" },
-        { title: "Submit Assignment", description: "Upload pending work", icon: UploadCloud, color: "text-purple-500", bg: "bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/50 hover:dark:bg-purple-900/50" },
-        { title: "Join Skill Training", description: "Enroll in new courses", icon: MonitorPlay, color: "text-emerald-500", bg: "bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 hover:dark:bg-emerald-900/50" },
-        { title: "Check Grades", description: "View latest feedback", icon: LineChart, color: "text-amber-500", bg: "bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/50 hover:dark:bg-amber-900/50" },
+        { title: "View Timetable", description: "Check today's schedule", icon: CalendarDays, color: "text-blue-500", bg: "bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/50 hover:dark:bg-blue-900/50", path: "/dashboard/timetable" },
+        { title: "Submit Assignment", description: "Upload pending work", icon: UploadCloud, color: "text-purple-500", bg: "bg-purple-50 hover:bg-purple-100 dark:bg-purple-950/50 hover:dark:bg-purple-900/50", path: "/dashboard/courses" },
+        { title: "Join Skill Training", description: "Enroll in new courses", icon: MonitorPlay, color: "text-emerald-500", bg: "bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 hover:dark:bg-emerald-900/50", path: "/dashboard/training" },
+        { title: "Check Grades", description: "View latest feedback", icon: LineChart, color: "text-amber-500", bg: "bg-amber-50 hover:bg-amber-100 dark:bg-amber-950/50 hover:dark:bg-amber-900/50", path: "/dashboard/grades" },
     ];
 
     const defaultSchedule = [
@@ -41,13 +42,12 @@ export default function StudentDashboard() {
         if (!studentData) return defaultSchedule;
 
         const currentSem = studentData.semester % 2 === 0 ? 2 : 1;
-        const semKey = `${studentData.year}-${currentSem}`;
-        const table = AIML_TIMETABLES[semKey];
+        const table = getTimetable(studentData.year, currentSem, studentData.section || 'A');
 
-        if (!table) return defaultSchedule;
+        if (!table || Object.keys(table).length === 0) return defaultSchedule;
 
         const result: any[] = [];
-        Object.entries(table).forEach(([dayTime, session]) => {
+        Object.entries(table).forEach(([dayTime, session]: [string, any]) => {
             if (!session) return;
             const [day, time] = dayTime.split('-');
             
@@ -147,6 +147,7 @@ export default function StudentDashboard() {
                                         whileHover={{ scale: 1.02, y: -2 }}
                                         whileTap={{ scale: 0.98 }}
                                         key={index}
+                                        onClick={() => navigate(action.path)}
                                         className={`p-5 rounded-xl cursor-pointer transition-all border border-transparent hover:border-border/50 shadow-sm hover:shadow ${action.bg} group flex items-start gap-4`}
                                     >
                                         <div className={`p-3 rounded-lg bg-white dark:bg-black/40 ${action.color} shadow-sm group-hover:shadow transition-shadow`}>
@@ -205,7 +206,11 @@ export default function StudentDashboard() {
                                     </div>
                                 </div>
                             </div>
-                            <Button variant="ghost" className="w-full mt-6 text-primary hover:bg-primary/5 hover:text-primary font-semibold">
+                            <Button 
+                                variant="ghost" 
+                                onClick={() => navigate("/dashboard/notifications")}
+                                className="w-full mt-6 text-primary hover:bg-primary/5 hover:text-primary font-semibold"
+                            >
                                 View All Notifications <ChevronRight className="w-4 h-4 ml-1" />
                             </Button>
                         </CardContent>
@@ -270,7 +275,10 @@ export default function StudentDashboard() {
                                     </div>
                                 ))}
                             </div>
-                            <Button className="w-full mt-8 shadow hover:shadow-lg transition-all border-none bg-primary text-primary-foreground font-semibold py-6">
+                            <Button 
+                                onClick={() => navigate("/dashboard/timetable")}
+                                className="w-full mt-8 shadow hover:shadow-lg transition-all border-none bg-primary text-primary-foreground font-semibold py-6"
+                            >
                                 View Full Timetable
                             </Button>
                         </CardContent>

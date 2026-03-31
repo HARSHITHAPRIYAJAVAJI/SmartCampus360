@@ -20,10 +20,23 @@ api.interceptors.request.use((config) => {
 });
 
 export const timetableService = {
+    getAll: () =>
+        api.get('/timetable/all'),
     generate: (year: number, semester: number, department: string) =>
         api.post('/timetable/generate', { year, semester, department }),
+    save: (year: number, semester: number, department: string, section: string, schedule: any) =>
+        api.post('/timetable/save', { year, semester, department, section, schedule }),
     reallocate: () =>
         api.post('/timetable/reallocate'),
+};
+
+export const academicService = {
+    getCourses: (department?: string, semester?: number) =>
+        api.get('/academic/courses', { params: { department, semester } }),
+    getRooms: () =>
+        api.get('/academic/rooms'),
+    getFaculty: () =>
+        api.get('/academic/faculty'),
 };
 
 export const reportService = {
