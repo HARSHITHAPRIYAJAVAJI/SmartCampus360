@@ -264,7 +264,12 @@ const TimetableGenerator = () => {
                 }
             }
             
-            setSavedTimetables((prev: any) => ({ ...prev, ...batchResults }));
+            setSavedTimetables((prev: any) => {
+                const newState = { ...prev, ...batchResults };
+                // Also persist to localStorage for the student/faculty dashboard to pick up
+                localStorage.setItem('published_timetables', JSON.stringify(newState));
+                return newState;
+            });
 
             // Auto-switch to View tab with CSM Year 1 Sem selected
             setViewFilter({ department: "CSM", year: "1", semester: batchSemester, section: "A" });

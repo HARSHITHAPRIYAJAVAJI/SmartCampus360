@@ -25,11 +25,18 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
       if (!student) return {};
 
       const semNum = student.semester % 2 === 0 ? 2 : 1;
-      const baseTable = getTimetable(student.year, semNum, student.section);
+      
+      // Look for a live published table first
+      const publishedStoreStr = localStorage.getItem('published_timetables');
+      const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
+      const publishedKey = `${student.branch}-${student.year}-${semNum}-${student.section}`;
+      const liveTable = publishedTimetables[publishedKey];
+
+      const baseTable = liveTable || getTimetable(student.year, semNum, student.section);
       const key = `${student.year}-${semNum}`;
 
       const result: any = {};
-      Object.entries(baseTable).forEach(([dayTime, session]) => {
+      Object.entries(baseTable).forEach(([dayTime, session]: [string, any]) => {
         if (!session) return;
         const [day, time] = dayTime.split('-');
         if (!result[day]) result[day] = {};
@@ -38,11 +45,12 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
         const loadInfo = FACULTY_LOAD[key as keyof typeof FACULTY_LOAD]?.find(l => l.code === session.courseCode);
 
         result[day][time] = {
-          subject: session.courseCode,
-          room: loadInfo?.room || session.room,
-          faculty: loadInfo?.faculty || "Staff",
-          type: session.courseCode.toLowerCase().includes('lab') ? 'lab' : 'lecture',
-          duration: 1
+          subject: session.courseName || session.courseCode,
+          room: session.room || loadInfo?.room || "TBD",
+          faculty: session.faculty || loadInfo?.faculty || "Staff",
+          type: (session.courseName || session.courseCode).toLowerCase().includes('lab') ? 'lab' : 'lecture',
+          duration: 1,
+          isLive: !!liveTable
         };
       });
       return result;
@@ -50,25 +58,37 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
       const result: any = {};
       const facultyName = user.name;
 
-      Object.entries(AIML_TIMETABLES).forEach(([key, table]) => {
+      // Also merge in published tables for faculty
+      const publishedStoreStr = localStorage.getItem('published_timetables');
+      const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
+      
+      const allTimetables = { ...AIML_TIMETABLES, ...publishedTimetables };
+
+      Object.entries(allTimetables).forEach(([key, table]: [string, any]) => {
         const parts = key.split('-');
-        const semKey = `${parts[0]}-${parts[1]}`;
-        const section = parts[2] || 'A';
+        const dept = parts[0];
+        const year = parts[1];
+        const sem = parts[2];
+        const section = parts[3] || 'A';
+        const semKey = `${year}-${sem}`;
+        
         const load = FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || [];
         
-        Object.entries(table).forEach(([dayTime, session]) => {
+        Object.entries(table).forEach(([dayTime, session]: [string, any]) => {
           if (!session) return;
-          const assigned = load.find(l => l.code === session.courseCode && l.faculty === facultyName);
+          // Check if the faculty is assigned to this course (either in generator's session or in FACULTY_LOAD registry)
+          const isAssigned = session.faculty === facultyName || load.find(l => l.code === (session.courseCode || session.name) && l.faculty === facultyName);
           
-          if (assigned) {
+          if (isAssigned) {
             const [day, time] = dayTime.split('-');
             if (!result[day]) result[day] = {};
             result[day][time] = {
-              subject: `${session.courseCode} (${section})`,
-              room: assigned.room,
-              branch: `${parts[0]}-${parts[1]}`, // Use semKey for branch display
-              type: session.courseCode.toLowerCase().includes('lab') ? 'lab' : 'lecture',
-              duration: 1
+              subject: `${session.courseName || session.courseCode} (${dept}-${year}${section})`,
+              room: session.room || "TBD",
+              branch: `${dept} | Y${year} S${sem}`,
+              type: (session.courseName || session.courseCode).toLowerCase().includes('lab') ? 'lab' : 'lecture',
+              duration: 1,
+              isLive: !!publishedTimetables[key]
             };
           }
         });
@@ -145,6 +165,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
           <div className="font-extrabold text-[11px] leading-tight text-slate-900 dark:text-slate-100 truncate flex items-center gap-1">
             {session.subject}
             {isLab && <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shrink-0" />}
+            {session.isLive && <Badge className="h-3 px-1 text-[8px] bg-amber-500 text-white border-none leading-none">Live</Badge>}
           </div>
           <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium truncate flex items-center gap-1">
              {userRole === 'student' ? session.faculty : session.branch}
