@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { MOCK_STUDENTS, Student } from "@/data/mockStudents";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Check, X, ClipboardCheck, GraduationCap, ArrowLeft, MoreVertical, Book } from "lucide-react";
+import { Check, X, ClipboardCheck, GraduationCap, ArrowLeft, MoreVertical, Book, RefreshCw } from "lucide-react";
 import { attendanceService } from "@/services/attendanceService";
 import { MOCK_COURSES } from "@/data/mockCourses";
 
@@ -60,7 +60,7 @@ const StudentRecords = () => {
     const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
     const [sessionAttendance, setSessionAttendance] = useState<Record<string, boolean | undefined>>({});
     const [isSyncing, setIsSyncing] = useState(false);
-    const [sessionMarks, setSessionMarks] = useState<Record<string, { assignment1: number, mid1: number, assignment2: number, mid2: number }>>({});
+    const [sessionMarks, setSessionMarks] = useState<Record<string, { assignment1: number, mid1: number, assignment2: number, mid2: number, labInternal?: number, labExternal?: number }>>({});
 
     // Fetch attendance records from backend when filter changes
     useEffect(() => {
@@ -312,7 +312,7 @@ const StudentRecords = () => {
         setSessionMarks(prev => ({
             ...prev,
             [studentId]: {
-                ...(prev[studentId] || { assignment1: 0, mid1: 0, assignment2: 0, mid2: 0 }),
+                ...(prev[studentId] || { assignment1: 0, mid1: 0, assignment2: 0, mid2: 0, labInternal: 0, labExternal: 0 }),
                 [field]: numVal
             }
         }));
@@ -328,7 +328,7 @@ const StudentRecords = () => {
             id: `stud-custom-${Date.now()}`,
             rollNumber: newStudent.rollNumber.toUpperCase(),
             name: newStudent.name,
-            email: `${newStudent.rollNumber.toLowerCase()}@smartcampus.edu`,
+            email: `${newStudent.rollNumber.toLowerCase()}@smartcampus.com`,
             branch: newStudent.branch || "CSE",
             year: newStudent.year || 1,
             semester: ((newStudent.year || 1) - 1) * 2 + 1,
@@ -499,7 +499,9 @@ const StudentRecords = () => {
                                                 assignment1: s.assignment1 || 0,
                                                 mid1: s.mid1 || 0,
                                                 assignment2: s.assignment2 || 0,
-                                                mid2: s.mid2 || 0
+                                                mid2: s.mid2 || 0,
+                                                labInternal: s.labInternal || 0,
+                                                labExternal: s.labExternal || 0
                                             };
                                         });
                                         setSessionMarks(initial);
@@ -596,9 +598,9 @@ const StudentRecords = () => {
                 {view === 'courses' && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in zoom-in-95 duration-300">
                         {MOCK_COURSES
-                            .filter(c => c.department === selectedBranch && c.semester === (selectedYear! * 2 - 1))
+                            .filter(c => c.department === selectedBranch && (c.semester === (selectedYear! * 2 - 1) || c.semester === (selectedYear! * 2)))
                             .map((course) => (
-                            <Card key={course.code} className="group hover:border-primary/50 cursor-pointer transition-all hover:shadow-lg overflow-hidden bg-white" onClick={() => handleCourseSelect(course.code)}>
+                            <Card key={course.code} className={`group hover:border-primary/50 cursor-pointer transition-all hover:shadow-lg overflow-hidden ${course.type === 'Lab' ? 'bg-orange-50/20 border-orange-100/50' : 'bg-white'}`} onClick={() => handleCourseSelect(course.code)}>
                                 <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                                     <Book className="w-20 h-20" />
                                 </div>
@@ -670,6 +672,21 @@ const StudentRecords = () => {
                             {activeMode !== 'view' && (
                                 <div className="flex gap-2">
                                     <Button variant="ghost" onClick={() => setActiveMode('view')}>Cancel</Button>
+                                    {activeMode === 'attendance' && (
+                                        <Button 
+                                            variant="outline" 
+                                            onClick={() => {
+                                                setSessionAttendance({});
+                                                toast({
+                                                    title: "Session Reset",
+                                                    description: "Attendance selection for this session has been cleared.",
+                                                });
+                                            }}
+                                            className="text-amber-600 hover:text-amber-700 hover:bg-amber-50"
+                                        >
+                                            <RefreshCw className="h-4 w-4 mr-2" /> Reset
+                                        </Button>
+                                    )}
                                     <Button 
                                         onClick={activeMode === 'attendance' ? handleSaveBatchAttendance : handleSaveBatchMarks}
                                         disabled={isSyncing}
@@ -707,10 +724,19 @@ const StudentRecords = () => {
 
                                             {activeMode === 'marks' && (
                                                 <>
-                                                    <TableHead className="w-[100px]">Assign 1</TableHead>
-                                                    <TableHead className="w-[100px]">Mid 1</TableHead>
-                                                    <TableHead className="w-[100px]">Assign 2</TableHead>
-                                                    <TableHead className="w-[100px]">Mid 2</TableHead>
+                                                    {MOCK_COURSES.find(c => c.code === selectedCourse)?.type === 'Lab' ? (
+                                                        <>
+                                                            <TableHead className="w-[120px] font-black text-sm uppercase text-primary">Lab Internal</TableHead>
+                                                            <TableHead className="w-[120px] font-black text-sm uppercase text-primary">Lab External</TableHead>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Assign 1</TableHead>
+                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Mid 1</TableHead>
+                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Assign 2</TableHead>
+                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Mid 2</TableHead>
+                                                        </>
+                                                    )}
                                                 </>
                                             )}
                                         </TableRow>
@@ -802,7 +828,7 @@ const StudentRecords = () => {
                                                                     <Button 
                                                                         variant={sessionAttendance[student.id] === true ? "default" : "outline"}
                                                                         size="sm"
-                                                                        disabled={(new Date().getHours() * 60 + new Date().getMinutes()) < (9 * 60 + 40) || (new Date().getHours() * 60 + new Date().getMinutes()) > (17 * 60)}
+                                                                        disabled={(new Date().getHours() * 60 + new Date().getMinutes()) < (7 * 60 + 40) || (new Date().getHours() * 60 + new Date().getMinutes()) > (17 * 60)}
                                                                         onClick={() => setSessionAttendance(prev => ({...prev, [student.id]: true}))}
                                                                         className={`h-8 w-10 p-0 ${sessionAttendance[student.id] === true ? 'bg-green-600 hover:bg-green-700' : ''}`}
                                                                     >
@@ -811,7 +837,7 @@ const StudentRecords = () => {
                                                                     <Button 
                                                                         variant={sessionAttendance[student.id] === false ? "destructive" : "outline"}
                                                                         size="sm"
-                                                                        disabled={(new Date().getHours() * 60 + new Date().getMinutes()) < (9 * 60 + 40) || (new Date().getHours() * 60 + new Date().getMinutes()) > (17 * 60)}
+                                                                        disabled={(new Date().getHours() * 60 + new Date().getMinutes()) < (7 * 60 + 40) || (new Date().getHours() * 60 + new Date().getMinutes()) > (17 * 60)}
                                                                         onClick={() => setSessionAttendance(prev => ({...prev, [student.id]: false}))}
                                                                         className="h-8 w-10 p-0"
                                                                     >
@@ -824,38 +850,61 @@ const StudentRecords = () => {
 
                                                     {activeMode === 'marks' && (
                                                         <>
-                                                            <TableCell>
-                                                                <Input 
-                                                                    type="number" 
-                                                                    className="h-8 w-16" 
-                                                                    value={sessionMarks[student.id]?.assignment1} 
-                                                                    onChange={e => updateMark(student.id, 'assignment1', e.target.value)}
-                                                                />
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <Input 
-                                                                    type="number" 
-                                                                    className="h-8 w-16" 
-                                                                    value={sessionMarks[student.id]?.mid1} 
-                                                                    onChange={e => updateMark(student.id, 'mid1', e.target.value)}
-                                                                />
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <Input 
-                                                                    type="number" 
-                                                                    className="h-8 w-16" 
-                                                                    value={sessionMarks[student.id]?.assignment2} 
-                                                                    onChange={e => updateMark(student.id, 'assignment2', e.target.value)}
-                                                                />
-                                                            </TableCell>
-                                                            <TableCell>
-                                                                <Input 
-                                                                    type="number" 
-                                                                    className="h-8 w-16" 
-                                                                    value={sessionMarks[student.id]?.mid2} 
-                                                                    onChange={e => updateMark(student.id, 'mid2', e.target.value)}
-                                                                />
-                                                            </TableCell>
+                                                            {MOCK_COURSES.find(c => c.code === selectedCourse)?.type === 'Lab' ? (
+                                                                <>
+                                                                    <TableCell>
+                                                                        <Input 
+                                                                            type="number" 
+                                                                            className="h-10 w-24 bg-orange-50/50 font-bold text-sm text-center" 
+                                                                            value={sessionMarks[student.id]?.labInternal} 
+                                                                            onChange={e => updateMark(student.id, 'labInternal', e.target.value)}
+                                                                        />
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        <Input 
+                                                                            type="number" 
+                                                                            className="h-10 w-24 bg-orange-50/50 font-bold text-sm text-center" 
+                                                                            value={sessionMarks[student.id]?.labExternal} 
+                                                                            onChange={e => updateMark(student.id, 'labExternal', e.target.value)}
+                                                                        />
+                                                                    </TableCell>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <TableCell>
+                                                                        <Input 
+                                                                            type="number" 
+                                                                            className="h-10 w-20 font-bold text-sm text-center" 
+                                                                            value={sessionMarks[student.id]?.assignment1} 
+                                                                            onChange={e => updateMark(student.id, 'assignment1', e.target.value)}
+                                                                        />
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        <Input 
+                                                                            type="number" 
+                                                                            className="h-10 w-20 font-bold text-sm text-center border-primary/20" 
+                                                                            value={sessionMarks[student.id]?.mid1} 
+                                                                            onChange={e => updateMark(student.id, 'mid1', e.target.value)}
+                                                                        />
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        <Input 
+                                                                            type="number" 
+                                                                            className="h-10 w-20 font-bold text-sm text-center" 
+                                                                            value={sessionMarks[student.id]?.assignment2} 
+                                                                            onChange={e => updateMark(student.id, 'assignment2', e.target.value)}
+                                                                        />
+                                                                    </TableCell>
+                                                                    <TableCell>
+                                                                        <Input 
+                                                                            type="number" 
+                                                                            className="h-10 w-20 font-bold text-sm text-center border-primary/20" 
+                                                                            value={sessionMarks[student.id]?.mid2} 
+                                                                            onChange={e => updateMark(student.id, 'mid2', e.target.value)}
+                                                                        />
+                                                                    </TableCell>
+                                                                </>
+                                                            )}
                                                         </>
                                                     )}
                                                 </TableRow>

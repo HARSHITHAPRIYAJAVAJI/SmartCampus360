@@ -188,7 +188,7 @@ export default function Profile() {
                                         <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary"><Mail className="w-5 h-5" /></div>
                                         <div>
                                             <p className="text-[10px] uppercase font-black text-muted-foreground tracking-widest leading-none mb-1">Office Email</p>
-                                            <p className="text-sm font-bold truncate max-w-[200px]">{facultyData.email}</p>
+                                            <p className="text-sm font-bold break-all">{facultyData.email}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center gap-4 hover:bg-muted/50 p-2 rounded-xl transition-colors">

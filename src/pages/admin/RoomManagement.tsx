@@ -41,8 +41,7 @@ const MOCK_ROOMS: Room[] = [
     { id: "n412", name: "N-412", capacity: 60, type: "Classroom", building: "North Block" },
 
     // Other Blocks
-    { id: "s201", name: "S-201", capacity: 60, type: "Classroom", building: "South Block" },
-    { id: "c101", name: "C-101", capacity: 120, type: "Auditorium", building: "Central Block" },
+
 ];
 
 const RoomManagement = () => {

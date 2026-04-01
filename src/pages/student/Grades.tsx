@@ -1,191 +1,222 @@
+import { useOutletContext } from "react-router-dom";
+import { useMemo } from "react";
+import { MOCK_STUDENTS } from "@/data/mockStudents";
+import { MOCK_COURSES, Course } from "@/data/mockCourses";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TrendingUp, Award, BookOpen } from "lucide-react";
 
-// Mock Data
-// Mock Data with detailed components
-const SEMESTER_RESULTS = {
-    sem1: [
-        { 
-            code: "4E1AJ", 
-            subject: "C Programming for Problem Solving", 
-            mid1: 28, assgn1: 5, mid2: 25, assgn2: 4, 
+// Helper to generate realistic dummy marks
+const getMarks = (course: Course) => {
+    const isLab = course.type === 'Lab';
+    const seed = course.code.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const pseudoRandom = (min: number, max: number) => {
+        const val = ((seed * 9301 + 49297) % 233280) / 233280;
+        return Math.floor(min + val * (max - min));
+    };
+
+    if (isLab) {
+        const labInt = pseudoRandom(25, 30);
+        const labExt = pseudoRandom(55, 68);
+        return {
+            mid1: null, assgn1: null, mid2: null, assgn2: null,
+            labInternal: labInt, labExternal: labExt,
+            exam: null, total: labInt + labExt, status: "Pass"
+        };
+    } else {
+        const m1 = pseudoRandom(22, 28);
+        const m2 = pseudoRandom(20, 27);
+        const a1 = 5;
+        const a2 = 5;
+        const ex = pseudoRandom(40, 60);
+        return {
+            mid1: m1, assgn1: a1, mid2: m2, assgn2: a2,
             labInternal: null, labExternal: null,
-            exam: 55, total: 100, status: "Pass" 
-        },
-        { 
-            code: "4B1AA", 
-            subject: "Linear Algebra and ODE", 
-            mid1: 22, assgn1: 4, mid2: 20, assgn2: 5, 
-            labInternal: null, labExternal: null,
-            exam: 42, total: 100, status: "Pass" 
-        },
-        { 
-            code: "4E112", 
-            subject: "C Programming Lab", 
-            mid1: null, assgn1: null, mid2: null, assgn2: null, 
-            labInternal: 28, labExternal: 62,
-            exam: null, total: 100, status: "Pass" 
-        },
-    ],
-    sem2: [
-        { 
-            code: "4E2AQ", 
-            subject: "Data Structures", 
-            mid1: 27, assgn1: 5, mid2: 26, assgn2: 5, 
-            labInternal: null, labExternal: null,
-            exam: 58, total: 100, status: "Pass" 
-        },
-        { 
-            code: "4B2AM", 
-            subject: "Statistical Methods & Vector Calculus", 
-            mid1: 24, assgn1: 4, mid2: 18, assgn2: 4, 
-            labInternal: null, labExternal: null,
-            exam: 45, total: 100, status: "Pass" 
-        },
-        { 
-            code: "4E211", 
-            subject: "Data Structures Lab", 
-            mid1: null, assgn1: null, mid2: null, assgn2: null, 
-            labInternal: 29, labExternal: 65,
-            exam: null, total: 100, status: "Pass" 
-        },
-    ]
+            exam: ex, total: Math.max(m1, m2) + a1 + a2 + ex, status: "Pass"
+        };
+    }
 };
 
 const Grades = () => {
+    const { user } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
+    
+    const studentData = useMemo(() => {
+        return MOCK_STUDENTS.find((s: any) => 
+            s.rollNumber.toUpperCase() === user.id.toUpperCase() ||
+            s.email.toLowerCase() === user.name.toLowerCase()
+        );
+    }, [user.id, user.name]);
+
+    const branch = studentData?.branch || 'CSE';
+
+    // Filter courses for student branch
+    const branchCourses = MOCK_COURSES.filter(c => c.department === branch);
+    
+    // Group by semester
+    const semesters = [1, 2, 3, 4, 5, 6, 7, 8];
+    const resultsBySem = semesters.reduce((acc, sem) => {
+        const semCourses = branchCourses.filter(c => c.semester === sem);
+        if (semCourses.length > 0) {
+            acc[sem] = semCourses.map(c => ({
+                code: c.code,
+                subject: c.name,
+                ...getMarks(c)
+            }));
+        }
+        return acc;
+    }, {} as Record<number, any[]>);
+
     return (
         <div className="space-y-6 animate-in fade-in-50">
             <div>
-                <h1 className="text-3xl font-bold tracking-tight">Academic Performance</h1>
-                <p className="text-muted-foreground">View your grades and CGPA progression.</p>
+                <div className="flex flex-wrap items-center gap-3 mb-2">
+                    <Badge variant="outline" className="bg-primary/5 text-primary border-primary/20 px-3 py-1 font-black tracking-widest uppercase text-[10px]">
+                        Branch: {branch}
+                    </Badge>
+                    <Badge variant="outline" className="bg-blue-50 text-blue-600 border-blue-100 px-3 py-1 font-black tracking-widest uppercase text-[10px]">
+                        Semester: {studentData?.semester || '7'}
+                    </Badge>
+                    <Badge variant="outline" className="bg-purple-50 text-purple-600 border-purple-100 px-3 py-1 font-black tracking-widest uppercase text-[10px]">
+                        Section: {studentData?.section || 'A'}
+                    </Badge>
+                </div>
+                <h1 className="text-4xl font-black tracking-tight text-slate-900 dark:text-white">Academic Performance</h1>
+                <p className="text-muted-foreground font-medium">Verify your scholastic achievement and semester-wise results matrix.</p>
             </div>
 
             {/* Overview Cards */}
             <div className="grid gap-4 md:grid-cols-3">
-                <Card>
+                <Card className="border-none shadow-md bg-gradient-to-br from-violet-50 to-white dark:from-violet-950/20">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Cumulative GPA</CardTitle>
-                        <Award className="h-4 w-4 text-muted-foreground" />
+                        <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Cumulative GPA</CardTitle>
+                        <Award className="h-4 w-4 text-primary" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold text-primary">8.85</div>
-                        <p className="text-xs text-muted-foreground">Consistently good!</p>
+                        <div className="text-3xl font-black text-primary">8.85</div>
+                        <p className="text-xs font-bold text-success mt-1">↑ 0.12 from last semester</p>
                     </CardContent>
                 </Card>
-                <Card>
+                <Card className="border-none shadow-md">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Total Credits Earned</CardTitle>
-                        <BookOpen className="h-4 w-4 text-muted-foreground" />
+                        <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Total Credits Earned</CardTitle>
+                        <BookOpen className="h-4 w-4 text-blue-500" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">45</div>
-                        <p className="text-xs text-muted-foreground">Out of 160 required</p>
+                        <div className="text-3xl font-black">124</div>
+                        <p className="text-xs font-bold text-muted-foreground mt-1">Out of 160 required</p>
                     </CardContent>
                 </Card>
-                <Card>
+                <Card className="border-none shadow-md">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Class Rank</CardTitle>
-                        <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                        <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Class Rank</CardTitle>
+                        <TrendingUp className="h-4 w-4 text-emerald-500" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">5th</div>
-                        <p className="text-xs text-muted-foreground">Top 5% of class</p>
+                        <div className="text-3xl font-black">5th</div>
+                        <p className="text-xs font-bold text-muted-foreground mt-1">Top 5% of class</p>
                     </CardContent>
                 </Card>
             </div>
 
             {/* Semester Grades */}
-            <Card>
-                <CardHeader>
-                    <CardTitle>Semester Results</CardTitle>
+            <Card className="border-none shadow-md overflow-hidden">
+                <CardHeader className="bg-muted/30">
+                    <CardTitle className="flex items-center gap-2">
+                         <BookOpen className="w-5 h-5 text-primary" />
+                         Semester Results Matrix
+                    </CardTitle>
+                    <CardDescription>Comprehensive breakdown of internal and external assessments.</CardDescription>
                 </CardHeader>
-                <CardContent>
-                    <Tabs defaultValue="sem2">
-                        <TabsList className="mb-4">
-                            <TabsTrigger value="sem2">Semester 2</TabsTrigger>
-                            <TabsTrigger value="sem1">Semester 1</TabsTrigger>
+                <CardContent className="pt-6">
+                    <Tabs defaultValue={String(studentData?.semester || '7')} className="w-full">
+                        <TabsList className="grid grid-cols-4 md:grid-cols-8 mb-8 bg-muted/50 p-1 h-auto">
+                            {semesters.map(s => (
+                                <TabsTrigger key={s} value={s.toString()} className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-2 font-bold">
+                                    Sem {s}
+                                </TabsTrigger>
+                            ))}
                         </TabsList>
 
-                        {Object.entries(SEMESTER_RESULTS).map(([key, results]) => (
-                            <TabsContent key={key} value={key}>
-                                <div className="rounded-xl border shadow-sm overflow-hidden bg-white">
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow className="bg-slate-50/50">
-                                                <TableHead rowSpan={2} className="w-[100px] font-bold border-r">Code</TableHead>
-                                                <TableHead rowSpan={2} className="w-[200px] font-bold border-r">Subject</TableHead>
-                                                <TableHead colSpan={3} className="text-center font-bold border-r bg-blue-50/30 text-blue-700">Internal Marks (35M)</TableHead>
-                                                <TableHead colSpan={3} className="text-center font-bold border-r bg-green-50/30 text-green-700">Practical/Lab Marks</TableHead>
-                                                <TableHead colSpan={3} className="text-center font-bold bg-amber-50/30 text-amber-700">Semester Summary</TableHead>
-                                            </TableRow>
-                                            <TableRow className="bg-slate-50/50">
-                                                {/* Internal Headers */}
-                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 border-r">Mid 1+2</TableHead>
-                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 border-r">Assgn</TableHead>
-                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 font-bold border-r bg-blue-50/50">Total</TableHead>
-                                                
-                                                {/* Lab Headers */}
-                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 border-r">Int</TableHead>
-                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 border-r">Ext</TableHead>
-                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 font-bold border-r bg-green-50/50">Total</TableHead>
-
-                                                {/* Final Headers */}
-                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 border-r">Exam</TableHead>
-                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 border-r">Grand</TableHead>
-                                                <TableHead className="text-center text-[10px] uppercase tracking-wider py-1 font-bold bg-amber-50/50 underline decoration-amber-500/30 text-center">%</TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody className="text-xs">
-                                            {results.map((sub) => {
-                                                const internalTotal = sub.mid1 !== null ? (Math.max(sub.mid1 || 0, sub.mid2 || 0) + (sub.assgn1 || 0) + (sub.assgn2 || 0)) : 0;
-                                                const labTotal = (sub.labInternal || 0) + (sub.labExternal || 0);
-                                                const semesterExam = sub.exam || 0;
-                                                const grandTotal = internalTotal + labTotal + semesterExam;
-                                                const percentage = grandTotal; // Simplified as total is likely 100
-
-                                                return (
-                                                    <TableRow key={sub.code} className="hover:bg-slate-50/80 transition-colors">
-                                                        <TableCell className="font-medium border-r">{sub.code}</TableCell>
-                                                        <TableCell className="border-r font-medium text-slate-700">{sub.subject}</TableCell>
-                                                        
-                                                        {/* Internals */}
-                                                        <TableCell className="text-center border-r font-mono">{sub.mid1 !== null ? `${sub.mid1}/${sub.mid2}` : '-'}</TableCell>
-                                                        <TableCell className="text-center border-r font-mono">{sub.assgn1 !== null ? `${sub.assgn1}/${sub.assgn2}` : '-'}</TableCell>
-                                                        <TableCell className="text-center border-r font-bold bg-blue-50/20 text-blue-600">{sub.mid1 !== null ? internalTotal : '-'}</TableCell>
-
-                                                        {/* Labs */}
-                                                        <TableCell className="text-center border-r font-mono">{sub.labInternal || '-'}</TableCell>
-                                                        <TableCell className="text-center border-r font-mono">{sub.labExternal || '-'}</TableCell>
-                                                        <TableCell className="text-center border-r font-bold bg-green-50/20 text-green-600">{labTotal > 0 ? labTotal : '-'}</TableCell>
-
-                                                        {/* Final */}
-                                                        <TableCell className="text-center border-r font-mono">{sub.exam || '-'}</TableCell>
-                                                        <TableCell className="text-center border-r font-bold text-slate-900">{grandTotal}</TableCell>
-                                                        <TableCell className="text-center bg-amber-50/20 font-black text-amber-600">
-                                                            {percentage}%
-                                                        </TableCell>
+                        {semesters.map(semNum => (
+                            <TabsContent key={semNum} value={semNum.toString()} className="animate-in fade-in-50 zoom-in-95 duration-300">
+                                {resultsBySem[semNum] ? (
+                                    <>
+                                        <div className="rounded-xl border shadow-sm overflow-hidden bg-white dark:bg-slate-950">
+                                            <Table>
+                                                <TableHeader>
+                                                    <TableRow className="bg-slate-50/80 dark:bg-slate-900/50">
+                                                        <TableHead rowSpan={2} className="w-[100px] font-black border-r text-sm uppercase tracking-tighter">Code</TableHead>
+                                                        <TableHead rowSpan={2} className="w-[250px] font-black border-r text-sm uppercase tracking-tighter">Subject</TableHead>
+                                                        <TableHead colSpan={3} className="text-center font-black border-r bg-blue-50/50 dark:bg-blue-900/10 text-blue-700 text-sm uppercase tracking-widest">Internals (35M)</TableHead>
+                                                        <TableHead colSpan={3} className="text-center font-black border-r bg-green-50/50 dark:bg-green-900/10 text-green-700 text-sm uppercase tracking-widest">Practical/Lab</TableHead>
+                                                        <TableHead colSpan={3} className="text-center font-black bg-amber-50/50 dark:bg-amber-900/10 text-amber-700 text-sm uppercase tracking-widest">Summary</TableHead>
                                                     </TableRow>
-                                                );
-                                            })}
-                                        </TableBody>
-                                    </Table>
-                                </div>
-                                <div className="mt-6 flex justify-between items-center bg-slate-50 p-6 rounded-xl border border-slate-200 shadow-inner">
-                                    <div className="flex gap-12">
-                                        <div className="space-y-1">
-                                            <span className="text-[10px] uppercase font-bold text-slate-500 tracking-widest">Attendance</span>
-                                            <span className="text-2xl font-black text-slate-900 block">94%</span>
+                                                    <TableRow className="bg-slate-50/50 dark:bg-slate-900/20">
+                                                        <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Mid 1+2</TableHead>
+                                                        <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Assgn</TableHead>
+                                                        <TableHead className="text-center text-[11px] font-black py-2 border-r bg-blue-100/30">Total</TableHead>
+                                                        <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Int</TableHead>
+                                                        <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Ext</TableHead>
+                                                        <TableHead className="text-center text-[11px] font-black py-2 border-r bg-green-100/30">Total</TableHead>
+                                                        <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Exam</TableHead>
+                                                        <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Total</TableHead>
+                                                        <TableHead className="text-center text-[11px] font-black py-2 bg-amber-100/30 text-amber-700">%</TableHead>
+                                                    </TableRow>
+                                                </TableHeader>
+                                                <TableBody className="text-sm">
+                                                    {resultsBySem[semNum].map((sub) => {
+                                                        const internalTotal = sub.mid1 !== null ? (Math.max(sub.mid1 || 0, sub.mid2 || 0) + (sub.assgn1 || 0) + (sub.assgn2 || 0)) : 0;
+                                                        const labTotal = (sub.labInternal || 0) + (sub.labExternal || 0);
+                                                        const semesterExam = sub.exam || 0;
+                                                        const grandTotal = internalTotal + labTotal + semesterExam;
+
+                                                        return (
+                                                            <TableRow key={sub.code} className="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors border-b last:border-0">
+                                                                <TableCell className="font-bold border-r font-mono text-xs text-muted-foreground">{sub.code}</TableCell>
+                                                                <TableCell className="border-r font-bold text-slate-900 dark:text-slate-100">{sub.subject}</TableCell>
+                                                                <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.mid1 !== null ? `${sub.mid1}/${sub.mid2}` : '-'}</TableCell>
+                                                                <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.assgn1 !== null ? `${sub.assgn1}/${sub.assgn2}` : '-'}</TableCell>
+                                                                <TableCell className="text-center border-r font-black bg-blue-50/30 dark:bg-blue-900/10 text-blue-700 text-sm">{sub.mid1 !== null ? internalTotal : '-'}</TableCell>
+                                                                <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.labInternal || '-'}</TableCell>
+                                                                <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.labExternal || '-'}</TableCell>
+                                                                <TableCell className="text-center border-r font-black bg-green-50/30 dark:bg-green-900/10 text-green-700 text-sm">{labTotal > 0 ? labTotal : '-'}</TableCell>
+                                                                <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.exam || '-'}</TableCell>
+                                                                <TableCell className="text-center border-r font-black text-slate-900 dark:text-white text-base">{grandTotal}</TableCell>
+                                                                <TableCell className="text-center bg-amber-50/30 dark:bg-amber-900/10 font-black text-amber-700 text-base">
+                                                                    {grandTotal}%
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        );
+                                                    })}
+                                                </TableBody>
+                                            </Table>
                                         </div>
-                                        <div className="space-y-1">
-                                            <span className="text-[10px] uppercase font-bold text-slate-500 tracking-widest">SGPA</span>
-                                            <span className="text-2xl font-black text-primary block">{key === 'sem1' ? '8.92' : '8.85'}</span>
+                                        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                            <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border flex flex-col gap-1 shadow-sm">
+                                                <span className="text-[10px] uppercase font-black text-muted-foreground tracking-widest">Attendance</span>
+                                                <span className="text-2xl font-black text-slate-900 dark:text-white">92%</span>
+                                            </div>
+                                            <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border flex flex-col gap-1 shadow-sm">
+                                                <span className="text-[10px] uppercase font-black text-muted-foreground tracking-widest">SGPA</span>
+                                                <span className="text-2xl font-black text-primary">8.8{semNum}</span>
+                                            </div>
+                                            <div className="lg:col-span-2 bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border flex flex-col gap-1 shadow-sm relative overflow-hidden">
+                                                <div className="absolute top-0 right-0 p-4 opacity-10">
+                                                    <Award className="w-12 h-12" />
+                                                </div>
+                                                <span className="text-[10px] uppercase font-black text-muted-foreground tracking-widest">Status</span>
+                                                <span className="text-xl font-bold text-success uppercase tracking-tight">PASS - First Class with Distinction</span>
+                                            </div>
                                         </div>
+                                    </>
+                                ) : (
+                                    <div className="flex flex-col items-center justify-center py-20 bg-muted/10 rounded-2xl border-2 border-dashed">
+                                        <BookOpen className="w-12 h-12 text-muted-foreground/30 mb-4" />
+                                        <p className="text-muted-foreground font-bold italic">No academic data published for Semester {semNum} yet.</p>
                                     </div>
-                                    <Badge className="px-6 py-2 rounded-full text-sm font-bold bg-green-600 shadow-sm">PASS / FIRST CLASS WITH DISTINCTION</Badge>
-                                </div>
+                                )}
                             </TabsContent>
                         ))}
                     </Tabs>

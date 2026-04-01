@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { format } from "date-fns";
 import { AIML_TIMETABLES, getTimetable } from "@/data/aimlTimetable";
+import { AttendanceHistory } from "@/components/dashboard/AttendanceHistory";
 
 export default function StudentDashboard() {
     const { user } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
@@ -108,6 +109,20 @@ export default function StudentDashboard() {
                 </div>
                 <div className="relative z-10">
                     <h1 className="text-4xl font-extrabold mb-3 tracking-tight">Welcome back, {user.name.split(' ')[0]}!</h1>
+                    <div className="flex flex-wrap gap-2 mb-4">
+                        <Badge className="bg-white/20 hover:bg-white/30 text-white border-none backdrop-blur-md px-3 font-bold">
+                            {studentData?.branch || 'CSE'}
+                        </Badge>
+                        <Badge className="bg-white/20 hover:bg-white/30 text-white border-none backdrop-blur-md px-3 font-bold">
+                            Year {studentData?.year || 'IV'}
+                        </Badge>
+                        <Badge className="bg-white/20 hover:bg-white/30 text-white border-none backdrop-blur-md px-3 font-bold">
+                            Section {studentData?.section || 'A'}
+                        </Badge>
+                        <Badge className="bg-white/20 hover:bg-white/30 text-white border-none backdrop-blur-md px-3 font-bold">
+                            Sem {studentData?.semester || '7'}
+                        </Badge>
+                    </div>
                     <p className="text-violet-100 text-lg max-w-xl">
                         Stay on top of your courses, assignments, and academic progress. You are doing great this semester!
                     </p>
@@ -144,9 +159,8 @@ export default function StudentDashboard() {
                 ))}
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                {/* Left Column (Actions & Activity) */}
-                <div className="lg:col-span-2 space-y-8">
+            <div className="max-w-5xl mx-auto space-y-8 mb-8">
+                <div className="space-y-8">
                     {/* Quick Actions */}
                     <Card className="border-none shadow-md">
                         <CardHeader className="pb-4">
@@ -178,126 +192,13 @@ export default function StudentDashboard() {
                         </CardContent>
                     </Card>
 
-                    {/* Timeline / Recent Activity */}
-                    <Card className="border-none shadow-md">
-                        <CardHeader>
-                            <CardTitle className="text-xl font-bold flex items-center space-x-2">
-                                <Bell className="h-6 w-6 text-primary" />
-                                <span>Recent Updates</span>
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="space-y-6 pl-2 mt-2">
-                                {/* Timeline Item 1 */}
-                                <div className="relative pl-6 border-l-2 border-primary/20 pb-2">
-                                    <div className="absolute -left-[11px] top-1 w-5 h-5 bg-primary rounded-full border-4 border-background flex items-center justify-center shadow-sm"></div>
-                                    <div className="flex flex-col gap-1">
-                                        <div className="flex items-center justify-between">
-                                            <p className="font-bold text-foreground">New Assignment Posted</p>
-                                            <span className="text-xs font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">2 hrs ago</span>
-                                        </div>
-                                        <p className="text-sm text-muted-foreground">Data Structures - "Graph Traversal Implementation". Due in 3 days.</p>
-                                    </div>
-                                </div>
-                                {/* Timeline Item 2 */}
-                                <div className="relative pl-6 border-l-2 border-success/20 pb-2">
-                                    <div className="absolute -left-[11px] top-1 w-5 h-5 bg-success rounded-full border-4 border-background shadow-sm"></div>
-                                    <div className="flex flex-col gap-1">
-                                        <div className="flex items-center justify-between">
-                                            <p className="font-bold text-foreground">Grade Published</p>
-                                            <span className="text-xs font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">Yesterday</span>
-                                        </div>
-                                        <p className="text-sm text-muted-foreground">Database Systems Midterm: <span className="text-success font-bold">89/100</span>. Great job!</p>
-                                    </div>
-                                </div>
-                                <div className="relative pl-6">
-                                    <div className="absolute -left-[11px] top-1 w-5 h-5 bg-warning rounded-full border-4 border-background shadow-sm"></div>
-                                    <div className="flex flex-col gap-1">
-                                        <div className="flex items-center justify-between">
-                                            <p className="font-bold text-foreground">Class Rescheduled</p>
-                                            <span className="text-xs font-bold text-muted-foreground bg-muted px-2 py-0.5 rounded-full">Yesterday</span>
-                                        </div>
-                                        <p className="text-sm text-muted-foreground">Advanced Algorithms moved to 2 PM in Room 205.</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <Button 
-                                variant="ghost" 
-                                onClick={() => navigate("/dashboard/notifications")}
-                                className="w-full mt-6 text-primary hover:bg-primary/5 hover:text-primary font-semibold"
-                            >
-                                View All Notifications <ChevronRight className="w-4 h-4 ml-1" />
-                            </Button>
-                        </CardContent>
-                    </Card>
-                </div>
+                    {/* Attendance Verification Section */}
+                    <AttendanceHistory 
+                        studentId={user.id} 
+                        rollNumber={studentData?.rollNumber || ''} 
+                    />
 
-                {/* Right Column (Schedule) */}
-                <div className="space-y-8 h-full">
-                    <Card className="border-none shadow-md overflow-hidden relative h-full flex flex-col">
-                        <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary via-purple-500 to-accent"></div>
-                        <CardHeader className="pb-4 pt-6">
-                            <CardTitle className="text-xl font-bold flex items-center justify-between">
-                                <div className="flex items-center space-x-2">
-                                    <Calendar className="h-6 w-6 text-primary" />
-                                    <span>Today's Classes</span>
-                                </div>
-                                <Badge variant="secondary" className="font-bold px-2 py-0.5 text-xs">Mar 15</Badge>
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="flex-1 flex flex-col justify-between">
-                            <div className="space-y-4">
-                                {schedule.map((item, index) => (
-                                    <div key={index} 
-                                        className={`relative p-5 rounded-xl border-l-4 transition-all duration-300 ${
-                                            item.status === 'current' ? 'bg-primary/5 border-primary shadow-sm hover:shadow-md' : 
-                                            item.status === 'completed' ? 'bg-muted/30 border-muted-foreground/30 opacity-70 hover:opacity-100' : 
-                                            'bg-background border-border hover:bg-muted/30 shadow-sm hover:shadow-md'
-                                        }`}>
-                                        
-                                        {item.status === 'current' && (
-                                            <div className="absolute top-5 right-4 flex items-center gap-1.5">
-                                                <span className="relative flex h-2.5 w-2.5">
-                                                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                                                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
-                                                </span>
-                                                <span className="text-[10px] uppercase font-bold text-primary tracking-wider">Now</span>
-                                            </div>
-                                        )}
-                                        {item.status === 'completed' && (
-                                            <div className="absolute top-5 right-4">
-                                                <CheckCircle2 className="w-5 h-5 text-muted-foreground/50" />
-                                            </div>
-                                        )}
 
-                                        <div className="flex flex-col gap-1.5 pr-10">
-                                            <div className="text-xs font-bold text-muted-foreground tracking-wide flex items-center gap-1.5">
-                                                <Clock className="w-3.5 h-3.5" />
-                                                {item.time}
-                                            </div>
-                                            <p className={`font-semibold text-lg leading-tight ${item.status === 'completed' ? 'text-muted-foreground' : 'text-foreground'}`}>
-                                                {item.title}
-                                            </p>
-                                            <div className="flex items-center gap-2 mt-2">
-                                                <Badge variant={item.type === "lecture" ? "default" : "secondary"} className="text-[10px] uppercase font-bold tracking-wider h-5 px-2">
-                                                    {item.type}
-                                                </Badge>
-                                                <span className="text-xs text-muted-foreground font-semibold flex items-center gap-1">
-                                                    📍 {item.room}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                            <Button 
-                                onClick={() => navigate("/dashboard/timetable")}
-                                className="w-full mt-8 shadow hover:shadow-lg transition-all border-none bg-primary text-primary-foreground font-semibold py-6"
-                            >
-                                View Full Timetable
-                            </Button>
-                        </CardContent>
-                    </Card>
                 </div>
             </div>
         </div>

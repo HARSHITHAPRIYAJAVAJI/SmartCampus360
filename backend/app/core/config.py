@@ -1,3 +1,4 @@
+from pydantic import ConfigDict
 from pydantic_settings import BaseSettings
 from typing import Optional, List, Union
 
@@ -6,7 +7,7 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     SECRET_KEY: str = "your-secret-key-here"  # Change this in production
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8  # 8 days
-    BACKEND_CORS_ORIGINS: List[str] = ["http://localhost:8080", "http://localhost:3000"]
+    BACKEND_CORS_ORIGINS: List[str] = ["http://localhost:8081", "http://localhost:8080", "http://localhost:3000"]
     
     # Database
     POSTGRES_SERVER: str = "localhost"
@@ -15,9 +16,7 @@ class Settings(BaseSettings):
     POSTGRES_DB: str = "timetable_optimizer"
     DATABASE_URI: Optional[str] = None
     
-    class Config:
-        case_sensitive = True
-        env_file = ".env"
+    model_config = ConfigDict(case_sensitive=True, env_file=".env")
 
     def get_database_url(self):
         if self.DATABASE_URI:

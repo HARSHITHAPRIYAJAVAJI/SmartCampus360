@@ -134,7 +134,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
     }
   };
 
-  const renderTimeSlot = (day: string, time: string) => {
+  const renderTimeSlot = (day: string, time: string, span: number = 1) => {
     // Lunch break special case
     if (time === "12:40") {
       return (
@@ -157,6 +157,36 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
     }
 
     const isLab = session.type === 'lab' || session.subject?.toLowerCase().includes('lab');
+    const isProject = session.subject?.toLowerCase().includes('project');
+
+    // Merged / spanned cell (3 consecutive identical sessions)
+    if (span > 1) {
+      return (
+        <div
+          className={`relative h-[84px] border border-border/30 flex flex-col items-center justify-center gap-1 overflow-hidden group transition-all duration-200 border-l-4 ${
+            isProject
+              ? 'bg-violet-50/80 dark:bg-violet-950/20 border-l-violet-500'
+              : isLab
+              ? 'bg-green-50/80 dark:bg-green-950/20 border-l-green-500'
+              : 'bg-primary/5 dark:bg-primary/10 border-l-primary'
+          }`}
+        >
+          <div className={`font-extrabold text-[13px] tracking-tight text-center px-2 ${
+            isProject ? 'text-violet-700 dark:text-violet-300' : 'text-slate-900 dark:text-slate-100'
+          }`}>
+            {session.subject}
+          </div>
+          <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+            {userRole === 'student' ? session.faculty : session.branch}
+          </div>
+          <div className={`text-[9px] font-mono px-2 py-0.5 rounded font-bold uppercase tracking-tighter ${
+            isProject ? 'bg-violet-100 text-violet-600 dark:bg-violet-900/40 dark:text-violet-300' : 'bg-primary/10 text-primary dark:bg-primary/20'
+          }`}>
+            {session.room}
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div
@@ -169,8 +199,6 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
         <div className="flex flex-col gap-0.5">
           <div className="font-extrabold text-[11px] leading-tight text-slate-900 dark:text-slate-100 truncate flex items-center gap-1">
             {session.subject}
-            {isLab && <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shrink-0" />}
-            {session.isLive && <Badge className="h-3 px-1 text-[8px] bg-amber-500 text-white border-none leading-none">Live</Badge>}
           </div>
           <div className="text-[10px] text-slate-500 dark:text-slate-400 font-medium truncate flex items-center gap-1">
              {userRole === 'student' ? session.faculty : session.branch}
@@ -220,64 +248,13 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
         </div>
       </div>
 
-      {/* Weekly Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <Calendar className="h-5 w-5 text-primary" />
-              <div>
-                <p className="text-sm font-medium">Total Sessions</p>
-                <p className="text-2xl font-bold">{stats.totalSessions}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <Clock className="h-5 w-5 text-green-600" />
-              <div>
-                <p className="text-sm font-medium">Contact Hours</p>
-                <p className="text-2xl font-bold">{stats.contactHours}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-5 h-5 bg-yellow-500 rounded"></div>
-              <div>
-                <p className="text-sm font-medium">Free Slots</p>
-                <p className="text-2xl font-bold">{stats.freeSlots}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
 
       {/* Timetable Grid */}
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center justify-between relative">
             <span>Semester Academic Schedule</span>
-            <div className="flex items-center space-x-2 mr-40">
-              <Badge variant="outline" className="bg-primary text-primary-foreground">Lecture</Badge>
-              <Badge variant="outline" className="bg-green-600 text-white">Lab</Badge>
-              <Badge variant="outline" className="bg-yellow-500 text-black">Practical</Badge>
-              <Badge variant="outline" className="bg-pink-500 text-white">Project</Badge>
-            </div>
-            
-            {/* Section Classroom Info (Top Right) */}
-            <div className="absolute right-0 top-0">
-                <Badge className="bg-primary/10 border-primary/20 text-primary font-mono text-xs px-3 py-1.5 flex items-center gap-2">
-                    <Calendar className="h-3 w-3" />
-                    Allotted Room: A-304
-                </Badge>
-            </div>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -294,49 +271,63 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
               ))}
 
               {/* Day Rows */}
-              {days.map((day) => (
-                <div key={day} className="contents text-xs">
-                  <div className="p-3 bg-muted/50 font-black text-center flex items-center justify-center border-r-2 border-muted h-full uppercase min-h-[84px] tracking-widest text-[10px]">
-                    {day}
-                  </div>
-                  {timeSlots.map((time) => (
-                    <div key={`${day}-${time}`} className="h-full">
-                      {renderTimeSlot(day, time)}
+              {days.map((day) => {
+                // Build a merged slot list: detect consecutive identical sessions
+                const mergedSlots: { time: string; span: number }[] = [];
+                let i = 0;
+                while (i < timeSlots.length) {
+                  const time = timeSlots[i];
+                  const session = timetableData[day as keyof typeof timetableData]?.[time];
+                  const courseCode = session?.subject ?? null;
+
+                  // Don't merge lunch or empty slots
+                  if (time === "12:40" || !courseCode) {
+                    mergedSlots.push({ time, span: 1 });
+                    i++;
+                    continue;
+                  }
+
+                  // Count how many following slots have the exact same subject
+                  let span = 1;
+                  while (
+                    i + span < timeSlots.length &&
+                    timeSlots[i + span] !== "12:40"
+                  ) {
+                    const nextSession = timetableData[day as keyof typeof timetableData]?.[timeSlots[i + span]];
+                    if (nextSession?.subject === courseCode) {
+                      span++;
+                    } else {
+                      break;
+                    }
+                  }
+
+                  mergedSlots.push({ time, span });
+                  i += span;
+                }
+
+                return (
+                  <div key={day} className="contents text-xs">
+                    <div className="p-3 bg-muted/50 font-black text-center flex items-center justify-center border-r-2 border-muted h-full uppercase min-h-[84px] tracking-widest text-[10px]">
+                      {day}
                     </div>
-                  ))}
-                </div>
-              ))}
+                    {mergedSlots.map(({ time, span }) => (
+                      <div
+                        key={`${day}-${time}`}
+                        className="h-full"
+                        style={{ gridColumn: span > 1 ? `span ${span}` : undefined }}
+                      >
+                        {renderTimeSlot(day, time, span)}
+                      </div>
+                    ))}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </CardContent>
       </Card>
 
-      {/* Legend */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Session Types</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-primary rounded"></div>
-              <span className="text-sm">Lectures</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-green-600 rounded"></div>
-              <span className="text-sm">Laboratory</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-yellow-500 rounded"></div>
-              <span className="text-sm">Practical</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-4 h-4 bg-pink-500 rounded"></div>
-              <span className="text-sm">Projects</span>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+
     </div>
   );
 }

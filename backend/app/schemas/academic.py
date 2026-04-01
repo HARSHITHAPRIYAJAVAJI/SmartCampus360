@@ -1,5 +1,5 @@
 from typing import Optional, List
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 class CourseBase(BaseModel):
     code: str
@@ -13,8 +13,7 @@ class CourseCreate(CourseBase):
 
 class Course(CourseBase):
     id: int
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class RoomBase(BaseModel):
     name: str
@@ -27,8 +26,7 @@ class RoomCreate(RoomBase):
 
 class Room(RoomBase):
     id: int
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 from datetime import date
 
@@ -45,8 +43,7 @@ class Attendance(AttendanceBase):
     id: int
     period: int
     marked_by_id: Optional[int] = None
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 

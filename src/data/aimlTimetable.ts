@@ -16,7 +16,7 @@ export const AIML_TIMETABLES: Record<string, Record<string, TimetableEntry | nul
         "Monday-03:20": { id: "1_1-m-6", courseCode: "CPPS", room: "Nelluri Prathibha" },
 
         "Tuesday-09:40": { id: "1_1-t-1", courseCode: "LA&ODE", room: "P Sanjeeva Reddy" },
-        "Tuesday-10:40": { id: "1_1-t-2", courseCode: "English", room: "Staff" },
+        "Tuesday-10:40": { id: "1_1-t-2", courseCode: "EC", room: "Staff" },
         "Tuesday-11:40": { id: "1_1-t-3", courseCode: "CPPS", room: "Nelluri Prathibha" },
         "Tuesday-01:20": { id: "1_1-t-4", courseCode: "ITWS Lab", room: "Workshop" },
         "Tuesday-02:20": { id: "1_1-t-5", courseCode: "ITWS Lab", room: "Workshop" },
@@ -26,30 +26,31 @@ export const AIML_TIMETABLES: Record<string, Record<string, TimetableEntry | nul
         "Wednesday-10:40": { id: "1_1-w-2", courseCode: "EC Lab", room: "Chemistry Lab" },
         "Wednesday-11:40": { id: "1_1-w-3", courseCode: "EC Lab", room: "Chemistry Lab" },
         "Wednesday-01:20": { id: "1_1-w-4", courseCode: "LA&ODE", room: "P Sanjeeva Reddy" },
-        "Wednesday-02:20": { id: "1_1-w-5", courseCode: "EC", room: "Staff" },
+        "Wednesday-02:20": { id: "1_1-w-5", courseCode: "English", room: "Staff" },
         "Wednesday-03:20": { id: "1_1-w-6", courseCode: "CPPS", room: "Staff" },
 
         "Thursday-09:40": { id: "1_1-th-1", courseCode: "ELCS Lab", room: "Language Lab" },
         "Thursday-10:40": { id: "1_1-th-2", courseCode: "ELCS Lab", room: "Language Lab" },
         "Thursday-11:40": { id: "1_1-th-3", courseCode: "ELCS Lab", room: "Language Lab" },
-        "Thursday-01:20": { id: "1_1-th-4", courseCode: "LA&ODE", room: "P Sanjeeva Reddy" },
-        "Thursday-02:20": { id: "1_1-th-5", courseCode: "EC", room: "Staff" },
-        "Thursday-03:20": { id: "1_1-th-6", courseCode: "English", room: "Staff" },
+        "Thursday-01:20": { id: "1_1-th-4", courseCode: "EC", room: "Staff" },
+        "Thursday-02:20": { id: "1_1-th-5", courseCode: "LA&ODE", room: "P Sanjeeva Reddy" },
+        "Thursday-03:20": { id: "1_1-th-6", courseCode: "CPPS", room: "Nelluri Prathibha" },
 
         "Friday-09:40": { id: "1_1-f-1", courseCode: "CAEG", room: "Drawing Hall" },
         "Friday-10:40": { id: "1_1-f-2", courseCode: "CAEG", room: "Drawing Hall" },
         "Friday-11:40": { id: "1_1-f-3", courseCode: "CAEG", room: "Drawing Hall" },
-        "Friday-01:20": { id: "1_1-f-4", courseCode: "CPPS", room: "Nelluri Prathibha" },
-        "Friday-02:20": { id: "1_1-f-5", courseCode: "LA&ODE", room: "P Sanjeeva Reddy" },
+        "Friday-01:20": { id: "1_1-f-4", courseCode: "EC", room: "Staff" },
+        "Friday-02:20": { id: "1_1-f-5", courseCode: "CPPS", room: "Nelluri Prathibha" },
         "Friday-03:20": { id: "1_1-f-6", courseCode: "Sports", room: "Ground" },
 
-        "Saturday-09:40": { id: "1_1-sa-1", courseCode: "EC", room: "Staff" },
-        "Saturday-10:40": { id: "1_1-sa-2", courseCode: "CPPS", room: "Nelluri Prathibha" },
+        "Saturday-09:40": { id: "1_1-sa-1", courseCode: "LA&ODE", room: "P Sanjeeva Reddy" },
+        "Saturday-10:40": { id: "1_1-sa-2", courseCode: "EC", room: "Staff" },
         "Saturday-11:40": { id: "1_1-sa-3", courseCode: "English", room: "Staff" },
-        "Saturday-01:20": { id: "1_1-sa-4", courseCode: "English", room: "Staff" },
+        "Saturday-01:20": { id: "1_1-sa-4", courseCode: "LA&ODE", room: "P Sanjeeva Reddy" },
         "Saturday-02:20": { id: "1_1-sa-5", courseCode: "EC", room: "Staff" },
         "Saturday-03:20": { id: "1_1-sa-6", courseCode: "Library", room: "Library" },
     },
+
 
     // Year 2, Semester 2 (II-II) (Mapped to 2-2)
     "2-2": {
@@ -112,7 +113,7 @@ export const AIML_TIMETABLES: Record<string, Record<string, TimetableEntry | nul
         "Monday-03:20": { id: "1_2-m-6", courseCode: "AP", room: "Dr. K. Rama Rao" },
 
         "Tuesday-09:40": { id: "1_2-t-1", courseCode: "SM&VC", room: "Dr. P. Madhavi" },
-        "Tuesday-10:40": { id: "1_2-t-2", courseCode: "DS", room: "Mrs. M. Suryakumari" },
+        "Tuesday-10:40": { id: "1_2-t-2", courseCode: "BEE", room: "Mr. Ch. Naveen" },
         "Tuesday-11:40": { id: "1_2-t-3", courseCode: "AP", room: "Dr. K. Rama Rao" },
         "Tuesday-01:20": { id: "1_2-t-4", courseCode: "AP Lab", room: "Dr. K. Rama Rao" },
         "Tuesday-02:20": { id: "1_2-t-5", courseCode: "AP Lab", room: "Dr. K. Rama Rao" },
@@ -122,8 +123,8 @@ export const AIML_TIMETABLES: Record<string, Record<string, TimetableEntry | nul
         "Wednesday-10:40": { id: "1_2-w-2", courseCode: "BEE", room: "Mr. Ch. Naveen" },
         "Wednesday-11:40": { id: "1_2-w-3", courseCode: "BEFA", room: "Mrs. G. Sunitha" },
         "Wednesday-01:20": { id: "1_2-w-4", courseCode: "DS", room: "Mrs. M. Suryakumari" },
-        "Wednesday-02:20": { id: "1_2-w-5", courseCode: "BEE", room: "Mr. Ch. Naveen" },
-        "Wednesday-03:20": { id: "1_2-w-6", courseCode: "AP", room: "Dr. K. Rama Rao" },
+        "Wednesday-02:20": { id: "1_2-w-5", courseCode: "AP", room: "Dr. K. Rama Rao" },
+        "Wednesday-03:20": { id: "1_2-w-6", courseCode: "SM&VC", room: "Dr. P. Madhavi" },
 
         "Thursday-09:40": { id: "1_2-th-1", courseCode: "BEE Lab", room: "Mr. Ch. Naveen" },
         "Thursday-10:40": { id: "1_2-th-2", courseCode: "BEE Lab", room: "Mr. Ch. Naveen" },
@@ -133,19 +134,20 @@ export const AIML_TIMETABLES: Record<string, Record<string, TimetableEntry | nul
         "Thursday-03:20": { id: "1_2-th-6", courseCode: "BEFA", room: "Mrs. G. Sunitha" },
 
         "Friday-09:40": { id: "1_2-f-1", courseCode: "BEE", room: "Mr. Ch. Naveen" },
-        "Friday-10:40": { id: "1_2-f-2", courseCode: "DS", room: "Mrs. M. Suryakumari" },
+        "Friday-10:40": { id: "1_2-f-2", courseCode: "AP", room: "Dr. K. Rama Rao" },
         "Friday-11:40": { id: "1_2-f-3", courseCode: "SM&VC", room: "Dr. P. Madhavi" },
         "Friday-01:20": { id: "1_2-f-4", courseCode: "BEFA", room: "Mrs. G. Sunitha" },
-        "Friday-02:20": { id: "1_2-f-5", courseCode: "AP", room: "Dr. K. Rama Rao" },
+        "Friday-02:20": { id: "1_2-f-5", courseCode: "BEE", room: "Mr. Ch. Naveen" },
         "Friday-03:20": { id: "1_2-f-6", courseCode: "Sports", room: "Ground" },
 
         "Saturday-09:40": { id: "1_2-sa-1", courseCode: "BEFA", room: "Mrs. G. Sunitha" },
-        "Saturday-10:40": { id: "1_2-sa-2", courseCode: "AP", room: "Dr. K. Rama Rao" },
+        "Saturday-10:40": { id: "1_2-sa-2", courseCode: "DS", room: "Mrs. M. Suryakumari" },
         "Saturday-11:40": { id: "1_2-sa-3", courseCode: "SM&VC", room: "Dr. P. Madhavi" },
         "Saturday-01:20": { id: "1_2-sa-4", courseCode: "BEE", room: "Mr. Ch. Naveen" },
-        "Saturday-02:20": { id: "1_2-sa-5", courseCode: "DS", room: "Mrs. M. Suryakumari" },
+        "Saturday-02:20": { id: "1_2-sa-5", courseCode: "AP", room: "Dr. K. Rama Rao" },
         "Saturday-03:20": { id: "1_2-sa-6", courseCode: "Library", room: "Library" },
     },
+
 
     // Year 2, Semester 1 (II-I)
     "2-1": {

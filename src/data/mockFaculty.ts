@@ -15,7 +15,7 @@ export const MOCK_FACULTY: Faculty[] = [
     rollNumber: "22F91F6601",
     designation: "Head of Department (HOD)",
     department: "CSM",
-    email: "sunil.srinivas@smartcampus.edu",
+    email: "sunil.srinivas@smartcampus.com",
     phone: "+91 98765 43210"
   },
   {
@@ -24,7 +24,7 @@ export const MOCK_FACULTY: Faculty[] = [
     rollNumber: "22F91F6602",
     designation: "Professor",
     department: "CSM",
-    email: "k.srinivas@smartcampus.edu",
+    email: "k.srinivas@smartcampus.com",
     phone: "+91 98765 43211"
   },
 
@@ -34,7 +34,7 @@ export const MOCK_FACULTY: Faculty[] = [
     rollNumber: "22F91F6604",
     designation: "Associate Professor",
     department: "CSM",
-    email: "syed.hussain@smartcampus.edu",
+    email: "syed.hussain@smartcampus.com",
     phone: "+91 98765 43213"
   },
   {
@@ -43,7 +43,7 @@ export const MOCK_FACULTY: Faculty[] = [
     rollNumber: "22F91F6605",
     designation: "Assistant Professor",
     department: "CSM",
-    email: "nagaraju.r@smartcampus.edu",
+    email: "nagaraju.r@smartcampus.com",
     phone: "+91 98765 43214"
   },
   {
@@ -52,7 +52,7 @@ export const MOCK_FACULTY: Faculty[] = [
     rollNumber: "22F91F6606",
     designation: "Assistant Professor",
     department: "CSM",
-    email: "geethanjali.p@smartcampus.edu",
+    email: "geethanjali.p@smartcampus.com",
     phone: "+91 98765 43215"
   },
   {
@@ -61,7 +61,7 @@ export const MOCK_FACULTY: Faculty[] = [
     rollNumber: "22F91F6607",
     designation: "Assistant Professor",
     department: "CSM",
-    email: "shilpa.ch@smartcampus.edu",
+    email: "shilpa.ch@smartcampus.com",
     phone: "+91 98765 43216"
   },
   {
@@ -70,7 +70,7 @@ export const MOCK_FACULTY: Faculty[] = [
     rollNumber: "22F91F6608",
     designation: "Assistant Professor",
     department: "CSM",
-    email: "ishwarya.k@smartcampus.edu",
+    email: "ishwarya.k@smartcampus.com",
     phone: "+91 98765 43217"
   },
   {
@@ -79,7 +79,7 @@ export const MOCK_FACULTY: Faculty[] = [
     rollNumber: "22F91F6609",
     designation: "Assistant Professor",
     department: "CSM",
-    email: "gnaneshwari.s@smartcampus.edu",
+    email: "gnaneshwari.s@smartcampus.com",
     phone: "+91 98765 43218"
   },
   {
@@ -88,7 +88,7 @@ export const MOCK_FACULTY: Faculty[] = [
     rollNumber: "22F91F6610",
     designation: "Assistant Professor",
     department: "CSM",
-    email: "srinivasa.reddy@smartcampus.edu",
+    email: "srinivasa.reddy@smartcampus.com",
     phone: "+91 98765 43219"
   }
 ];

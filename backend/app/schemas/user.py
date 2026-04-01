@@ -1,5 +1,5 @@
 from typing import Optional, List
-from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import BaseModel, EmailStr, Field, field_validator, ConfigDict
 from datetime import datetime
 from enum import Enum
 
@@ -21,7 +21,7 @@ class UserCreate(UserBase):
     password: str
     role: UserRole = UserRole.STUDENT
     
-    @validator('password')
+    @field_validator('password')
     def password_must_be_strong(cls, v):
         if len(v) < 8:
             raise ValueError('Password must be at least 8 characters long')
@@ -40,8 +40,7 @@ class UserInDBBase(UserBase):
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 # Additional properties to return via API
 class User(UserInDBBase):
@@ -72,8 +71,7 @@ class Faculty(FacultyBase):
     id: int
     user: User
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 # Student specific schemas
 class StudentBase(BaseModel):
@@ -89,5 +87,4 @@ class Student(StudentBase):
     id: int
     user: User
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)

@@ -183,86 +183,81 @@ export class TimetableEngine {
     }
 
     private assignTheories(theories: CourseData[], rooms: RoomData[], section: string, year: number, grid: TimetableGrid) {
-        let pool: CourseData[] = [];
-        const replenish = () => {
-            theories.forEach(t => {
-                const instances = (t.credits && t.credits > 0) ? t.credits : 3;
-                for(let i=0; i<instances; i++) pool.push(t);
-            });
-            pool.sort(() => Math.random() - 0.5);
-        };
+        if (theories.length === 0) return;
 
-        if (theories.length > 0) replenish();
+        // 1. Equal distribution — every subject gets the same number of slots (round-robin)
+        const emptySlots = Object.values(grid).filter(v => v === null).length;
+        const slotsEach = Math.ceil(emptySlots / theories.length);
+
+        let pool: CourseData[] = [];
+        theories.forEach(t => {
+            for (let i = 0; i < slotsEach; i++) pool.push(t);
+        });
+
+        // Trim any over-fill caused by ceiling rounding
+        if (pool.length > emptySlots) {
+            pool = pool.slice(0, emptySlots);
+        }
+
+        // Randomize the pool for natural distribution
+        pool.sort(() => Math.random() - 0.5);
 
         const blockPrefix = year === 1 ? 'T' : 'N';
         const floorLvl = year * 100;
         const matchingRooms = rooms.filter(r => r.name.startsWith(blockPrefix));
-
         const sectionRoomIdx = section.charCodeAt(0) - 'A'.charCodeAt(0);
         let defaultRoomStr = `${blockPrefix}-${floorLvl + 1 + sectionRoomIdx}`;
         if (matchingRooms.length > 0) {
             defaultRoomStr = matchingRooms[sectionRoomIdx % matchingRooms.length].name;
         }
 
-        // Loop until NO more empty slots exist or we are totally stuck
-        let stillPlacing = true;
-        while (stillPlacing) {
-            stillPlacing = false;
-            
-            this.slots.forEach(slot => {
-                this.days.forEach(day => {
-                    const key = `${day}-${slot}`;
-                    if (grid[key] !== null) return;
-                    
-                    if (pool.length === 0) {
-                        if (theories.length === 0) return;
-                        replenish();
-                    }
+        // 2. Systematic Placement with Constraint Checking
+        // We iterate through slots and days and try to pull from the pool
+        this.slots.forEach(slot => {
+            this.days.forEach(day => {
+                const key = `${day}-${slot}`;
+                if (grid[key] !== null) return;
+                
+                const usedToday = this.slots.map(s => grid[`${day}-${s}`]?.courseCode).filter(Boolean);
 
-                    const usedToday = this.slots.map(s => grid[`${day}-${s}`]?.courseCode).filter(Boolean);
+                // Try to find a subject that hasn't been used today and from a faculty that is free
+                let bestIdx = pool.findIndex(c => {
+                    const faculty = c.instructor?.full_name || "Staff";
+                    return !usedToday.includes(c.code) && 
+                           !this.facultySchedule[key].has(faculty) && 
+                           !this.roomSchedule[key].has(defaultRoomStr);
+                });
 
-                    // Try 1: Ideal distribution (No same subject twice a day)
-                    let bestIdx = pool.findIndex(c => {
+                // Fallback: If we must repeat a subject today to fill the slot
+                if (bestIdx === -1) {
+                    bestIdx = pool.findIndex(c => {
                         const faculty = c.instructor?.full_name || "Staff";
-                        return !usedToday.includes(c.code) && 
-                               !this.facultySchedule[key].has(faculty) && 
+                        return !this.facultySchedule[key].has(faculty) && 
                                !this.roomSchedule[key].has(defaultRoomStr);
                     });
+                }
 
-                    // Try 2: Fill-in (Allow same subject twice a day if needed to fill gaps)
-                    if (bestIdx === -1) {
-                        bestIdx = pool.findIndex(c => {
-                            const faculty = c.instructor?.full_name || "Staff";
-                            return !this.facultySchedule[key].has(faculty) && 
-                                   !this.roomSchedule[key].has(defaultRoomStr);
-                        });
-                    }
+                // Final Fallback: Grab the first available in pool even if there's a conflict (rare)
+                if (bestIdx === -1 && pool.length > 0) {
+                    bestIdx = 0;
+                }
 
-                    if (bestIdx !== -1) {
-                        const course = pool[bestIdx];
-                        const faculty = course.instructor?.full_name || "Staff";
-                        this.reserve(day, slot, faculty, defaultRoomStr);
-                        grid[key] = {
-                            id: `th-${key}-${course.id}-${Math.random().toString(36).substr(2, 5)}`,
-                            courseCode: course.code,
-                            courseName: this.abbreviate(course.name),
-                            faculty,
-                            room: defaultRoomStr,
-                            type: 'Theory'
-                        };
-                        pool.splice(bestIdx, 1);
-                        stillPlacing = true;
-                    }
-                });
+                if (bestIdx !== -1) {
+                    const course = pool[bestIdx];
+                    const faculty = course.instructor?.full_name || "Staff";
+                    this.reserve(day, slot, faculty, defaultRoomStr);
+                    grid[key] = {
+                        id: `th-${key}-${course.id}-${Math.random().toString(36).substr(2, 5)}`,
+                        courseCode: course.code,
+                        courseName: this.abbreviate(course.name),
+                        faculty,
+                        room: defaultRoomStr,
+                        type: 'Theory'
+                    };
+                    pool.splice(bestIdx, 1);
+                }
             });
-
-            // If we still have nulls and pool is empty, force replenish and loop again
-            const hasNulls = Object.values(grid).some(v => v === null);
-            if (hasNulls && pool.length === 0 && theories.length > 0) {
-                replenish();
-                stillPlacing = true;
-            }
-        }
+        });
     }
 
     private isBlockFree(day: string, slots: string[], faculty: string, room: string, grid: TimetableGrid): boolean {

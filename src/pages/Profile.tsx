@@ -120,7 +120,7 @@ export default function Profile() {
                                     </div>
                                     <div className="flex flex-col">
                                         <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">{info.label}</span>
-                                        <span className="text-sm font-semibold truncate max-w-[200px]">{info.value}</span>
+                                        <span className="text-sm font-semibold break-all">{info.value}</span>
                                     </div>
                                 </div>
                             ))}

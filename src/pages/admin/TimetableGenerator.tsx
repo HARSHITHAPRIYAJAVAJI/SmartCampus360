@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { timetableService, academicService } from "@/services/api";
+import { timetableService } from "@/services/api";
+
 import { Loader2, Calendar as CalendarIcon, Save, RefreshCw, Wand2, Building2, Grip, BookOpen, Rocket, PlayCircle, ShieldCheck } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -144,43 +145,16 @@ const TimetableGenerator = () => {
     const [courses, setCourses] = useState<CourseData[]>([]);
     const [rooms, setRooms] = useState<RoomData[]>([]);
     const [savedTimetables, setSavedTimetables] = useState<any>({});
-    const [isApiOffline, setIsApiOffline] = useState(false);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const [cRes, rRes, tRes] = await Promise.all([
-                    academicService.getCourses(),
-                    academicService.getRooms(),
-                    timetableService.getAll()
-                ]);
-                // API is reachable — mark as online regardless of empty data
-                setIsApiOffline(false);
-                // Use API data if available, otherwise supplement with local mock courses
-                const apiCourses = cRes.data && cRes.data.length > 0 ? cRes.data : MOCK_COURSES;
-                const apiRooms = rRes.data && rRes.data.length > 0 ? rRes.data : [
-                    { id: 1, name: "A-304", room_type: "Lab" },
-                    { id: 2, name: "C-201", room_type: "Lecture" },
-                    { id: 3, name: "N-412", room_type: "Lecture" },
-                    { id: 4, name: "S-101", room_type: "Lab" }
-                ];
-                setCourses(apiCourses as any);
-                setRooms(apiRooms);
-                setSavedTimetables(tRes.data || {});
-            } catch (err) {
-                // Only mark as offline if the request itself failed (network error, 5xx, etc.)
-                console.error("Fetch error:", err);
-                setIsApiOffline(true);
-                setCourses(MOCK_COURSES as any);
-                setRooms([
-                    { id: 1, name: "A-304", room_type: "Lab" },
-                    { id: 2, name: "C-201", room_type: "Lecture" },
-                    { id: 3, name: "N-412", room_type: "Lecture" },
-                    { id: 4, name: "S-101", room_type: "Lab" }
-                ]);
-            }
-        };
-        fetchData();
+        // Load mock data directly — no backend required
+        setCourses(MOCK_COURSES as any);
+        setRooms([
+            { id: 1, name: "A-304", room_type: "Lab" },
+            { id: 2, name: "C-201", room_type: "Lecture" },
+            { id: 3, name: "N-412", room_type: "Lecture" },
+            { id: 4, name: "S-101", room_type: "Lab" }
+        ]);
     }, []);
 
 
@@ -378,25 +352,6 @@ const TimetableGenerator = () => {
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-full overflow-x-auto space-y-6 animate-in fade-in-50">
-            {/* API Connection Banner */}
-            {isApiOffline && (
-                <Alert variant="destructive" className="mb-6 bg-red-500/10 border-red-500/50 text-red-700 animate-in slide-in-from-top-4">
-                    <AlertCircle className="h-4 w-4" />
-                    <AlertTitle className="font-bold">Backend Sync Offline</AlertTitle>
-                    <AlertDescription className="text-xs">
-                        The production database is unreachable. Auto-switched to **Development Mode** with internal course catalog. Schedules will not be persisted to the server.
-                    </AlertDescription>
-                </Alert>
-            )}
-            {!isApiOffline && (
-                <Alert className="mb-6 bg-green-500/5 border-green-500/20 text-green-700">
-                    <CheckCircle2 className="h-4 w-4 text-green-500" />
-                    <AlertTitle className="text-sm font-bold">Production Connected</AlertTitle>
-                    <AlertDescription className="text-xs">
-                        Synchronized with master curriculum and resource schedules. Live persistence enabled.
-                    </AlertDescription>
-                </Alert>
-            )}
 
             {/* Page Header */}
             <div className="flex flex-col md:flex-row justify-between items-end mb-4 gap-4 animate-in fade-in-50 slide-in-from-top-2">
@@ -496,7 +451,7 @@ const TimetableGenerator = () => {
                     <Card className="border-none shadow-xl overflow-hidden">
                         <CardContent className="p-0">
                             <div className="overflow-x-auto">
-                                <div className="grid grid-cols-[110px_repeat(7,1fr)] min-w-[1100px]">
+                                <div className="grid grid-cols-[110px_repeat(7,1fr)] min-w-[1200px]">
                                     {/* Header */}
                                     <div className="p-3 bg-muted font-bold text-center text-xs uppercase tracking-wider border-b-2 border-primary/20 flex items-center justify-center">Day</div>
                                     {timeSlots.map(slot => (
