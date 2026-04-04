@@ -236,10 +236,10 @@ export default function Profile() {
                                 <div className="p-4 bg-muted/20 rounded-2xl border border-dashed border-muted-foreground/20">
                                     <h4 className="font-bold text-sm mb-2 text-primary">Core Specialization</h4>
                                     <p className="text-sm text-muted-foreground leading-relaxed">
-                                        Primary focus on Advanced Algorithms and Machine Learning architectures. Currently leading the Department's AI Ethics Initiative.
+                                        Primary focus on {facultyData.specialization?.[0] || 'Advanced Research'} and {facultyData.specialization?.[1] || 'Academic Excellence'}.
                                     </p>
                                     <div className="flex flex-wrap gap-2 mt-4">
-                                        {["Deep Learning", "Graph Theory", "Optimization", "Python"].map((skill) => (
+                                        {(facultyData.specialization || ["Deep Learning", "Graph Theory", "Optimization", "Python"]).map((skill) => (
                                             <Badge key={skill} variant="secondary" className="bg-background border font-semibold">{skill}</Badge>
                                         ))}
                                     </div>

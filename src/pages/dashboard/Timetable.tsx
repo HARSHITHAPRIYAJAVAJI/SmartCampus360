@@ -41,8 +41,13 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
         const [day, time] = dayTime.split('-');
         if (!result[day]) result[day] = {};
 
-        // Find faculty for this session in FACULTY_LOAD
-        const loadInfo = FACULTY_LOAD[key as keyof typeof FACULTY_LOAD]?.find(l => l.code === session.courseCode);
+        // Find faculty for this session: Try branch-specific load first, then generic load
+        const facultyLoadKey = `${student.branch}-${student.year}-${semNum}`;
+        const genericLoadKey = `${student.year}-${semNum}`;
+        const currentLoad = (FACULTY_LOAD[facultyLoadKey as keyof typeof FACULTY_LOAD] || 
+                           FACULTY_LOAD[genericLoadKey as keyof typeof FACULTY_LOAD]) as any[];
+        
+        const loadInfo = currentLoad?.find(l => l.code === session.courseCode);
 
         result[day][time] = {
           subject: session.courseName || session.courseCode,

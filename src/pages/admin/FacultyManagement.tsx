@@ -39,12 +39,15 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedDept, setSelectedDept] = useState<string | null>(null);
 
-    const departments = [
+    const departments = useMemo(() => [
         { id: "CSM", name: "CSE (AI & Machine Learning)", icon: BookOpen, color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30", description: "Department of AI & ML" },
         { id: "IT", name: "Information Technology", icon: Building2, color: "text-cyan-600 bg-cyan-100 dark:bg-cyan-900/30", description: "Department of IT" },
         { id: "CSE", name: "Computer Science & Engineering", icon: GraduationCap, color: "text-purple-600 bg-purple-100 dark:bg-purple-900/30", description: "Department of CSE" },
         { id: "ECE", name: "Electronics & Communication", icon: Clock, color: "text-green-600 bg-green-100 dark:bg-green-100/30", description: "Department of ECE" },
-    ];
+    ].map(dept => ({
+        ...dept,
+        count: MOCK_FACULTY.filter(f => f.department === dept.id).length
+    })), []);
 
     const { toast } = useToast();
     const [facultyList, setFacultyList] = useState<FacultyMember[]>([]);
@@ -56,6 +59,13 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
 
     // Leave Management State
     const [pendingLeaves, setPendingLeaves] = useState<LeaveRequest[]>(MOCK_LEAVE_REQUESTS);
+
+    const filteredLeaves = useMemo(() => {
+        return pendingLeaves.filter(leave => {
+            const faculty = MOCK_FACULTY.find(f => f.id === leave.facultyId || f.name === leave.facultyName);
+            return faculty?.department === selectedDept;
+        });
+    }, [pendingLeaves, selectedDept]);
 
     // Swap/Replacement Requests from localStorage
     interface SwapRequest { id: string; senderName: string; targetName: string; type: string; date: string; period: string; status: string; }
@@ -87,54 +97,46 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
     };
 
     useEffect(() => {
-        if (!selectedDept) return;
+        if (!selectedDept) {
+            setFacultyList([]);
+            return;
+        }
 
-        if (selectedDept === 'CSM' && facultyList.length === 0) {
-            const facultyMap = new Map<string, FacultyMember>();
-            const hodName = "Dr. B. Sunil Srinivas";
-
-            MOCK_FACULTY.forEach(faculty => {
-                facultyMap.set(faculty.name, {
-                    ...faculty,
-                    subjects: [],
-                    totalLoad: 0
-                });
+        const facultyMap = new Map<string, FacultyMember>();
+        
+        // 1. Initialize faculty from MOCK_FACULTY that belong to this department
+        MOCK_FACULTY.filter(f => f.department === selectedDept).forEach(faculty => {
+            facultyMap.set(faculty.name, {
+                ...faculty,
+                subjects: [],
+                totalLoad: 0
             });
+        });
 
-            Object.entries(FACULTY_LOAD).forEach(([semester, subjects]) => {
+        // 2. Scan all loads in FACULTY_LOAD that match this department
+        // Matches keys like "IT-X-Y" if selectedDept is "IT", 
+        // or keys like "1-1", "CSM-X-Y" if selectedDept is "CSM"
+        Object.entries(FACULTY_LOAD).forEach(([key, subjects]) => {
+            const isMatch = (selectedDept === 'CSM' && (/^\d/.test(key) || key.startsWith('CSM-'))) || 
+                           (key.startsWith(`${selectedDept}-`));
+            
+            if (isMatch) {
                 subjects.forEach((subj) => {
                     const name = subj.faculty.trim();
-                    if (!name || name === "Guest/Faculty" || name === "All Staff") return;
+                    if (!name || name === "Guest/Faculty" || name === "Staff" || name === "Guest Faculty") return;
 
-                    if (!facultyMap.has(name)) {
-                        let designation = "Assistant Professor";
-                        if (name.startsWith("Dr.")) designation = "Associate Professor";
-                        if (name.includes("Prof.")) designation = "Professor";
-                        if (name === hodName) designation = "Head of Department (HOD)";
-
-                        facultyMap.set(name, {
-                            id: name.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-                            name: name,
-                            rollNumber: `F-${Math.floor(1000 + Math.random() * 9000)}`,
-                            designation: designation,
-                            department: "CSM",
-                            subjects: [],
-                            totalLoad: 0,
-                            email: `${name.split(' ').pop()?.toLowerCase()}@smartcampus.edu`,
-                            phone: "+91 98XXX XXXXX"
-                        });
-                    }
-
-                    const f = facultyMap.get(name)!;
-                    if (!f.subjects.includes(subj.code)) {
-                        f.subjects.push(subj.code);
-                        f.totalLoad += 3;
+                    if (facultyMap.has(name)) {
+                        const f = facultyMap.get(name)!;
+                        if (!f.subjects.includes(subj.code)) {
+                            f.subjects.push(subj.code);
+                            f.totalLoad += 3;
+                        }
                     }
                 });
-            });
+            }
+        });
 
-            setFacultyList(Array.from(facultyMap.values()));
-        }
+        setFacultyList(Array.from(facultyMap.values()));
     }, [selectedDept]);
 
     const filteredFaculty = useMemo(() => {
@@ -212,7 +214,12 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
                                     <dept.icon className="h-8 w-8" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-xl mb-2">{dept.name}</h3>
+                                    <h3 className="font-bold text-xl mb-1">{dept.name}</h3>
+                                    <div className="flex items-center justify-center gap-2 mb-2">
+                                        <Badge variant="secondary" className="font-bold bg-primary/10 text-primary">
+                                            {dept.count} Faculty Members
+                                        </Badge>
+                                    </div>
                                     <p className="text-sm text-muted-foreground">{dept.description}</p>
                                 </div>
                                 <Button variant="ghost" className="group-hover:translate-x-1 transition-transform">
@@ -234,8 +241,11 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
 
             <div className="flex flex-col md:flex-row justify-between items-end gap-4 mb-8">
                 <div>
-                    <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+                    <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent flex items-center gap-3">
                         {departments.find(d => d.id === selectedDept)?.name}
+                        <Badge className="text-sm font-bold bg-primary text-white">
+                            {departments.find(d => d.id === selectedDept)?.count} Total
+                        </Badge>
                     </h1>
                     <p className="text-muted-foreground mt-2 text-lg">
                         Faculty Directory & Resource Management
@@ -305,11 +315,11 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
             <Tabs defaultValue="directory" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 max-w-[560px]">
                     <TabsTrigger value="directory">Active Directory</TabsTrigger>
-                    <TabsTrigger value="leaves">
+                        <TabsTrigger value="leaves">
                     Leave Requests
-                    {pendingLeaves.filter(l => l.status === 'Pending').length > 0 && (
+                    {filteredLeaves.filter(l => l.status === 'Pending').length > 0 && (
                         <Badge className="ml-2 bg-destructive text-white h-5 w-5 flex items-center justify-center p-0 rounded-full">
-                            {pendingLeaves.filter(l => l.status === 'Pending').length}
+                            {filteredLeaves.filter(l => l.status === 'Pending').length}
                         </Badge>
                     )}
                 </TabsTrigger>
@@ -381,14 +391,14 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
-                            {pendingLeaves.filter(l => l.status === 'Pending').length === 0 ? (
+                            {filteredLeaves.filter(l => l.status === 'Pending').length === 0 ? (
                                 <div className="text-center py-12 text-muted-foreground">
                                     <Check className="h-12 w-12 mx-auto mb-4 opacity-20" />
                                     <p>No pending leave requests.</p>
                                 </div>
                             ) : (
                                 <div className="grid gap-4">
-                                    {pendingLeaves.filter(l => l.status === 'Pending').map((leave) => (
+                                    {filteredLeaves.filter(l => l.status === 'Pending').map((leave) => (
                                         <div key={leave.id} className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-xl bg-muted/20 hover:bg-muted/30 transition-colors">
                                             <div className="flex items-start gap-4">
                                                 <div className="mt-1">

@@ -1,3 +1,5 @@
+import { FACULTY_LOAD } from "@/data/aimlTimetable";
+
 /**
  * --- TYPES & INTERFACES ---
  */

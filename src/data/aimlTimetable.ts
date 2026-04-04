@@ -573,14 +573,14 @@ export function getTimetable(year: string | number, sem: string | number, sectio
 export const FACULTY_LOAD = {
     // 1st Year Sem 1 (I-I) - CSM Syllabus Standardized
     "1-1": [
-        { code: "CPPS", faculty: "Nelluri Prathibha", room: "Classroom 101" },
-        { code: "CPPS Lab", faculty: "Nelluri Prathibha", room: "Lab 1" },
+        { code: "CPPS", faculty: "Dr. D. Anitha Kumari", room: "Classroom 101" },
+        { code: "CPPS Lab", faculty: "Dr. D. Anitha Kumari", room: "Lab 1" },
         { code: "LA&ODE", faculty: "P Sanjeeva Reddy", room: "Classroom 101" },
         { code: "English", faculty: "Staff", room: "Classroom 101" },
         { code: "ELCS Lab", faculty: "Staff", room: "Language Lab" },
         { code: "EC", faculty: "Staff", room: "Classroom 101" },
         { code: "EC Lab", faculty: "Staff", room: "Chemistry Lab" },
-        { code: "ITWS Lab", faculty: "Mr. M. Jhansi Rani", room: "Workshop" },
+        { code: "ITWS Lab", faculty: "Mrs. M. Suryakumari", room: "Workshop" },
         { code: "CAEG", faculty: "Staff", room: "Drawing Hall" }
     ],
     // 1st Year Sem 2 (I-II) - CSM Syllabus Standardized
@@ -597,52 +597,52 @@ export const FACULTY_LOAD = {
     // 2nd Year Sem 1 (II-I) - Semester 3
     "2-1": [
         { code: "4B30D", faculty: "Dr. P. Madhavi", room: "Classroom 201" },
-        { code: "4E303", faculty: "Mrs. S. Gnaneshwari", room: "Lab 2" },
+        { code: "4E303", faculty: "Mrs. D. Mounika", room: "Lab 2" },
         { code: "4E312", faculty: "Staff", room: "Lab 3" },
         { code: "4E3EA", faculty: "Staff", room: "Classroom 201" },
-        { code: "4E3EB", faculty: "Mrs. D Mounika", room: "Classroom 201" },
+        { code: "4E3EB", faculty: "Mrs. D. Mounika", room: "Classroom 201" },
         { code: "4E3EC", faculty: "Mrs. T. Praneetha", room: "Classroom 201" },
-        { code: "4E3ED", faculty: "Mrs. Ch. Shilpa", room: "Classroom 201" },
+        { code: "4E3ED", faculty: "Mrs. M. Indira", room: "Classroom 201" },
         { code: "4E3EE", faculty: "Mrs. S. Swathi", room: "Classroom 201" }
     ],
     // 2nd Year Sem 2 (II-II) - Semester 4
     "2-2": [
-        { code: "4E411", faculty: "Pagilla Geethanjali", room: "Lab 2" },
-        { code: "4E412", faculty: "Nagaraju Rajupeta", room: "Lab 3" },
+        { code: "4E411", faculty: "Mrs. T. Praneetha", room: "Lab 2" },
+        { code: "4E412", faculty: "Dr. D. Anitha Kumari", room: "Lab 3" },
         { code: "4E413", faculty: "Mrs. G. Sunitha", room: "Language Lab" },
-        { code: "4E414", faculty: "K Ishwarya Devi", room: "Lab 1" },
-        { code: "4E4EA", faculty: "Nagaraju Rajupeta", room: "Classroom 202" },
-        { code: "4E4EB", faculty: "S Gnaneshwari", room: "Classroom 202" },
-        { code: "4E4EC", faculty: "Pagilla Geethanjali", room: "Classroom 202" },
-        { code: "4E4ED", faculty: "Ch Shilpa", room: "Classroom 202" },
-        { code: "4E4EE", faculty: "K Ishwarya Devi", room: "Classroom 202" }
+        { code: "4E414", faculty: "Mrs. E. Radhika", room: "Lab 1" },
+        { code: "4E4EA", faculty: "Dr. D. Anitha Kumari", room: "Classroom 202" },
+        { code: "4E4EB", faculty: "Mallayya", room: "Classroom 202" },
+        { code: "4E4EC", faculty: "Mrs. T. Praneetha", room: "Classroom 202" },
+        { code: "4E4ED", faculty: "Mrs. E. Radhika", room: "Classroom 202" },
+        { code: "4E4EE", faculty: "Mrs. E. Radhika", room: "Classroom 202" }
     ],
     // 3rd Year Sem 1 (III-I)
     "3-1": [
-        { code: "AI", faculty: "Mr. N. Kiran Kumar", room: "Classroom 301" },
-        { code: "ATCD", faculty: "Mrs. D Uma Maheshwari", room: "Classroom 301" },
+        { code: "AI", faculty: "Mrs. C. Saritha Reddy", room: "Classroom 301" },
+        { code: "ATCD", faculty: "Mrs. D. Uma Maheshwari", room: "Classroom 301" },
         { code: "DevOps", faculty: "Mr. Ande Srinivasa Reddy", room: "Lab 4" },
         { code: "ML", faculty: "Mrs. C. Jaya Lakshmi", room: "Classroom 301" },
         { code: "OOAD", faculty: "Mrs. P. Geethanjali", room: "Classroom 301" },
-        { code: "OS", faculty: "Mrs. K. Ishwarya devi", room: "Classroom 301" }
+        { code: "OS", faculty: "Mrs. K. Ishwarya Devi", room: "Classroom 301" }
     ],
     // 3rd Year Sem 2 (III-II)
     "3-2": [
         { code: "Conv. AI", faculty: "Dr. Syed Hussain", room: "Classroom 302" },
-        { code: "NLP", faculty: "Mrs. C. Saritha Reddy", room: "Classroom 302" },
-        { code: "NLP Lab", faculty: "Mrs. B. Vijitha", room: "Lab AI" },
+        { code: "NLP", faculty: "Vinay", room: "Classroom 302" },
+        { code: "NLP Lab", faculty: "Vinay", room: "Lab AI" },
         { code: "DL", faculty: "Mrs. C. Jaya Lakshmi", room: "Classroom 302" },
-        { code: "DL Lab", faculty: "Mrs. B. Vijitha", room: "Lab AI" },
+        { code: "DL Lab", faculty: "Mrs. C. Jaya Lakshmi", room: "Lab AI" },
         { code: "RPA", faculty: "Mr. Ande Srinivasa Reddy", room: "Lab 3" },
-        { code: "IS", faculty: "Mrs. E. Radhika", room: "Classroom 302" },
+        { code: "IS", faculty: "Dr. Syed Hussain", room: "Classroom 302" },
         { code: "OE", faculty: "Mrs. V. Pravalika", room: "Hall B" }
     ],
     // 4th Year Sem 1 (IV-I)
     "4-1": [
-        { code: "BDA", faculty: "Dr. K. Srinivas", room: "Classroom 401" },
-        { code: "BDA Lab", faculty: "Dr. K. Srinivas", room: "AI Lab" },
+        { code: "BDA", faculty: "Mrs. P. Rajini", room: "Classroom 401" },
+        { code: "BDA Lab", faculty: "Mrs. P. Rajini", room: "AI Lab" },
         { code: "DM", faculty: "Mrs. V. Pravalika", room: "Classroom 401" },
-        { code: "IS", faculty: "Mrs. E. Radhika", room: "Classroom 401" },
+        { code: "IS", faculty: "Dr. Syed Hussain", room: "Classroom 401" },
         { code: "KRR", faculty: "Mr. K. Venugopal Reddy", room: "Classroom 401" }
     ],
     // 4th Year Sem 2 (IV-II)
@@ -651,5 +651,146 @@ export const FACULTY_LOAD = {
         { code: "QC", faculty: "Mrs. D Uma Maheshwari", room: "Classroom 402" },
         { code: "OE", faculty: "Mrs. V. Pravalika", room: "Hall A" },
         { code: "DS OE", faculty: "Dr. B. Sunil Srinivas", room: "Classroom 402" }
+    ],
+
+    // --- IT BRANCH SPECIFIC LOADS ---
+    "IT-1-1": [
+        { code: "4B1AA", faculty: "P Sanjeeva Reddy", room: "T-101" },
+        { code: "4B1AM", faculty: "Mrs. B. Madhavi", room: "T-101" },
+        { code: "4B1AL", faculty: "Staff", room: "T-101" },
+        { code: "4B1AK", faculty: "Dr. K. Rama Rao", room: "T-101" },
+        { code: "4E1DC", faculty: "Staff", room: "Drawing Hall" }
+    ],
+    "IT-1-2": [
+        { code: "4B2AI", faculty: "Staff", room: "T-201" },
+        { code: "4B2AM", faculty: "Dr. P. Madhavi", room: "T-201" },
+        { code: "4E2AJ", faculty: "V. Murugan", room: "T-201" },
+        { code: "4E2AT", faculty: "Mrs. B. Madhavi", room: "T-201" },
+        { code: "4H2AC", faculty: "Staff", room: "T-201" }
+    ],
+    "IT-2-1": [
+        { code: "it-4B3AD", faculty: "Dr. P. Madhavi", room: "N-301" },
+        { code: "it-4E3FB", faculty: "Dr. Nallamothu Satyanarayana", room: "N-301" },
+        { code: "it-4E3FC", faculty: "Mounika Nakrekanti", room: "N-301" },
+        { code: "it-4E3FD", faculty: "Nagaraju Rajupeta", room: "N-301" },
+        { code: "it-4H3FA", faculty: "Mrs. G. Sunitha", room: "N-301" }
+    ],
+    "IT-2-2": [
+        { code: "it-4E4FA", faculty: "Staff", room: "N-401" },
+        { code: "it-4E4FB", faculty: "V. Murugan", room: "N-401" },
+        { code: "it-4E4FC", faculty: "P. Swathi", room: "N-401" },
+        { code: "it-4E4FD", faculty: "N. Anjali", room: "N-401" },
+        { code: "it-4E4FE", faculty: "Mounika Nakrekanti", room: "N-401" }
+    ],
+    "IT-3-1": [
+        { code: "it-4E5FA", faculty: "Dr. R. Muruganantham", room: "N-501" },
+        { code: "it-4E5FB", faculty: "Dr. R. Muruganantham", room: "N-501" },
+        { code: "it-4H5EA", faculty: "Staff", room: "N-501" },
+        { code: "it-4O5FA", faculty: "Mandalreddy Sushma", room: "N-501" },
+        { code: "it-4P5FA", faculty: "Jarapala Ramesh", room: "N-501" },
+        { code: "it-4P5FD", faculty: "Staff", room: "N-501" }
+    ],
+    "IT-3-2": [
+        { code: "it-4E6FA", faculty: "Dr. R. Muruganantham", room: "N-601" },
+        { code: "it-4E6FB", faculty: "Dr. Nallamothu Satyanarayana", room: "N-601" },
+        { code: "it-4E6FC", faculty: "Staff", room: "N-601" },
+        { code: "it-4O6FA", faculty: "Staff", room: "N-601" },
+        { code: "it-4P6FC", faculty: "Staff", room: "N-601" }
+    ],
+    "IT-4-1": [
+        { code: "it-4E7FA", faculty: "P. Himabindu", room: "N-701" },
+        { code: "it-4O7FA", faculty: "Staff", room: "N-701" },
+        { code: "it-4P7FB", faculty: "D. Kavitha", room: "N-701" },
+        { code: "it-4P7FD", faculty: "Jarapala Ramesh", room: "N-701" },
+        { code: "it-4P7PW", faculty: "B. Upender", room: "N-701" }
+    ],
+
+    // --- CSE BRANCH SPECIFIC LOADS ---
+    "CSE-1-1": [
+        { code: "4E1AJ", faculty: "A. Pradeep", room: "C-101" },
+        { code: "4E115", faculty: "Mr. K. Indra Kiran Reddy", room: "ITWS Lab" },
+        { code: "4B1AA", faculty: "P Sanjeeva Reddy", room: "C-101" },
+        { code: "4B1AG", faculty: "Staff", room: "C-101" }
+    ],
+    "CSE-2-1": [
+        { code: "4B3AD", faculty: "Dr. P. Madhavi", room: "C-301" },
+        { id: "cse-s3-5", code: "4E3EB", faculty: "Mrs. Thirumani Anusha", room: "C-301" },
+        { id: "cse-s3-6", code: "4E3EC", faculty: "Mrs. G. Deepthi", room: "C-301" },
+        { id: "cse-s3-7", code: "4E3ED", faculty: "Mrs. G. Deepthi", room: "C-301" },
+        { id: "cse-s3-8", code: "4E3EE", faculty: "Mrs. Pragathi Vulpala", room: "C-301" }
+    ],
+    "CSE-2-2": [
+        { code: "4E4EA", faculty: "Mr. B. Srikanth", room: "C-401" },
+        { code: "4E4EB", faculty: "Mrs. G. Deepthi", room: "C-401" },
+        { code: "4E4EC", faculty: "Mrs. M. Jyothi", room: "C-401" },
+        { code: "4E4ED", faculty: "Dr. Kuna Naresh", room: "C-401" },
+        { code: "4E4EE", faculty: "A. Pradeep", room: "C-401" }
+    ],
+    "CSE-3-1": [
+        { code: "4E5EA", faculty: "Mrs. G. Deepthi", room: "C-501" },
+        { code: "4E5EB", faculty: "Mrs. S. Swathi", room: "C-501" },
+        { code: "4E5EC", faculty: "Dr. A. Suresh Rao", room: "C-501" },
+        { code: "4P5EC", faculty: "Mrs. Y. Latha", room: "C-501" },
+        { code: "4P5EG", faculty: "Mr. L. Gnanender Reddy", room: "C-501" }
+    ],
+    "CSE-3-2": [
+        { code: "4E6EC", faculty: "Mr. K. Venugopal Reddy", room: "C-601" },
+        { code: "4P6EA", faculty: "P. Chandra Shekar", room: "C-601" },
+        { code: "4P6EE", faculty: "Mrs. M. Thanmayee", room: "C-601" }
+    ],
+    "CSE-4-1": [
+        { code: "4E7EA", faculty: "Dr. Vempati Krishna", room: "C-701" },
+        { code: "4E7EB", faculty: "Mrs. K. Naga Maha Lakshmi", room: "C-701" }
+    ],
+
+    // --- ECE BRANCH SPECIFIC LOADS ---
+    "ECE-1-1": [
+        { code: "4B1AA", faculty: "Sreedevi", room: "E-101" },
+        { code: "4B1AB", faculty: "Rajnijanth", room: "E-101" },
+        { code: "4E1AA", faculty: "Raju", room: "E-101" },
+        { code: "4E1AC", faculty: "Pavani", room: "E-101" }
+    ],
+    "ECE-1-2": [
+        { code: "4B2AF", faculty: "B. Mahesh", room: "E-102" },
+        { code: "4B2AJ", faculty: "Dr. A. Premalatha", room: "E-102" },
+        { code: "4H2AC", faculty: "B. Gnanesh Netha", room: "E-102" },
+        { code: "4E2AK", faculty: "Dhanunjayasingh", room: "E-102" }
+    ],
+    "ECE-2-1": [
+        { code: "4E3DB", faculty: "Mr. M. Sai Krishna", room: "E-301" },
+        { code: "4E3DC", faculty: "Mr. K. Hemanth", room: "E-301" },
+        { code: "4E3DD", faculty: "Dr. B. Swapna Rani", room: "E-301" },
+        { code: "4B3BA", faculty: "Mr. Mahesh", room: "E-301" },
+        { code: "4E3DE", faculty: "M. Gnanesh Goud", room: "E-301" }
+    ],
+    "ECE-2-2": [
+        { code: "4E4DB", faculty: "Ms. B. Shreshta", room: "E-401" },
+        { code: "4E4DA", faculty: "Mrs. Bhavani", room: "E-401" },
+        { code: "4E4DC", faculty: "Mrs. S. Saritha", room: "E-401" },
+        { code: "4E4DE", faculty: "Mrs. M. Jhansi Rani", room: "E-401" },
+        { code: "4E4DD", faculty: "Mrs. D. Swathi", room: "E-401" }
+    ],
+    "ECE-3-1": [
+        { code: "4E5DB", faculty: "Dr. P. Venkata Lavanya", room: "E-501" },
+        { code: "4O5DA", faculty: "K. Sushma", room: "E-501" }
+    ],
+    "ECE-3-2": [
+        { code: "4E6DA", faculty: "K. Shalini", room: "E-601" },
+        { code: "4E6DB", faculty: "M. Gnanesh Goud", room: "E-601" },
+        { code: "4E6DC", faculty: "CH. Divya", room: "E-601" },
+        { code: "4P6DD", faculty: "Dr. P. Venkata Lavanya", room: "E-601" },
+        { code: "4O6DA", faculty: "K. Sushma", room: "E-601" }
+    ],
+    "ECE-4-1": [
+        { code: "4E7DA", faculty: "Dr. J. Sunitha Kumari", room: "E-701" },
+        { code: "4H7DA", faculty: "Dr. R. Rajendranath", room: "E-701" },
+        { code: "4P7DC", faculty: "Ms. CH. Swapna", room: "E-701" },
+        { code: "4P7DF", faculty: "Mrs. A. Haritha", room: "E-701" }
+    ],
+    "ECE-4-2": [
+        { code: "4E8DA", faculty: "Ms. CH. Swapna", room: "E-801" },
+        { code: "4E8DB", faculty: "Mrs. A. Haritha", room: "E-801" },
+        { code: "4E8DC", faculty: "Mr. B. Pullarao", room: "E-801" },
+        { code: "4E8DD", faculty: "Mrs. S. Anusha", room: "E-801" }
     ]
 };
