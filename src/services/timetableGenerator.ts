@@ -70,10 +70,11 @@ export class TimetableEngine {
         department: string, 
         section: string, 
         rawCourses: CourseData[], 
-        rooms: RoomData[]
+        rooms: RoomData[],
+        shouldReset: boolean = true
     ): TimetableGrid {
-        // Reset resource registries for each fresh generation
-        this.resetResources();
+        // Reset resource registries only if requested (usually for single gen)
+        if (shouldReset) this.resetResources();
 
         const grid: TimetableGrid = {};
         
@@ -110,7 +111,7 @@ export class TimetableEngine {
         this.applyProjectBlocks(year, semester, section, grid);
 
         // 4. PRIORITY 1: LABS (3 Continuous Slots)
-        this.assignLabs(labs, labRooms, section, year, grid);
+        this.assignLabs(labs, labRooms, section, year, department, grid);
 
         // 5. POLICY: Non-Final Years (Sports, Library) - Assigned before Theories so they grab the 3:20 slots
         if (year !== 4) {
@@ -119,12 +120,12 @@ export class TimetableEngine {
 
         // 6. PRIORITY 2: THEORIES (Spread and Backtrack)
         // Aggressively fills every remaining slot in the grid using the replenish pool
-        this.assignTheories(theories, lectureRooms, section, year, grid);
+        this.assignTheories(theories, lectureRooms, section, year, department, grid);
 
         return grid;
     }
 
-    private assignLabs(labs: CourseData[], rooms: RoomData[], section: string, year: number, grid: TimetableGrid) {
+    private assignLabs(labs: CourseData[], rooms: RoomData[], section: string, year: number, department: string, grid: TimetableGrid) {
         const sectionOffset = section.charCodeAt(0) - 'A'.charCodeAt(0);
         let labDays = [...this.days.slice(0, 5)]; // Avoid Sat for routine labs
         for(let i=0; i<sectionOffset; i++) {
@@ -138,9 +139,8 @@ export class TimetableEngine {
 
         let placed = 0;
         
-        const blockPrefix = year === 1 ? 'T' : 'N';
-        const floorLvl = year * 100;
-        const matchingRooms = rooms.filter(r => r.name.startsWith(blockPrefix));
+        const roomName = this.getRoomForContext(department, section, year, true);
+        const matchingRooms = rooms.filter(r => r.name === roomName);
 
         let combinations: {day: string, isMorning: boolean}[] = [];
         labDays.forEach(d => {
@@ -158,16 +158,12 @@ export class TimetableEngine {
                 const course = sessionQueue[placed];
                 const faculty = course.instructor?.full_name || "Faculty Staff";
                 
-                // Find available room
-                const fallbackName = `${blockPrefix}-Lab-${1 + (placed % 3)}`;
-                let room = matchingRooms.find(r => 
-                    blockSlots.every(s => !this.roomSchedule[`${day}-${s}`].has(r.name))
-                );
-                const roomName = room ? room.name : fallbackName;
+                // Use the rule-based room
+                const assignedRoom = roomName;
 
-                if (this.isBlockFree(day, blockSlots, faculty, roomName, grid)) {
+                if (this.isBlockFree(day, blockSlots, faculty, assignedRoom, grid)) {
                     blockSlots.forEach(slot => {
-                        this.reserve(day, slot, faculty, roomName);
+                        this.reserve(day, slot, faculty, assignedRoom);
                         const isActuallyALab = course.type === 'Lab' || course.name.toLowerCase().includes('lab');
                         const baseName = this.abbreviate(course.name.replace(" Lab", ""));
                         grid[`${day}-${slot}`] = {
@@ -175,7 +171,7 @@ export class TimetableEngine {
                             courseCode: course.code,
                             courseName: baseName + (isActuallyALab ? " Lab" : ""),
                             faculty,
-                            room: roomName,
+                            room: assignedRoom,
                             type: 'Lab'
                         };
                     });
@@ -184,7 +180,7 @@ export class TimetableEngine {
         });
     }
 
-    private assignTheories(theories: CourseData[], rooms: RoomData[], section: string, year: number, grid: TimetableGrid) {
+    private assignTheories(theories: CourseData[], rooms: RoomData[], section: string, year: number, department: string, grid: TimetableGrid) {
         if (theories.length === 0) return;
 
         // 1. Equal distribution — every subject gets the same number of slots (round-robin)
@@ -204,14 +200,7 @@ export class TimetableEngine {
         // Randomize the pool for natural distribution
         pool.sort(() => Math.random() - 0.5);
 
-        const blockPrefix = year === 1 ? 'T' : 'N';
-        const floorLvl = year * 100;
-        const matchingRooms = rooms.filter(r => r.name.startsWith(blockPrefix));
-        const sectionRoomIdx = section.charCodeAt(0) - 'A'.charCodeAt(0);
-        let defaultRoomStr = `${blockPrefix}-${floorLvl + 1 + sectionRoomIdx}`;
-        if (matchingRooms.length > 0) {
-            defaultRoomStr = matchingRooms[sectionRoomIdx % matchingRooms.length].name;
-        }
+        const defaultRoomStr = this.getRoomForContext(department, section, year, false);
 
         // 2. Systematic Placement with Constraint Checking
         // We iterate through slots and days and try to pull from the pool
@@ -321,6 +310,30 @@ export class TimetableEngine {
         grid[key] = { id: `force-${key}-${section}`, courseCode: code, courseName: name, faculty, room, type: 'Project' };
     }
 
+    private getRoomForContext(dept: string, section: string, year: number, isLab: boolean): string {
+        const sectionIdx = section.charCodeAt(0) - 'A'.charCodeAt(0);
+        // Each year has 4 sections potentially, each needs a unique room in the branch block
+        const totalSectionOffset = (year - 1) * 4 + sectionIdx;
+        
+        if (dept.toUpperCase() === 'IT') {
+            // South Block (S401-S412), Overflow (S301-S312)
+            if (totalSectionOffset < 12) {
+                return `S-4${(totalSectionOffset + 1).toString().padStart(2, '0')}${isLab ? '-L' : ''}`;
+            } else {
+                return `S-3${(totalSectionOffset - 11).toString().padStart(2, '0')}${isLab ? '-L' : ''}`;
+            }
+        } else if (dept.toUpperCase() === 'ECE') {
+            // Central Block (C401-C412)
+            const eceRoomIdx = totalSectionOffset % 12;
+            return `C-4${(eceRoomIdx + 1).toString().padStart(2, '0')}${isLab ? '-L' : ''}`;
+        } else if (dept.toUpperCase() === 'CSE') {
+            return `N-4${(sectionIdx + 1 + (year-1)*3).toString().padStart(2, '0')}${isLab ? '-L' : ''}`;
+        } else {
+            // Default for CSM or others
+            return `A-3${(sectionIdx + 1 + (year-1)*3).toString().padStart(2, '0')}${isLab ? '-L' : ''}`;
+        }
+    }
+
     private abbreviate(name: string): string {
         const overrides: Record<string, string> = {
             "Mathematical Foundations of Computer Science": "MFCS",
@@ -351,9 +364,10 @@ export const timetableGeneratorService = {
         department: string, 
         section: string, 
         courses: CourseData[], 
-        rooms: RoomData[]
+        rooms: RoomData[],
+        shouldReset: boolean = true
     ): TimetableGrid => {
-        return timetableEngine.generate(year, semester, department, section, courses, rooms);
+        return timetableEngine.generate(year, semester, department, section, courses, rooms, shouldReset);
     },
     reset: () => timetableEngine.resetResources()
 };

@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     POSTGRES_DB: str = "timetable_optimizer"
     DATABASE_URI: Optional[str] = None
     
-    model_config = ConfigDict(case_sensitive=True, env_file=".env")
+    model_config = ConfigDict(case_sensitive=True, env_file=".env", extra='ignore')
 
     def get_database_url(self):
         if self.DATABASE_URI:

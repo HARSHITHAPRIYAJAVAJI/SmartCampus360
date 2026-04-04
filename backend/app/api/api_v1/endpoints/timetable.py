@@ -35,8 +35,67 @@ def save_timetable(
     db: Session = Depends(deps.get_db),
 ) -> Any:
     """Save a generated timetable schedule."""
-    # (Placeholder logic for persistence)
-    return {"status": "saved", "year": request.year, "semester": request.semester, "section": request.section}
+    from app.models.academic import TimetableSlot, Course, Room, TimeSlot, WeekDay
+    import datetime
+
+    # 1. Clear existing slots for this context
+    db.query(TimetableSlot).filter(
+        TimetableSlot.semester == request.semester,
+        TimetableSlot.section == request.section
+    ).delete()
+
+    # 2. Process schedule
+    saved_count = 0
+    for slot_key, entry in request.schedule.items():
+        if not entry: continue
+        
+        try:
+            day_str, time_str = slot_key.split('-')
+            
+            # Lookup Course
+            course = db.query(Course).filter(Course.code == entry['courseCode']).first()
+            if not course:
+                # Create course if missing for demo
+                course = Course(code=entry['courseCode'], name=entry['courseName'], semester=request.semester, department=request.department)
+                db.add(course)
+                db.flush()
+
+            # Lookup Room
+            room = db.query(Room).filter(Room.name == entry['room']).first()
+            if not room:
+                room = Room(name=entry['room'], capacity=60, room_type="Classroom")
+                db.add(room)
+                db.flush()
+
+            # Lookup/Create TimeSlot
+            start_time = datetime.datetime.strptime(time_str, "%H:%M").time()
+            time_slot = db.query(TimeSlot).filter(
+                TimeSlot.day == WeekDay(day_str),
+                TimeSlot.start_time == start_time
+            ).first()
+            if not time_slot:
+                end_time = (datetime.datetime.combine(datetime.date.today(), start_time) + datetime.timedelta(hours=1)).time()
+                time_slot = TimeSlot(day=WeekDay(day_str), start_time=start_time, end_time=end_time)
+                db.add(time_slot)
+                db.flush()
+
+            # Create TimetableSlot
+            new_slot = TimetableSlot(
+                course_id=course.id,
+                room_id=room.id,
+                time_slot_id=time_slot.id,
+                section=request.section,
+                semester=request.semester,
+                is_published=False
+            )
+            db.add(new_slot)
+            saved_count += 1
+        except Exception as e:
+            print(f"Error saving slot {slot_key}: {e}")
+            continue
+
+    db.commit()
+    return {"status": "saved", "count": saved_count, "section": request.section}
 
 @router.post("/publish")
 def publish_timetable(
@@ -44,6 +103,11 @@ def publish_timetable(
     db: Session = Depends(deps.get_db),
 ) -> Any:
     """Mark all timetables for a semester/department as published."""
+    from app.models.academic import TimetableSlot
+    db.query(TimetableSlot).filter(
+        TimetableSlot.semester == request.semester
+    ).update({"is_published": True})
+    db.commit()
     return {"status": "published", "count": "all"}
 
 

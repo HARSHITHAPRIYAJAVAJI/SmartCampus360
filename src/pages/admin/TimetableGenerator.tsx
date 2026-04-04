@@ -144,7 +144,15 @@ const TimetableGenerator = () => {
     // Data from API
     const [courses, setCourses] = useState<CourseData[]>([]);
     const [rooms, setRooms] = useState<RoomData[]>([]);
-    const [savedTimetables, setSavedTimetables] = useState<any>({});
+    const [savedTimetables, setSavedTimetables] = useState<any>(() => {
+        const saved = localStorage.getItem('published_timetables');
+        try {
+            return saved ? JSON.parse(saved) : {};
+        } catch (e) {
+            console.error("Failed to parse saved timetables:", e);
+            return {};
+        }
+    });
 
     useEffect(() => {
         // Load mock data directly — no backend required
@@ -155,7 +163,24 @@ const TimetableGenerator = () => {
             { id: 3, name: "N-412", room_type: "Lecture" },
             { id: 4, name: "S-101", room_type: "Lab" }
         ]);
+
+        // Additionally try to load from localStorage if not already initialized
+        const saved = localStorage.getItem('published_timetables');
+        if (saved && Object.keys(savedTimetables).length === 0) {
+            try {
+                setSavedTimetables(JSON.parse(saved));
+            } catch (e) {
+                console.error("Error loading cached tables", e);
+            }
+        }
     }, []);
+
+    // Keep localStorage in sync whenever savedTimetables changes
+    useEffect(() => {
+        if (Object.keys(savedTimetables).length > 0) {
+            localStorage.setItem('published_timetables', JSON.stringify(savedTimetables));
+        }
+    }, [savedTimetables]);
 
 
 
@@ -219,6 +244,9 @@ const TimetableGenerator = () => {
             const sections = ["A", "B", "C"];
             const semester = parseInt(batchSemester);
             
+            // Critical: Reset resources once before the entire batch starts
+            timetableGeneratorService.reset();
+            
             const total = depts.length * years.length * sections.length;
             let current = 0;
             const batchResults: Record<string, any> = {};
@@ -226,7 +254,8 @@ const TimetableGenerator = () => {
             for (const dept of depts) {
                 for (const year of years) {
                     for (const section of sections) {
-                        const schedule = timetableGeneratorService.generate(year, semester, dept, section, courses, rooms);
+                        // Pass false to shouldReset to preserve resource schedules (preventing faculty/room overlaps)
+                        const schedule = timetableGeneratorService.generate(year, semester, dept, section, courses, rooms, false);
                         const key = `${dept}-${year}-${semester}-${section}`;
                         batchResults[key] = schedule;
                         
@@ -684,56 +713,9 @@ const TimetableGenerator = () => {
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
             >
-                <div className="flex flex-col lg:flex-row gap-6 items-start">
-                    {/* Course Pool Sidebar */}
-                    <div className="w-full lg:w-72 shrink-0 space-y-4 animate-in slide-in-from-left-4">
-                        <Card className="border-none shadow-lg bg-white dark:bg-zinc-900 overflow-hidden">
-                            <div className="bg-primary/10 p-4 border-b">
-                                <h3 className="font-bold flex items-center gap-2 text-primary">
-                                    <BookOpen className="h-4 w-4" /> Subjects
-                                </h3>
-                                <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold mt-1">
-                                    {formData.department} - Year {formData.year} (Sem {formData.semester})
-                                </p>
-                            </div>
-                            <CardContent className="p-4 space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar">
-                                {availableSubjects.length > 0 ? (
-                                    availableSubjects.map((subject) => (
-                                        <div
-                                            key={subject.id}
-                                            className="p-3 rounded-lg border bg-muted/30 hover:bg-muted/50 transition-all cursor-move group relative"
-                                        >
-                                            <div className="text-xs font-bold text-foreground group-hover:text-primary transition-colors">{subject.name}</div>
-                                            <div className="flex items-center justify-between mt-2">
-                                                <Badge variant="outline" className="text-[9px] px-1.5 h-4 bg-background">
-                                                    {subject.code}
-                                                </Badge>
-                                                <span className="text-[10px] text-muted-foreground font-medium">
-                                                    {subject.credits} Credits
-                                                </span>
-                                            </div>
-                                            {/* Drag Indicator */}
-                                            <div className="absolute right-2 top-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <Grip className="h-3 w-3 text-muted-foreground/50" />
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <div className="text-center py-8 px-4 border border-dashed rounded-lg bg-muted/20">
-                                        <p className="text-sm text-muted-foreground italic">No subjects found for this selection.</p>
-                                    </div>
-                                )}
-                            </CardContent>
-                            {availableSubjects.length > 0 && (
-                                <div className="p-3 bg-muted/30 border-t text-[10px] text-center text-muted-foreground italic">
-                                    Drag subjects to slots in the grid to assign them.
-                                </div>
-                            )}
-                        </Card>
-                    </div>
-
+                <div className="w-full">
                     {/* Timetable Grid Container */}
-                    <div className="flex-1 min-w-0">
+                    <div className="w-full min-w-0 overflow-x-auto">
                         <div className="bg-card rounded-xl border shadow-lg overflow-hidden min-w-[1000px]">
                             {/* Grid Top Bar (Classroom Info) */}
                             <div className="bg-primary/5 px-6 py-2.5 border-b border-border flex justify-between items-center">
@@ -743,13 +725,23 @@ const TimetableGenerator = () => {
                                 <Badge variant="outline" className="bg-background/80 backdrop-blur-sm border-primary/20 text-primary font-bold px-3 py-1 flex items-center gap-2 shadow-sm whitespace-nowrap">
                                     <Building2 className="h-3 w-3" />
                                     Allotted Classroom: {
-                                        formData.year === '4' && formData.section === 'A'
-                                            ? 'N-412'
-                                            : formData.department === 'CSM'
-                                                ? 'A-304 (AI Lab Block)'
-                                                : formData.department === 'CSE'
-                                                    ? 'C-201 (Main Block)'
-                                                    : 'S-402'
+                                        (() => {
+                                            const dept = formData.department.toUpperCase();
+                                            const year = parseInt(formData.year);
+                                            const secIdx = formData.section.charCodeAt(0) - 'A'.charCodeAt(0);
+                                            const offset = (year - 1) * 4 + secIdx;
+                                            
+                                            if (dept === 'IT') {
+                                                return offset < 12 ? `S-4${(offset + 1).toString().padStart(2, '0')}` : `S-3${(offset - 11).toString().padStart(2, '0')}`;
+                                            } else if (dept === 'ECE') {
+                                                const eIdx = offset % 12;
+                                                return `C-4${(eIdx + 1).toString().padStart(2, '0')}`;
+                                            } else if (dept === 'CSE') {
+                                                return `N-4${(secIdx + 1 + (year-1)*2).toString().padStart(2, '0')}`;
+                                            } else {
+                                                return `A-3${(secIdx + 1 + (year-1)*2).toString().padStart(2, '0')}`;
+                                            }
+                                        })()
                                     }
                                 </Badge>
                             </div>

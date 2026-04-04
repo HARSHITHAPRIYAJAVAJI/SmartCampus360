@@ -14,23 +14,23 @@ export interface Course {
 
 export const MOCK_COURSES: Course[] = [
     // --- SEMESTER 1 ---
-    { id: "s1-1", code: "4B108", name: "English Language and Communication Skills Lab – 1", credits: 1, type: "Lab", department: "CSM", semester: 1 },
+    { id: "s1-1", code: "4B108", name: "English Language and Communication Skills Lab – 1", credits: 1, type: "Lab", department: "CSM", semester: 1, instructor: { id: 6643, full_name: "Sudha Rani" } },
     { id: "s1-2", code: "4B1AA", name: "Linear Algebra and Ordinary Differential Equations", credits: 4, type: "Theory", department: "CSM", semester: 1 },
-    { id: "s1-3", code: "4B1AG", name: "English for Skill Enhancement", credits: 2, type: "Theory", department: "CSM", semester: 1 },
+    { id: "s1-3", code: "4B1AG", name: "English for Skill Enhancement", credits: 2, type: "Theory", department: "CSM", semester: 1, instructor: { id: 6643, full_name: "Sudha Rani" } },
     { id: "s1-4", code: "4E112", name: "C Programming for Problem Solving Lab", credits: 1, type: "Lab", department: "CSM", semester: 1, instructor: { id: 6602, full_name: "Dr. D. Anitha Kumari" } },
     { id: "s1-5", code: "4E114", name: "Engineering Chemistry Lab", credits: 1, type: "Lab", department: "CSM", semester: 1 },
     { id: "s1-6", code: "4E115", name: "IT Workshop and Elements of Computer Engineering", credits: 1, type: "Lab", department: "CSM", semester: 1, instructor: { id: 6619, full_name: "Mrs. M. Suryakumari" } },
     { id: "s1-7", code: "4E1AJ", name: "C Programming for Problem Solving", credits: 3, type: "Theory", department: "CSM", semester: 1, instructor: { id: 6602, full_name: "Dr. D. Anitha Kumari" } },
-    { id: "s1-8", code: "4E1DD", name: "Computer Aided Engineering Graphics", credits: 3, type: "Theory", department: "CSM", semester: 1 },
-    { id: "s1-9", code: "4H1AH", name: "Engineering Chemistry", credits: 4, type: "Theory", department: "CSM", semester: 1 },
+    { id: "s1-8", code: "4E1DD", name: "Computer Aided Engineering Graphics", credits: 3, type: "Theory", department: "CSM", semester: 1, instructor: { id: 908, full_name: "Dhanunjayasingh" } },
+    { id: "s1-9", code: "4H1AH", name: "Engineering Chemistry", credits: 4, type: "Theory", department: "CSM", semester: 1, instructor: { id: 906, full_name: "Dr. A. Premalatha" } },
 
     // --- SEMESTER 2 ---
     { id: "s2-1", code: "4B209", name: "Applied Physics Lab", credits: 1, type: "Lab", department: "CSM", semester: 2 },
-    { id: "s2-2", code: "4B2AM", name: "Statistical Methods and Vector Calculus", credits: 4, type: "Theory", department: "CSM", semester: 2 },
-    { id: "s2-3", code: "4B2AN", name: "Applied Physics", credits: 4, type: "Theory", department: "CSM", semester: 2 },
+    { id: "s2-2", code: "4B2AM", name: "Statistical Methods and Vector Calculus", credits: 4, type: "Theory", department: "CSM", semester: 2, instructor: { id: 104, full_name: "Dr. P. Madhavi" } },
+    { id: "s2-3", code: "4B2AN", name: "Applied Physics", credits: 4, type: "Theory", department: "CSM", semester: 2, instructor: { id: 903, full_name: "Dr. K. Rama Rao" } },
     { id: "s2-4", code: "4E210", name: "Basic Electrical and Simulation Lab", credits: 1, type: "Lab", department: "CSM", semester: 2 },
     { id: "s2-5", code: "4E211", name: "Data Structures Lab", credits: 1, type: "Lab", department: "CSM", semester: 2, instructor: { id: 6627, full_name: "Varsha" } },
-    { id: "s2-6", code: "4E2AP", name: "Basic Electrical Engineering", credits: 3, type: "Theory", department: "CSM", semester: 2 },
+    { id: "s2-6", code: "4E2AP", name: "Basic Electrical Engineering", credits: 3, type: "Theory", department: "CSM", semester: 2, instructor: { id: 603, full_name: "Mr. Ch. Naveen" } },
     { id: "s2-7", code: "4E2AQ", name: "Data Structures", credits: 3, type: "Theory", department: "CSM", semester: 2, instructor: { id: 6627, full_name: "Varsha" } },
     { id: "s2-8", code: "4H2AL", name: "Business Economics and Financial Analysis", credits: 3, type: "Theory", department: "CSM", semester: 2 },
 
@@ -73,7 +73,7 @@ export const MOCK_COURSES: Course[] = [
     { id: "s6-5", code: "4H6GA", name: "Fundamentals of Management", credits: 3, type: "Theory", department: "CSM", semester: 6 },
     { id: "s6-6", code: "4O6GA", name: "Embedded Systems Design", credits: 3, type: "Theory", department: "CSM", semester: 6 },
     { id: "s6-7", code: "4P6GC", name: "Internet of Things", credits: 3, type: "Theory", department: "CSM", semester: 6, instructor: { id: 6610, full_name: "Mrs. S. Swathi" } },
-    { id: "s6-8", code: "4P6GE", name: "Expert Systems", credits: 3, type: "Theory", department: "CSM", semester: 6 },
+    { id: "s6-8", code: "4P6GE", name: "Expert Systems", credits: 3, type: "Theory", department: "CSM", semester: 6, instructor: { id: 6606, full_name: "Mr. K. Venugopal Reddy" } },
 
     // --- SEMESTER 7 ---
     { id: "s7-1", code: "4E706", name: "Big Data Analytics Lab", credits: 1, type: "Lab", department: "CSM", semester: 7, instructor: { id: 6617, full_name: "Mrs. P. Rajini" } },
@@ -94,11 +94,11 @@ export const MOCK_COURSES: Course[] = [
     // Semester 1
     { id: "it-s1-1", code: "4B116", name: "Applied Physics Lab", credits: 1, type: "Lab", department: "IT", semester: 1 },
     { id: "it-s1-2", code: "4B117", name: "Basic Electrical and Simulation Lab", credits: 1, type: "Lab", department: "IT", semester: 1 },
-    { id: "it-s1-3", code: "4B118", name: "Problem Solving using C Programming Lab", credits: 1, type: "Lab", department: "IT", semester: 1 },
+    { id: "it-s1-3", code: "4B118", name: "C Programming for Problem Solving Lab", credits: 1, type: "Lab", department: "IT", semester: 1 },
     { id: "it-s1-4", code: "4B1AA", name: "Linear Algebra and Ordinary Differential Equations", credits: 4, type: "Theory", department: "IT", semester: 1 },
     { id: "it-s1-5", code: "4B1AK", name: "Applied Physics", credits: 4, type: "Theory", department: "IT", semester: 1 },
     { id: "it-s1-6", code: "4B1AL", name: "Basic Electrical Engineering", credits: 3, type: "Theory", department: "IT", semester: 1 },
-    { id: "it-s1-7", code: "4B1AM", name: "Problem Solving using C Programming", credits: 3, type: "Theory", department: "IT", semester: 1 },
+    { id: "it-s1-7", code: "4B1AM", name: "C Programming for Problem Solving", credits: 3, type: "Theory", department: "IT", semester: 1 },
     { id: "it-s1-8", code: "4E1DC", name: "Computer Aided Engineering Graphics", credits: 3, type: "Theory", department: "IT", semester: 1 },
 
     // Semester 2

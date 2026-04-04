@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { DashboardSidebar } from "./DashboardSidebar";
 import { DashboardHeader } from "./DashboardHeader";
+import { useTimetableAlerts } from "@/hooks/useTimetableAlerts";
 
 interface DashboardLayoutProps {
   user: {
@@ -13,6 +14,9 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ user, onLogout }: DashboardLayoutProps) {
+  // Activate global classroom alerts (Item 9 from checklist)
+  useTimetableAlerts(user);
+  
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 

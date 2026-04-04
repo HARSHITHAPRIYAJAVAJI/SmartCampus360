@@ -1,11 +1,10 @@
-import { useState, useMemo, useEffect } from 'react';
-import Layout from "@/components/common/Layout";
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, Mail, Phone, BookOpen, GraduationCap, Users, ArrowLeft, Building2, Plus, Edit, Trash2, LayoutGrid, List, Grip, X, Clock, Check, X as XIcon } from "lucide-react";
+import { Search, Mail, Phone, BookOpen, GraduationCap, Users, ArrowLeft, Building2, Plus, Edit, Trash2, LayoutGrid, List, Grip, X, Clock, Check, X as XIcon, Upload } from "lucide-react";
 import { FACULTY_LOAD } from "@/data/aimlTimetable";
 import { MOCK_FACULTY } from "@/data/mockFaculty";
 import {
@@ -38,6 +37,7 @@ interface FacultyManagementProps {
 const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedDept, setSelectedDept] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const departments = useMemo(() => [
         { id: "CSM", name: "CSE (AI & Machine Learning)", icon: BookOpen, color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30", description: "Department of AI & ML" },
@@ -67,26 +67,6 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
         });
     }, [pendingLeaves, selectedDept]);
 
-    // Swap/Replacement Requests from localStorage
-    interface SwapRequest { id: string; senderName: string; targetName: string; type: string; date: string; period: string; status: string; }
-    const [swapRequests, setSwapRequests] = useState<SwapRequest[]>([]);
-
-    useEffect(() => {
-        const saved = localStorage.getItem('FACULTY_REQUESTS');
-        if (saved) setSwapRequests(JSON.parse(saved));
-    }, []);
-
-    const handleSwapAction = (id: string, status: 'approved' | 'rejected') => {
-        const updated = swapRequests.map(r => r.id === id ? { ...r, status } : r);
-        setSwapRequests(updated);
-        localStorage.setItem('FACULTY_REQUESTS', JSON.stringify(updated));
-        toast({
-            title: status === 'approved' ? 'Swap Approved' : 'Swap Rejected',
-            description: status === 'approved' ? 'The timetable override has been applied.' : 'The request has been dismissed.',
-            variant: status === 'rejected' ? 'destructive' : 'default'
-        });
-    };
-
     const handleLeaveAction = (id: string, status: 'Approved' | 'Rejected') => {
         setPendingLeaves(prev => prev.map(l => l.id === id ? { ...l, status } : l));
         toast({
@@ -103,19 +83,14 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
         }
 
         const facultyMap = new Map<string, FacultyMember>();
-        
-        // 1. Initialize faculty from MOCK_FACULTY that belong to this department
         MOCK_FACULTY.filter(f => f.department === selectedDept).forEach(faculty => {
             facultyMap.set(faculty.name, {
                 ...faculty,
-                subjects: [],
+                subjects: faculty.specialization || [],
                 totalLoad: 0
             });
         });
 
-        // 2. Scan all loads in FACULTY_LOAD that match this department
-        // Matches keys like "IT-X-Y" if selectedDept is "IT", 
-        // or keys like "1-1", "CSM-X-Y" if selectedDept is "CSM"
         Object.entries(FACULTY_LOAD).forEach(([key, subjects]) => {
             const isMatch = (selectedDept === 'CSM' && (/^\d/.test(key) || key.startsWith('CSM-'))) || 
                            (key.startsWith(`${selectedDept}-`));
@@ -124,13 +99,9 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
                 subjects.forEach((subj) => {
                     const name = subj.faculty.trim();
                     if (!name || name === "Guest/Faculty" || name === "Staff" || name === "Guest Faculty") return;
-
                     if (facultyMap.has(name)) {
                         const f = facultyMap.get(name)!;
-                        if (!f.subjects.includes(subj.code)) {
-                            f.subjects.push(subj.code);
-                            f.totalLoad += 3;
-                        }
+                        f.totalLoad += 3;
                     }
                 });
             }
@@ -154,7 +125,7 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
         const newFaculty = {
             ...formData,
             id: Date.now().toString(),
-            subjects: [],
+            subjects: formData.subjects || [],
             totalLoad: 0,
             department: selectedDept || "CSM"
         } as FacultyMember;
@@ -163,6 +134,48 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
         setIsAddOpen(false);
         setFormData({});
         toast({ title: "Success", description: "Faculty member added successfully" });
+    };
+
+    const handleBulkUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const text = e.target?.result as string;
+            const lines = text.split('\n');
+            const newFacultyBatch: FacultyMember[] = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const [name, id, email, phone, designation] = line.split(',');
+                if (name && id) {
+                    newFacultyBatch.push({
+                        id: `bulk-${Date.now()}-${i}`,
+                        name: name.trim(),
+                        rollNumber: id.trim(),
+                        email: email?.trim(),
+                        phone: phone?.trim(),
+                        designation: designation?.trim() || 'Assistant Professor',
+                        department: selectedDept || 'CSM',
+                        subjects: [],
+                        totalLoad: 0
+                    });
+                }
+            }
+
+            if (newFacultyBatch.length > 0) {
+                setFacultyList([...newFacultyBatch, ...facultyList]);
+                toast({ 
+                    title: "Import Finished", 
+                    description: `Added ${newFacultyBatch.length} faculty members to ${selectedDept}.` 
+                });
+            }
+        };
+        reader.readAsText(file);
+        if (fileInputRef.current) fileInputRef.current.value = '';
     };
 
     const handleEdit = () => {
@@ -187,19 +200,6 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
                         <h1 className="text-4xl font-black tracking-tight text-primary">Departmental Faculty</h1>
                         <p className="text-muted-foreground mt-1">Select a department to manage staff and academic load.</p>
                     </div>
-                    {userRole === 'admin' && (
-                        <div className="flex bg-muted p-1 rounded-xl shadow-inner">
-                            <Button variant={viewMode === 'grid' ? "secondary" : "ghost"} size="sm" onClick={() => setViewMode('grid')} className="rounded-lg h-9 w-9 p-0">
-                                <LayoutGrid className="h-4 w-4" />
-                            </Button>
-                            <Button variant={viewMode === 'list' ? "secondary" : "ghost"} size="sm" onClick={() => setViewMode('list')} className="rounded-lg h-9 w-9 p-0">
-                                <List className="h-4 w-4" />
-                            </Button>
-                            <Button variant={viewMode === 'compact' ? "secondary" : "ghost"} size="sm" onClick={() => setViewMode('compact')} className="rounded-lg h-9 w-9 p-0">
-                                <Grip className="h-4 w-4" />
-                            </Button>
-                        </div>
-                    )}
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -215,16 +215,11 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-xl mb-1">{dept.name}</h3>
-                                    <div className="flex items-center justify-center gap-2 mb-2">
-                                        <Badge variant="secondary" className="font-bold bg-primary/10 text-primary">
-                                            {dept.count} Faculty Members
-                                        </Badge>
-                                    </div>
-                                    <p className="text-sm text-muted-foreground">{dept.description}</p>
+                                    <Badge variant="secondary" className="font-bold bg-primary/10 text-primary">
+                                        {dept.count} Faculty Members
+                                    </Badge>
                                 </div>
-                                <Button variant="ghost" className="group-hover:translate-x-1 transition-transform">
-                                    View Faculty <Users className="ml-2 h-4 w-4" />
-                                </Button>
+                                <Button variant="ghost">View Faculty <Users className="ml-2 h-4 w-4" /></Button>
                             </CardContent>
                         </Card>
                     ))}
@@ -243,230 +238,127 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
                 <div>
                     <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent flex items-center gap-3">
                         {departments.find(d => d.id === selectedDept)?.name}
-                        <Badge className="text-sm font-bold bg-primary text-white">
-                            {departments.find(d => d.id === selectedDept)?.count} Total
-                        </Badge>
                     </h1>
-                    <p className="text-muted-foreground mt-2 text-lg">
-                        Faculty Directory & Resource Management
-                    </p>
                 </div>
                 <div className="flex gap-2 w-full md:w-auto">
+                    <input type="file" ref={fileInputRef} onChange={handleBulkUpload} accept=".csv" className="hidden" />
                     <div className="relative w-full md:w-64">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                        <Input
-                            placeholder="Search faculty..."
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="pl-9"
-                        />
+                        <Input placeholder="Search faculty..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="pl-9" />
                     </div>
 
                     {userRole === 'admin' && (
-                        <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-                            <DialogTrigger asChild>
-                                <Button>
-                                    <Plus className="mr-2 h-4 w-4" /> Add Faculty
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle>Add New Faculty Member</DialogTitle>
-                                    <DialogDescription>Enter the professional details to register staff.</DialogDescription>
-                                </DialogHeader>
-                                <div className="grid gap-4 py-4">
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="space-y-2 text-left">
-                                            <Label>Full Name</Label>
-                                            <Input placeholder="Dr. John Doe" onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                        <>
+                            <Button variant="outline" onClick={() => fileInputRef.current?.click()}>
+                                <Upload className="mr-2 h-4 w-4" /> Import CSV
+                            </Button>
+                            <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+                                <DialogTrigger asChild>
+                                    <Button><Plus className="mr-2 h-4 w-4" /> Add Faculty</Button>
+                                </DialogTrigger>
+                                <DialogContent className="max-w-2xl">
+                                    <DialogHeader>
+                                        <DialogTitle>Add Faculty</DialogTitle>
+                                    </DialogHeader>
+                                    <div className="grid gap-6 py-4">
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="space-y-2">
+                                                <Label>Full Name</Label>
+                                                <Input onChange={e => setFormData({ ...formData, name: e.target.value })} />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label>Staff ID</Label>
+                                                <Input onChange={e => setFormData({ ...formData, rollNumber: e.target.value })} />
+                                            </div>
                                         </div>
-                                        <div className="space-y-2 text-left">
-                                            <Label>Staff ID (Roll Number)</Label>
-                                            <Input placeholder="22F91F6601" onChange={e => setFormData({ ...formData, rollNumber: e.target.value })} />
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="space-y-2">
+                                                <Label>Email</Label>
+                                                <Input type="email" onChange={e => setFormData({ ...formData, email: e.target.value })} />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label>Phone</Label>
+                                                <Input onChange={e => setFormData({ ...formData, phone: e.target.value })} />
+                                            </div>
                                         </div>
                                     </div>
-                                    <div className="space-y-2 text-left">
-                                        <Label>Email</Label>
-                                        <Input type="email" placeholder="john.doe@smartcampus.edu" onChange={e => setFormData({ ...formData, email: e.target.value })} />
-                                    </div>
-                                    <div className="space-y-2 text-left">
-                                        <Label>Designation</Label>
-                                        <Select onValueChange={v => setFormData({ ...formData, designation: v })}>
-                                            <SelectTrigger><SelectValue placeholder="Select designation" /></SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="Professor">Professor</SelectItem>
-                                                <SelectItem value="Associate Professor">Associate Professor</SelectItem>
-                                                <SelectItem value="Assistant Professor">Assistant Professor</SelectItem>
-                                                <SelectItem value="Adjunct Faculty">Adjunct Faculty</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                </div>
-                                <DialogFooter>
-                                    <Button variant="outline" onClick={() => setIsAddOpen(false)}>Cancel</Button>
-                                    <Button onClick={handleAdd}>Save Member</Button>
-                                </DialogFooter>
-                            </DialogContent>
-                        </Dialog>
+                                    <DialogFooter>
+                                        <Button onClick={handleAdd}>Save</Button>
+                                    </DialogFooter>
+                                </DialogContent>
+                            </Dialog>
+                        </>
                     )}
                 </div>
             </div>
 
             <Tabs defaultValue="directory" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 max-w-[560px]">
+                <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
                     <TabsTrigger value="directory">Active Directory</TabsTrigger>
-                        <TabsTrigger value="leaves">
-                    Leave Requests
-                    {filteredLeaves.filter(l => l.status === 'Pending').length > 0 && (
-                        <Badge className="ml-2 bg-destructive text-white h-5 w-5 flex items-center justify-center p-0 rounded-full">
-                            {filteredLeaves.filter(l => l.status === 'Pending').length}
-                        </Badge>
-                    )}
-                </TabsTrigger>
-            </TabsList>
+                    <TabsTrigger value="leaves">Leaves</TabsTrigger>
+                </TabsList>
 
-            <TabsContent value="directory" className="mt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredFaculty.map((faculty) => (
-                        <Card key={faculty.id} className="group hover:border-primary/50 transition-all hover:shadow-lg overflow-hidden border-muted/60">
-                            <CardHeader className="pb-2">
-                                <div className="flex justify-between items-start">
-                                    <Avatar className="h-12 w-12 border-2 border-primary/20">
-                                        <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${faculty.name}`} />
-                                        <AvatarFallback>{faculty.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                                    </Avatar>
-                                    <div className="flex gap-1">
-                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50" onClick={() => { setCurrentFaculty(faculty); setFormData(faculty); setIsEditOpen(true); }}>
-                                            <Edit className="h-4 w-4" />
-                                        </Button>
-                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => handleDelete(faculty.id)}>
-                                            <Trash2 className="h-4 w-4" />
-                                        </Button>
-                                    </div>
-                                </div>
-                                <div className="mt-4">
-                                    <CardTitle className="text-xl font-black">{faculty.name}</CardTitle>
-                                    <CardDescription className="text-primary font-bold">{faculty.designation}</CardDescription>
-                                    <div className="text-[10px] text-muted-foreground mt-1 font-mono uppercase tracking-tighter opacity-70">
-                                        Staff ID: {faculty.rollNumber}
-                                    </div>
-                                </div>
-                            </CardHeader>
-                            <CardContent className="space-y-4">
-                                <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                                    <Mail className="h-4 w-4 text-primary/60" />
-                                    <span className="truncate">{faculty.email}</span>
-                                </div>
-                                <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                                    <Phone className="h-4 w-4 text-primary/60" />
-                                    {faculty.phone}
-                                </div>
-                                <div className="space-y-2 pt-2 border-t border-muted/40">
-                                    <div className="flex justify-between text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                                        <span>Current Load</span>
-                                        <span className="text-primary">{faculty.totalLoad} hrs/week</span>
-                                    </div>
-                                    <div className="w-full bg-muted rounded-full h-1.5">
-                                        <div className="bg-primary h-full rounded-full transition-all duration-1000" style={{ width: `${Math.min((faculty.totalLoad / 20) * 100, 100)}%` }}></div>
-                                    </div>
-                                </div>
-                                <div className="flex flex-wrap gap-1.5 pt-2">
-                                    {faculty.subjects.map((sub, i) => (
-                                        <Badge key={i} variant="secondary" className="px-1.5 py-0 text-[10px] bg-primary/5 text-primary border-primary/10">
-                                            {sub}
-                                        </Badge>
-                                    ))}
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            </TabsContent>
-
-            <TabsContent value="leaves" className="mt-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Leave Approval Queue</CardTitle>
-                        <CardDescription>Review and manage faculty leave requests. Period swaps are handled directly between faculty colleagues.</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                        <div className="space-y-4">
-                            {filteredLeaves.filter(l => l.status === 'Pending').length === 0 ? (
-                                <div className="text-center py-12 text-muted-foreground">
-                                    <Check className="h-12 w-12 mx-auto mb-4 opacity-20" />
-                                    <p>No pending leave requests.</p>
-                                </div>
-                            ) : (
-                                <div className="grid gap-4">
-                                    {filteredLeaves.filter(l => l.status === 'Pending').map((leave) => (
-                                        <div key={leave.id} className="flex flex-col md:flex-row items-start md:items-center justify-between p-4 border rounded-xl bg-muted/20 hover:bg-muted/30 transition-colors">
-                                            <div className="flex items-start gap-4">
-                                                <div className="mt-1">
-                                                    <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-                                                        {leave.facultyName.charAt(0)}
-                                                    </div>
-                                                </div>
-                                                <div className="space-y-1">
-                                                    <div className="flex items-center gap-2">
-                                                        <h4 className="font-bold">{leave.facultyName}</h4>
-                                                        <Badge variant="outline" className="text-[10px]">{leave.type}</Badge>
-                                                    </div>
-                                                    <p className="text-sm text-muted-foreground line-clamp-1 italic">"{leave.reason}"</p>
-                                                    <div className="flex items-center gap-4 text-xs font-medium text-muted-foreground">
-                                                        <span className="flex items-center gap-1">
-                                                            <Clock className="h-3.5 w-3.5" />
-                                                            {leave.fromDate} to {leave.toDate} ({leave.days} days)
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="flex gap-2 mt-4 md:mt-0 ml-14 md:ml-0">
-                                                <Button 
-                                                    size="sm" 
-                                                    className="bg-green-600 hover:bg-green-700 text-white"
-                                                    onClick={() => handleLeaveAction(leave.id, 'Approved')}
-                                                >
-                                                    <Check className="h-4 w-4 mr-2" /> Approve
-                                                </Button>
-                                                <Button 
-                                                    size="sm" 
-                                                    variant="destructive"
-                                                    onClick={() => handleLeaveAction(leave.id, 'Rejected')}
-                                                >
-                                                    <XIcon className="h-4 w-4 mr-2" /> Reject
-                                                </Button>
-                                            </div>
+                <TabsContent value="directory" className="mt-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredFaculty.map((faculty) => (
+                            <Card key={faculty.id} className="group hover:border-primary/50 transition-all border-muted/60">
+                                <CardHeader className="pb-2">
+                                    <div className="flex justify-between items-start">
+                                        <Avatar className="h-12 w-12 border-2 border-primary/20">
+                                            <AvatarFallback>{faculty.name.substring(0, 2)}</AvatarFallback>
+                                        </Avatar>
+                                        <div className="flex gap-1">
+                                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => { setCurrentFaculty(faculty); setFormData(faculty); setIsEditOpen(true); }}><Edit className="h-4 w-4" /></Button>
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600" onClick={() => handleDelete(faculty.id)}><Trash2 className="h-4 w-4" /></Button>
                                         </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                    </CardContent>
-                </Card>
-            </TabsContent>
-        </Tabs>
+                                    </div>
+                                    <CardTitle className="text-xl font-bold mt-4">{faculty.name}</CardTitle>
+                                    <CardDescription className="text-primary font-semibold">{faculty.designation}</CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div className="flex items-center gap-3 text-sm text-muted-foreground"><Mail className="h-4 w-4" /> {faculty.email}</div>
+                                    <div className="border-t pt-2 mt-2">
+                                        <div className="flex justify-between text-xs font-bold uppercase text-muted-foreground">
+                                            <span>Weekly Load</span>
+                                            <span className="text-primary">{faculty.totalLoad} hrs</span>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                </TabsContent>
 
-            {/* Edit Dialog */}
+                <TabsContent value="leaves" className="mt-6">
+                    {filteredLeaves.filter(l => l.status === 'Pending').length === 0 ? (
+                        <div className="text-center py-20 text-muted-foreground"><Check className="h-12 w-12 mx-auto mb-4 opacity-10" /><p>All requests cleared.</p></div>
+                    ) : (
+                        <div className="grid gap-4">
+                            {filteredLeaves.filter(l => l.status === 'Pending').map((leave) => (
+                                <div key={leave.id} className="flex items-center justify-between p-4 border rounded-xl bg-card">
+                                    <div><h4 className="font-bold">{leave.facultyName}</h4><p className="text-sm text-muted-foreground">{leave.reason}</p></div>
+                                    <div className="flex gap-2">
+                                        <Button size="sm" className="bg-green-600 text-white" onClick={() => handleLeaveAction(leave.id, 'Approved')}>Approve</Button>
+                                        <Button size="sm" variant="destructive" onClick={() => handleLeaveAction(leave.id, 'Rejected')}>Reject</Button>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </TabsContent>
+            </Tabs>
+
             <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Edit Faculty Details</DialogTitle>
-                    </DialogHeader>
+                <DialogContent className="max-w-2xl">
+                    <DialogHeader><DialogTitle>Edit Faculty</DialogTitle></DialogHeader>
                     <div className="grid gap-4 py-4">
                         <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <Label>Full Name</Label>
-                                <Input value={formData.name || ''} onChange={e => setFormData({ ...formData, name: e.target.value })} />
-                            </div>
-                            <div className="space-y-2">
-                                <Label>Staff ID</Label>
-                                <Input value={formData.rollNumber || ''} onChange={e => setFormData({ ...formData, rollNumber: e.target.value })} />
-                            </div>
+                            <div className="space-y-2"><Label>Name</Label><Input value={formData.name || ''} onChange={e => setFormData({ ...formData, name: e.target.value })} /></div>
+                            <div className="space-y-2"><Label>Email</Label><Input value={formData.email || ''} onChange={e => setFormData({ ...formData, email: e.target.value })} /></div>
                         </div>
                     </div>
                     <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsEditOpen(false)}>Cancel</Button>
-                        <Button onClick={handleEdit}>Update Record</Button>
+                        <Button onClick={handleEdit}>Update</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>

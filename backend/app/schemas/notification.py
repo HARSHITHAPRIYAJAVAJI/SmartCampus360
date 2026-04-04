@@ -1,56 +1,65 @@
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 from pydantic import BaseModel, Field
+import enum
+
+class NotificationType(str, enum.Enum):
+    INFO = "info"
+    SUCCESS = "success"
+    WARNING = "warning"
+    DESTRUCTIVE = "destructive"
+
+class TargetAudience(str, enum.Enum):
+    ALL = "all"
+    STUDENTS = "students"
+    FACULTY = "faculty"
+    STAFF = "staff"
+    SPECIFIC = "specific"
+
+class NotificationStatus(str, enum.Enum):
+    SENT = "sent"
+    DRAFT = "draft"
+    SCHEDULED = "scheduled"
 
 # Shared properties
 class NotificationBase(BaseModel):
     title: str = Field(..., max_length=255, description="Notification title")
     message: str = Field(..., description="Notification message")
-    notification_type: str = Field(..., max_length=50, description="Type of notification")
-    related_model: Optional[str] = Field(None, max_length=50, description="Related model name")
-    related_id: Optional[int] = Field(None, description="ID of the related model")
-    is_read: bool = Field(False, description="Whether the notification has been read")
+    type: NotificationType = Field(NotificationType.INFO, description="Priority type")
+    target_audience: TargetAudience = Field(TargetAudience.ALL, description="Targeted audience group")
+    target_uids: Optional[List[int]] = Field(None, description="List of User IDs if audience is specific")
+    status: NotificationStatus = Field(NotificationStatus.SENT, description="Current message status")
+    scheduled_for: Optional[datetime] = None
 
 # Properties to receive on notification creation
 class NotificationCreate(NotificationBase):
-    user_id: int = Field(..., description="ID of the user to notify")
-
-# Properties to receive on notification update
-class NotificationUpdate(BaseModel):
-    is_read: Optional[bool] = Field(None, description="Mark as read/unread")
+    pass
 
 # Properties shared by models stored in DB
 class NotificationInDBBase(NotificationBase):
     id: int
-    user_id: int
+    sender_id: int
     created_at: datetime
-    read_at: Optional[datetime] = None
-    created_by: Optional[int] = None
     
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 # Properties to return to client
 class Notification(NotificationInDBBase):
     pass
 
-# Properties stored in DB
-class NotificationInDB(NotificationInDBBase):
-    pass
+# User Device Registration
+class UserDeviceBase(BaseModel):
+    fcm_token: str
+    device_type: Optional[str] = "web"
 
-# Response models for API endpoints
-class NotificationResponse(BaseModel):
-    success: bool
-    data: Optional[Notification] = None
-    message: Optional[str] = None
+class UserDeviceCreate(UserDeviceBase):
+    user_id: int
 
-class NotificationListResponse(BaseModel):
-    success: bool
-    data: List[Notification]
-    total: int
-    unread_count: int
+class UserDevice(UserDeviceBase):
+    id: int
+    user_id: int
+    last_active: datetime
 
-# WebSocket notification message
-class NotificationMessage(BaseModel):
-    event: str = "notification"
-    data: Dict[str, Any]
+    class Config:
+        from_attributes = True

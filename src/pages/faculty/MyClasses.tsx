@@ -49,13 +49,16 @@ export default function MyClasses() {
                     
                     if (!seenCourses.has(compositeKey)) {
                         const courseInfo = MOCK_COURSES.find(c => c.code === courseCode);
+                        const resolvedSem = courseInfo?.semester || parseInt(sem);
+                        const resolvedYear = Math.ceil(resolvedSem / 2);
+                        
                         results.push({
                             id: compositeKey,
                             code: courseCode,
                             name: courseInfo?.name || courseCode,
                             dept,
-                            year,
-                            sem,
+                            year: resolvedYear || year,
+                            sem: resolvedSem || sem,
                             section,
                             room: session.room && session.room !== user.name ? session.room : "TBD",
                             students: 60, // Mock student count

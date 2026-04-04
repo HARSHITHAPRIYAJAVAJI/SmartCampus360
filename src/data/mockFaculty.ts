@@ -28,7 +28,7 @@ export const MOCK_FACULTY: Faculty[] = [
     department: "CSM",
     email: "anitha.d@smartcampus.com",
     phone: "+91 98765 43211",
-    specialization: ["Java", "Java Lab", "C"]
+    specialization: ["Java", "Java Lab", "CPPS"]
   },
   {
     id: "syed-hussain",
@@ -78,7 +78,7 @@ export const MOCK_FACULTY: Faculty[] = [
     department: "CSM",
     email: "vijayakumari.p@smartcampus.com",
     phone: "+91 98765 43216",
-    specialization: ["DBMS Lab", "DL", "DL Lab", "C", "Itws lab"]
+    specialization: ["DBMS Lab", "DL", "DL Lab", "C", "ITWS Lab"]
   },
   {
     id: "t-praneetha",
@@ -198,7 +198,7 @@ export const MOCK_FACULTY: Faculty[] = [
     department: "CSM",
     email: "suryakumari.m@smartcampus.com",
     phone: "+91 98765 43228",
-    specialization: ["DS", "DS Lab", "C", "ITWS LAB"]
+    specialization: ["DS", "DS Lab", "CPPS", "ITWS LAB"]
   },
   {
     id: "c-saritha-reddy",
@@ -268,7 +268,7 @@ export const MOCK_FACULTY: Faculty[] = [
     department: "CSM",
     email: "jhansirani@smartcampus.com",
     phone: "+91 98765 43235",
-    specialization: ["DS", "DS Lab", "PP Lab", "C"]
+    specialization: ["DS", "DS Lab", "PP Lab", "CPPS"]
   },
   {
     id: "varsha",
@@ -340,6 +340,36 @@ export const MOCK_FACULTY: Faculty[] = [
     phone: "+91 98765 43242",
     specialization: ["IS"]
   },
+  {
+    id: "p-madhavi",
+    name: "Dr. P. Madhavi",
+    rollNumber: "22F91F0001",
+    designation: "Professor",
+    department: "Mathematics",
+    email: "madhavi.p@smartcampus.com",
+    phone: "+91 98765 43243",
+    specialization: ["SM&VC", "P&S"]
+  },
+  {
+    id: "sudha-rani",
+    name: "Sudha Rani",
+    rollNumber: "22F91F6643",
+    designation: "Assistant Professor",
+    department: "CSM",
+    email: "sudharani.csm@smartcampus.com",
+    phone: "+91 98765 43288",
+    specialization: ["English Language and Communication Skills Lab", "English for Skill Enhancement"]
+  },
+  {
+    id: "shankar",
+    name: "Shankar",
+    rollNumber: "22F91F6644",
+    designation: "Assistant Professor",
+    department: "CSM",
+    email: "shankar.csm@smartcampus.com",
+    phone: "+91 98765 43299",
+    specialization: ["LA&ODE"]
+  },
   // IT Branch Faculty
   {
     id: "nallamothu-satyanarayana",
@@ -348,7 +378,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Professor",
     department: "IT",
     email: "satyanarayana.n@smartcampus.com",
-    phone: "+91 91234 56701"
+    phone: "+91 91234 56701",
+    specialization: ["Computer Architecture", "Wireless Sensor Networks", "Data Mining"]
   },
   {
     id: "muruganantham-r",
@@ -357,7 +388,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Professor",
     department: "IT",
     email: "muruganantham.r@smartcampus.com",
-    phone: "+91 91234 56702"
+    phone: "+91 91234 56702",
+    specialization: ["Internet of Things", "Machine Learning", "Wireless Sensor Networks", "Cryptography", "Computer Networks"]
   },
   {
     id: "dhasaratham-m",
@@ -366,7 +398,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Associate Professor",
     department: "IT",
     email: "dhasaratham.m@smartcampus.com",
-    phone: "+91 91234 56703"
+    phone: "+91 91234 56703",
+    specialization: ["Cloud Computing", "Machine Learning", "Internet of Things", "Networking"]
   },
   {
     id: "kavitha-d",
@@ -375,7 +408,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "kavitha.d@smartcampus.com",
-    phone: "+91 91234 56704"
+    phone: "+91 91234 56704",
+    specialization: ["Artificial Intelligence", "Machine Learning"]
   },
   {
     id: "thakur-madhumathi",
@@ -384,7 +418,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "madhumathi.t@smartcampus.com",
-    phone: "+91 91234 56705"
+    phone: "+91 91234 56705",
+    specialization: ["Artificial Intelligence"]
   },
   {
     id: "mandalreddy-sushma",
@@ -393,7 +428,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "sushma.m@smartcampus.com",
-    phone: "+91 91234 56706"
+    phone: "+91 91234 56706",
+    specialization: ["Data Science"]
   },
   {
     id: "n-paparayudu",
@@ -402,7 +438,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "paparayudu.n@smartcampus.com",
-    phone: "+91 91234 56707"
+    phone: "+91 91234 56707",
+    specialization: ["Data Mining", "Machine Learning"]
   },
   {
     id: "jarapala-ramesh",
@@ -411,7 +448,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "ramesh.j@smartcampus.com",
-    phone: "+91 91234 56708"
+    phone: "+91 91234 56708",
+    specialization: ["Quantum Computing", "Blockchain Technology"]
   },
   {
     id: "y-naga-lavanya",
@@ -420,7 +458,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "nagalavanya.y@smartcampus.com",
-    phone: "+91 91234 56709"
+    phone: "+91 91234 56709",
+    specialization: ["Data Science", "Artificial Intelligence", "Deep Learning"]
   },
   {
     id: "meka-aruna",
@@ -429,7 +468,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "meka.aruna@smartcampus.com",
-    phone: "+91 91234 56710"
+    phone: "+91 91234 56710",
+    specialization: ["Deep Learning"]
   },
   {
     id: "mounika-nakrekanti",
@@ -438,7 +478,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "mounika.n@smartcampus.com",
-    phone: "+91 91234 56711"
+    phone: "+91 91234 56711",
+    specialization: ["DAA", "Python"]
   },
   {
     id: "v-murugan",
@@ -447,7 +488,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "v.murugan@smartcampus.com",
-    phone: "+91 91234 56712"
+    phone: "+91 91234 56712",
+    specialization: ["Cyber Security", "Machine Learning", "Cloud Computing"]
   },
   {
     id: "yacharam-uma",
@@ -456,7 +498,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "yacharam.uma@smartcampus.com",
-    phone: "+91 91234 56713"
+    phone: "+91 91234 56713",
+    specialization: ["Artificial Intelligence"]
   },
   {
     id: "p-himabindu",
@@ -465,7 +508,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "p.himabindu@smartcampus.com",
-    phone: "+91 91234 56714"
+    phone: "+91 91234 56714",
+    specialization: ["Software Engineering"]
   },
   {
     id: "g-bharath",
@@ -474,7 +518,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "g.bharath@smartcampus.com",
-    phone: "+91 91234 56715"
+    phone: "+91 91234 56715",
+    specialization: ["Information Security", "Machine Learning"]
   },
   {
     id: "p-swathi",
@@ -483,7 +528,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "p.swathi@smartcampus.com",
-    phone: "+91 91234 56716"
+    phone: "+91 91234 56716",
+    specialization: ["Operating Systems (OS)", "Computer Networks & Security (CNS)"]
   },
   {
     id: "n-anjali",
@@ -492,7 +538,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "n.anjali@smartcampus.com",
-    phone: "+91 91234 56717"
+    phone: "+91 91234 56717",
+    specialization: ["DBMS"]
   },
   {
     id: "b-rajani",
@@ -501,7 +548,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "b.rajani@smartcampus.com",
-    phone: "+91 91234 56718"
+    phone: "+91 91234 56718",
+    specialization: ["Cyber Security", "Machine Learning"]
   },
   {
     id: "mrs-b-madhavi",
@@ -510,7 +558,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "b.madhavi@smartcampus.com",
-    phone: "+91 91234 56719"
+    phone: "+91 91234 56719",
+    specialization: ["Python Programming"]
   },
   {
     id: "mr-s-pradeep",
@@ -518,8 +567,9 @@ export const MOCK_FACULTY: Faculty[] = [
     rollNumber: "22F91F7720",
     designation: "Assistant Professor",
     department: "IT",
-    email: "s.pradeep@smartcampus.com",
-    phone: "+91 91234 56720"
+    email: "s.pradep@smartcampus.com",
+    phone: "+91 91234 56720",
+    specialization: ["Python Programming"]
   },
   {
     id: "b-upender",
@@ -528,7 +578,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "IT",
     email: "b.upender@smartcampus.com",
-    phone: "+91 91234 56721"
+    phone: "+91 91234 56721",
+    specialization: ["Data Science", "Artificial Intelligence"]
   },
   // CSE Branch Faculty
   {
@@ -538,7 +589,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Professor",
     department: "CSE",
     email: "sureshrao.a@smartcampus.com",
-    phone: "+91 92234 56801"
+    phone: "+91 92234 56801",
+    specialization: ["Data Mining", "Machine Learning"]
   },
   {
     id: "m-narender",
@@ -547,7 +599,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Professor",
     department: "CSE",
     email: "narender.m@smartcampus.com",
-    phone: "+91 92234 56802"
+    phone: "+91 92234 56802",
+    specialization: ["Computer Networks", "Network Security", "Machine Learning", "Deep Learning"]
   },
   {
     id: "vempati-krishna",
@@ -556,7 +609,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Professor",
     department: "CSE",
     email: "krishna.v@smartcampus.com",
-    phone: "+91 92234 56803"
+    phone: "+91 92234 56803",
+    specialization: ["Image Processing", "Machine Learning", "Deep Learning", "Computer Vision"]
   },
   {
     id: "ch-b-naga-lakshmi",
@@ -565,17 +619,10 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Professor",
     department: "CSE",
     email: "nagalakshmi.ch@smartcampus.com",
-    phone: "+91 92234 56804"
+    phone: "+91 92234 56804",
+    specialization: ["Computer Networks"]
   },
-  {
-    id: "ksr-radhika",
-    name: "Dr. K.S.R. Radhika",
-    rollNumber: "22F91F8805",
-    designation: "Professor",
-    department: "CSE",
-    email: "radhika.ksr@smartcampus.com",
-    phone: "+91 92234 56805"
-  },
+
   {
     id: "rajesh-banala",
     name: "Dr. Rajesh Banala",
@@ -583,7 +630,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Associate Professor",
     department: "CSE",
     email: "rajesh.b@smartcampus.com",
-    phone: "+91 92234 56807"
+    phone: "+91 92234 56807",
+    specialization: ["Networks", "Artificial Intelligence"]
   },
   {
     id: "a-pramod-reddy",
@@ -592,7 +640,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Associate Professor",
     department: "CSE",
     email: "pramod.a@smartcampus.com",
-    phone: "+91 92234 56808"
+    phone: "+91 92234 56808",
+    specialization: ["Speech Processing", "Machine Learning"]
   },
   {
     id: "nelli-chandrakala",
@@ -601,7 +650,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Associate Professor",
     department: "CSE",
     email: "chandrakala.n@smartcampus.com",
-    phone: "+91 92234 56809"
+    phone: "+91 92234 56809",
+    specialization: ["Cloud Computing"]
   },
   {
     id: "kuna-naresh",
@@ -610,7 +660,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Associate Professor",
     department: "CSE",
     email: "naresh.k@smartcampus.com",
-    phone: "+91 92234 56810"
+    phone: "+91 92234 56810",
+    specialization: ["Software Engineering"]
   },
   {
     id: "sirisha-k-l-s",
@@ -619,7 +670,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Associate Professor",
     department: "CSE",
     email: "sirisha.k@smartcampus.com",
-    phone: "+91 92234 56811"
+    phone: "+91 92234 56811",
+    specialization: ["Software Engineering"]
   },
   {
     id: "shirish-reddy-k",
@@ -628,7 +680,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "shirish.k@smartcampus.com",
-    phone: "+91 92234 56812"
+    phone: "+91 92234 56812",
+    specialization: ["Networking"]
   },
   {
     id: "indra-kiran-reddy-k",
@@ -637,7 +690,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "indrakiran.k@smartcampus.com",
-    phone: "+91 92234 56813"
+    phone: "+91 92234 56813",
+    specialization: ["IT Workshop"]
   },
   {
     id: "g-deepthi",
@@ -646,7 +700,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "deepthi.g@smartcampus.com",
-    phone: "+91 92234 56814"
+    phone: "+91 92234 56814",
+    specialization: ["CO", "DAA", "FLAT"]
   },
   {
     id: "p-chandra-shekar",
@@ -655,7 +710,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "chandrashekar.p@smartcampus.com",
-    phone: "+91 92234 56815"
+    phone: "+91 92234 56815",
+    specialization: ["Application Development"]
   },
   {
     id: "y-latha",
@@ -664,7 +720,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "latha.y@smartcampus.com",
-    phone: "+91 92234 56816"
+    phone: "+91 92234 56816",
+    specialization: ["Data Mining", "Machine Learning"]
   },
   {
     id: "m-thanmayee",
@@ -673,7 +730,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "thanmayee.m@smartcampus.com",
-    phone: "+91 92234 56817"
+    phone: "+91 92234 56817",
+    specialization: ["IoT", "AI"]
   },
   {
     id: "pragathi-vulpala",
@@ -682,7 +740,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "pragathi.v@smartcampus.com",
-    phone: "+91 92234 56818"
+    phone: "+91 92234 56818",
+    specialization: ["Networks"]
   },
   {
     id: "p-laxmi-prasanna",
@@ -691,7 +750,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "laxmiprasanna.p@smartcampus.com",
-    phone: "+91 92234 56819"
+    phone: "+91 92234 56819",
+    specialization: ["Machine Learning"]
   },
   {
     id: "n-padmavathi",
@@ -700,7 +760,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "padmavathi.n@smartcampus.com",
-    phone: "+91 92234 56820"
+    phone: "+91 92234 56820",
+    specialization: ["Machine Learning", "Application Development"]
   },
   {
     id: "g-arpitha",
@@ -709,7 +770,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "arpitha.g@smartcampus.com",
-    phone: "+91 92234 56821"
+    phone: "+91 92234 56821",
+    specialization: ["Data Mining"]
   },
   {
     id: "g-anantha-lakshmi",
@@ -718,7 +780,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "ananthalakshmi.g@smartcampus.com",
-    phone: "+91 92234 56822"
+    phone: "+91 92234 56822",
+    specialization: ["Machine Learning", "Deep Learning"]
   },
   {
     id: "k-anusha",
@@ -727,7 +790,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "anusha.k@smartcampus.com",
-    phone: "+91 92234 56823"
+    phone: "+91 92234 56823",
+    specialization: ["Artificial Intelligence", "Machine Learning"]
   },
   {
     id: "a-pradeep-cse",
@@ -736,7 +800,18 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "pradeep.a@smartcampus.com",
-    phone: "+91 92234 56824"
+    phone: "+91 92234 56824",
+    specialization: ["C", "IoT", "Web Application", "Networks"]
+  },
+  {
+    id: "k-venugopal-reddy-cse",
+    name: "Mr. K. Venugopal Reddy",
+    rollNumber: "22F91F8825",
+    designation: "Assistant Professor",
+    department: "CSE",
+    email: "venugopal.k@smartcampus.com",
+    phone: "+91 92234 56825",
+    specialization: ["Machine Learning"]
   },
 
   {
@@ -746,7 +821,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "vijayakumari.m@smartcampus.com",
-    phone: "+91 92234 56826"
+    phone: "+91 92234 56826",
+    specialization: ["ML", "Advanced Computer Vision", "DL"]
   },
   {
     id: "l-gnanender-reddy",
@@ -755,7 +831,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "gnanender.l@smartcampus.com",
-    phone: "+91 92234 56827"
+    phone: "+91 92234 56827",
+    specialization: ["Artificial Intelligence"]
   },
   {
     id: "v-pavani",
@@ -764,7 +841,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "pavani.v@smartcampus.com",
-    phone: "+91 92234 56828"
+    phone: "+91 92234 56828",
+    specialization: ["Artificial Intelligence"]
   },
   {
     id: "thirumani-anusha",
@@ -773,7 +851,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "anusha.t@smartcampus.com",
-    phone: "+91 92234 56829"
+    phone: "+91 92234 56829",
+    specialization: ["Python", "ML"]
   },
   {
     id: "p-rajyalakshmi",
@@ -782,7 +861,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "rajyalakshmi.p@smartcampus.com",
-    phone: "+91 92234 56830"
+    phone: "+91 92234 56830",
+    specialization: ["Data Mining"]
   },
   {
     id: "a-tejaswini",
@@ -791,7 +871,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "tejaswini.a@smartcampus.com",
-    phone: "+91 92234 56831"
+    phone: "+91 92234 56831",
+    specialization: ["Databases", "Machine Learning", "Data Mining"]
   },
   {
     id: "g-jyothi",
@@ -800,7 +881,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "jyothi.g@smartcampus.com",
-    phone: "+91 92234 56832"
+    phone: "+91 92234 56832",
+    specialization: ["Machine Learning"]
   },
   {
     id: "ch-tulasi-ratna-mani",
@@ -809,7 +891,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "tulasiratnamani.ch@smartcampus.com",
-    phone: "+91 92234 56833"
+    phone: "+91 92234 56833",
+    specialization: ["Computer Networks"]
   },
   {
     id: "sk-mahaboob-basha",
@@ -818,7 +901,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "mahaboobbasha.sk@smartcampus.com",
-    phone: "+91 92234 56834"
+    phone: "+91 92234 56834",
+    specialization: ["Computer Networks"]
   },
   {
     id: "k-naga-maha-lakshmi",
@@ -827,7 +911,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "nagamahalakshmi.k@smartcampus.com",
-    phone: "+91 92234 56835"
+    phone: "+91 92234 56835",
+    specialization: ["Network Security", "Image Processing"]
   },
   {
     id: "b-naga-jyothi",
@@ -836,7 +921,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "nagajyothi.b@smartcampus.com",
-    phone: "+91 92234 56836"
+    phone: "+91 92234 56836",
+    specialization: ["Machine Learning"]
   },
   {
     id: "m-jyothi",
@@ -845,7 +931,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "jyothi.m@smartcampus.com",
-    phone: "+91 92234 56837"
+    phone: "+91 92234 56837",
+    specialization: ["Databases", "Machine Learning"]
   },
   {
     id: "vangala-konica-nehal",
@@ -854,7 +941,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "konicanehal.v@smartcampus.com",
-    phone: "+91 92234 56838"
+    phone: "+91 92234 56838",
+    specialization: ["Machine Learning", "AI"]
   },
   {
     id: "polepaka-prashamsa",
@@ -863,7 +951,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "prashamsa.p@smartcampus.com",
-    phone: "+91 92234 56839"
+    phone: "+91 92234 56839",
+    specialization: ["AI", "Machine Learning"]
   },
   {
     id: "p-venkata-kishan-rao",
@@ -872,7 +961,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "venkatakishanrao.p@smartcampus.com",
-    phone: "+91 92234 56840"
+    phone: "+91 92234 56840",
+    specialization: ["Databases", "Data Mining", "Big Data"]
   },
   {
     id: "b-srikanth",
@@ -881,7 +971,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "srikanth.b@smartcampus.com",
-    phone: "+91 92234 56841"
+    phone: "+91 92234 56841",
+    specialization: ["C", "Java"]
   },
   {
     id: "k-gayathri",
@@ -890,7 +981,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "gayathri.k@smartcampus.com",
-    phone: "+91 92234 56842"
+    phone: "+91 92234 56842",
+    specialization: ["Databases", "Big Data", "AI"]
   },
   {
     id: "prasanna-pasunari",
@@ -899,7 +991,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "prasanna.p@smartcampus.com",
-    phone: "+91 92234 56843"
+    phone: "+91 92234 56843",
+    specialization: ["Computer Science", "Database", "Java"]
   },
   {
     id: "d-v-v-deepthi",
@@ -908,7 +1001,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "deepthi.dvv@smartcampus.com",
-    phone: "+91 92234 56844"
+    phone: "+91 92234 56844",
+    specialization: ["Computer Networks", "Cryptography"]
   },
   {
     id: "ponnam-kishore",
@@ -917,7 +1011,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "kishore.p@smartcampus.com",
-    phone: "+91 92234 56845"
+    phone: "+91 92234 56845",
+    specialization: ["Machine Learning"]
   },
   {
     id: "s-usha-devi",
@@ -926,7 +1021,18 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "CSE",
     email: "ushadevi.s@smartcampus.com",
-    phone: "+91 92234 56846"
+    phone: "+91 92234 56846",
+    specialization: ["Software Engineering"]
+  },
+  {
+    id: "anitha-kumari-cse",
+    name: "Dr. D. Anitha Kumari",
+    rollNumber: "22F91F6602",
+    designation: "Professor",
+    department: "CSE",
+    email: "anitha.d@smartcampus.com",
+    phone: "+91 98765 43211",
+    specialization: ["Data Mining", "Machine Learning"]
   },
   // ECE Branch Faculty
   {
@@ -936,7 +1042,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "sreedevi@smartcampus.com",
-    phone: "+91 93234 56901"
+    phone: "+91 93234 56901",
+    specialization: ["LA&ODE"]
   },
   {
     id: "rajnijanth",
@@ -945,7 +1052,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "rajnijanth@smartcampus.com",
-    phone: "+91 93234 56902"
+    phone: "+91 93234 56902",
+    specialization: ["EP"]
   },
   {
     id: "raju",
@@ -954,7 +1062,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "raju@smartcampus.com",
-    phone: "+91 93234 56903"
+    phone: "+91 93234 56903",
+    specialization: ["FEE"]
   },
   {
     id: "pavani-ece",
@@ -963,7 +1072,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "pavani@smartcampus.com",
-    phone: "+91 93234 56904"
+    phone: "+91 93234 56904",
+    specialization: ["CPPS Lab"]
   },
   {
     id: "b-mahesh",
@@ -972,7 +1082,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "mahesh.b@smartcampus.com",
-    phone: "+91 93234 56905"
+    phone: "+91 93234 56905",
+    specialization: ["MT"]
   },
   {
     id: "a-premalatha",
@@ -981,7 +1092,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Associate Professor",
     department: "ECE",
     email: "premalatha.a@smartcampus.com",
-    phone: "+91 93234 56906"
+    phone: "+91 93234 56906",
+    specialization: ["EC"]
   },
   {
     id: "b-gnanesh-netha",
@@ -990,7 +1102,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "gnaneshnetha.b@smartcampus.com",
-    phone: "+91 93234 56907"
+    phone: "+91 93234 56907",
+    specialization: ["English"]
   },
   {
     id: "dhanunjayasingh",
@@ -999,7 +1112,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "dhanunjayasingh@smartcampus.com",
-    phone: "+91 93234 56908"
+    phone: "+91 93234 56908",
+    specialization: ["CAEG"]
   },
   {
     id: "m-sai-krishna",
@@ -1008,7 +1122,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "saikrishna.m@smartcampus.com",
-    phone: "+91 93234 56909"
+    phone: "+91 93234 56909",
+    specialization: ["DLD"]
   },
   {
     id: "k-hemanth",
@@ -1017,7 +1132,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "hemanth.k@smartcampus.com",
-    phone: "+91 93234 56910"
+    phone: "+91 93234 56910",
+    specialization: ["NT"]
   },
   {
     id: "b-swapna-rani",
@@ -1026,7 +1142,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Associate Professor",
     department: "ECE",
     email: "swapnarani.b@smartcampus.com",
-    phone: "+91 93234 56911"
+    phone: "+91 93234 56911",
+    specialization: ["ECA"]
   },
   {
     id: "mahesh-ece",
@@ -1035,7 +1152,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "mahesh@smartcampus.com",
-    phone: "+91 93234 56912"
+    phone: "+91 93234 56912",
+    specialization: ["CAVC"]
   },
   {
     id: "m-gnanesh-goud",
@@ -1044,7 +1162,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "gnaneshgoud.m@smartcampus.com",
-    phone: "+91 93234 56913"
+    phone: "+91 93234 56913",
+    specialization: ["SS", "DSP"]
   },
   {
     id: "b-shreshta",
@@ -1053,7 +1172,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "shreshta.b@smartcampus.com",
-    phone: "+91 93234 56914"
+    phone: "+91 93234 56914",
+    specialization: ["ADC"]
   },
   {
     id: "bhavani",
@@ -1062,7 +1182,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "bhavani@smartcampus.com",
-    phone: "+91 93234 56915"
+    phone: "+91 93234 56915",
+    specialization: ["PTSP"]
   },
   {
     id: "s-saritha",
@@ -1071,7 +1192,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "saritha.s@smartcampus.com",
-    phone: "+91 93234 56916"
+    phone: "+91 93234 56916",
+    specialization: ["PDC"]
   },
   {
     id: "m-jhansi-rani-ece",
@@ -1080,7 +1202,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "jhansirani.m@smartcampus.com",
-    phone: "+91 93234 56917"
+    phone: "+91 93234 56917",
+    specialization: ["EMTL"]
   },
   {
     id: "d-swathi",
@@ -1089,7 +1212,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "swathi.d@smartcampus.com",
-    phone: "+91 93234 56918"
+    phone: "+91 93234 56918",
+    specialization: ["LDICA"]
   },
   {
     id: "p-venkata-lavanya",
@@ -1098,7 +1222,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Associate Professor",
     department: "ECE",
     email: "venkatalavanya.p@smartcampus.com",
-    phone: "+91 93234 56919"
+    phone: "+91 93234 56919",
+    specialization: ["MPMC", "DIP"]
   },
   {
     id: "k-sushma",
@@ -1107,7 +1232,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "sushma.k@smartcampus.com",
-    phone: "+91 93234 56920"
+    phone: "+91 93234 56920",
+    specialization: ["Python", "IoT"]
   },
   {
     id: "k-shalini",
@@ -1116,7 +1242,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "shalini.k@smartcampus.com",
-    phone: "+91 93234 56921"
+    phone: "+91 93234 56921",
+    specialization: ["AWP"]
   },
   {
     id: "ch-divya",
@@ -1125,7 +1252,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "divya.ch@smartcampus.com",
-    phone: "+91 93234 56922"
+    phone: "+91 93234 56922",
+    specialization: ["VLSI"]
   },
   {
     id: "j-sunitha-kumari",
@@ -1134,7 +1262,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Professor",
     department: "ECE",
     email: "sunithakumari.j@smartcampus.com",
-    phone: "+91 93234 56923"
+    phone: "+91 93234 56923",
+    specialization: ["MWE"]
   },
   {
     id: "r-rajendranath",
@@ -1143,7 +1272,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Associate Professor",
     department: "ECE",
     email: "rajendranath.r@smartcampus.com",
-    phone: "+91 93234 56924"
+    phone: "+91 93234 56924",
+    specialization: ["PE"]
   },
   {
     id: "ch-swapna",
@@ -1152,7 +1282,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "swapna.ch@smartcampus.com",
-    phone: "+91 93234 56925"
+    phone: "+91 93234 56925",
+    specialization: ["ESD", "OS"]
   },
   {
     id: "a-haritha",
@@ -1161,7 +1292,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "haritha.a@smartcampus.com",
-    phone: "+91 93234 56926"
+    phone: "+91 93234 56926",
+    specialization: ["SC", "DSP&A"]
   },
   {
     id: "b-pullarao",
@@ -1170,7 +1302,8 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "pullarao.b@smartcampus.com",
-    phone: "+91 93234 56927"
+    phone: "+91 93234 56927",
+    specialization: ["OFC"]
   },
   {
     id: "s-anusha",
@@ -1179,6 +1312,7 @@ export const MOCK_FACULTY: Faculty[] = [
     designation: "Assistant Professor",
     department: "ECE",
     email: "anusha.s@smartcampus.com",
-    phone: "+91 93234 56928"
+    phone: "+91 93234 56928",
+    specialization: ["CN"]
   }
 ];

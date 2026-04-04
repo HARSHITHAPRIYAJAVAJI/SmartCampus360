@@ -57,7 +57,7 @@ export default function StudentDashboard() {
         const publishedKey = `${studentData.branch}-${studentData.year}-${currentSem}-${studentData.section || 'A'}`;
         const liveTable = publishedTimetables[publishedKey];
         
-        const table = liveTable || getTimetable(studentData.year, currentSem, studentData.section || 'A');
+        const table = liveTable || getTimetable(studentData.year, currentSem, studentData.section || 'A', studentData.branch);
 
         if (!table || Object.keys(table).length === 0) return defaultSchedule;
 

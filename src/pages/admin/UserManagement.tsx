@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, UserPlus, MoreHorizontal, Mail, Phone, Shield, Trash2, Edit } from "lucide-react";
+import { Search, UserPlus, MoreHorizontal, Mail, Phone, Shield, Trash2, Edit, Upload } from "lucide-react";
 import {
     Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
@@ -31,6 +31,7 @@ const UserManagement = () => {
     const [users, setUsers] = useState(MOCK_USERS);
     const [searchQuery, setSearchQuery] = useState('');
     const [isAddOpen, setIsAddOpen] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     // New User Form State
     const [newUser, setNewUser] = useState({ name: '', email: '', role: 'Student', department: 'CSE' });
@@ -45,6 +46,48 @@ const UserManagement = () => {
         setIsAddOpen(false);
         setNewUser({ name: '', email: '', role: 'Student', department: 'CSE' });
         toast({ title: "User Created", description: `${user.name} has been added successfully.` });
+    };
+
+    const handleBulkUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const text = e.target?.result as string;
+            const lines = text.split('\n');
+            const newUsersArr: any[] = [];
+            
+            // Skip header and process lines
+            for (let i = 1; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                const [name, email, role, department] = line.split(',');
+                if (name && email) {
+                    newUsersArr.push({
+                        id: `bulk-${Date.now()}-${i}`,
+                        name: name.trim(),
+                        email: email.trim(),
+                        role: role?.trim() || 'Student',
+                        department: department?.trim() || 'CSE',
+                        status: 'Active'
+                    });
+                }
+            }
+
+            if (newUsersArr.length > 0) {
+                setUsers([...newUsersArr, ...users]);
+                toast({ 
+                    title: "Import Successful", 
+                    description: `Batch processed ${newUsersArr.length} users into the system.` 
+                });
+            } else {
+                toast({ title: "Import Failed", description: "No valid users found in CSV.", variant: "destructive" });
+            }
+        };
+        reader.readAsText(file);
+        if (fileInputRef.current) fileInputRef.current.value = '';
     };
 
     const handleDeleteUser = (id: string) => {
@@ -64,56 +107,68 @@ const UserManagement = () => {
                     <h1 className="text-3xl font-bold tracking-tight">User Management</h1>
                     <p className="text-muted-foreground">Manage user access, roles, and permissions.</p>
                 </div>
-                <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-                    <DialogTrigger asChild>
-                        <Button className="gap-2">
-                            <UserPlus className="h-4 w-4" /> Add User
-                        </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                        <DialogHeader>
-                            <DialogTitle>Add New User</DialogTitle>
-                            <DialogDescription>Create a new account for a student, faculty, or staff member.</DialogDescription>
-                        </DialogHeader>
-                        <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label className="text-right">Name</Label>
-                                <Input value={newUser.name} onChange={e => setNewUser({ ...newUser, name: e.target.value })} className="col-span-3" />
+                <div className="flex gap-2">
+                    <input 
+                        type="file" 
+                        ref={fileInputRef} 
+                        onChange={handleBulkUpload} 
+                        accept=".csv" 
+                        className="hidden" 
+                    />
+                    <Button variant="outline" className="gap-2" onClick={() => fileInputRef.current?.click()}>
+                        <Upload className="h-4 w-4" /> Bulk Import
+                    </Button>
+                    <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+                        <DialogTrigger asChild>
+                            <Button className="gap-2">
+                                <UserPlus className="h-4 w-4" /> Add User
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Add New User</DialogTitle>
+                                <DialogDescription>Create a new account for a student, faculty, or staff member.</DialogDescription>
+                            </DialogHeader>
+                            <div className="grid gap-4 py-4">
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label className="text-right">Name</Label>
+                                    <Input value={newUser.name} onChange={e => setNewUser({ ...newUser, name: e.target.value })} className="col-span-3" />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label className="text-right">Email</Label>
+                                    <Input value={newUser.email} onChange={e => setNewUser({ ...newUser, email: e.target.value })} className="col-span-3" />
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label className="text-right">Role</Label>
+                                    <Select value={newUser.role} onValueChange={v => setNewUser({ ...newUser, role: v })}>
+                                        <SelectTrigger className="col-span-3"><SelectValue /></SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="Student">Student</SelectItem>
+                                            <SelectItem value="Faculty">Faculty</SelectItem>
+                                            <SelectItem value="Admin">Admin</SelectItem>
+                                            <SelectItem value="Staff">Staff</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label className="text-right">Dept</Label>
+                                    <Select value={newUser.department} onValueChange={v => setNewUser({ ...newUser, department: v })}>
+                                        <SelectTrigger className="col-span-3"><SelectValue /></SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="CSE">CSE</SelectItem>
+                                            <SelectItem value="AIML">AIML</SelectItem>
+                                            <SelectItem value="ECE">ECE</SelectItem>
+                                            <SelectItem value="Administration">Administration</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
                             </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label className="text-right">Email</Label>
-                                <Input value={newUser.email} onChange={e => setNewUser({ ...newUser, email: e.target.value })} className="col-span-3" />
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label className="text-right">Role</Label>
-                                <Select value={newUser.role} onValueChange={v => setNewUser({ ...newUser, role: v })}>
-                                    <SelectTrigger className="col-span-3"><SelectValue /></SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="Student">Student</SelectItem>
-                                        <SelectItem value="Faculty">Faculty</SelectItem>
-                                        <SelectItem value="Admin">Admin</SelectItem>
-                                        <SelectItem value="Staff">Staff</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label className="text-right">Dept</Label>
-                                <Select value={newUser.department} onValueChange={v => setNewUser({ ...newUser, department: v })}>
-                                    <SelectTrigger className="col-span-3"><SelectValue /></SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="CSE">CSE</SelectItem>
-                                        <SelectItem value="AIML">AIML</SelectItem>
-                                        <SelectItem value="ECE">ECE</SelectItem>
-                                        <SelectItem value="Administration">Administration</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-                        <DialogFooter>
-                            <Button onClick={handleAddUser}>Create Account</Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
+                            <DialogFooter>
+                                <Button onClick={handleAddUser}>Create Account</Button>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
+                </div>
             </div>
 
             <Card>

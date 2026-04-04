@@ -48,12 +48,13 @@ const StudentRecords = () => {
     const [searchQuery, setSearchQuery] = useState("");
     
     // Navigation State
-    const [view, setView] = useState<'branches' | 'years' | 'sections' | 'courses' | 'students'>('branches');
+    const [view, setView] = useState<'branches' | 'years' | 'sections' | 'courses' | 'students' | 'student-detail'>('branches');
     const [activeMode, setActiveMode] = useState<'view' | 'attendance' | 'marks'>('view');
     const [selectedBranch, setSelectedBranch] = useState<string | null>(null);
     const [selectedYear, setSelectedYear] = useState<number | null>(null);
     const [selectedSection, setSelectedSection] = useState<string | null>(null);
     const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
+    const [selectedStudentProfile, setSelectedStudentProfile] = useState<Student | null>(null);
 
     // Attendance/Marks Session State
     const [currentPeriod, setCurrentPeriod] = useState("1");
@@ -157,11 +158,15 @@ const StudentRecords = () => {
         setSelectedYear(null);
         setSelectedSection(null);
         setSelectedCourse(null);
+        setSelectedStudentProfile(null);
         setView('branches');
     };
 
     const goBack = () => {
-        if (view === 'students') {
+        if (view === 'student-detail') {
+            setSelectedStudentProfile(null);
+            setView('students');
+        } else if (view === 'students') {
             setSelectedCourse(null);
             setView('courses');
         } else if (view === 'courses') {
@@ -462,7 +467,17 @@ const StudentRecords = () => {
                 {selectedCourse && (
                     <>
                         <span>/</span>
-                        <span className="h-7 px-2 flex items-center text-foreground font-bold italic">{selectedCourse}</span>
+                        <Button variant="ghost" size="sm" onClick={() => { setView('students'); setSelectedStudentProfile(null); }} className={`h-7 px-2 hover:text-primary text-foreground font-medium ${!selectedStudentProfile ? 'font-bold italic' : ''}`}>
+                             {selectedCourse}
+                        </Button>
+                    </>
+                )}
+                {selectedStudentProfile && (
+                    <>
+                        <span>/</span>
+                        <span className="h-7 px-2 flex items-center text-foreground font-bold italic underline decoration-primary decoration-2 underline-offset-4">
+                            {selectedStudentProfile.name} Profile
+                        </span>
                     </>
                 )}
                 {view !== 'branches' && (
@@ -521,6 +536,9 @@ const StudentRecords = () => {
 
             {/* Main Content Area */}
             <div className="min-h-[400px]">
+                {view === 'student-detail' && selectedStudentProfile && (
+                    <StudentDetailView student={selectedStudentProfile} onBack={goBack} />
+                )}
                 {view === 'branches' && (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 animate-in fade-in slide-in-from-bottom-6 duration-500">
                         {branches.map((branch) => {
@@ -596,29 +614,50 @@ const StudentRecords = () => {
                     </div>
                 )}
                 {view === 'courses' && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in zoom-in-95 duration-300">
-                        {MOCK_COURSES
-                            .filter(c => c.department === selectedBranch && (c.semester === (selectedYear! * 2 - 1) || c.semester === (selectedYear! * 2)))
-                            .map((course) => (
-                            <Card key={course.code} className={`group hover:border-primary/50 cursor-pointer transition-all hover:shadow-lg overflow-hidden ${course.type === 'Lab' ? 'bg-orange-50/20 border-orange-100/50' : 'bg-white'}`} onClick={() => handleCourseSelect(course.code)}>
-                                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                                    <Book className="w-20 h-20" />
+                    <div className="space-y-12 animate-in fade-in zoom-in-95 duration-300">
+                        {[selectedYear! * 2 - 1, selectedYear! * 2].map(sem => {
+                            const semCourses = MOCK_COURSES.filter(c => c.department === selectedBranch && c.semester === sem);
+                            if (semCourses.length === 0) return null;
+
+                            return (
+                                <div key={sem} className="space-y-6">
+                                    <div className="flex items-center gap-4">
+                                        <h3 className="text-2xl font-black text-slate-800 dark:text-white flex items-center gap-2">
+                                            <Badge className="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center p-0 text-lg">{sem}</Badge>
+                                            Semester {sem}
+                                        </h3>
+                                        <div className="h-px flex-1 bg-gradient-to-r from-muted to-transparent" />
+                                    </div>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {semCourses.map((course) => (
+                                            <Card key={course.code} className={`group hover:border-primary/50 cursor-pointer transition-all hover:shadow-lg overflow-hidden border-2 h-full ${course.type === 'Lab' ? 'bg-orange-50/20 border-orange-100/50' : 'bg-white'}`} onClick={() => handleCourseSelect(course.code)}>
+                                                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                                                    <Book className="w-20 h-20" />
+                                                </div>
+                                                <CardHeader className="pb-2">
+                                                    <div className="flex items-center gap-2 mb-2">
+                                                        <Badge variant="secondary" className="font-mono text-[10px]">{course.code}</Badge>
+                                                        <Badge variant="outline" className="text-[10px] font-bold">{course.type || 'Theory'}</Badge>
+                                                    </div>
+                                                    <CardTitle className="text-lg group-hover:text-primary transition-colors line-clamp-2 min-h-[3.5rem] leading-tight">
+                                                        {course.name}
+                                                    </CardTitle>
+                                                </CardHeader>
+                                                <CardContent>
+                                                    <div className="flex justify-between items-center text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-2 border-t pt-4">
+                                                        <span className="flex items-center gap-1">
+                                                            <CheckCircle className="w-3 h-3 text-success" />
+                                                            {course.credits} Credits
+                                                        </span>
+                                                        <span className="text-primary group-hover:translate-x-1 transition-transform">Select Subject →</span>
+                                                    </div>
+                                                </CardContent>
+                                            </Card>
+                                        ))}
+                                    </div>
                                 </div>
-                                <CardHeader className="pb-2">
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <Badge variant="secondary" className="font-mono text-[10px]">{course.code}</Badge>
-                                        <Badge variant="outline" className="text-[10px]">{course.type || 'Theory'}</Badge>
-                                    </div>
-                                    <CardTitle className="text-lg group-hover:text-primary transition-colors line-clamp-1">{course.name}</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex justify-between items-center text-xs text-muted-foreground font-bold uppercase tracking-wider">
-                                        <span>{course.credits} Credits</span>
-                                        <span className="text-primary group-hover:underline">Select Subject →</span>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
+                            );
+                        })}
                     </div>
                 )}
                 {view === 'students' && (
@@ -726,15 +765,15 @@ const StudentRecords = () => {
                                                 <>
                                                     {MOCK_COURSES.find(c => c.code === selectedCourse)?.type === 'Lab' ? (
                                                         <>
-                                                            <TableHead className="w-[120px] font-black text-sm uppercase text-primary">Lab Internal</TableHead>
-                                                            <TableHead className="w-[120px] font-black text-sm uppercase text-primary">Lab External</TableHead>
+                                                            <TableHead className="w-[120px] font-black text-xs uppercase text-primary">Lab Internal (0-40M)</TableHead>
+                                                            <TableHead className="w-[120px] font-black text-xs uppercase text-primary">Lab External (0-60M)</TableHead>
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Assign 1</TableHead>
-                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Mid 1</TableHead>
-                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Assign 2</TableHead>
-                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Mid 2</TableHead>
+                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Assign 1 (0-5M)</TableHead>
+                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Mid 1 (0-30M)</TableHead>
+                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Assign 2 (0-5M)</TableHead>
+                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Mid 2 (0-30M)</TableHead>
                                                         </>
                                                     )}
                                                 </>
@@ -793,6 +832,9 @@ const StudentRecords = () => {
                                                             </TableCell>
                                                             <TableCell className="text-right">
                                                                 <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                                    <Button variant="outline" size="sm" onClick={() => { setSelectedStudentProfile(student); setView('student-detail'); }} className="hover:text-primary border-primary/20 bg-primary/5">
+                                                                        <BookOpen className="h-4 w-4" />
+                                                                    </Button>
                                                                     <Button variant="outline" size="sm" onClick={() => handleOpenEdit(student)} className="hover:text-primary border-primary/20">
                                                                         <Edit className="h-4 w-4" />
                                                                     </Button>
@@ -855,17 +897,21 @@ const StudentRecords = () => {
                                                                     <TableCell>
                                                                         <Input 
                                                                             type="number" 
-                                                                            className="h-10 w-24 bg-orange-50/50 font-bold text-sm text-center" 
-                                                                            value={sessionMarks[student.id]?.labInternal} 
-                                                                            onChange={e => updateMark(student.id, 'labInternal', e.target.value)}
+                                                                            max={40}
+                                                                            placeholder="Max 40"
+                                                                            value={sessionMarks[student.id]?.labInternal || 0} 
+                                                                            onChange={(e) => updateMark(student.id, 'labInternal', e.target.value)} 
+                                                                            className="h-8 w-24 text-center font-bold"
                                                                         />
                                                                     </TableCell>
                                                                     <TableCell>
                                                                         <Input 
                                                                             type="number" 
-                                                                            className="h-10 w-24 bg-orange-50/50 font-bold text-sm text-center" 
-                                                                            value={sessionMarks[student.id]?.labExternal} 
-                                                                            onChange={e => updateMark(student.id, 'labExternal', e.target.value)}
+                                                                            max={60}
+                                                                            placeholder="Max 60"
+                                                                            value={sessionMarks[student.id]?.labExternal || 0} 
+                                                                            onChange={(e) => updateMark(student.id, 'labExternal', e.target.value)} 
+                                                                            className="h-8 w-24 text-center font-bold"
                                                                         />
                                                                     </TableCell>
                                                                 </>
@@ -874,33 +920,41 @@ const StudentRecords = () => {
                                                                     <TableCell>
                                                                         <Input 
                                                                             type="number" 
-                                                                            className="h-10 w-20 font-bold text-sm text-center" 
-                                                                            value={sessionMarks[student.id]?.assignment1} 
-                                                                            onChange={e => updateMark(student.id, 'assignment1', e.target.value)}
+                                                                            max={5}
+                                                                            placeholder="Max 5"
+                                                                            value={sessionMarks[student.id]?.assignment1 || 0} 
+                                                                            onChange={(e) => updateMark(student.id, 'assignment1', e.target.value)} 
+                                                                            className="h-8 w-20 text-center"
                                                                         />
                                                                     </TableCell>
                                                                     <TableCell>
                                                                         <Input 
                                                                             type="number" 
-                                                                            className="h-10 w-20 font-bold text-sm text-center border-primary/20" 
-                                                                            value={sessionMarks[student.id]?.mid1} 
-                                                                            onChange={e => updateMark(student.id, 'mid1', e.target.value)}
+                                                                            max={30}
+                                                                            placeholder="Max 30"
+                                                                            value={sessionMarks[student.id]?.mid1 || 0} 
+                                                                            onChange={(e) => updateMark(student.id, 'mid1', e.target.value)} 
+                                                                            className="h-8 w-20 text-center"
                                                                         />
                                                                     </TableCell>
                                                                     <TableCell>
                                                                         <Input 
                                                                             type="number" 
-                                                                            className="h-10 w-20 font-bold text-sm text-center" 
-                                                                            value={sessionMarks[student.id]?.assignment2} 
-                                                                            onChange={e => updateMark(student.id, 'assignment2', e.target.value)}
+                                                                            max={5}
+                                                                            placeholder="Max 5"
+                                                                            value={sessionMarks[student.id]?.assignment2 || 0} 
+                                                                            onChange={(e) => updateMark(student.id, 'assignment2', e.target.value)} 
+                                                                            className="h-8 w-20 text-center"
                                                                         />
                                                                     </TableCell>
                                                                     <TableCell>
                                                                         <Input 
                                                                             type="number" 
-                                                                            className="h-10 w-20 font-bold text-sm text-center border-primary/20" 
-                                                                            value={sessionMarks[student.id]?.mid2} 
-                                                                            onChange={e => updateMark(student.id, 'mid2', e.target.value)}
+                                                                            max={30}
+                                                                            placeholder="Max 30"
+                                                                            value={sessionMarks[student.id]?.mid2 || 0} 
+                                                                            onChange={(e) => updateMark(student.id, 'mid2', e.target.value)} 
+                                                                            className="h-8 w-20 text-center"
                                                                         />
                                                                     </TableCell>
                                                                 </>
@@ -958,36 +1012,40 @@ const StudentRecords = () => {
                             </h4>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Assignment 1</Label>
+                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Assignment 1 (5M)</Label>
                                     <Input 
                                         type="number" 
+                                        max={5}
                                         className="h-9"
                                         value={editingStudent?.assignment1 || 0} 
                                         onChange={e => setEditingStudent(prev => prev ? {...prev, assignment1: parseInt(e.target.value) || 0} : null)} 
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Midterm 1</Label>
+                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Midterm 1 (30M)</Label>
                                     <Input 
                                         type="number" 
+                                        max={30}
                                         className="h-9"
                                         value={editingStudent?.mid1 || 0} 
                                         onChange={e => setEditingStudent(prev => prev ? {...prev, mid1: parseInt(e.target.value) || 0} : null)} 
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Assignment 2</Label>
+                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Assignment 2 (5M)</Label>
                                     <Input 
                                         type="number" 
+                                        max={5}
                                         className="h-9"
                                         value={editingStudent?.assignment2 || 0} 
                                         onChange={e => setEditingStudent(prev => prev ? {...prev, assignment2: parseInt(e.target.value) || 0} : null)} 
                                     />
                                 </div>
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Midterm 2</Label>
+                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Midterm 2 (30M)</Label>
                                     <Input 
                                         type="number" 
+                                        max={30}
                                         className="h-9"
                                         value={editingStudent?.mid2 || 0} 
                                         onChange={e => setEditingStudent(prev => prev ? {...prev, mid2: parseInt(e.target.value) || 0} : null)} 
@@ -1004,6 +1062,145 @@ const StudentRecords = () => {
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
+        </div>
+    );
+};
+
+// --- Detailed Student Profile Component ---
+const StudentDetailView = ({ student, onBack }: { student: Student, onBack: () => void }) => {
+    // Helper to generate marks (same seed logic as student grades page)
+    const getMarks = (courseCode: string, type: string) => {
+        const seed = courseCode.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+        const pseudoRandom = (min: number, max: number) => {
+            const val = ((seed * 9301 + 49297) % 233280) / 233280;
+            return Math.floor(min + val * (max - min));
+        };
+
+        if (type === 'Lab') {
+            const labInt = pseudoRandom(25, 30);
+            const labExt = pseudoRandom(55, 68);
+            return { mid: '-', assgn: '-', total: labInt + labExt, status: "Pass", type: 'Lab' };
+        } else {
+            const m1 = pseudoRandom(22, 28);
+            const a1 = 5;
+            const ex = pseudoRandom(40, 60);
+            return { mid: m1, assgn: a1, total: m1 + a1 + ex, status: "Pass", type: 'Theory' };
+        }
+    };
+
+    const branchCourses = MOCK_COURSES.filter(c => c.department === student.branch);
+    const semesters = [1, 2, 3, 4, 5, 6, 7, 8];
+
+    return (
+        <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
+            <div className="flex justify-between items-end">
+                <div>
+                    <h2 className="text-3xl font-black text-slate-900 flex items-center gap-3">
+                        <Users className="w-8 h-8 text-primary" />
+                        {student.name}
+                    </h2>
+                    <p className="text-muted-foreground font-medium uppercase tracking-widest text-xs mt-1">
+                        Roll: <span className="text-foreground font-black">{student.rollNumber}</span> • Branch: <span className="text-foreground font-black">{student.branch}</span> • CGPA: <span className="text-primary font-black underline">{student.grade.toFixed(2)}</span>
+                    </p>
+                </div>
+                <Button variant="ghost" onClick={onBack} className="font-bold text-primary hover:bg-primary/5">
+                    <ArrowLeft className="w-4 h-4 mr-2" /> Back to List
+                </Button>
+            </div>
+
+            <Card className="border-none shadow-xl overflow-hidden bg-white/50 backdrop-blur-xl border-t-4 border-t-primary">
+                <CardHeader className="pb-2">
+                    <CardTitle className="text-xl flex items-center gap-2">
+                        <GraduationCap className="w-6 h-6 text-primary" />
+                        Complete Academic Transcript
+                    </CardTitle>
+                    <CardDescription>Comprehensive semester-wise subject performance and internal scoring matrix.</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-6">
+                    <Tabs defaultValue={String(student.semester)} className="w-full">
+                        <div className="overflow-x-auto pb-4">
+                            <TabsList className="bg-muted/50 p-1 h-auto flex flex-nowrap w-max min-w-full">
+                                {semesters.map(s => (
+                                    <TabsTrigger 
+                                        key={s} 
+                                        value={s.toString()} 
+                                        className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-2 font-black px-6 text-xs uppercase tracking-tighter"
+                                    >
+                                        Sem {s}
+                                    </TabsTrigger>
+                                ))}
+                            </TabsList>
+                        </div>
+
+                        {semesters.map(semNum => {
+                            const semCourses = branchCourses.filter(c => c.semester === semNum);
+                            const isActiveSem = student.semester === semNum;
+
+                            return (
+                                <TabsContent key={semNum} value={semNum.toString()} className="animate-in fade-in-50 zoom-in-95 duration-300 ring-offset-background focus-visible:outline-none">
+                                    {semCourses.length > 0 ? (
+                                        <div className="space-y-4">
+                                            {isActiveSem && (
+                                                <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 flex items-center gap-2">
+                                                    <Badge className="bg-primary animate-pulse">CURRENT</Badge>
+                                                    <span className="text-xs font-bold text-primary">Student is currently enrolled in this semester. Attendance and internal data is live.</span>
+                                                </div>
+                                            )}
+                                            
+                                            <div className="rounded-xl border shadow-sm overflow-hidden bg-white">
+                                                <Table>
+                                                    <TableHeader className="bg-slate-50">
+                                                        <TableRow>
+                                                            <TableHead rowSpan={2} className="font-bold text-xs uppercase text-muted-foreground w-[100px] border-r">Code</TableHead>
+                                                            <TableHead rowSpan={2} className="font-bold text-xs uppercase text-muted-foreground border-r">Subject Name</TableHead>
+                                                            <TableHead colSpan={3} className="text-center font-black text-[10px] uppercase bg-blue-50/50 text-blue-700 border-r tracking-wider border-b">Internal Assessment (40M)</TableHead>
+                                                            <TableHead colSpan={2} className="text-center font-black text-[10px] uppercase bg-amber-50/50 text-amber-700 tracking-wider border-b">Final (100M)</TableHead>
+                                                        </TableRow>
+                                                        <TableRow>
+                                                            <TableHead className="text-center text-[9px] font-black uppercase text-muted-foreground border-r">Mid (30)</TableHead>
+                                                            <TableHead className="text-center text-[9px] font-black uppercase text-muted-foreground border-r">Assgn (10)</TableHead>
+                                                            <TableHead className="text-center text-[9px] font-black uppercase text-primary border-r bg-blue-100/20 italic">Total</TableHead>
+                                                            <TableHead className="text-center text-[9px] font-black uppercase text-muted-foreground border-r">External (60)</TableHead>
+                                                            <TableHead className="text-center text-[10px] font-black uppercase bg-primary text-white">Grand Total</TableHead>
+                                                        </TableRow>
+                                                    </TableHeader>
+                                                    <TableBody>
+                                                        {semCourses.map(course => {
+                                                            const marks = getMarks(course.code, course.type);
+                                                            const external = marks.type === 'Lab' ? 60 : 50; // Simple logic
+                                                            const grandTotal = marks.total + external;
+                                                            return (
+                                                                <TableRow key={course.code} className="hover:bg-slate-50/50">
+                                                                    <TableCell className="font-mono font-bold text-[10px] border-r">{course.code}</TableCell>
+                                                                    <TableCell className="font-bold border-r text-sm">{course.name}</TableCell>
+                                                                    <TableCell className="text-center border-r font-medium">{marks.mid}</TableCell>
+                                                                    <TableCell className="text-center border-r font-medium">
+                                                                        {typeof marks.assgn === 'number' ? ((marks.assgn as number) * 2) : marks.assgn}
+                                                                    </TableCell>
+                                                                    <TableCell className="text-center border-r font-black bg-blue-50/30 text-blue-700">{marks.total}</TableCell>
+                                                                    <TableCell className="text-center border-r font-black text-slate-400 italic">60</TableCell>
+                                                                    <TableCell className="text-center font-black bg-primary/10 text-primary text-base">
+                                                                        {marks.total + 60}
+                                                                    </TableCell>
+                                                                </TableRow>
+                                                            );
+                                                        })}
+                                                    </TableBody>
+                                                </Table>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="flex flex-col items-center justify-center py-20 bg-muted/20 rounded-2xl border-2 border-dashed border-muted">
+                                            <BookOpen className="w-12 h-12 text-muted-foreground/30 mb-2" />
+                                            <p className="text-muted-foreground font-bold italic">Curriculum data for Semester {semNum} not found for this branch.</p>
+                                        </div>
+                                    )}
+                                </TabsContent>
+                            );
+                        })}
+                    </Tabs>
+                </CardContent>
+            </Card>
         </div>
     );
 };

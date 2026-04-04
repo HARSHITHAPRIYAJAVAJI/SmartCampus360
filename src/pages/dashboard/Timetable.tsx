@@ -32,7 +32,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
       const publishedKey = `${student.branch}-${student.year}-${semNum}-${student.section}`;
       const liveTable = publishedTimetables[publishedKey];
 
-      const baseTable = liveTable || getTimetable(student.year, semNum, student.section);
+      const baseTable = liveTable || getTimetable(student.year, semNum, student.section, student.branch);
       const key = `${student.year}-${semNum}`;
 
       const result: any = {};
