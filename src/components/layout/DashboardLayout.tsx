@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { DashboardSidebar } from "./DashboardSidebar";
+import { SmartAssistant } from "@/components/dashboard/SmartAssistant";
 import { DashboardHeader } from "./DashboardHeader";
 import { useTimetableAlerts } from "@/hooks/useTimetableAlerts";
 
@@ -45,8 +46,9 @@ export function DashboardLayout({ user, onLogout }: DashboardLayoutProps) {
           onToggleSidebar={toggleMobile}
         />
 
-        <main className="flex-1 overflow-y-auto p-4 md:p-6">
+        <main className="flex-1 overflow-y-auto p-4 md:p-6 relative">
           <Outlet context={{ user }} />
+          <SmartAssistant />
         </main>
       </div>
     </div>

@@ -28,6 +28,7 @@ export interface TimetableEntry {
     courseCode: string;
     courseName: string;
     faculty: string;
+    facultyId?: string;
     room: string;
     type: 'Theory' | 'Lab' | 'Project';
 }
@@ -125,22 +126,38 @@ export class TimetableEngine {
         return grid;
     }
 
-    private assignLabs(labs: CourseData[], rooms: RoomData[], section: string, year: number, department: string, grid: TimetableGrid) {
-        const sectionOffset = section.charCodeAt(0) - 'A'.charCodeAt(0);
-        let labDays = [...this.days.slice(0, 5)]; // Avoid Sat for routine labs
-        for(let i=0; i<sectionOffset; i++) {
-            const first = labDays.shift();
-            if(first) labDays.push(first);
-        }
-
-        // Users requested CAEG and all actual Labs to strictly occur exactly once per week
-        // for 3 continuous hours, so we allocate exactly 1 block of 3 slots for each item in the queue.
-        const sessionQueue: CourseData[] = [...labs];
-
-        let placed = 0;
+    /**
+     * Helper to get eligible faculty for a course and section
+     * Logic: Distribution across sections (A -> Faculty 1, B -> Faculty 2...)
+     */
+    private getFacultyForCourse(course: CourseData, section: string, year: number, semester: number, dept: string): { name: string, id: string } {
+        const contextKey = `${year}-${semester}`;
+        const deptContextKey = `${dept}-${contextKey}`;
         
+        // Lookup in FACULTY_LOAD - try dept specific first, then generic
+        const loadContext = (FACULTY_LOAD as any)[deptContextKey] || (FACULTY_LOAD as any)[contextKey] || [];
+        const eligibleFaculty = loadContext
+            .filter((f: any) => f.code === course.code || f.code === course.code.replace(' Lab', ''))
+            .map((f: any) => ({ name: f.faculty, id: f.id || "" }));
+
+        if (eligibleFaculty.length === 0) return { name: course.instructor?.full_name || "Staff", id: course.instructor?.id?.toString() || "" };
+
+        const sectionIndex = section.charCodeAt(0) - 'A'.charCodeAt(0);
+        const facultyIndex = sectionIndex % eligibleFaculty.length;
+        return eligibleFaculty[facultyIndex];
+    }
+
+    private assignLabs(labs: CourseData[], rooms: RoomData[], section: string, year: number, department: string, grid: TimetableGrid) {
+        const semester = (year - 1) * 2 + (grid['Monday-09:40'] === undefined ? 1 : 1); // Helper placeholder
+        // Note: semester is actually passed in generate, but we can infer it or pass it down.
+        // For now, let's assume we need to pass sem to assignLabs too.
+        
+        const sectionOffset = section.charCodeAt(0) - 'A'.charCodeAt(0);
+        let labDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        
+        const sessionQueue: CourseData[] = [...labs];
+        let placed = 0;
         const roomName = this.getRoomForContext(department, section, year, true);
-        const matchingRooms = rooms.filter(r => r.name === roomName);
 
         let combinations: {day: string, isMorning: boolean}[] = [];
         labDays.forEach(d => {
@@ -148,42 +165,42 @@ export class TimetableEngine {
             combinations.push({day: d, isMorning: false});
         });
         
-        // Randomize so labs aren't all forced into Monday-Tuesday mornings
         combinations.sort(() => Math.random() - 0.5);
 
         combinations.forEach(({day, isMorning}) => {
             if (placed >= sessionQueue.length) return;
 
-                const blockSlots = isMorning ? this.slots.slice(0, 3) : this.slots.slice(3, 6);
-                const course = sessionQueue[placed];
-                const faculty = course.instructor?.full_name || "Faculty Staff";
-                
-                // Use the rule-based room
-                const assignedRoom = roomName;
+            const blockSlots = isMorning ? this.slots.slice(0, 3) : this.slots.slice(3, 6);
+            const course = sessionQueue[placed];
+            
+            // MULTI-FACULTY FIX: Get faculty based on section distribution
+            const inferSem = course.semester % 2 === 0 ? 2 : 1;
+            const facultyObj = this.getFacultyForCourse(course, section, year, inferSem, department);
+            const assignedRoom = roomName;
 
-                if (this.isBlockFree(day, blockSlots, faculty, assignedRoom, grid)) {
-                    blockSlots.forEach(slot => {
-                        this.reserve(day, slot, faculty, assignedRoom);
-                        const isActuallyALab = course.type === 'Lab' || course.name.toLowerCase().includes('lab');
-                        const baseName = this.abbreviate(course.name.replace(" Lab", ""));
-                        grid[`${day}-${slot}`] = {
-                            id: `lab-${day}-${slot}-${course.id}`,
-                            courseCode: course.code,
-                            courseName: baseName + (isActuallyALab ? " Lab" : ""),
-                            faculty,
-                            room: assignedRoom,
-                            type: 'Lab'
-                        };
-                    });
-                    placed++;
-                }
+            if (this.isBlockFree(day, blockSlots, facultyObj.name, assignedRoom, grid)) {
+                blockSlots.forEach(slot => {
+                    this.reserve(day, slot, facultyObj.name, assignedRoom);
+                    const isActuallyALab = course.type === 'Lab' || course.name.toLowerCase().includes('lab');
+                    const baseName = this.abbreviate(course.name.replace(" Lab", ""));
+                    grid[`${day}-${slot}`] = {
+                        id: `lab-${day}-${slot}-${course.id}`,
+                        courseCode: course.code,
+                        courseName: baseName + (isActuallyALab ? " Lab" : ""),
+                        faculty: facultyObj.name,
+                        facultyId: facultyObj.id,
+                        room: assignedRoom,
+                        type: 'Lab'
+                    };
+                });
+                placed++;
+            }
         });
     }
 
     private assignTheories(theories: CourseData[], rooms: RoomData[], section: string, year: number, department: string, grid: TimetableGrid) {
         if (theories.length === 0) return;
 
-        // 1. Equal distribution — every subject gets the same number of slots (round-robin)
         const emptySlots = Object.values(grid).filter(v => v === null).length;
         const slotsEach = Math.ceil(emptySlots / theories.length);
 
@@ -192,18 +209,13 @@ export class TimetableEngine {
             for (let i = 0; i < slotsEach; i++) pool.push(t);
         });
 
-        // Trim any over-fill caused by ceiling rounding
         if (pool.length > emptySlots) {
             pool = pool.slice(0, emptySlots);
         }
 
-        // Randomize the pool for natural distribution
         pool.sort(() => Math.random() - 0.5);
-
         const defaultRoomStr = this.getRoomForContext(department, section, year, false);
 
-        // 2. Systematic Placement with Constraint Checking
-        // We iterate through slots and days and try to pull from the pool
         this.slots.forEach(slot => {
             this.days.forEach(day => {
                 const key = `${day}-${slot}`;
@@ -211,37 +223,39 @@ export class TimetableEngine {
                 
                 const usedToday = this.slots.map(s => grid[`${day}-${s}`]?.courseCode).filter(Boolean);
 
-                // Try to find a subject that hasn't been used today and from a faculty that is free
                 let bestIdx = pool.findIndex(c => {
-                    const faculty = c.instructor?.full_name || "Staff";
+                    const inferSem = c.semester % 2 === 0 ? 2 : 1;
+                    const facultyObj = this.getFacultyForCourse(c, section, year, inferSem, department);
                     return !usedToday.includes(c.code) && 
-                           !this.facultySchedule[key].has(faculty) && 
+                           !this.facultySchedule[key].has(facultyObj.name) && 
                            !this.roomSchedule[key].has(defaultRoomStr);
                 });
 
-                // Fallback: If we must repeat a subject today to fill the slot
                 if (bestIdx === -1) {
                     bestIdx = pool.findIndex(c => {
-                        const faculty = c.instructor?.full_name || "Staff";
-                        return !this.facultySchedule[key].has(faculty) && 
+                        const inferSem = c.semester % 2 === 0 ? 2 : 1;
+                        const facultyObj = this.getFacultyForCourse(c, section, year, inferSem, department);
+                        return !this.facultySchedule[key].has(facultyObj.name) && 
                                !this.roomSchedule[key].has(defaultRoomStr);
                     });
                 }
 
-                // Final Fallback: Grab the first available in pool even if there's a conflict (rare)
                 if (bestIdx === -1 && pool.length > 0) {
                     bestIdx = 0;
                 }
 
                 if (bestIdx !== -1) {
                     const course = pool[bestIdx];
-                    const faculty = course.instructor?.full_name || "Staff";
-                    this.reserve(day, slot, faculty, defaultRoomStr);
+                    const inferSem = course.semester % 2 === 0 ? 2 : 1;
+                    const facultyObj = this.getFacultyForCourse(course, section, year, inferSem, department);
+                    
+                    this.reserve(day, slot, facultyObj.name, defaultRoomStr);
                     grid[key] = {
                         id: `th-${key}-${course.id}-${Math.random().toString(36).substr(2, 5)}`,
                         courseCode: course.code,
                         courseName: this.abbreviate(course.name),
-                        faculty,
+                        faculty: facultyObj.name,
+                        facultyId: facultyObj.id,
                         room: defaultRoomStr,
                         type: 'Theory'
                     };
@@ -312,25 +326,23 @@ export class TimetableEngine {
 
     private getRoomForContext(dept: string, section: string, year: number, isLab: boolean): string {
         const sectionIdx = section.charCodeAt(0) - 'A'.charCodeAt(0);
-        // Each year has 4 sections potentially, each needs a unique room in the branch block
-        const totalSectionOffset = (year - 1) * 4 + sectionIdx;
         
-        if (dept.toUpperCase() === 'IT') {
-            // South Block (S401-S412), Overflow (S301-S312)
-            if (totalSectionOffset < 12) {
-                return `S-4${(totalSectionOffset + 1).toString().padStart(2, '0')}${isLab ? '-L' : ''}`;
-            } else {
-                return `S-3${(totalSectionOffset - 11).toString().padStart(2, '0')}${isLab ? '-L' : ''}`;
-            }
-        } else if (dept.toUpperCase() === 'ECE') {
-            // Central Block (C401-C412)
-            const eceRoomIdx = totalSectionOffset % 12;
-            return `C-4${(eceRoomIdx + 1).toString().padStart(2, '0')}${isLab ? '-L' : ''}`;
-        } else if (dept.toUpperCase() === 'CSE') {
-            return `N-4${(sectionIdx + 1 + (year-1)*3).toString().padStart(2, '0')}${isLab ? '-L' : ''}`;
+        if (year === 1) {
+            // 1st Year: T-Block (Freshman Hub)
+            const floor = dept.toUpperCase() === 'CSM' ? 1 : 
+                          dept.toUpperCase() === 'IT' ? 2 : 
+                          dept.toUpperCase() === 'ECE' ? 3 : 
+                          dept.toUpperCase() === 'CSE' ? 4 : 5;
+            return `T-${floor}0${sectionIdx + 1}${isLab ? '-L' : ''}`;
         } else {
-            // Default for CSM or others
-            return `A-3${(sectionIdx + 1 + (year-1)*3).toString().padStart(2, '0')}${isLab ? '-L' : ''}`;
+            // Upper Years: Specific Block Directives
+            const d = dept.toUpperCase();
+            if (d === 'CSM') return `N-40${sectionIdx + 1}${isLab ? '-L' : ''}`;
+            if (d === 'IT') return `S-10${sectionIdx + 1}${isLab ? '-L' : ''}`;
+            if (d === 'ECE') return `C-10${sectionIdx + 1}${isLab ? '-L' : ''}`;
+            if (d === 'CSE') return `C-2${(sectionIdx + 1).toString().padStart(2, '0')}${isLab ? '-L' : ''}`;
+            
+            return `A-30${sectionIdx + 1}${isLab ? '-L' : ''}`;
         }
     }
 
@@ -345,9 +357,11 @@ export class TimetableEngine {
             "Database Management Systems": "DBMS",
             "Design and Analysis of Algorithms": "DAA",
             "IT Workshop and Elements of Computer Engineering": "ITWS",
+            "Information Technology Essentials": "ITE",
             "English for Skill Enhancement": "English"
         };
-        if (overrides[name]) return overrides[name];
+        const normalizedName = Object.keys(overrides).find(k => k.toLowerCase() === name.toLowerCase());
+        if (normalizedName) return overrides[normalizedName];
         const exclude = ["and", "of", "for", "the", "in", "&"];
         const parts = name.split(" ");
         if (parts.length === 1) return name;

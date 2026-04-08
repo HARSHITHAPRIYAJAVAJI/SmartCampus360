@@ -23,9 +23,17 @@ interface Room {
 
 const MOCK_ROOMS: Room[] = [
     // T-Block (1st Year)
-    ...Array.from({ length: 4 }, (_, i) => ({
-        id: `t10${i+1}`, name: `T-10${i+1}`, capacity: 60, type: "Classroom" as const, building: "T Block", dept: "GEN" as const
-    })),
+    // T-Block (1st to 5th Floor, 4 rooms each)
+    ...[1, 2, 3, 4, 5].flatMap(floor => 
+        Array.from({ length: 4 }, (_, i) => ({
+            id: `t${floor}0${i+1}`, 
+            name: `T-${floor}0${i+1}`, 
+            capacity: 60, 
+            type: "Classroom" as const, 
+            building: `T Block (Floor ${floor})`, 
+            dept: "GEN" as const
+        }))
+    ),
 
     // South Block (IT Dept)
     ...Array.from({ length: 12 }, (_, i) => ({
@@ -126,7 +134,7 @@ const RoomManagement = () => {
                         <Building2 className="h-8 w-8" />
                         Infrastructure Management
                     </h1>
-                    <p className="text-muted-foreground text-sm">Managing branch-wise classroom and lab allocation (IT, ECE, AIML)</p>
+                    <p className="text-muted-foreground text-sm">Managing block-wise allocation — 1st Year (T-Block) & Branch-specific (IT, ECE, AIML, CSE)</p>
                 </div>
                 <div className="flex gap-3">
                     <div className="relative w-64">

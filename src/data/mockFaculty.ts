@@ -16,7 +16,7 @@ export const MOCK_FACULTY: Faculty[] = [
     rollNumber: "22F91F6601",
     designation: "Head of Department (HOD)",
     department: "CSM",
-    email: "sunil.srinivas@smartcampus.com",
+    email: "sunilsrinivas@smartcampus.com",
     phone: "+91 98765 43210",
     specialization: ["DS OE", "FDS"]
   },
@@ -26,7 +26,7 @@ export const MOCK_FACULTY: Faculty[] = [
     rollNumber: "22F91F6602",
     designation: "Professor",
     department: "CSM",
-    email: "anitha.d@smartcampus.com",
+    email: "anithad@smartcampus.com",
     phone: "+91 98765 43211",
     specialization: ["Java", "Java Lab", "CPPS"]
   },
@@ -36,7 +36,7 @@ export const MOCK_FACULTY: Faculty[] = [
     rollNumber: "22F91F6603",
     designation: "Associate Professor",
     department: "CSM",
-    email: "syed.hussain@smartcampus.com",
+    email: "syedhussain@smartcampus.com",
     phone: "+91 98765 43212",
     specialization: ["Conversational AI", "IS"]
   },
@@ -46,7 +46,127 @@ export const MOCK_FACULTY: Faculty[] = [
     rollNumber: "22F91F6604",
     designation: "Assistant Professor",
     department: "CSM",
-    email: "indira.m@smartcampus.com",
+    email: "indiram@smartcampus.com",
+    phone: "+91 98765 43213",
+    specialization: ["PP Lab", "OE", "CAO"]
+  },
+  {
+    id: "c-jaya-lakshmi",
+    name: "Mrs. C. Jaya Lakshmi",
+    rollNumber: "22F91F6605",
+    designation: "Assistant Professor",
+    department: "CSM",
+    email: "jayalakshmi.c@smartcampus.com",
+    phone: "+91 98765 43214",
+    specialization: ["DL", "DL Lab", "ML"]
+  },
+  {
+    id: "venugopal-reddy-k",
+    name: "Mr. K. Venugopal Reddy",
+    rollNumber: "22F91F6606",
+    designation: "Assistant Professor",
+    department: "CSM",
+    email: "venugopal.k@smartcampus.com",
+    phone: "+91 98765 43215",
+    specialization: ["DS Lab", "DBMS Lab", "RL", "KRR"]
+  },
+  {
+    id: "p-vijaya-kumari",
+    name: "Mrs. P. Vijaya Kumari",
+    rollNumber: "22F91F6607",
+    designation: "Assistant Professor",
+    department: "CSM",
+    email: "vijayakumari.p@smartcampus.com",
+    phone: "+91 98765 43216",
+    specialization: ["DBMS Lab", "DL", "DL Lab", "C", "ITWS Lab"]
+  },
+  {
+    id: "t-praneetha",
+    name: "Mrs. T. Praneetha",
+    rollNumber: "22F91F6608",
+    designation: "Assistant Professor",
+    department: "CSM",
+    email: "praneetha.t@smartcampus.com",
+    phone: "+91 98765 43217",
+    specialization: ["DBMS", "DBMS Lab", "MFCS"]
+  },
+  {
+    id: "v-pravalika",
+    name: "Mrs. V. Pravalika",
+    rollNumber: "22F91F6609",
+    designation: "Assistant Professor",
+    department: "CSM",
+    email: "pravalika.v@smartcampus.com",
+    phone: "+91 98765 43218",
+    specialization: ["OE", "KRR"]
+  },
+  {
+    id: "s-swathi",
+    name: "Mrs. S. Swathi",
+    rollNumber: "22F91F6610",
+    designation: "Assistant Professor",
+    department: "CSM",
+    email: "swathi.s@smartcampus.com",
+    phone: "+91 98765 43219",
+    specialization: ["PP Lab", "OE", "CN"]
+  },
+  {
+    id: "ishwarya-devi-k",
+    name: "Mrs. K. Ishwarya Devi",
+    rollNumber: "22F91F6611",
+    designation: "Assistant Professor",
+    department: "CSM",
+    email: "ishwarya.k@smartcampus.com",
+    phone: "+91 98765 43220",
+    specialization: ["OS"]
+  },
+  {
+    id: "n-kiran-kumar",
+    name: "Mr. N. Kiran Kumar",
+    rollNumber: "22F91F6612",
+    designation: "Assistant Professor",
+    department: "CSM",
+    email: "kirankumar.n@smartcampus.com",
+    phone: "+91 98765 43221",
+    specialization: ["DAA", "RPA", "DL Lab", "RL"]
+  },
+  {
+    id: "e-radhika",
+    name: "Mrs. E. Radhika",
+    rollNumber: "22F91F6613",
+    designation: "Assistant Professor",
+    department: "CSM",
+    email: "radhika.e@smartcampus.com",
+    phone: "+91 98765 43222",
+    specialization: ["SE", "WT Lab", "IS"]
+  },
+  {
+    id: "anitha-kumari-d",
+    name: "Dr. D. Anitha Kumari",
+    rollNumber: "22F91F6602",
+    designation: "Professor",
+    department: "CSM",
+    email: "anithad@smartcampus.com",
+    phone: "+91 98765 43211",
+    specialization: ["Java", "Java Lab", "CPPS"]
+  },
+  {
+    id: "syed-hussain",
+    name: "Dr. Syed Hussain",
+    rollNumber: "22F91F6603",
+    designation: "Associate Professor",
+    department: "CSM",
+    email: "syedhussain@smartcampus.com",
+    phone: "+91 98765 43212",
+    specialization: ["Conversational AI", "IS"]
+  },
+  {
+    id: "m-indira",
+    name: "Mrs. M. Indira",
+    rollNumber: "22F91F6604",
+    designation: "Assistant Professor",
+    department: "CSM",
+    email: "indiram@smartcampus.com",
     phone: "+91 98765 43213",
     specialization: ["PP Lab", "OE", "CAO"]
   },
@@ -351,8 +471,8 @@ export const MOCK_FACULTY: Faculty[] = [
     specialization: ["SM&VC", "P&S"]
   },
   {
-    id: "sudha-rani",
-    name: "Sudha Rani",
+    id: "sudha-menon",
+    name: "Sudha Menon",
     rollNumber: "22F91F6643",
     designation: "Assistant Professor",
     department: "CSM",
@@ -362,7 +482,7 @@ export const MOCK_FACULTY: Faculty[] = [
   },
   {
     id: "shankar",
-    name: "Shankar",
+    name: "G.Shankar",
     rollNumber: "22F91F6644",
     designation: "Assistant Professor",
     department: "CSM",
@@ -862,7 +982,7 @@ export const MOCK_FACULTY: Faculty[] = [
     department: "CSE",
     email: "rajyalakshmi.p@smartcampus.com",
     phone: "+91 92234 56830",
-    specialization: ["Data Mining"]
+    specialization: ["Data Mining", "CPPS", "CPPS Lab", "ITWS Lab"]
   },
   {
     id: "a-tejaswini",
@@ -1314,5 +1434,15 @@ export const MOCK_FACULTY: Faculty[] = [
     email: "anusha.s@smartcampus.com",
     phone: "+91 93234 56928",
     specialization: ["CN"]
+  },
+  {
+    id: "jagruthi-ece",
+    name: "Mrs. Jagruthi",
+    rollNumber: "22F91F9929",
+    designation: "Assistant Professor",
+    department: "ECE",
+    email: "jagruthi@smartcampus.com",
+    phone: "+91 93234 56929",
+    specialization: ["SDC", "Semiconductor Devices and Circuits"]
   }
 ];

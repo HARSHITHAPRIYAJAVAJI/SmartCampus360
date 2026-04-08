@@ -197,101 +197,139 @@ export function LoginForm({
   }
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center p-4 py-12 bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 relative">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 rounded-xl overflow-hidden shadow-2xl bg-background relative"
-      >
-        {/* Left side - Illustration */}
-        <div className="hidden lg:flex flex-col justify-center p-12 bg-gradient-to-br from-primary to-primary/90 text-white">
-          <div className="max-w-md mx-auto text-center">
+    <div className="min-h-screen flex items-center justify-center p-4 py-12 bg-background relative overflow-hidden">
+      {/* Decorative Background Blobs */}
+      <div className="absolute top-0 -left-4 w-72 h-72 bg-primary/10 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob pointer-events-none" />
+      <div className="absolute top-0 -right-4 w-72 h-72 bg-blue-400/10 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000 pointer-events-none" />
+      <div className="absolute -bottom-8 left-20 w-72 h-72 bg-purple-400/10 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-4000 pointer-events-none" />
 
-            <div className="relative h-64">
-              <img
-                src={graduationImage}
-                alt="Graduation Image"
-                className="w-full h-full object-cover rounded-lg"
-              />
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 rounded-[2.5rem] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] bg-card/30 backdrop-blur-2xl border border-white/20 dark:border-white/10 relative z-10"
+      >
+        {/* Left side - Dynamic Illustration */}
+        <div className="hidden lg:flex flex-col justify-center p-16 bg-gradient-to-br from-primary via-primary/90 to-primary-dark text-white relative overflow-hidden">
+          {/* Floating Icons Decor */}
+          <motion.div 
+            animate={{ y: [0, -15, 0] }} 
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-20 right-20 opacity-20 pointer-events-none"
+          >
+            <GraduationCap className="w-32 h-32" />
+          </motion.div>
+          <motion.div 
+            animate={{ y: [0, 10, 0], x: [0, 10, 0] }} 
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute bottom-20 left-20 opacity-10 pointer-events-none"
+          >
+            <Shield className="w-24 h-24" />
+          </motion.div>
+
+          <div className="relative z-10 text-center lg:text-left space-y-8">
+            <div className="space-y-4">
+              <h2 className="text-5xl font-black tracking-tight leading-[1.1]">
+                SmartCampus<span className="text-white/70">360</span>
+              </h2>
+              <p className="text-xl text-white/80 font-medium max-w-sm">
+                Empowering academic excellence through localized automation and AI.
+              </p>
+            </div>
+
+            <div className="relative group">
+              <div className="absolute -inset-1 bg-gradient-to-r from-white/20 to-white/10 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+              <div className="relative bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">
+                    <Smartphone className="w-6 h-6" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-lg">One Campus Sync</h4>
+                    <p className="text-white/60 text-sm">Timetable, Grades, Fees</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="bg-white/5 rounded-lg p-3">
+                    <div className="text-2xl font-black">9.8k</div>
+                    <div className="text-[10px] uppercase font-bold text-white/40 tracking-widest">Active Students</div>
+                  </div>
+                  <div className="bg-white/5 rounded-lg p-3">
+                    <div className="text-2xl font-black">450+</div>
+                    <div className="text-[10px] uppercase font-bold text-white/40 tracking-widest">Faculty Members</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none mix-blend-overlay" />
         </div>
 
         {/* Right side - Login Form */}
-        <div className="p-8 md:p-12">
-          <Card className="border-0 shadow-none">
-            <CardHeader className="text-center space-y-2">
-              <div className="mx-auto w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-2">
-                <GraduationCap className="h-8 w-8 text-primary" />
+        <div className="p-10 md:p-16 flex flex-col justify-center bg-card/50 backdrop-blur-xl">
+          <div className="w-full max-w-sm mx-auto">
+            <CardHeader className="text-center p-0 space-y-4 mb-10">
+              <div className="mx-auto w-20 h-20 rounded-3xl bg-primary/10 flex items-center justify-center mb-2 rotate-3 hover:rotate-0 transition-transform duration-300">
+                <GraduationCap className="h-10 w-10 text-primary" />
               </div>
-              <CardTitle className="text-3xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-                {title}
-              </CardTitle>
-              <CardDescription className="text-muted-foreground">
-                {description}
-              </CardDescription>
+              <div className="space-y-1">
+                <CardTitle className="text-4xl font-black tracking-tighter text-foreground">
+                  {title}
+                </CardTitle>
+                <CardDescription className="text-muted-foreground font-medium">
+                  {description}
+                </CardDescription>
+              </div>
             </CardHeader>
 
-            <form onSubmit={handleSubmit}>
-              <CardContent className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <CardContent className="p-0 space-y-5">
                 <div className="space-y-2">
-                  <Label htmlFor="id" className="flex items-center gap-1">
-                    <Key className="h-4 w-4" />
-                    Student/Staff ID <span className="text-muted-foreground text-xs ml-1">(e.g., {role === 'faculty' ? '22F91F6604' : '22K91A6664'})</span>
+                  <Label htmlFor="id" className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                    <Key className="h-3 w-3" />
+                    {role === 'student' ? 'Student ID' : role === 'faculty' ? 'Staff ID' : 'Admin ID'}
                   </Label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Key className="h-5 w-5 text-muted-foreground" />
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <User className="h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
                     </div>
                     <Input
                       id="id"
                       type="text"
                       placeholder={role === 'faculty' ? '22F91F6604' : '22K91A6664'}
                       value={id}
-                      onChange={(e) => {
-                        const formatted = formatId(e.target.value);
-                        setId(formatted);
-                      }}
+                      onChange={(e) => setId(formatId(e.target.value))}
                       maxLength={10}
-                      className="pl-10 pr-10 font-mono tracking-widest"
+                      className="h-12 pl-12 pr-12 font-mono tracking-widest bg-muted/30 border-muted/50 focus:border-primary/50 focus:bg-background transition-all rounded-xl"
                       disabled={isLoading}
                     />
                     <Button
                       type="button"
                       variant="ghost"
                       size="sm"
-                      title="Copy ID to clipboard"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      className="absolute right-1 top-1 h-10 w-10 p-0 rounded-lg hover:bg-primary/5 text-muted-foreground"
                       onClick={handleCopyId}
                       tabIndex={-1}
                     >
-                      {idCopied ? (
-                        <Check className="h-4 w-4 text-green-500" />
-                      ) : (
-                        <Copy className="h-4 w-4 text-muted-foreground" />
-                      )}
+                      {idCopied ? <Check className="h-4 w-4 text-emerald-500" /> : <Copy className="h-4 w-4" />}
                     </Button>
                   </div>
                 </div>
 
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="password" className="flex items-center gap-1">
-                      <Lock className="h-4 w-4" />
-                      Password
+                    <Label htmlFor="password" className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                      <Lock className="h-3 w-3" />
+                      Security Code
                     </Label>
-                    <Link
-                      to="/forgot-password"
-                      className="text-sm font-medium text-primary hover:underline"
-                      tabIndex={-1}
-                    >
-                      Forgot password?
+                    <Link to="/forgot-password" className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline" tabIndex={-1}>
+                      Forgotten?
                     </Link>
                   </div>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-muted-foreground" />
+                  <div className="relative group">
+                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                      <Shield className="h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
                     </div>
                     <Input
                       id="password"
@@ -299,34 +337,29 @@ export function LoginForm({
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="pl-10 pr-20"
+                      className="h-12 pl-12 pr-20 bg-muted/30 border-muted/50 focus:border-primary/50 focus:bg-background transition-all rounded-xl"
                       disabled={isLoading}
                     />
-                    <div className="absolute right-0 top-0 h-full flex items-center">
+                    <div className="absolute right-1 top-1 h-10 flex items-center gap-0.5">
                       <Button
                         type="button"
                         variant="ghost"
                         size="sm"
-                        title="Paste from clipboard"
-                        className="h-full px-2 py-2 hover:bg-transparent"
+                        className="h-full px-2 rounded-lg hover:bg-primary/5 text-muted-foreground"
                         onClick={handlePasteToPassword}
                         tabIndex={-1}
                       >
-                        <ClipboardPaste className="h-4 w-4 text-muted-foreground" />
+                        <ClipboardPaste className="h-4 w-4" />
                       </Button>
                       <Button
                         type="button"
                         variant="ghost"
                         size="sm"
-                        className="h-full px-2 py-2 hover:bg-transparent"
+                        className="h-full px-2 rounded-lg hover:bg-primary/5 text-muted-foreground"
                         onClick={() => setShowPassword(!showPassword)}
                         tabIndex={-1}
                       >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4 text-muted-foreground" />
-                        ) : (
-                          <Eye className="h-4 w-4 text-muted-foreground" />
-                        )}
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                       </Button>
                     </div>
                   </div>
@@ -334,91 +367,79 @@ export function LoginForm({
 
                 {!disableRoleSelection && (
                   <div className="space-y-2">
-                    <Label htmlFor="role" className="flex items-center gap-1">
-                      <User className="h-4 w-4" />
-                      I am a
+                    <Label className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                      <User className="h-3 w-3" />
+                      Portal access
                     </Label>
-                    <Select
-                      value={role}
-                      onValueChange={(value: 'student' | 'faculty' | 'admin') => setRole(value)}
-                      disabled={isLoading}
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="student" className="flex items-center gap-2">
-                          <GraduationCap className="h-4 w-4" />
-                          Student
-                        </SelectItem>
-                        <SelectItem value="faculty" className="flex items-center gap-2">
-                          <User className="h-4 w-4" />
-                          Faculty/Staff
-                        </SelectItem>
-                        <SelectItem value="admin" className="flex items-center gap-2">
-                          <Shield className="h-4 w-4" />
-                          Administrator
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <div className="grid grid-cols-3 gap-2">
+                      {(['student', 'faculty', 'admin'] as const).map((r) => (
+                        <button
+                          key={r}
+                          type="button"
+                          onClick={() => setRole(r)}
+                          className={`flex flex-col items-center justify-center p-3 rounded-xl border text-[10px] font-black uppercase tracking-tighter transition-all ${
+                            role === r 
+                              ? 'bg-primary/10 border-primary text-primary shadow-sm' 
+                              : 'bg-muted/30 border-muted/50 text-muted-foreground hover:bg-muted/50'
+                          }`}
+                        >
+                          {r === 'student' && <GraduationCap className="h-4 w-4 mb-2" />}
+                          {r === 'faculty' && <User className="h-4 w-4 mb-2" />}
+                          {r === 'admin' && <Shield className="h-4 w-4 mb-2" />}
+                          {r}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
 
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
+                <div className="flex items-center justify-between pt-2">
+                  <div className="flex items-center space-x-3">
                     <Checkbox
                       id="remember"
                       checked={rememberMe}
                       onCheckedChange={(checked) => setRememberMe(checked as boolean)}
+                      className="border-muted-foreground/30 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
                       disabled={isLoading}
                     />
-                    <Label htmlFor="remember" className="text-sm font-medium leading-none">
-                      Remember me
+                    <Label htmlFor="remember" className="text-xs font-bold text-muted-foreground cursor-pointer">
+                      Stay connected
                     </Label>
                   </div>
-
-                  <Button
-                    type="submit"
-                    className="px-6"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Signing in...
-                      </>
-                    ) : 'Sign In'}
-                  </Button>
                 </div>
               </CardContent>
 
-              <CardFooter className="flex flex-col space-y-4">
-                <div className="text-center text-sm text-muted-foreground">
-                  Don't have an account?{" "}
-                  <Link
-                    to="/signup"
-                    className="font-medium text-primary hover:underline"
-                    tabIndex={-1}
-                  >
-                    Create an account
-                  </Link>
-                </div>
+              <CardFooter className="p-0 flex flex-col space-y-6 pt-4">
+                <Button
+                  type="submit"
+                  className="w-full h-14 rounded-2xl bg-gradient-to-r from-primary to-primary-dark hover:opacity-90 shadow-lg shadow-primary/20 text-lg font-bold tracking-tight active:scale-95 transition-all"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Processing...
+                    </>
+                  ) : 'Sign In'}
+                </Button>
 
-                <div className="text-xs text-muted-foreground text-center max-w-xs mx-auto">
-                  By signing in, you agree to our{" "}
-                  <a href="#" className="underline underline-offset-4 hover:text-primary">
-                    Terms of Service
-                  </a>{" "}
-                  and{" "}
-                  <a href="#" className="underline underline-offset-4 hover:text-primary">
-                    Privacy Policy
-                  </a>.
+                <div className="text-center text-xs font-bold text-muted-foreground/60">
+                  New to SmartCampus?{" "}
+                  <Link to="/signup" className="text-primary hover:underline tracking-tight">Register portal access</Link>
                 </div>
               </CardFooter>
             </form>
-          </Card>
+          </div>
         </div>
       </motion.div>
+
+      {/* Footer Info */}
+      <div className="absolute bottom-8 left-0 right-0 text-center pointer-events-none">
+        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/40">
+          SmartCampus360 Institutional Gateway • v1.4.0
+        </p>
+      </div>
     </div>
+
   );
 }

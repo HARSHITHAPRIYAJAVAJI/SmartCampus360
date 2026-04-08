@@ -8,21 +8,43 @@ import {
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
+import { MOCK_STUDENTS } from "@/data/mockStudents";
+import { MOCK_FACULTY } from "@/data/mockFaculty";
+import { MOCK_COURSES } from "@/data/mockCourses";
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
     
+    // Real-time data counts
+    const totalStudents = MOCK_STUDENTS.length.toLocaleString();
+    const totalFaculty = MOCK_FACULTY.length.toLocaleString();
+    const totalCourses = MOCK_COURSES.length;
+    const completionRate = "94.2%"; // Static for now or can be derived if needed
+
     const stats = [
-        { title: "Total Students", value: "2,847", icon: Users, change: "+12%", color: "text-primary" },
-        { title: "Faculty Members", value: "156", icon: Users, change: "+3%", color: "text-success" },
-        { title: "Active Courses", value: "89", icon: BookOpen, change: "+8%", color: "text-warning" },
-        { title: "Completion Rate", value: "94.2%", icon: TrendingUp, change: "+2.1%", color: "text-accent" },
+        { title: "Total Students", value: totalStudents, icon: Users, change: "+12%", color: "text-primary" },
+        { title: "Faculty Members", value: totalFaculty, icon: Users, change: "+3%", color: "text-success" },
+        { title: "Active Courses", value: totalCourses.toString(), icon: BookOpen, change: "+8%", color: "text-warning" },
+        { title: "Completion Rate", value: completionRate, icon: TrendingUp, change: "+2.1%", color: "text-accent" },
     ];
 
     const quickActions = [
         { title: "Manage Student Records", description: "View the master student directory", action: () => navigate('/dashboard/students') },
         { title: "Generate Reports", description: "Create accreditation reports", action: () => navigate('/dashboard/accreditation') },
         { title: "Manage Courses", description: "Add or modify course catalog", action: () => navigate('/dashboard/manage-courses') },
+        { title: "Exam Seating Allocation", description: "Generate and manage exam tables", action: () => navigate('/dashboard/exams') },
+        { title: "Institutional System Reset", description: "Wipe all local data and restart engine", action: () => {
+            if (window.confirm("⚠️ DANGER: This will PERMANENTLY DELETE all generated timetables, exam schedules, and local directory changes. Are you sure?")) {
+                localStorage.removeItem('published_timetables');
+                localStorage.removeItem('EXAM_SCHEDULE');
+                localStorage.removeItem('EXAM_SEATING_PLAN');
+                localStorage.removeItem('INVIGILATION_LIST');
+                localStorage.removeItem('EXAM_TIMETABLES');
+                localStorage.removeItem('smartcampus_student_directory');
+                localStorage.removeItem('smartcampus_faculty_directory');
+                window.location.reload();
+            }
+        }},
         { title: "System Settings", description: "Configure platform settings", action: () => navigate('/dashboard/settings') },
     ];
 

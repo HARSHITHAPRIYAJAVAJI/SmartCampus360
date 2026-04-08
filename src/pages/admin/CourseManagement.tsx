@@ -1,9 +1,9 @@
 import { useState, useMemo, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, BookOpen, Clock, Building2, Plus, Edit, Trash2, GraduationCap, ArrowLeft } from "lucide-react";
+import { Search, Plus, Edit, Trash2 } from "lucide-react";
 import {
     Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger
 } from "@/components/ui/dialog";
@@ -12,6 +12,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MOCK_COURSES, Course } from "@/data/mockCourses";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
 
 const CourseManagement = () => {
     const { toast } = useToast();
@@ -26,14 +34,13 @@ const CourseManagement = () => {
     const [formData, setFormData] = useState<Partial<Course>>({});
 
     const departments = [
-        { id: "CSE", name: "Computer Science", icon: GraduationCap, color: "text-blue-600 bg-blue-50" },
-        { id: "CSM", name: "CSE (AI & ML)", icon: BookOpen, color: "text-purple-600 bg-purple-50" },
-        { id: "IT", name: "Information Technology", icon: Building2, color: "text-cyan-600 bg-cyan-50" },
-        { id: "ECE", name: "Electronics & Comm", icon: Clock, color: "text-orange-600 bg-orange-50" },
+        { id: "CSE", name: "Computer Science", color: "text-blue-600 bg-blue-50" },
+        { id: "CSM", name: "CSE (AI & ML)", color: "text-purple-600 bg-purple-50" },
+        { id: "IT", name: "Information Technology", color: "text-cyan-600 bg-cyan-50" },
+        { id: "ECE", name: "Electronics & Comm", color: "text-orange-600 bg-orange-50" },
     ];
 
     useEffect(() => {
-        // Load mock data
         setCourses(MOCK_COURSES);
     }, []);
 
@@ -48,16 +55,14 @@ const CourseManagement = () => {
 
     // Handlers
     const handleAdd = () => {
-        // Validation: Required fields
         if (!formData.code || !formData.name) {
             toast({ title: "Error", description: "Course code and name are required.", variant: "destructive" });
             return;
         }
 
-        // Validation: No duplicate entries
         const exists = courses.some(c => c.code.toUpperCase() === formData.code?.toUpperCase());
         if (exists) {
-            toast({ title: "Duplicate Entry", description: `Course code ${formData.code} already exists in the system.`, variant: "destructive" });
+            toast({ title: "Duplicate Entry", description: `Course code ${formData.code} already exists.`, variant: "destructive" });
             return;
         }
 
@@ -101,15 +106,15 @@ const CourseManagement = () => {
         <div className="space-y-6 animate-in fade-in-50 slide-in-from-right-10">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold text-primary">Course Management</h1>
-                    <p className="text-muted-foreground italic">Comprehensive view of all academic subjects across departments.</p>
+                    <h1 className="text-3xl font-bold text-primary">Course Catalog</h1>
+                    <p className="text-muted-foreground">Manage and organize all curriculum subjects across branches.</p>
                 </div>
                 
                 <div className="flex items-center gap-3">
                     <div className="relative w-full md:w-80">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
-                            placeholder="Search by code or name..."
+                            placeholder="Enter subject code or name..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="pl-9"
@@ -118,39 +123,39 @@ const CourseManagement = () => {
 
                     <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
                         <DialogTrigger asChild>
-                            <Button>
-                                <Plus className="mr-2 h-4 w-4" /> Add Course
+                            <Button className="bg-primary hover:bg-primary/90 shadow-sm border-b-2 border-primary-foreground/20">
+                                <Plus className="mr-2 h-4 w-4" /> New Subject
                             </Button>
                         </DialogTrigger>
                         <DialogContent>
                             <DialogHeader>
-                                <DialogTitle>Add New Course</DialogTitle>
-                                <DialogDescription>Define a new course for the curriculum.</DialogDescription>
+                                <DialogTitle>Add New Subject</DialogTitle>
+                                <DialogDescription>Enter the details for the new curriculum entry.</DialogDescription>
                             </DialogHeader>
                             <div className="grid gap-4 py-4">
                                 <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right">Code</Label>
-                                    <Input value={formData.code || ''} onChange={e => setFormData({ ...formData, code: e.target.value })} className="col-span-3" placeholder="e.g. CS101" />
+                                    <Label className="text-right font-medium">Code</Label>
+                                    <Input value={formData.code || ''} onChange={e => setFormData({ ...formData, code: e.target.value })} className="col-span-3" placeholder="e.g. 4B1AA" />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right">Name</Label>
-                                    <Input value={formData.name || ''} onChange={e => setFormData({ ...formData, name: e.target.value })} className="col-span-3" placeholder="e.g. Intro to CS" />
+                                    <Label className="text-right font-medium">Name</Label>
+                                    <Input value={formData.name || ''} onChange={e => setFormData({ ...formData, name: e.target.value })} className="col-span-3" placeholder="Subject Title" />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right">Department</Label>
+                                    <Label className="text-right font-medium">Dept</Label>
                                     <Select onValueChange={v => setFormData({ ...formData, department: v })}>
-                                        <SelectTrigger className="col-span-3"><SelectValue placeholder="Select Dept" /></SelectTrigger>
+                                        <SelectTrigger className="col-span-3"><SelectValue placeholder="Select Branch" /></SelectTrigger>
                                         <SelectContent>
                                             {departments.map(d => <SelectItem key={d.id} value={d.id}>{d.id}</SelectItem>)}
                                         </SelectContent>
                                     </Select>
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right">Credits</Label>
+                                    <Label className="text-right font-medium">Credits</Label>
                                     <Input type="number" value={formData.credits || ''} onChange={e => setFormData({ ...formData, credits: Number(e.target.value) })} className="col-span-3" />
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right">Type</Label>
+                                    <Label className="text-right font-medium">Type</Label>
                                     <Select onValueChange={v => setFormData({ ...formData, type: v as any })}>
                                         <SelectTrigger className="col-span-3"><SelectValue placeholder="Select Type" /></SelectTrigger>
                                         <SelectContent>
@@ -160,125 +165,127 @@ const CourseManagement = () => {
                                     </Select>
                                 </div>
                                 <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right">Semester</Label>
+                                    <Label className="text-right font-medium">Sem</Label>
                                     <Select onValueChange={v => setFormData({ ...formData, semester: Number(v) })}>
-                                        <SelectTrigger className="col-span-3"><SelectValue placeholder="Select Semester" /></SelectTrigger>
+                                        <SelectTrigger className="col-span-3"><SelectValue placeholder="Semester" /></SelectTrigger>
                                         <SelectContent>
                                             {[1, 2, 3, 4, 5, 6, 7, 8].map(s => <SelectItem key={s} value={s.toString()}>{s}</SelectItem>)}
                                         </SelectContent>
                                     </Select>
                                 </div>
                             </div>
-                            <DialogFooter><Button onClick={handleAdd}>Add Course</Button></DialogFooter>
+                            <DialogFooter><Button onClick={handleAdd}>Add Entry</Button></DialogFooter>
                         </DialogContent>
                     </Dialog>
                 </div>
             </div>
 
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+            <div className="flex gap-2 p-1 bg-muted/30 rounded-xl w-fit">
                 <Button 
-                    variant={selectedDept === null ? "default" : "outline"} 
+                    variant={selectedDept === null ? "default" : "ghost"} 
                     size="sm" 
                     onClick={() => setSelectedDept(null)}
-                    className="rounded-full"
+                    className="rounded-lg h-8 px-4"
                 >
-                    All Departments
+                    All
                 </Button>
                 {departments.map((dept) => (
                     <Button 
                         key={dept.id} 
-                        variant={selectedDept === dept.id ? "default" : "outline"} 
+                        variant={selectedDept === dept.id ? "default" : "ghost"} 
                         size="sm" 
                         onClick={() => setSelectedDept(dept.id)}
-                        className="rounded-full whitespace-nowrap"
+                        className="rounded-lg h-8 px-4 whitespace-nowrap"
                     >
-                        {dept.name}
+                        {dept.id}
                     </Button>
                 ))}
             </div>
 
-            {/* Year & Semester Organization */}
-            <Tabs defaultValue="1" className="w-full">
-                <div className="flex justify-between items-center mb-6">
-                    <TabsList className="grid w-full grid-cols-4 md:w-[400px]">
-                        <TabsTrigger value="1">Year 1</TabsTrigger>
-                        <TabsTrigger value="2">Year 2</TabsTrigger>
-                        <TabsTrigger value="3">Year 3</TabsTrigger>
-                        <TabsTrigger value="4">Year 4</TabsTrigger>
+            <Card className="border-border/60 shadow-sm overflow-hidden">
+                <Tabs defaultValue="1" className="w-full">
+                    <TabsList className="w-full justify-start rounded-none border-b h-12 bg-muted/10 p-0">
+                        <TabsTrigger value="1" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-8 h-full">Year 1</TabsTrigger>
+                        <TabsTrigger value="2" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-8 h-full">Year 2</TabsTrigger>
+                        <TabsTrigger value="3" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-8 h-full">Year 3</TabsTrigger>
+                        <TabsTrigger value="4" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-8 h-full">Year 4</TabsTrigger>
                     </TabsList>
-                </div>
 
-                {[1, 2, 3, 4].map((year) => {
-                    // Calculate semesters for this year (e.g., Year 1 -> [1, 2])
-                    const semesters = [year * 2 - 1, year * 2];
+                    {[1, 2, 3, 4].map((year) => {
+                        const semesters = [year * 2 - 1, year * 2];
+                        return (
+                            <TabsContent key={year} value={year.toString()} className="m-0 p-0">
+                                {semesters.map((sem) => {
+                                    const semesterCourses = filteredCourses.filter(c => c.semester === sem);
 
-                    return (
-                        <TabsContent key={year} value={year.toString()} className="space-y-8 animate-in fade-in-50">
-                            {semesters.map((sem) => {
-                                const semesterCourses = filteredCourses.filter(c => c.semester === sem);
+                                    return (
+                                        <div key={sem} className="border-b last:border-0 overflow-x-auto">
+                                            <div className="px-6 py-3 bg-muted/5 flex items-center gap-3">
+                                                <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Semester {sem}</h2>
+                                                <Badge variant="outline" className="bg-background font-mono text-[10px]">{semesterCourses.length}</Badge>
+                                            </div>
 
-                                return (
-                                    <div key={sem} className="space-y-4">
-                                        <div className="flex items-center gap-2 pb-2 border-b">
-                                            <h2 className="text-xl font-semibold text-primary">Semester {sem}</h2>
-                                            <Badge variant="secondary" className="ml-2">{semesterCourses.length} Courses</Badge>
-                                        </div>
-
-                                        {semesterCourses.length > 0 ? (
-                                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                                                {semesterCourses.map(course => (
-                                                    <Card key={course.id} className={`hover:shadow-md transition-shadow border-border/50 group overflow-hidden ${course.type === 'Lab' ? 'bg-orange-50/40 border-orange-100/50' : 'bg-card/50'}`}>
-                                                        <CardContent className="p-4 flex flex-col justify-between h-full gap-3">
-                                                            <div className="flex items-start justify-between gap-4">
-                                                                <div className="space-y-1">
-                                                                    <h3 className="font-bold text-base leading-tight group-hover:text-primary transition-colors line-clamp-2 min-h-[2.5rem]">{course.name}</h3>
-                                                                    <div className="flex flex-wrap items-center gap-2">
-                                                                        <span className="text-[10px] font-black text-muted-foreground/70 uppercase tracking-widest">{course.code}</span>
-                                                                        <span className="h-1 w-1 rounded-full bg-border" />
-                                                                        <span className="text-[10px] font-bold text-primary uppercase tracking-tight">{course.department}</span>
+                                            <Table>
+                                                <TableHeader className="bg-muted/30">
+                                                    <TableRow className="hover:bg-transparent border-border/40">
+                                                        <TableHead className="w-[100px] font-bold">Code</TableHead>
+                                                        <TableHead className="font-bold">Subject Name</TableHead>
+                                                        <TableHead className="w-[100px] font-bold text-center">Type</TableHead>
+                                                        <TableHead className="w-[100px] font-bold text-center">Dept</TableHead>
+                                                        <TableHead className="w-[80px] font-bold text-center">Credits</TableHead>
+                                                        <TableHead className="w-[100px] text-right font-bold">Actions</TableHead>
+                                                    </TableRow>
+                                                </TableHeader>
+                                                <TableBody>
+                                                    {semesterCourses.length > 0 ? (
+                                                        semesterCourses.map((course) => (
+                                                            <TableRow key={course.id} className="hover:bg-primary/5 transition-colors group">
+                                                                <TableCell className="font-mono text-xs font-bold text-primary">{course.code}</TableCell>
+                                                                <TableCell>
+                                                                    <div className="flex flex-col">
+                                                                        <span className="font-semibold text-foreground group-hover:text-primary transition-colors">{course.name}</span>
                                                                     </div>
-                                                                </div>
-                                                                <div className={`p-2 rounded-lg shrink-0 ${course.type === 'Lab' ? 'bg-orange-50 text-orange-500' : 'bg-blue-50 text-blue-500'}`}>
-                                                                    {course.type === 'Lab' ? <Clock className="h-4 w-4" /> : <BookOpen className="h-4 w-4" />}
-                                                                </div>
-                                                            </div>
-
-                                                            <div className="flex items-center justify-between pt-2 mt-auto border-t border-dashed border-muted">
-                                                                <div className="flex items-center gap-2">
-                                                                    <Badge variant="secondary" className="px-2 py-0 h-5 text-[10px] font-bold bg-muted/50 text-muted-foreground border-none">
-                                                                        {course.credits} Credits
+                                                                </TableCell>
+                                                                <TableCell className="text-center">
+                                                                    <Badge variant={course.type === 'Lab' ? 'secondary' : 'outline'} className={`text-[10px] uppercase font-black tracking-tighter ${course.type === 'Lab' ? 'bg-orange-50 text-orange-600 border-orange-100' : 'bg-blue-50 text-blue-600 border-blue-100'}`}>
+                                                                        {course.type}
                                                                     </Badge>
-                                                                    {course.type === 'Lab' && (
-                                                                        <Badge variant="outline" className="px-2 py-0 h-5 text-[10px] font-bold border-orange-100 text-orange-600 bg-orange-50/30 uppercase tracking-tighter">
-                                                                            Lab
-                                                                        </Badge>
-                                                                    )}
-                                                                </div>
-                                                                <div className="flex gap-1">
-                                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary hover:bg-primary/5 transition-colors" onClick={() => openEdit(course)}>
-                                                                        <Edit className="h-4 w-4" />
-                                                                    </Button>
-                                                                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-colors" onClick={() => handleDelete(course.id)}>
-                                                                        <Trash2 className="h-4 w-4" />
-                                                                    </Button>
-                                                                </div>
-                                                            </div>
-                                                        </CardContent>
-                                                    </Card>
-                                                ))}
-                                            </div>
-                                        ) : (
-                                            <div className="text-muted-foreground text-sm italic py-4 bg-muted/30 rounded-lg text-center border border-dashed">
-                                                No courses found for Semester {sem}.
-                                            </div>
-                                        )}
-                                    </div>
-                                );
-                            })}
-                        </TabsContent>
-                    );
-                })}
-            </Tabs>
+                                                                </TableCell>
+                                                                <TableCell className="text-center">
+                                                                    <span className="text-[10px] font-bold opacity-60">{course.department}</span>
+                                                                </TableCell>
+                                                                <TableCell className="text-center">
+                                                                    <span className="font-mono font-bold text-muted-foreground">{course.credits}</span>
+                                                                </TableCell>
+                                                                <TableCell className="text-right">
+                                                                    <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-primary" onClick={() => openEdit(course)}>
+                                                                            <Edit className="h-4 w-4" />
+                                                                        </Button>
+                                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => handleDelete(course.id)}>
+                                                                            <Trash2 className="h-4 w-4" />
+                                                                        </Button>
+                                                                    </div>
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))
+                                                    ) : (
+                                                        <TableRow>
+                                                            <TableCell colSpan={6} className="h-24 text-center text-muted-foreground italic">
+                                                                No courses defined for Semester {sem}.
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    )}
+                                                </TableBody>
+                                            </Table>
+                                        </div>
+                                    );
+                                })}
+                            </TabsContent>
+                        );
+                    })}
+                </Tabs>
+            </Card>
 
             {/* Edit Dialog */}
             <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, Mail, Phone, BookOpen, GraduationCap, Users, ArrowLeft, Building2, Plus, Edit, Trash2, LayoutGrid, List, Grip, X, Clock, Check, X as XIcon, Upload } from "lucide-react";
+import { Search, Mail, Phone, BookOpen, GraduationCap, Users, User, ArrowLeft, Building2, Plus, Edit, Trash2, LayoutGrid, List, Grip, X, Clock, Check, X as XIcon, Upload } from "lucide-react";
 import { FACULTY_LOAD } from "@/data/aimlTimetable";
 import { MOCK_FACULTY } from "@/data/mockFaculty";
 import {
@@ -304,19 +304,44 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
                             <Card key={faculty.id} className="group hover:border-primary/50 transition-all border-muted/60">
                                 <CardHeader className="pb-2">
                                     <div className="flex justify-between items-start">
-                                        <Avatar className="h-12 w-12 border-2 border-primary/20">
-                                            <AvatarFallback>{faculty.name.substring(0, 2)}</AvatarFallback>
+                                        <Avatar className="h-12 w-12 border-2 border-primary/20 shadow-sm">
+                                            <AvatarFallback className="bg-primary/5">
+                                                <User className="h-6 w-6 text-primary/70" />
+                                            </AvatarFallback>
                                         </Avatar>
                                         <div className="flex gap-1">
                                             <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => { setCurrentFaculty(faculty); setFormData(faculty); setIsEditOpen(true); }}><Edit className="h-4 w-4" /></Button>
                                             <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600" onClick={() => handleDelete(faculty.id)}><Trash2 className="h-4 w-4" /></Button>
                                         </div>
                                     </div>
-                                    <CardTitle className="text-xl font-bold mt-4">{faculty.name}</CardTitle>
-                                    <CardDescription className="text-primary font-semibold">{faculty.designation}</CardDescription>
+                                    <div className="flex justify-between items-start mt-4">
+                                        <div>
+                                            <CardTitle className="text-xl font-black text-foreground">{faculty.name}</CardTitle>
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <Badge variant="outline" className="text-[9px] font-black uppercase tracking-widest text-primary border-primary/20 bg-primary/5">
+                                                    ID: {faculty.rollNumber}
+                                                </Badge>
+                                                <span className="text-[10px] font-bold text-muted-foreground">• {faculty.designation}</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
                                     <div className="flex items-center gap-3 text-sm text-muted-foreground"><Mail className="h-4 w-4" /> {faculty.email}</div>
+                                    
+                                    {faculty.subjects && faculty.subjects.length > 0 && (
+                                        <div className="space-y-1.5 mt-2">
+                                            <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Expertise</p>
+                                            <div className="flex flex-wrap gap-1.5">
+                                                {faculty.subjects.map((sub, idx) => (
+                                                    <Badge key={idx} variant="outline" className="text-[10px] bg-primary/5 border-primary/20 text-primary font-bold">
+                                                        {sub}
+                                                    </Badge>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
                                     <div className="border-t pt-2 mt-2">
                                         <div className="flex justify-between text-xs font-bold uppercase text-muted-foreground">
                                             <span>Weekly Load</span>

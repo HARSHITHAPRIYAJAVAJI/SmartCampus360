@@ -13,6 +13,7 @@ import {
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useMemo } from "react";
 import { AIML_TIMETABLES, FACULTY_LOAD } from "@/data/aimlTimetable";
+import { MOCK_COURSES } from "@/data/mockCourses";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 
@@ -57,26 +58,66 @@ export default function FacultyDashboard() {
             const semKey = `${year}-${sem}`;
             const load = FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || [];
             
+            // Create a map for course name lookup
+            const courseNameMap: Record<string, string> = {};
+            MOCK_COURSES.forEach(c => {
+                courseNameMap[c.code] = c.name;
+                courseNameMap[c.code.replace(' Lab', '').trim()] = c.name;
+            });
+
             Object.entries(table).forEach(([dayTime, session]: [string, any]) => {
                 if (!session) return;
                 const [day, time] = dayTime.split('-');
                 if (day !== today) return;
                 
-                // Check assignment
-                const isAssigned = session.faculty === facultyName || load.find(l => l.code === (session.courseCode || session.name) && l.faculty === facultyName);
+                let isAssigned = false;
+                
+                // PRIORITY 1: ID-BASED MATCHING
+                if (session.facultyId && facultyId) {
+                    isAssigned = session.facultyId === facultyId;
+                }
+                
+                // PRIORITY 2: NAME-BASED MATCHING
+                if (!isAssigned) {
+                    if (session.faculty) {
+                        isAssigned = session.faculty.trim().toLowerCase() === facultyName.trim().toLowerCase();
+                    } else if (session.room && (session.room.includes("Mrs.") || session.room.includes("Dr."))) {
+                        isAssigned = session.room.trim().toLowerCase() === facultyName.trim().toLowerCase();
+                    }
+                }
+
+                // PRIORITY 3: GENERIC ROUND-ROBIN fallback
+                if (!isAssigned && !session.faculty && (!session.room || (!session.room.includes("Mrs.") && !session.room.includes("Dr.")))) {
+                    const courseCode = session.courseCode || (session.subject?.split(' (')[0]);
+                    const eligibleFaculty = (load as any[])
+                        .filter(l => l.code === courseCode)
+                        .map(l => ({ name: l.faculty, id: l.id }));
+
+                    if (eligibleFaculty.length > 0) {
+                        const sectionIndex = section.charCodeAt(0) - 'A'.charCodeAt(0);
+                        const assignedIndex = sectionIndex % eligibleFaculty.length;
+                        const assignedFaculty = eligibleFaculty[assignedIndex];
+                        
+                        isAssigned = assignedFaculty.id === facultyId || 
+                                     assignedFaculty.name?.trim().toLowerCase() === facultyName.trim().toLowerCase();
+                    }
+                }
                 
                 if (isAssigned) {
                     const hourStr = time.split(':')[0];
                     const hour = parseInt(hourStr);
                     const period = (hour >= 9 && hour < 12) ? "AM" : "PM";
                     
+                    const cleanCode = (session.courseCode || session.name || '').split(' (')[0].trim();
+                    const fullName = courseNameMap[cleanCode] || cleanCode;
+
                     schedule.push({
                         id: `${key}-${dayTime}-${session.courseCode || session.name}`,
                         time: `${time} ${period}`,
                         rawTime: time,
-                        title: `${session.courseCode || session.name} (Sec ${section})`,
-                        room: session.room || "TBD",
-                        type: (session.courseCode || session.name || '').toLowerCase().includes('lab') ? 'lab' : 'lecture',
+                        title: `${fullName} (Sec ${section})`,
+                        room: session.room && (session.room.includes("Mrs.") || session.room.includes("Dr.")) ? "TBD" : (session.room || "TBD"),
+                        type: (fullName || '').toLowerCase().includes('lab') ? 'lab' : 'lecture',
                         isLive: !!publishedTimetables[key]
                     });
                 }

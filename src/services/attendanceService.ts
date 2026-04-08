@@ -24,19 +24,19 @@ export const attendanceService = {
             const response = await axios.get(`${API_BASE_URL}/`, { params });
             // Always return array for safety
             return Array.isArray(response.data) ? response.data : [];
-        } catch (error) {
-            console.error("Attendance API Fetch Error:", error);
+        } catch (error: any) {
+            console.error("Attendance API Fetch Error:", error.response?.data || error.message);
             return [];
         }
     },
 
     saveBulkAttendance: async (data: AttendanceBulkCreate) => {
         try {
-            console.log("Saving Bulk Attendance:", data);
+            console.log("Saving Bulk Attendance [Payload]:", data);
             const response = await axios.post(`${API_BASE_URL}/bulk`, data);
             return response.data;
         } catch (error: any) {
-            console.error("Attendance Bulk Save Error Details:", error.response?.data);
+            console.error("Attendance Bulk Save Error [Critical]:", error.response?.data || "Server Unreachable");
             throw error;
         }
     },

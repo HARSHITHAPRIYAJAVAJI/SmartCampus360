@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Bell, User, LogOut, Search, Menu } from "lucide-react";
+import { useState, useMemo, useRef, useEffect } from "react";
+import { Bell, User, LogOut, Search, Menu, Book, Users, GraduationCap, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,7 +13,10 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { MOCK_LEAVE_REQUESTS } from "@/data/mockLeaves";
-import { Link } from "react-router-dom";
+import { MOCK_COURSES } from "@/data/mockCourses";
+import { MOCK_FACULTY } from "@/data/mockFaculty";
+import { MOCK_STUDENTS } from "@/data/mockStudents";
+import { Link, useNavigate } from "react-router-dom";
 
 interface DashboardHeaderProps {
   user: {
@@ -26,6 +29,91 @@ interface DashboardHeaderProps {
 }
 
 export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHeaderProps) {
+  const navigate = useNavigate();
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showResults, setShowResults] = useState(false);
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+        setShowResults(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const searchResults = useMemo(() => {
+    if (searchQuery.trim().length < 2) return [];
+
+    const q = searchQuery.toLowerCase();
+    const results: { type: 'course' | 'student' | 'faculty' | 'page', id: string, name: string, code?: string, sub: string, url: string }[] = [];
+
+    // Search Pages (Navigation)
+    const pages = [
+      { name: "Timetable Generator", url: "/dashboard/timetable", sub: "Schedule Management" },
+      { name: "Faculty Directory", url: "/dashboard/faculty-directory", sub: "Staff Management" },
+      { name: "Course Management", url: "/dashboard/manage-courses", sub: "Academic Records" },
+      { name: "Exam Management", url: "/dashboard/exams", sub: "Assessment Portal" },
+      { name: "User Management", url: "/dashboard/users", sub: "System Access" },
+      { name: "Compliance Dashboard", url: "/dashboard/analytics", sub: "Reporting" },
+      { name: "Room Management", url: "/dashboard/manage-rooms", sub: "Infrastructure" },
+      { name: "Student Records", url: "/dashboard/students", sub: "Registrar" },
+    ];
+
+    pages.forEach(p => {
+      if (p.name.toLowerCase().includes(q)) {
+        results.push({ type: 'page', id: p.url, name: p.name, sub: p.sub, url: p.url });
+      }
+    });
+
+    // Search Courses
+    MOCK_COURSES.forEach(c => {
+      if (c.name.toLowerCase().includes(q) || c.code.toLowerCase().includes(q)) {
+        results.push({
+          type: 'course',
+          id: c.id,
+          name: c.name,
+          code: c.code,
+          sub: `${c.department} | Sem ${c.semester}`,
+          url: '/dashboard/manage-courses'
+        });
+      }
+    });
+
+    // Search Faculty
+    MOCK_FACULTY.forEach(f => {
+      if (f.name.toLowerCase().includes(q) || (f.rollNumber && f.rollNumber.toLowerCase().includes(q))) {
+        results.push({
+          type: 'faculty',
+          id: f.id,
+          name: f.name,
+          code: f.rollNumber,
+          sub: `${f.designation} | ${f.department}`,
+          url: '/dashboard/faculty-directory'
+        });
+      }
+    });
+
+    // Search Students
+    MOCK_STUDENTS.forEach(s => {
+      if (s.name.toLowerCase().includes(q) || s.rollNumber.toLowerCase().includes(q)) {
+        results.push({
+          type: 'student',
+          id: s.id,
+          name: s.name,
+          code: s.rollNumber,
+          sub: `${s.branch} | Year ${s.year}`,
+          url: '/dashboard/students'
+        });
+      }
+    });
+
+    return results.slice(0, 10); // Limit results for UI
+  }, [searchQuery]);
+
   const [baseNotifications] = useState([
     { id: '1', title: "New assignment posted", type: "info", read: false },
     { id: '2', title: "Class rescheduled", type: "warning", read: false },
@@ -52,7 +140,7 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
       .map(n => n[0])
       .join("")
       .toUpperCase()
-      .slice(0, 2); // Prevent 3 letters like "DSH" crowding the avatar
+      .slice(0, 2); 
   };
 
   const getRoleBadgeClasses = (role: string) => {
@@ -68,25 +156,90 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
     }
   };
 
+  const handleResultClick = (url: string) => {
+    navigate(url);
+    setSearchQuery("");
+    setShowResults(false);
+  };
+
   return (
-    <header className="h-16 bg-card border-b border-border flex items-center justify-between px-4 lg:px-6">
-      {/* Left section */}
-      <div className="flex items-center space-x-4">
+    <header className="h-20 bg-card border-b border-border/60 flex items-center justify-between px-6 sticky top-0 z-30 shadow-sm backdrop-blur-md">
+      {/* Sidebar Toggle & Search Bar */}
+      <div className="flex items-center gap-6 flex-1 max-w-2xl">
         <Button
           variant="ghost"
-          size="sm"
+          size="icon"
           onClick={onToggleSidebar}
-          className="lg:hidden"
+          className="lg:hidden h-10 w-10 hover:bg-primary/10 hover:text-primary transition-colors"
         >
-          <Menu className="h-5 w-5" />
+          <Menu className="h-6 w-6" />
         </Button>
 
-        <div className="hidden md:flex items-center space-x-2 bg-muted rounded-lg px-3 py-2 min-w-[300px]">
-          <Search className="h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search courses, faculty, students..."
-            className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
-          />
+        <div className="relative flex-1 hidden md:block" ref={searchContainerRef}>
+          <div className="relative group">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+            <Input
+              placeholder="Search students, faculty, courses or management pages..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setShowResults(true);
+              }}
+              onFocus={() => setShowResults(true)}
+              className="pl-10 h-11 bg-muted/30 border-none focus-visible:ring-2 focus-visible:ring-primary/20 w-full transition-all rounded-xl font-medium"
+            />
+          </div>
+
+          {/* Search Results Dropdown */}
+          {showResults && searchQuery.trim().length >= 2 && (
+            <div className="absolute top-full left-0 right-0 mt-2 bg-card border border-border/60 rounded-2xl shadow-2xl overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200 z-50 ring-1 ring-black/5">
+              <div className="p-2 max-h-[480px] overflow-y-auto">
+                <div className="px-3 py-2 text-[10px] font-black uppercase tracking-widest text-muted-foreground border-b border-border/5 mb-1">
+                  Top Results
+                </div>
+                {searchResults.length > 0 ? (
+                  searchResults.map((result) => (
+                    <button
+                      key={`${result.type}-${result.id}`}
+                      onClick={() => handleResultClick(result.url)}
+                      className="w-full flex items-center gap-3 p-3 hover:bg-muted/60 transition-colors rounded-xl text-left group"
+                    >
+                      <div className={`h-10 w-10 rounded-lg flex items-center justify-center transition-colors ${
+                        result.type === 'page' ? 'bg-indigo-100 text-indigo-600' :
+                        result.type === 'course' ? 'bg-green-100 text-green-600' :
+                        result.type === 'faculty' ? 'bg-amber-100 text-amber-600' :
+                        'bg-blue-100 text-blue-600'
+                      }`}>
+                        {result.type === 'page' ? <Menu className="h-5 w-5" /> :
+                         result.type === 'course' ? <Book className="h-5 w-5" /> :
+                         result.type === 'faculty' ? <Users className="h-5 w-5" /> :
+                         <GraduationCap className="h-5 w-5" />}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-sm text-foreground truncate">{result.name}</span>
+                          {result.code && <Badge variant="outline" className="text-[10px] font-black uppercase border-muted h-5">{result.code}</Badge>}
+                        </div>
+                        <p className="text-[11px] text-muted-foreground font-medium truncate mt-0.5">{result.sub}</p>
+                      </div>
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity pr-2">
+                         <Search className="h-3 w-3 text-primary" />
+                      </div>
+                    </button>
+                  ))
+                ) : (
+                    <div className="p-8 text-center">
+                        <X className="h-8 w-8 mx-auto mb-3 text-muted-foreground/30" />
+                        <p className="text-sm font-bold text-muted-foreground">No matching results found</p>
+                        <p className="text-[10px] text-muted-foreground/50 mt-1 uppercase tracking-widest">Try another search term</p>
+                    </div>
+                )}
+              </div>
+              <div className="p-3 bg-muted/30 border-t border-border/40 text-center">
+                <p className="text-[10px] font-black uppercase tracking-tighter text-muted-foreground">Quick Access Command Center</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -143,9 +296,9 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
                   {getInitials(user.name)}
                 </AvatarFallback>
               </Avatar>
-              <div className="hidden md:flex flex-col items-start text-left">
-                <span className="text-sm font-bold text-foreground leading-none mb-1.5">{user.name}</span>
-                <span className={`text-[10px] font-extrabold uppercase tracking-widest px-2 py-0.5 rounded-full leading-none shadow-sm ${getRoleBadgeClasses(user.role)}`}>
+              <div className="hidden md:flex flex-col items-start text-left gap-1 ml-1">
+                <span className="text-sm font-black text-foreground leading-tight tracking-tight">{user.name}</span>
+                <span className={`text-[9px] font-black uppercase tracking-[0.1em] px-2.5 py-1 rounded-md leading-none border shadow-sm ${getRoleBadgeClasses(user.role)}`}>
                   {user.role}
                 </span>
               </div>

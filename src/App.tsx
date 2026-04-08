@@ -25,7 +25,7 @@ const LearningPortal = lazy(() => import("./pages/student/LearningPortal"));
 const FacultyManagement = lazy(() => import("./pages/admin/FacultyManagement"));
 const CourseManagement = lazy(() => import("./pages/admin/CourseManagement"));
 const RoomManagement = lazy(() => import("./pages/admin/RoomManagement"));
-const Analytics = lazy(() => import("./pages/admin/Analytics"));
+const AnalyticsAccreditation = lazy(() => import("./pages/admin/AnalyticsAccreditation"));
 const UserManagement = lazy(() => import("./pages/admin/UserManagement"));
 const MyClasses = lazy(() => import("./pages/faculty/MyClasses"));
 const LeaveManagement = lazy(() => import("./pages/faculty/LeaveManagement"));
@@ -44,6 +44,8 @@ const Leadership = lazy(() => import("./pages/about/Leadership"));
 const ExamManagement = lazy(() => import("./pages/admin/ExamManagement"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
+const StudentFees = lazy(() => import("./pages/student/StudentFees"));
+const Downloads = lazy(() => import("./pages/student/LearningPortal")); // Use LearningPortal as placeholder for downloads
 
 
 // Lazy load UI overlays to reduce initial bundle size
@@ -166,7 +168,8 @@ const App = () => {
                 <Route path="faculty-directory" element={<FacultyManagement userRole={user?.role || 'student'} />} />
                 <Route path="manage-courses" element={<CourseManagement />} />
                 <Route path="manage-rooms" element={<RoomManagement />} />
-                <Route path="accreditation" element={<ComplianceDashboard />} />
+                <Route path="analytics" element={<AnalyticsAccreditation />} />
+                <Route path="accreditation" element={<AnalyticsAccreditation />} />
                 <Route path="exams" element={<ExamManagement />} />
                 <Route path="training" element={<LearningPortal />} />
                 <Route path="notifications" element={<NotificationsPage />} />
@@ -178,8 +181,12 @@ const App = () => {
                 <Route path="courses" element={<MyCourses />} />
                 <Route path="grades" element={<Grades />} />
                 <Route path="profile" element={<Profile />} />
-                <Route path="analytics" element={<Analytics />} />
+                <Route path="analytics-accreditation" element={<AnalyticsAccreditation />} />
                 <Route path="users" element={<UserManagement />} />
+                
+                {/* Fee Routes */}
+                <Route path="student/fees/*" element={<StudentFees />} />
+                <Route path="student/downloads" element={<Downloads />} />
               </Route>
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

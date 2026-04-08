@@ -16,7 +16,8 @@ import {
   Home,
   Award,
   UserCircle,
-  ChevronDown
+  ChevronDown,
+  ShieldCheck
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -49,12 +50,12 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
 
     const roleSpecificItems: Record<string, NavItem[]> = {
       admin: [
+        { title: "Exam Management", url: "/dashboard/exams", icon: ShieldCheck },
         { title: "Faculty Management", url: "/dashboard/faculty-directory", icon: Users },
         { title: "Student Management", url: "/dashboard/students", icon: GraduationCap },
         { title: "Course Management", url: "/dashboard/manage-courses", icon: BookOpen },
         { title: "Room Management", url: "/dashboard/manage-rooms", icon: Home },
-        { title: "Accreditation", url: "/dashboard/accreditation", icon: FileText },
-        { title: "Analytics", url: "/dashboard/analytics", icon: BarChart3 },
+        { title: "Analytics & Accreditation", url: "/dashboard/analytics-accreditation", icon: BarChart3 },
       ],
       faculty: [
         { title: "My Classes", url: "/dashboard/classes", icon: BookOpen },
@@ -112,34 +113,38 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
         w-64
       `}>
         <div className="flex items-center justify-between p-4 border-b border-border">
-          <div className={`flex items-center space-x-2 ${collapsed ? "lg:justify-center lg:w-full" : ""}`}>
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center flex-shrink-0">
-              <GraduationCap className="h-5 w-5 text-primary-foreground" />
+          <div className={`flex items-center gap-3 transition-all duration-300 ${collapsed && !mobileOpen ? "lg:justify-center lg:w-full lg:px-0" : "px-1"}`}>
+            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95 duration-200">
+              <GraduationCap className="h-6 w-6 text-primary-foreground drop-shadow-sm" />
             </div>
             {(!collapsed || mobileOpen) && (
-              <span className="font-semibold text-lg lg:block">Smart Campus</span>
+              <span className="font-bold text-xl tracking-tight text-foreground bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text">Smart Campus</span>
             )}
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onToggle}
-            className="h-8 w-8 p-0 hidden lg:flex"
-          >
-            {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={onMobileClose}
-            className="h-8 w-8 p-0 lg:hidden"
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
+          {!mobileOpen && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onToggle}
+              className="h-8 w-8 p-0 hidden lg:flex rounded-full hover:bg-primary/10 hover:text-primary transition-colors border border-transparent hover:border-primary/20"
+            >
+              {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+            </Button>
+          )}
+          {mobileOpen && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={onMobileClose}
+              className="h-8 w-8 p-0 lg:hidden"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+          )}
         </div>
 
-        <div className="flex-1 p-4 overflow-y-auto flex flex-col justify-between custom-scrollbar">
-          <div className="space-y-1.5">
+        <div className="flex-1 px-3 py-6 overflow-y-auto flex flex-col justify-between custom-scrollbar gap-8">
+          <div className="space-y-2">
             {navigationItems.map((item) => (
               <SidebarItem
                 key={item.title}
@@ -152,14 +157,17 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
           </div>
 
           {(!collapsed || mobileOpen) && (
-            <div className="mt-8 mb-2">
-              <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-xl p-4 border border-primary/10 shadow-sm backdrop-blur-sm">
-                <div className="text-sm font-bold text-primary flex items-center gap-2 mb-1">
-                  <div className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                  Role: <span className="uppercase tracking-wider">{userRole}</span>
-                </div>
-                <div className="text-[11px] text-muted-foreground/80 font-bold uppercase tracking-widest pl-4">
-                  {userRole} Portal UI
+            <div className="mt-auto px-1">
+              <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-2xl p-4 border border-primary/10 shadow-sm backdrop-blur-md">
+                <div className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/60 mb-2">Access Portal</div>
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-8 rounded-full bg-primary/20 flex items-center justify-center ring-2 ring-primary/10">
+                    <UserCircle className="h-5 w-5 text-primary" />
+                  </div>
+                    <div className="flex flex-col">
+                      <span className="text-[10px] text-muted-foreground font-black uppercase tracking-wider">Accessing as</span>
+                      <span className="text-xs font-black text-primary capitalize leading-none">{userRole}</span>
+                    </div>
                 </div>
               </div>
             </div>
@@ -183,36 +191,40 @@ function SidebarItem({ item, collapsed, mobileOpen, onMobileClose }: {
   const isChildActive = hasChildren && item.children!.some(child => location.pathname === child.url);
   const isActive = location.pathname === item.url || isChildActive;
 
+  const content = (
+    <>
+      <item.icon className={`h-5 w-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110 ${isActive && collapsed && !mobileOpen ? 'text-primary-foreground' : ''}`} />
+      {(!collapsed || mobileOpen) && <span className="text-sm font-bold tracking-tight whitespace-nowrap">{item.title}</span>}
+      {hasChildren && (!collapsed || mobileOpen) && (
+        <ChevronDown className={`ml-auto h-4 w-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+      )}
+    </>
+  );
+
   if (hasChildren) {
     return (
       <div className="space-y-1">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`w-full group flex items-center justify-between px-3 py-2.5 rounded-xl transition-all duration-200 ${isActive
-            ? "bg-primary/5 text-primary font-semibold"
-            : "text-muted-foreground hover:bg-primary/5 hover:text-primary font-medium"
+          className={`w-full group flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 ${collapsed && !mobileOpen ? "justify-center" : ""} ${isActive
+            ? "bg-primary/10 text-primary"
+            : "text-muted-foreground hover:bg-primary/5 hover:text-primary"
             }`}
         >
-          <div className="flex items-center space-x-3">
-            <item.icon className={`h-5 w-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110`} />
-            {(!collapsed || mobileOpen) && <span className="lg:block text-left leading-tight">{item.title}</span>}
-          </div>
-          {(!collapsed || mobileOpen) && (
-            <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
-          )}
+          {content}
         </button>
 
         {isOpen && (!collapsed || mobileOpen) && (
-          <div className="pl-9 space-y-1 animate-in slide-in-from-top-2 duration-200">
+          <div className="pl-11 pr-2 space-y-1 animate-in slide-in-from-top-2 duration-300">
             {item.children!.map((child) => (
               <NavLink
                 key={child.title}
                 to={child.url}
                 onClick={() => mobileOpen && onMobileClose()}
                 className={({ isActive }) =>
-                  `block px-3 py-1.5 rounded-lg text-xs transition-all duration-200 ${isActive
-                    ? "text-primary font-bold bg-primary/10 border-l-2 border-primary pl-2"
-                    : "text-muted-foreground hover:text-primary hover:bg-primary/5 font-medium border-l-2 border-transparent pl-2"
+                  `block px-3 py-2 rounded-lg text-xs font-bold transition-all duration-200 border-l-2 ${isActive
+                    ? "text-primary bg-primary/5 border-primary"
+                    : "text-muted-foreground hover:text-primary hover:bg-primary/5 border-transparent"
                   }`
                 }
               >
@@ -231,14 +243,13 @@ function SidebarItem({ item, collapsed, mobileOpen, onMobileClose }: {
       end={item.url === '/dashboard'}
       onClick={() => mobileOpen && onMobileClose()}
       className={({ isActive }) =>
-        `group flex items-center space-x-3 px-3 py-2.5 rounded-xl transition-all duration-200 ${isActive
-          ? "bg-gradient-to-r from-primary to-primary/90 text-primary-foreground shadow-md shadow-primary/25 font-semibold"
+        `group flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-300 shadow-none hover:shadow-lg hover:shadow-primary/5 ${collapsed && !mobileOpen ? "justify-center" : ""} ${isActive
+          ? "bg-gradient-to-r from-primary to-primary/90 text-primary-foreground shadow-xl shadow-primary/20 font-bold"
           : "text-muted-foreground hover:bg-primary/5 hover:text-primary font-medium"
         }`
       }
     >
-      <item.icon className={`h-5 w-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110`} />
-      {(!collapsed || mobileOpen) && <span className="lg:block text-left leading-tight">{item.title}</span>}
+      {content}
     </NavLink>
   );
 }
