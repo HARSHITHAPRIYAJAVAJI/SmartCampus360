@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
     Calendar, Clock, MapPin, Search, Plus, Filter, ArrowLeft, CheckCircle2, 
     AlertCircle, Users, Download, ShieldCheck, Printer, RefreshCw, UserCheck,
-    Layers, School, Check, ChevronRight, Trash2, Brain, FileSpreadsheet, ListTodo
+    Layers, School, Check, ChevronRight, Trash2, Brain, FileSpreadsheet, ListTodo, Zap
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -27,7 +27,7 @@ export default function ExamManagement() {
     const navigate = useNavigate();
     const { toast } = useToast();
     const [searchQuery, setSearchQuery] = useState("");
-    const [isAddOpen, setIsAddOpen] = useState(false);
+    const [selectedRosterId, setSelectedRosterId] = useState<string>("all");
     const [activeTab, setActiveTab] = useState("schedule");
     const [userRole] = useState(() => {
         const saved = localStorage.getItem('user');
@@ -38,8 +38,10 @@ export default function ExamManagement() {
     const [examType, setExamType] = useState<"Mid-1" | "Mid-2" | "Semester">("Mid-1");
     const [semester, setSemester] = useState("1");
     const [date, setDate] = useState("");
-    const [startTime, setStartTime] = useState("10:00");
-    const [endTime, setEndTime] = useState("13:00");
+    const [fnStart, setFnStart] = useState("10:00");
+    const [fnEnd, setFnEnd] = useState("12:00");
+    const [anStart, setAnStart] = useState("14:00");
+    const [anEnd, setAnEnd] = useState("16:00");
 
     const [timetables, setTimetables] = useState<ExamTimetable[]>(() => {
         const saved = localStorage.getItem('EXAM_TIMETABLES');
@@ -84,26 +86,39 @@ export default function ExamManagement() {
         (exam.courseCodes && exam.courseCodes.some(c => c.toLowerCase().includes(searchQuery.toLowerCase())))
     );
 
-    const handleAddExam = () => {
-        if (selectedYears.length === 0 || !date) {
-            toast({ title: "Error", description: "Select year(s) and date.", variant: "destructive" });
-            return;
-        }
-        const newExam: Exam = {
-            id: `ex-${Date.now()}`,
-            type: examType,
-            years: selectedYears,
-            courseCodes: [`SEM-${semester}-GENERAL`],
-            date: date,
-            startTime: startTime,
-            endTime: endTime,
-            status: "Pending"
-        };
-        setExams([...exams, newExam]);
-        setIsAddOpen(false);
-        setSelectedYears([]);
-        setDate("");
-        toast({ title: "Schedule Created" });
+    const groupedExams = useMemo(() => {
+        const groups: Record<string, { main: Exam, sessions: Exam[] }> = {};
+        exams.forEach(e => {
+            // Extract Timetable ID from EXT-ttID-idx format or use exam ID
+            const ttId = e.id.startsWith('EXT-') ? e.id.split('-')[1] : e.id;
+            if (!groups[ttId]) {
+                groups[ttId] = { main: e, sessions: [] };
+            }
+            groups[ttId].sessions.push(e);
+        });
+        return Object.values(groups);
+    }, [exams]);
+
+    const handleGenerateAllocationGroup = (ttId: string) => {
+        const sessions = exams.filter(e => e.id.includes(`-${ttId}-`) || e.id === ttId);
+        let allSeating: any[] = [];
+        let allInvigs: any[] = [];
+        
+        sessions.forEach(session => {
+            const { seating, invigilators } = allocateAdvancedExamSeating(session);
+            allSeating = [...allSeating, ...seating];
+            allInvigs = [...allInvigs, ...invigilators];
+        });
+
+        const sessionIds = sessions.map(s => s.id);
+        setSeatingPlans(prev => [...prev.filter(s => !sessionIds.includes(s.examId)), ...allSeating]);
+        setInvigilationList(prev => [...prev.filter(i => !sessionIds.includes(i.examId)), ...allInvigs]);
+        setExams(prev => prev.map(e => sessionIds.includes(e.id) ? { ...e, status: "Allocated" } : e));
+        
+        toast({ 
+            title: "Cycle Allocation Complete", 
+            description: `Generated seating and duties for ${sessions.length} sessions.`
+        });
     };
 
     const handleGenerateAllocation = (examId: string) => {
@@ -154,7 +169,17 @@ export default function ExamManagement() {
             toast({ title: "Error", description: "Select year(s), date and semester.", variant: "destructive" });
             return;
         }
-        const tt = generateExamTimetable(selectedYears, parseInt(semester), date, examType);
+        const config = {
+            years: selectedYears,
+            semester: parseInt(semester),
+            startDate: date,
+            type: examType,
+            fnStart: fnStart + (parseInt(fnStart.split(':')[0]) >= 12 ? ' PM' : ' AM'),
+            fnEnd: fnEnd + (parseInt(fnEnd.split(':')[0]) >= 12 ? ' PM' : ' AM'),
+            anStart: anStart + (parseInt(anStart.split(':')[0]) >= 12 ? ' PM' : ' AM'),
+            anEnd: anEnd + (parseInt(anEnd.split(':')[0]) >= 12 ? ' PM' : ' AM'),
+        };
+        const tt = generateExamTimetable(config);
         setTimetables([...timetables, tt]);
         
         if (autoCreateRosters) {
@@ -225,7 +250,7 @@ export default function ExamManagement() {
                                 <FileSpreadsheet className="mr-2 h-4 w-4" /> Generate Timetable
                             </Button>
                         </DialogTrigger>
-                        <DialogContent className="sm:max-w-xl p-0 overflow-hidden rounded-[2.5rem] border-border/40 shadow-2xl backdrop-blur-3xl bg-background/95">
+                        <DialogContent className="sm:max-w-3xl p-0 overflow-hidden rounded-[2.5rem] border-border/40 shadow-2xl backdrop-blur-3xl bg-background/95">
                             <div className="bg-emerald-600 p-10 text-white relative overflow-hidden">
                                 <div className="absolute top-0 right-0 p-8 opacity-20 rotate-12">
                                     <ListTodo className="h-32 w-32" />
@@ -287,6 +312,34 @@ export default function ExamManagement() {
                                         <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
                                     </div>
                                 </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 rounded-xl border border-border/50 bg-muted/10">
+                                    <div className="space-y-4">
+                                        <Label className="text-[11px] font-black uppercase text-primary tracking-widest">Morning Slot (FN)</Label>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div className="space-y-2">
+                                                <Label className="text-[10px] font-bold text-muted-foreground">Start</Label>
+                                                <Input type="time" value={fnStart} onChange={(e) => setFnStart(e.target.value)} className="h-9" />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label className="text-[10px] font-bold text-muted-foreground">End</Label>
+                                                <Input type="time" value={fnEnd} onChange={(e) => setFnEnd(e.target.value)} className="h-9" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <Label className="text-[11px] font-black uppercase text-primary tracking-widest">Afternoon Slot (AN)</Label>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div className="space-y-2">
+                                                <Label className="text-[10px] font-bold text-muted-foreground">Start</Label>
+                                                <Input type="time" value={anStart} onChange={(e) => setAnStart(e.target.value)} className="h-9" />
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label className="text-[10px] font-bold text-muted-foreground">End</Label>
+                                                <Input type="time" value={anEnd} onChange={(e) => setAnEnd(e.target.value)} className="h-9" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div className="flex items-center space-x-2 bg-emerald-600/5 p-4 rounded-2xl border border-emerald-600/10">
                                     <Checkbox 
                                         id="autoRoster" 
@@ -303,103 +356,6 @@ export default function ExamManagement() {
                             <div className="p-8 bg-muted/30 border-t border-border/30 flex justify-end gap-3">
                                 <Button variant="ghost" className="rounded-xl font-bold px-8 h-12" onClick={() => setIsTimetableOpen(false)}>Cancel</Button>
                                 <Button className="rounded-xl font-black px-12 h-12 bg-emerald-600 text-white" onClick={handleCreateTimetable}>Generate Official Sheet</Button>
-                            </div>
-                        </DialogContent>
-                    </Dialog>
-                    <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-                        <DialogTrigger asChild>
-                            <Button size="sm" className="rounded-xl font-black shadow-lg shadow-primary/20 flex-1 md:flex-none h-10 px-6 transition-all hover:scale-105 active:scale-95 bg-primary group overflow-hidden relative">
-                                <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                                <Plus className="mr-2 h-4 w-4 relative z-10" /> 
-                                <span className="relative z-10">New Institutional Roster</span>
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-xl p-0 overflow-hidden rounded-[2.5rem] border-border/40 shadow-2xl backdrop-blur-3xl bg-background/95">
-                            <div className="bg-primary p-10 text-white relative overflow-hidden">
-                                <div className="absolute top-0 right-0 p-8 opacity-20 rotate-12">
-                                    <Brain className="h-32 w-32" />
-                                </div>
-                                <div className="relative z-10 space-y-2">
-                                    <Badge className="bg-white/20 text-white border-none text-[8px] font-black tracking-widest uppercase">Institutional Hub</Badge>
-                                    <DialogTitle className="text-3xl font-black tracking-tighter">Command Scheduler</DialogTitle>
-                                    <p className="text-sm font-bold opacity-80 max-w-[80%]">Configure your next examination cycle with institutional-grade precision.</p>
-                                </div>
-                            </div>
-                            <div className="p-10 space-y-8 max-h-[70vh] overflow-y-auto custom-scrollbar">
-                                <div className="space-y-4">
-                                    <Label className="text-[11px] font-black uppercase text-primary tracking-widest flex items-center gap-2">
-                                        <div className="w-1.5 h-4 bg-primary rounded-full" />
-                                        Target Year Cohorts
-                                    </Label>
-                                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                                        {[1, 2, 3, 4].map((year) => {
-                                            const isSelected = selectedYears.includes(year);
-                                            return (
-                                                <div 
-                                                    key={year} 
-                                                    onClick={() => setSelectedYears(isSelected ? selectedYears.filter(y => y !== year) : [...selectedYears, year])}
-                                                    className={`cursor-pointer group relative flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-300 ${isSelected ? 'border-primary bg-primary/5 shadow-inner' : 'border-border/50 hover:border-primary/30 hover:bg-muted/50'}`}
-                                                >
-                                                    <span className={`text-2xl font-black mb-1 transition-colors ${isSelected ? 'text-primary' : 'text-muted-foreground'}`}>{year}</span>
-                                                    <span className={`text-[9px] font-black uppercase tracking-widest ${isSelected ? 'text-primary' : 'text-muted-foreground'}`}>{year === 1 ? 'st' : year === 2 ? 'nd' : year === 3 ? 'rd' : 'th'} Year</span>
-                                                    {isSelected && <div className="absolute top-2 right-2 h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    <div className="space-y-6">
-                                        <div className="space-y-2">
-                                            <Label className="text-[11px] font-black uppercase text-muted-foreground tracking-widest">Exam Category</Label>
-                                            <Select value={examType} onValueChange={(v: any) => setExamType(v)}>
-                                                <SelectTrigger className="h-12 rounded-xl border-border/50 font-bold bg-muted/20">
-                                                    <SelectValue />
-                                                </SelectTrigger>
-                                                <SelectContent className="rounded-xl border-border/50">
-                                                    <SelectItem value="Mid-1" className="font-bold">Mid Term 1</SelectItem>
-                                                    <SelectItem value="Mid-2" className="font-bold">Mid Term 2</SelectItem>
-                                                    <SelectItem value="Semester" className="font-bold">Semester Exams</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
-                                        <div className="space-y-2">
-                                            <Label className="text-[11px] font-black uppercase text-muted-foreground tracking-widest">Current Semester</Label>
-                                            <Select value={semester} onValueChange={setSemester}>
-                                                <SelectTrigger className="h-12 rounded-xl border-border/50 font-bold bg-muted/20">
-                                                    <SelectValue />
-                                                </SelectTrigger>
-                                                <SelectContent className="rounded-xl border-border/50">
-                                                    {Array.from({ length: 8 }, (_, i) => (
-                                                        <SelectItem key={i + 1} value={(i + 1).toString()} className="font-bold">Semester {i + 1}</SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-6">
-                                        <div className="space-y-2">
-                                            <Label className="text-[11px] font-black uppercase text-muted-foreground tracking-widest">Execution Date</Label>
-                                            <Input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="h-12 rounded-xl border-border/50 font-bold bg-muted/20" />
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <div className="space-y-2">
-                                                <Label className="text-[11px] font-black uppercase text-muted-foreground tracking-widest">Commencement</Label>
-                                                <Input type="time" value={startTime} onChange={(e) => setStartTime(e.target.value)} className="h-12 rounded-xl border-border/50 font-bold bg-muted/20" />
-                                            </div>
-                                            <div className="space-y-2">
-                                                <Label className="text-[11px] font-black uppercase text-muted-foreground tracking-widest">Conclusion</Label>
-                                                <Input type="time" value={endTime} onChange={(e) => setEndTime(e.target.value)} className="h-12 rounded-xl border-border/50 font-bold bg-muted/20" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="p-8 bg-muted/30 border-t border-border/30 flex justify-end gap-3">
-                                <Button variant="ghost" className="rounded-xl font-bold px-8 h-12" onClick={() => setIsAddOpen(false)}>Cancel</Button>
-                                <Button className="rounded-xl font-black px-12 h-12 bg-primary shadow-xl shadow-primary/30" onClick={handleAddExam}>Deploy Schedule</Button>
                             </div>
                         </DialogContent>
                     </Dialog>
@@ -437,45 +393,63 @@ export default function ExamManagement() {
                             </div>
                         </CardHeader>
                         <div className="divide-y divide-border/30">
-                            {filteredExams.map((exam) => (
-                                <div key={exam.id} className="p-5 hover:bg-muted/5 transition-all">
-                                    <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
-                                        <div className="flex items-center gap-4 flex-1">
-                                            <div className={`p-3 rounded-xl ${exam.status === 'Allocated' ? 'bg-emerald-500/10 text-emerald-600' : 'bg-primary/10 text-primary'}`}>
-                                                <Calendar className="h-5 w-5" />
-                                            </div>
-                                            <div className="space-y-0.5">
-                                                <div className="flex items-center gap-2">
-                                                    <h3 className="text-base font-bold">
-                                                        {exam.years?.map(y => `${y}${y === 1 ? 'st' : y === 2 ? 'nd' : 'th'}`).join('+') || "Legacy"} Yr Exams
+                             {groupedExams.length === 0 && (
+                                <div className="py-20 text-center opacity-30">
+                                    <Brain className="h-12 w-12 mx-auto mb-3" />
+                                    <p className="font-black uppercase tracking-widest text-xs">No active rosters initialized</p>
+                                </div>
+                            )}
+                            {groupedExams.map((group) => {
+                                const { main, sessions } = group;
+                                const isCycle = sessions.length > 1;
+                                const allAllocated = sessions.every(s => s.status === "Allocated");
+                                const ttId = main.id.startsWith('EXT-') ? main.id.split('-')[1] : main.id;
+
+                                return (
+                                    <div key={ttId} className="group relative bg-muted/20 hover:bg-white dark:hover:bg-slate-900/50 p-6 rounded-[2rem] border border-border/40 transition-all hover:shadow-xl hover:scale-[1.01]">
+                                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                                            <div className="flex items-center gap-5">
+                                                <div className="h-14 w-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-500 shadow-sm">
+                                                    <Calendar className="h-6 w-6" />
+                                                </div>
+                                                <div className="space-y-1">
+                                                    <div className="flex items-center gap-2">
+                                                        <Badge variant="outline" className="text-[8px] font-black uppercase tracking-widest border-primary/20 text-primary">{main.type}</Badge>
+                                                        {isCycle && <Badge className="bg-indigo-500/10 text-indigo-600 border-none text-[8px] font-black uppercase tracking-widest">{sessions.length} Sessions</Badge>}
+                                                    </div>
+                                                    <h3 className="text-xl font-black tracking-tighter text-foreground">
+                                                        {isCycle ? `${main.type} Assessment Cycle` : (main.courseCodes[0] || "General Exam")}
                                                     </h3>
-                                                    <Badge variant="outline" className="text-[8px] h-4 uppercase">{exam.type}</Badge>
-                                                </div>
-                                                <div className="flex gap-4 text-[10px] text-muted-foreground font-bold uppercase tracking-widest leading-loose">
-                                                    <span className="flex items-center gap-1.5"><Clock className="h-3 w-3" /> {exam.date}</span>
-                                                    <span className="flex items-center gap-1.5"><School className="h-3 w-3" /> All Branches</span>
-                                                    <span className={`flex items-center gap-1.5 ${exam.status === 'Allocated' ? 'text-emerald-600' : 'text-amber-500'}`}>
-                                                        <div className={`h-1.5 w-1.5 rounded-full ${exam.status === 'Allocated' ? 'bg-emerald-500' : 'bg-amber-500'}`} /> {exam.status}
-                                                    </span>
+                                                    <div className="flex items-center gap-4 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                                                        <span className="flex items-center gap-1.5"><Clock className="h-3 w-3" /> {isCycle ? 'Multi-Day Event' : main.date}</span>
+                                                        <span className="flex items-center gap-1.5"><Users className="h-3 w-3" /> Yrs: {main.years?.join(",")}</span>
+                                                        <span className={`inline-flex items-center gap-1.5 ${allAllocated ? 'text-emerald-600' : 'text-amber-600'}`}>
+                                                            <div className={`h-1.5 w-1.5 rounded-full ${allAllocated ? 'bg-emerald-600 animate-pulse' : 'bg-amber-600'}`} />
+                                                            {allAllocated ? 'Seating Finalized' : 'Draft Pending'}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="flex gap-2 w-full lg:w-auto">
-                                            {exam.status === 'Pending' ? (
-                                                <Button size="sm" className="font-bold flex-1" onClick={() => handleGenerateAllocation(exam.id)}>Generate Seats</Button>
-                                            ) : (
-                                                <>
-                                                    <Button variant="outline" size="sm" className="px-3" onClick={() => handleReset(exam.id)}><RefreshCw className="h-3.5 w-3.5" /></Button>
-                                                    <Button size="sm" variant="secondary" className="font-bold border border-border/10 px-6" onClick={() => setActiveTab('seating')}>View Tables</Button>
-                                                </>
-                                            )}
-                                            <Button variant="outline" size="sm" className="px-3 text-destructive hover:bg-destructive/10 border-destructive/20" onClick={() => handleDeleteRoster(exam.id)}>
-                                                <Trash2 className="h-4 w-4" />
-                                            </Button>
+                                            <div className="flex gap-2 w-full lg:w-auto">
+                                                {!allAllocated ? (
+                                                    <Button size="sm" className="rounded-xl font-black px-8 bg-primary shadow-lg shadow-primary/20 h-11" onClick={() => handleGenerateAllocationGroup(ttId)}>
+                                                        <Zap className="h-4 w-4 mr-2" /> Bulk Generate Seats
+                                                    </Button>
+                                                ) : (
+                                                    <>
+                                                        <Button variant="outline" size="sm" className="rounded-xl font-bold px-6 h-11" onClick={() => setActiveTab('seating')}>
+                                                            <MapPin className="h-4 w-4 mr-2" /> All Seating Charts
+                                                        </Button>
+                                                        <Button variant="ghost" size="sm" className="rounded-xl font-bold text-xs h-11 px-4 hover:bg-destructive/5 hover:text-destructive" onClick={() => handleDeleteRoster(main.id)}>
+                                                            <Trash2 className="h-4 w-4" />
+                                                        </Button>
+                                                    </>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
                         </div>
                     </Card>
                 </TabsContent>
@@ -594,55 +568,111 @@ export default function ExamManagement() {
 
                 <TabsContent value="seating">
                     <Card className="border-border/40 shadow-sm rounded-2xl overflow-hidden">
-                        <CardHeader className="flex flex-row justify-between items-center p-5 border-b">
-                            <CardTitle className="text-lg font-bold">Seating Map</CardTitle>
-                            <Button size="sm" variant="outline" className="h-8 font-bold text-xs" onClick={() => toast({ title: "Exporting..." })}>
-                                <Download className="h-3.5 w-3.5 mr-2" /> Export
-                            </Button>
+                        <CardHeader className="flex flex-col md:flex-row justify-between items-start md:items-center p-5 border-b gap-4">
+                            <div className="space-y-1">
+                                <CardTitle className="text-lg font-bold">Seating Map</CardTitle>
+                                <p className="text-[10px] font-bold text-muted-foreground uppercase opacity-60">Floor-wise Hall Distribution</p>
+                            </div>
+                            <div className="flex items-center gap-3 w-full md:w-auto">
+                                <Select value={selectedRosterId} onValueChange={setSelectedRosterId}>
+                                    <SelectTrigger className="h-9 w-[280px] bg-muted/20 border-border/40 font-bold text-xs rounded-xl">
+                                        <div className="flex items-center gap-2">
+                                            <Filter className="h-3 w-3 text-primary" />
+                                            <SelectValue placeholder="Display All Rosters" />
+                                        </div>
+                                    </SelectTrigger>
+                                    <SelectContent className="rounded-xl">
+                                        <SelectItem value="all" className="font-bold text-xs uppercase tracking-widest">Global View (Combined)</SelectItem>
+                                        {exams.filter(e => e.status === "Allocated").map(exam => (
+                                            <SelectItem key={exam.id} value={exam.id} className="text-xs font-bold">
+                                                {exam.date.split('-').reverse().join('/')} - {exam.startTime} ({exam.type})
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <Button size="sm" variant="outline" className="h-9 font-bold text-xs rounded-xl px-4" onClick={() => toast({ title: "Exporting..." })}>
+                                    <Download className="h-3.5 w-3.5 mr-2" /> Export
+                                </Button>
+                            </div>
                         </CardHeader>
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-xs">
-                                <thead className="bg-muted/10 font-black text-muted-foreground border-b uppercase tracking-widest text-[10px]">
-                                    <tr>
-                                        <th className="px-6 py-4 text-left">Hall</th>
-                                        <th className="px-6 py-4 text-left">Roll Number</th>
-                                        {userRole === 'faculty' && <th className="px-6 py-4 text-left">Student Information</th>}
-                                        <th className="px-6 py-4 text-center">Seat / Bench</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-border/20 bg-card/40">
-                                    {seatingPlans.map((plan, idx) => (
-                                        <tr key={idx} className="hover:bg-primary/[0.02] transition-colors group">
-                                            <td className="px-6 py-4">
-                                                <div className="flex flex-col">
-                                                    <span className="font-bold text-foreground">{plan.room}</span>
-                                                    <span className="text-[10px] text-muted-foreground opacity-60 font-black uppercase tracking-tighter">{plan.block}</span>
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 font-mono text-primary font-black uppercase tracking-tighter text-sm">{plan.rollNumber}</td>
-                                            {userRole === 'faculty' && (
-                                                <td className="px-6 py-4">
-                                                    <div className="flex flex-col">
-                                                        <span className="font-bold text-foreground">{plan.studentName}</span>
-                                                        <span className="text-[10px] font-black uppercase text-muted-foreground/70">{plan.branch}</span>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5">
+                            {Array.from(new Set(seatingPlans.filter(s => selectedRosterId === "all" || s.examId === selectedRosterId).map(s => s.room))).map((room) => {
+                                const roomSeats = seatingPlans.filter(s => (selectedRosterId === "all" || s.examId === selectedRosterId) && s.room === room);
+                                const invigs = invigilationList.filter(i => (selectedRosterId === "all" || i.examId === selectedRosterId) && i.room === room);
+                                
+                                return (
+                                    <Card key={room} className="border-border/60 shadow-md rounded-[1.5rem] overflow-hidden hover:border-primary/40 transition-all duration-300">
+                                        <CardHeader className="p-4 border-b border-border/40 bg-muted/20">
+                                            <div className="flex justify-between items-center">
+                                                <div className="space-y-1">
+                                                    <h4 className="text-[10px] font-black uppercase text-primary tracking-[0.2em]">{roomSeats[0].block}</h4>
+                                                    <div className="text-xl font-black tracking-tighter flex items-center gap-2">
+                                                        <MapPin className="h-4 w-4" /> Hall {room}
                                                     </div>
-                                                </td>
-                                            )}
-                                            <td className="px-6 py-4 text-center">
-                                                <div className="bg-primary/10 text-primary border border-primary/20 h-9 w-10 mx-auto flex items-center justify-center rounded-xl font-black text-sm shadow-sm">{plan.seatNumber}</div>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+                                                </div>
+                                                <Badge variant="outline" className="h-6 font-bold">{roomSeats.length} Students</Badge>
+                                            </div>
+                                        </CardHeader>
+                                        <div className="p-4 space-y-4">
+                                            <div className="space-y-2">
+                                                <h5 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-60 flex items-center gap-1.5"><UserCheck className="h-3 w-3" /> Assigned Invigilators</h5>
+                                                {invigs.length > 0 ? (
+                                                    <div className="flex flex-col gap-1.5">
+                                                        {invigs.map((inv, idx) => (
+                                                            <span key={idx} className="text-xs font-bold bg-primary/5 text-primary px-2 py-1 rounded w-fit">{inv.facultyName}</span>
+                                                        ))}
+                                                    </div>
+                                                ) : <span className="text-xs text-amber-600 font-bold">Unassigned</span>}
+                                            </div>
+                                            <div className="space-y-2 border-t pt-3">
+                                                <h5 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-60">Candidate Roll Numbers (Strict Format)</h5>
+                                                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto custom-scrollbar pr-1">
+                                                    {roomSeats.map((seat, idx) => (
+                                                        <Badge key={idx} variant="outline" className="text-[10px] font-mono font-bold bg-white text-foreground">{seat.rollNumber}</Badge>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Card>
+                                );
+                            })}
+                            
+                            {seatingPlans.length === 0 && (
+                                <div className="col-span-full py-12 text-center text-muted-foreground">
+                                    <Users className="h-10 w-10 mx-auto mb-3 opacity-20" />
+                                    <p className="font-bold">No generated seating arrangements available.</p>
+                                </div>
+                            )}
                         </div>
                     </Card>
                 </TabsContent>
 
                 <TabsContent value="invigilation">
+                    <div className="mb-6 flex justify-between items-center bg-card/60 p-4 rounded-2xl border border-border/50">
+                        <div className="flex items-center gap-3">
+                            <ShieldCheck className="h-5 w-5 text-primary" />
+                            <div>
+                                <h3 className="text-sm font-black">Patrol Assignments</h3>
+                                <p className="text-[10px] font-bold text-muted-foreground uppercase">Faculty Duty Management</p>
+                            </div>
+                        </div>
+                        <Select value={selectedRosterId} onValueChange={setSelectedRosterId}>
+                            <SelectTrigger className="h-9 w-[280px] bg-white border-border/40 font-bold text-xs rounded-xl">
+                                <SelectValue placeholder="Display All" />
+                            </SelectTrigger>
+                            <SelectContent className="rounded-xl">
+                                <SelectItem value="all" className="font-bold text-xs">All Duties</SelectItem>
+                                {exams.filter(e => e.status === "Allocated").map(exam => (
+                                    <SelectItem key={exam.id} value={exam.id} className="text-xs font-bold">
+                                        {exam.date.split('-').reverse().join('/')} - {exam.startTime}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                        {Array.from(new Set(invigilationList.map(i => i.room))).map((roomName) => {
-                            const roomDuties = invigilationList.filter(i => i.room === roomName);
+                        {Array.from(new Set(invigilationList.filter(i => selectedRosterId === "all" || i.examId === selectedRosterId).map(i => i.room))).map((roomName) => {
+                            const roomDuties = invigilationList.filter(i => (selectedRosterId === "all" || i.examId === selectedRosterId) && i.room === roomName);
                             const firstDuty = roomDuties[0];
                             return (
                                 <Card key={roomName} className="border-border/60 shadow-md rounded-[1.5rem] overflow-hidden bg-white hover:border-primary/40 transition-all duration-300">

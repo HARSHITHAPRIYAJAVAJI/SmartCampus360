@@ -48,9 +48,11 @@ export default function AdminDashboard() {
         { title: "Generate Reports", description: "Create accreditation reports", action: () => navigate('/dashboard/accreditation') },
         { title: "Manage Courses", description: "Add or modify course catalog", action: () => navigate('/dashboard/manage-courses') },
         { title: "Exam Seating Allocation", description: "Generate and manage exam tables", action: () => navigate('/dashboard/exams') },
+        { title: "Leave & Requests", description: "Manage faculty leave and swaps", action: () => navigate('/dashboard/requests') },
         { title: "Institutional System Reset", description: "Wipe all local data and restart engine", action: () => {
-            if (window.confirm("⚠️ DANGER: This will PERMANENTLY DELETE all generated timetables, exam schedules, and local directory changes. Are you sure?")) {
+            if (window.confirm("⚠️ DANGER: This will PERMANENTLY DELETE all generated timetables, leave requests, exam schedules, and local directory changes. Are you sure?")) {
                 localStorage.removeItem('published_timetables');
+                localStorage.removeItem('FACULTY_REQUESTS');
                 localStorage.removeItem('EXAM_SCHEDULE');
                 localStorage.removeItem('EXAM_SEATING_PLAN');
                 localStorage.removeItem('INVIGILATION_LIST');

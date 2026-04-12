@@ -3,10 +3,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar, Clock, Plus, Edit, Filter, BookOpen, User, Building2, Wand2, FileText, ShieldCheck, UserCheck, Printer, Mail, Phone } from "lucide-react";
+import { Calendar, Clock, Plus, Edit, Filter, BookOpen, User, Building2, Wand2, FileText, ShieldCheck, UserCheck, Printer, Mail, Phone, MapPin } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { EXAM_BRANCHES, ExamTimetable } from "@/utils/examTimetableGenerator";
+import { SeatingAssignment, InvigilationDuty } from "@/data/examData";
 import { useOutletContext } from "react-router-dom";
 import { AIML_TIMETABLES, FACULTY_LOAD, getTimetable } from "@/data/aimlTimetable";
 import { MOCK_STUDENTS } from "@/data/mockStudents";
@@ -34,10 +35,12 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
       window.addEventListener('storage', handleStorage);
       const handleCustomEvent = () => setStorageSyncStamp(s => s + 1);
       window.addEventListener('timetable_published', handleCustomEvent);
+      window.addEventListener('faculty_request_updated', handleCustomEvent);
       
       return () => {
           window.removeEventListener('storage', handleStorage);
           window.removeEventListener('timetable_published', handleCustomEvent);
+          window.removeEventListener('faculty_request_updated', handleCustomEvent);
       };
   }, []);
   
@@ -50,7 +53,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
     if (userRole === "student") {
       if (!student) return {};
 
-      const semNum = student.semester % 2 === 0 ? 2 : 1;
+      const semNum = selectedSemester % 2 === 0 ? 2 : 1;
       
       // Resolve which source of truth to use
       const publishedStoreStr = localStorage.getItem('published_timetables');
@@ -59,19 +62,10 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
       
       let publishedEntry = allTimetables ? allTimetables[strictPublishedKey] : null;
 
-      if (!publishedEntry && allTimetables) {
-          const altSemNum = semNum === 1 ? 2 : 1;
-          const altKey = `${(student.branch || "").toUpperCase()}-${student.year}-${altSemNum}-${student.section}`;
-          if (allTimetables[altKey]) {
-              publishedEntry = allTimetables[altKey];
-          }
-      }
-
       // Logic: Prioritize the specific published entry, fallback to institutional defaults ONLY on initial boot before any publishing happens.
       const useDemoData = publishedStoreStr === null;
       const liveTable = publishedEntry?.grid || 
-                        (publishedEntry && !publishedEntry.metadata ? publishedEntry : 
-                        (useDemoData ? getTimetable(student.year, semNum, student.section, student.branch) : {}));
+                        (publishedEntry && !publishedEntry.metadata ? publishedEntry : {});
       const liveMetadata = publishedEntry?.metadata || null;
 
       const result: any = { slots: {}, metadata: liveMetadata };
@@ -93,12 +87,30 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
         const fullName = formatSubjectName(session.courseName || session.courseCode);
         const abbrev = getSubjectAbbreviation(session.courseName || session.courseCode);
 
+        // Check for a substitution for this specific date/time for the student's section
+        const savedRequests = localStorage.getItem('FACULTY_REQUESTS');
+        const approvedRequests = savedRequests ? JSON.parse(savedRequests).filter((r: any) => 
+          r.status === 'approved' && 
+          (r.type === 'replacement' || r.type === 'swap')
+        ) : [];
+
+        const currentSubstitution = approvedRequests.find((r: any) => {
+           const rDate = new Date(r.date);
+           const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
+           const rStartTime = r.period?.split('-')[0];
+           const revMap: any = { "09:40": "09:30", "10:40": "10:30", "11:40": "11:40", "01:20": "01:30", "02:20": "02:30", "03:20": "03:30" };
+           return rDayName === day && (r.period === time || rStartTime === (revMap[time] || time));
+        });
+
+        const displayFaculty = currentSubstitution ? currentSubstitution.targetName : (session.faculty || loadInfo?.faculty || "Staff");
+
         result.slots[day][time] = {
           subject: abbrev,
           fullName: fullName,
           courseCode: session.courseCode,
           room: session.room || loadInfo?.room || "TBD",
-          faculty: session.faculty || loadInfo?.faculty || "Staff",
+          faculty: displayFaculty,
+          isSubstituted: !!currentSubstitution,
           type: (session.courseName || session.courseCode || "").toLowerCase().includes('lab') ? 'lab' : 'lecture',
           duration: 1,
           isLive: !!publishedEntry
@@ -120,8 +132,6 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
       const publishedStoreStr = localStorage.getItem('published_timetables');
       const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
       
-      const useDemoDataFaculty = publishedStoreStr === null;
-      
       const allTimetablesToProcess: Record<string, any> = {};
       const branches = ["CSM", "CSE", "IT", "ECE"];
       const years = [1, 2, 3, 4];
@@ -134,11 +144,6 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
                   const publishedEntry = publishedTimetables[publishedKey];
                   if (publishedEntry) {
                       allTimetablesToProcess[publishedKey] = publishedEntry.grid || publishedEntry;
-                  } else if (useDemoDataFaculty) {
-                      const fallback = getTimetable(year, selectedSemester, section, branch);
-                      if (Object.keys(fallback).length > 0) {
-                          allTimetablesToProcess[publishedKey] = fallback;
-                      }
                   }
               });
           });
@@ -150,63 +155,86 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
         const [dept, year, sem, section] = key.split('-');
 
         const semKey = `${year}-${sem}`;
-        const load = FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || [];
+        const load = (FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || []) as any[];
+        // Load Approved Substitutions/Swaps
+        const savedRequests = localStorage.getItem('FACULTY_REQUESTS');
+        const approvedRequests = savedRequests ? JSON.parse(savedRequests).filter((r: any) => 
+          r.status === 'approved' && 
+          (r.type === 'replacement' || r.type === 'swap')
+        ) : [];
         
         Object.entries(table).forEach(([dayTime, session]: [string, any]) => {
           if (!session) return;
+          const [day, time] = dayTime.split('-');
           
+          // Check for a substitution ONLY IF this session's faculty matches the leave-taker
+          const currentSubstitution = approvedRequests.find((r: any) => {
+             const rDate = new Date(r.date);
+             const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
+             const isMatchingSlot = rDayName === day && r.period === time && r.section === key;
+             const isReplacingThisFaculty = r.senderId === session.facultyId || 
+                                           (session.faculty && r.senderName && session.faculty.toLowerCase().includes(r.senderName.toLowerCase()));
+             return isMatchingSlot && isReplacingThisFaculty;
+          });
+
           let isAssigned = false;
-          if (session.facultyId && facultyId) {
-            isAssigned = session.facultyId === facultyId;
+          let displayFaculty = session.faculty || "Staff";
+          let isSubstituted = !!currentSubstitution;
+
+          if (isSubstituted && currentSubstitution) {
+             displayFaculty = currentSubstitution.targetName;
+          }
+
+          // 1. ID-BASED MATCHING ONLY for the viewer (if they are the leave-taking faculty)
+          if (!isAssigned && session.facultyId && facultyId) {
+            isAssigned = session.facultyId === facultyId || session.originalFacultyId === facultyId;
           } 
           if (!isAssigned && session.facultyIds && session.facultyIds.includes(facultyId)) {
               isAssigned = true;
           }
-          
+
+          // 2. NAME-BASED MATCHING (More inclusive matching for multi-departmental support)
           if (!isAssigned) {
-            if (session.faculty) {
-              isAssigned = session.faculty.trim().toLowerCase() === facultyName.trim().toLowerCase();
-            } else if (session.room && (session.room.includes("Mrs.") || session.room.includes("Dr."))) {
-              isAssigned = session.room.trim().toLowerCase() === facultyName.trim().toLowerCase();
+            const normalizedFaculty = (session.faculty || "").toLowerCase();
+            const normalizedTarget = facultyName.toLowerCase();
+
+            if (normalizedTarget && (
+                (normalizedFaculty && (normalizedFaculty.includes(normalizedTarget) || normalizedTarget.includes(normalizedFaculty))) ||
+                (session.originalFacultyName && session.originalFacultyName.toLowerCase().includes(normalizedTarget))
+            )) {
+              isAssigned = true;
             }
           }
 
-          if (!isAssigned && !session.faculty && (!session.room || (!session.room.includes("Mrs.") && !session.room.includes("Dr.")))) {
-            const courseCode = session.courseCode || (session.subject?.split(' (')[0]);
-            const eligibleFaculty = (load as any[])
-              .filter(l => l.code === courseCode)
-              .map(l => ({ name: l.faculty, id: l.id }));
-
-            if (eligibleFaculty.length > 0) {
-              const sectionIndex = section.charCodeAt(0) - 'A'.charCodeAt(0);
-              const assignedIndex = sectionIndex % eligibleFaculty.length;
-              const assignedFaculty = eligibleFaculty[assignedIndex];
-              
-              isAssigned = assignedFaculty.id === facultyId || 
-                           assignedFaculty.name?.trim().toLowerCase() === facultyName.trim().toLowerCase();
-            }
+          if (!isAssigned && !session.faculty && !session.facultyId) {
+              const cleanCode = (session.courseName || session.courseCode || session.subject || "Unknown").split(' (')[0].trim();
+              const sessionLoadInfo = load.find(l => l.code === cleanCode);
+              if (sessionLoadInfo && (((sessionLoadInfo as any).id === facultyId) || (sessionLoadInfo.faculty && sessionLoadInfo.faculty === facultyName))) {
+                  isAssigned = true;
+              }
           }
 
           const isSameSemester = sem === selectedSemester.toString();
           if (!isSameSemester) isAssigned = false;
           
           if (isAssigned) {
-            let [day, time] = dayTime.split('-');
+            let [d, t] = dayTime.split('-');
             const timeMap: Record<string, string> = { "09:30": "09:40", "10:30": "10:40", "11:40": "11:40", "01:30": "01:20", "02:30": "02:20", "03:30": "03:20" };
-            time = timeMap[time] || time;
-            if (!facultyResult.slots[day]) facultyResult.slots[day] = {};
+            t = timeMap[t] || t;
+            if (!facultyResult.slots[d]) facultyResult.slots[d] = {};
             
             const rawSubject = session.courseName || session.courseCode || session.subject || "Unknown";
             const cleanCode = rawSubject.split(' (')[0].trim();
             const fullName = courseNameMap[cleanCode] || cleanCode;
             const abbrev = getSubjectAbbreviation(fullName);
-            const subjectDisplay = `${abbrev} (${dept}-${year}${section})`;
 
-            facultyResult.slots[day][time] = {
+            facultyResult.slots[d][t] = {
               subject: abbrev,
               fullName: `${fullName} (${dept}-${year}${section})`,
               room: session.room && (session.room.includes("Mrs.") || session.room.includes("Dr.")) ? "TBD" : (session.room || "TBD"),
               branch: `${dept} | Y${year} S${sem} - Sec ${section}`,
+              faculty: displayFaculty,
+              isSubstituted: isSubstituted,
               type: (fullName || "").toLowerCase().includes('lab') ? 'lab' : 'lecture',
               duration: 1,
               isLive: true
@@ -235,7 +263,26 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
     }
     
     return published; // Faculty see all published for now
-  }, [userRole, user.id]);
+  }, [userRole, user.id, storageSyncStamp]);
+
+  const studentSeating = useMemo(() => {
+    if (userRole !== "student") return [];
+    const saved = localStorage.getItem('EXAM_SEATING_PLAN');
+    if (!saved) return [];
+    const all = JSON.parse(saved) as SeatingAssignment[];
+    const mySeat = all.find(s => s.rollNumber.toUpperCase() === user.id.toUpperCase());
+    if (!mySeat) return [];
+    // Get all students in the same room
+    return all.filter(s => s.room === mySeat.room && s.examId === mySeat.examId);
+  }, [userRole, user.id, storageSyncStamp]);
+
+  const facultyDuties = useMemo(() => {
+    if (userRole !== "faculty") return [];
+    const saved = localStorage.getItem('INVIGILATION_LIST');
+    if (!saved) return [];
+    const all = JSON.parse(saved) as InvigilationDuty[];
+    return all.filter(duty => duty.facultyName.toLowerCase().includes(user.name.toLowerCase()));
+  }, [userRole, user.name, storageSyncStamp]);
 
   const timetableData = (processedData as any).slots || {};
 
@@ -339,8 +386,11 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
           }`}>
             {session.subject}
           </div>
-          <div className="text-[12px] text-slate-500 dark:text-slate-400 font-bold opacity-80 mb-1">
+          <div className={`text-[12px] font-bold opacity-80 mb-1 flex items-center gap-2 ${session.isSubstituted ? 'text-accent font-black' : 'text-slate-500 dark:text-slate-400'}`}>
             {userRole === 'student' ? session.faculty : session.branch}
+            {session.isSubstituted && (
+              <Badge className="text-[7px] h-3.5 px-1 bg-accent/20 text-accent border-accent/30 animate-pulse font-black">SUBSTITUTE</Badge>
+            )}
           </div>
           {(isLab || session.room) && session.room !== "TBD" && (
             <div className={`text-[11px] font-mono px-3 py-1 rounded-md font-black uppercase tracking-tighter border ${
@@ -365,9 +415,12 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
           <div className="font-black text-[12px] lg:text-[13px] leading-tight text-slate-900 dark:text-slate-100 line-clamp-2 flex items-center gap-1 group-hover:text-primary transition-colors">
             {session.subject}
           </div>
-          <div className="text-[11px] lg:text-[12px] text-slate-500 dark:text-slate-400 font-bold truncate flex items-center gap-1.5 border-t border-border/10 pt-1 mt-1">
+          <div className={`text-[11px] lg:text-[12px] font-bold truncate flex items-center gap-1.5 border-t border-border/10 pt-1 mt-1 ${session.isSubstituted ? 'text-accent font-black' : 'text-slate-500 dark:text-slate-400'}`}>
              <User className="h-2.5 w-2.5 opacity-50" />
              {userRole === 'student' ? session.faculty : session.branch}
+             {session.isSubstituted && (
+               <Badge className="text-[6px] h-3 px-1 bg-accent/20 text-accent border-accent/30 animate-pulse font-black ml-auto">SUBSTITUTE</Badge>
+             )}
           </div>
         </div>
         
@@ -611,6 +664,60 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
         </TabsContent>
 
         <TabsContent value="exams" className="space-y-6">
+          {userRole === "student" && studentSeating.length > 0 && (
+            <Card className="border-border/40 shadow-sm rounded-2xl overflow-hidden bg-primary/5">
+              <CardHeader className="p-5 border-b border-border/20">
+                <div className="flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <MapPin className="h-5 w-5 text-primary" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg font-black text-primary">Your Seating Allocation</CardTitle>
+                    <CardDescription className="text-xs font-bold uppercase tracking-widest">Hall {studentSeating[0].room} | {studentSeating[0].block}</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <div className="p-5">
+                <h4 className="text-[10px] font-black uppercase text-muted-foreground tracking-widest mb-3">Roll Numbers Assigned to this Room</h4>
+                <div className="flex flex-wrap gap-2 max-h-48 overflow-y-auto">
+                  {studentSeating.map((seat, idx) => (
+                    <Badge key={idx} variant={seat.rollNumber.toUpperCase() === user.id.toUpperCase() ? "default" : "outline"} className={`font-mono font-bold ${seat.rollNumber.toUpperCase() === user.id.toUpperCase() ? 'bg-primary text-white shadow-lg animate-pulse' : 'bg-white text-muted-foreground'}`}>
+                      {seat.rollNumber} {seat.rollNumber.toUpperCase() === user.id.toUpperCase() && "(You)"}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </Card>
+          )}
+
+          {userRole === "faculty" && facultyDuties.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {facultyDuties.map((duty, idx) => (
+                <Card key={idx} className="border-border/40 shadow-md rounded-2xl overflow-hidden hover:border-primary/40 transition-all border-l-4 border-l-amber-500">
+                  <div className="p-5 space-y-4">
+                    <div className="flex justify-between items-start">
+                      <div className="space-y-1">
+                        <Badge className="bg-amber-500/10 text-amber-600 border-none text-[8px] font-black uppercase tracking-widest">Invigilation Duty</Badge>
+                        <h4 className="text-xl font-black tracking-tighter">Hall {duty.room}</h4>
+                      </div>
+                      <div className="h-8 w-8 rounded-full bg-amber-500/10 flex items-center justify-center">
+                        <UserCheck className="h-4 w-4 text-amber-600" />
+                      </div>
+                    </div>
+                    <div className="space-y-2 bg-muted/20 p-3 rounded-xl border border-border/50">
+                      <div className="flex items-center gap-2 text-xs font-bold text-foreground">
+                        <Calendar className="h-3.5 w-3.5 text-muted-foreground" /> {duty.date.split('-').reverse().join('-')}
+                      </div>
+                      <div className="flex items-center gap-2 text-xs font-bold text-foreground">
+                        <Clock className="h-3.5 w-3.5 text-muted-foreground" /> {duty.time}
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+
           {publishedExamTimetables.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-20 bg-muted/20 border-2 border-dashed rounded-[3rem] opacity-50 space-y-4">
               <ShieldCheck className="h-16 w-16 text-primary/40" />

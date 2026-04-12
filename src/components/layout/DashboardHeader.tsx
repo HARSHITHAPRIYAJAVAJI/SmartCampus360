@@ -128,23 +128,98 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
     return results.slice(0, 10); // Limit results for UI
   }, [searchQuery, user.role]);
 
-  const [baseNotifications] = useState([
-    { id: '1', title: "New assignment posted", type: "info", read: false },
-    { id: '2', title: "Class rescheduled", type: "warning", read: false },
-    { id: '3', title: "Grade updated", type: "success", read: true },
-  ]);
+  const [liveRequests, setLiveRequests] = useState<any[]>([]);
+  const [studentAlerts, setStudentAlerts] = useState<any[]>([]);
 
-  const notifications: any[] = [
-    ...baseNotifications,
-    ...(user.role === 'admin' ? MOCK_LEAVE_REQUESTS.filter(l => l.status === 'Pending').map(l => ({
-      id: `leave-${l.id}`,
-      title: `Leave request: ${l.facultyName}`,
-      message: `${l.type} for ${l.days} days`,
-      type: "warning",
-      read: false,
-      isLeave: true
-    })) : [])
-  ];
+  useEffect(() => {
+    const loadNotifications = () => {
+      // 1. Load Faculty/Admin Requests
+      const savedRequests = localStorage.getItem('FACULTY_REQUESTS');
+      if (savedRequests) {
+        const parsed = JSON.parse(savedRequests);
+        if (user.role === 'admin') {
+          setLiveRequests(parsed.filter((r: any) => r.type === 'leave' && r.status === 'pending'));
+        } else if (user.role === 'faculty') {
+          // Identify the faculty record to handle multiple ID formats (slug vs roll number)
+          const facultyRec = MOCK_FACULTY.find(f => f.id === user.id || f.rollNumber === user.id);
+          const possibleIds = [user.id, facultyRec?.id, facultyRec?.rollNumber].filter(Boolean);
+
+          // Show pending requests sent TO me (Swaps)
+          const pendingForMe = parsed.filter((r: any) => 
+            possibleIds.includes(r.targetId) && r.status === 'pending'
+          );
+          // Show MY requests that have been approved or rejected (Leave/Swaps)
+          const myUpdates = parsed.filter((r: any) => 
+            possibleIds.includes(r.senderId) && (r.status === 'approved' || r.status === 'rejected')
+          );
+          setLiveRequests([...pendingForMe, ...myUpdates]);
+        }
+      }
+
+      // 2. Load Student Alerts
+      if (user.role === 'student') {
+        const student = MOCK_STUDENTS.find(s => s.id === user.id || s.rollNumber === user.id);
+        const savedAlerts = localStorage.getItem('STUDENT_ALERTS');
+        if (student && savedAlerts) {
+          const parsed = JSON.parse(savedAlerts);
+          setStudentAlerts(parsed.filter((a: any) => 
+            a.branch === student.branch && 
+            a.year === student.year && 
+            a.section === student.section
+          ));
+        }
+      }
+    };
+
+    loadNotifications();
+    window.addEventListener('faculty_request_updated', loadNotifications);
+    window.addEventListener('student_alerts_updated', loadNotifications);
+    window.addEventListener('storage', loadNotifications);
+    return () => {
+      window.removeEventListener('faculty_request_updated', loadNotifications);
+      window.removeEventListener('student_alerts_updated', loadNotifications);
+      window.removeEventListener('storage', loadNotifications);
+    };
+  }, [user.id, user.role]);
+
+  const notifications = useMemo(() => {
+    const list = [...liveRequests.map(r => {
+      const isStatusUpdate = r.senderId === user.id && r.status !== 'pending';
+      return {
+        id: r.id,
+        title: isStatusUpdate ? `Request ${r.status.charAt(0).toUpperCase() + r.status.slice(1)}` :
+               r.type === 'leave' ? `Leave Request: ${r.senderName}` : 
+               r.type === 'swap' ? `Swap Request: ${r.senderName}` : 
+               `Replacement: ${r.senderName}`,
+        message: isStatusUpdate ? `Your ${r.type} request for ${r.date} has been ${r.status}.` :
+                 r.type === 'leave' ? `${r.category || 'Duty'} for ${r.duration || 1} days` :
+                 `${r.date} | Period: ${r.period}`,
+        type: r.status === 'rejected' ? "destructive" as const : 
+              r.status === 'approved' ? "success" as const : "warning" as const,
+        read: false,
+        isRequest: !isStatusUpdate,
+        senderName: isStatusUpdate ? "System" : r.senderName,
+        url: user.role === 'admin' ? '/dashboard/requests' : '/dashboard/leave'
+      };
+    })];
+
+    if (user.role === 'student') {
+      studentAlerts.forEach(a => {
+        list.push({
+          id: a.id,
+          title: a.title,
+          message: a.message,
+          type: "info" as const,
+          read: a.isRead || false,
+          isRequest: false,
+          senderName: "System Alert",
+          url: "/dashboard/timetable"
+        });
+      });
+    }
+
+    return list;
+  }, [liveRequests, studentAlerts, user.role]);
 
   const unreadCount = notifications.filter(n => !n.read).length;
 
@@ -310,7 +385,7 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
                       notification.type === 'success' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' :
                       'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400'
                     }`}>
-                      {notification.isLeave ? <Users className="h-5 w-5" /> : 
+                      {notification.isRequest ? <Users className="h-5 w-5" /> : 
                        notification.type === 'warning' ? <AlertTriangle className="h-5 w-5" /> :
                        notification.type === 'success' ? <CheckCircle2 className="h-5 w-5" /> :
                        <Info className="h-5 w-5" />}
@@ -329,8 +404,8 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
                         <span className="text-[10px] font-bold text-muted-foreground opacity-60 uppercase tracking-tighter">
                           Just now
                         </span>
-                        {notification.isLeave && (
-                          <Link to="/admin/faculty" className="text-[10px] text-primary font-black uppercase tracking-tighter hover:underline">
+                        {notification.isRequest && (
+                          <Link to={notification.url} className="text-[10px] text-primary font-black uppercase tracking-tighter hover:underline">
                             Review Request →
                           </Link>
                         )}

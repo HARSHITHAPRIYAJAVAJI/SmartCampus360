@@ -641,39 +641,39 @@ const SECTION_VARIANTS: Record<string, Record<string, { id: string; courseCode: 
     "CSM-2-2-B": {
         "Monday-01:30": { id: "csm_22B-m-4", courseCode: "4E4ED", room: "Dr. Kuna Naresh" },
     },
-
-    // ── IT BRANCH Section B Overrides (Balanced WSN, IoT, ML, DM) ──
     "IT-3-1-B": {
-        "Monday-09:30": { id: "it_31B-m-1", courseCode: "4E5FA", room: "Dr. M. Dhasaratham" },
+        "Wednesday-09:30": { id: "it_31B-m-1", courseCode: "4E5FA", room: "Dr. M. Dhasaratham" },
         "Tuesday-09:30": { id: "it_31B-t-1", courseCode: "4E5FB", room: "Dr. M. Dhasaratham" },
     },
-    "IT-3-2-B": {
-        "Monday-09:30": { id: "it_32B-m-1", courseCode: "4E6FA", room: "Mrs. C. Jaya Lakshmi" },
-        "Tuesday-09:30": { id: "it_32B-t-1", courseCode: "4E6FB", room: "Mrs. T. Praneetha" },
-    },
-    "IT-4-1-B": {
-        "Monday-09:30": { id: "it_41B-m-1", courseCode: "4P7FB", room: "Mrs. C. Saritha Reddy" },
-    },
 
-    // ── CSE BRANCH Section B Overrides (Balanced ML, DM, DL) ──
-    "CSE-3-1-B": {
-        "Monday-09:30": { id: "cse_31B-m-1", courseCode: "4E5EC", room: "Mrs. C. Jaya Lakshmi" },
-    },
-    "CSE-3-2-B": {
-        "Monday-09:30": { id: "cse_32B-m-1", courseCode: "4E6EC", room: "Mrs. C. Jaya Lakshmi" },
-    },
-    "CSE-4-1-B": {
-        "Monday-09:30": { id: "cse_41B-m-1", courseCode: "4E7EA", room: "Mrs. C. Jaya Lakshmi" },
-    },
+    // ── Audit: Campus Recruitment Training (CRT) ──
+    // 3rd Year 6th Semester (3-2) - Weekly 3 hour block
+    "CSM-3-2-A": { "Wednesday-09:30": { id: "crt3-csm-a1", courseCode: "CRT", room: "Auditorium" }, "Wednesday-10:30": { id: "crt3-csm-a2", courseCode: "CRT", room: "Auditorium" }, "Wednesday-11:40": { id: "crt3-csm-a3", courseCode: "CRT", room: "Auditorium" } },
+    "CSM-3-2-B": { "Wednesday-09:30": { id: "crt3-csm-b1", courseCode: "CRT", room: "Auditorium" }, "Wednesday-10:30": { id: "crt3-csm-b2", courseCode: "CRT", room: "Auditorium" }, "Wednesday-11:40": { id: "crt3-csm-b3", courseCode: "CRT", room: "Auditorium" } },
+    "CSM-3-2-C": { "Wednesday-09:30": { id: "crt3-csm-c1", courseCode: "CRT", room: "Auditorium" }, "Wednesday-10:30": { id: "crt3-csm-c2", courseCode: "CRT", room: "Auditorium" }, "Wednesday-11:40": { id: "crt3-csm-c3", courseCode: "CRT", room: "Auditorium" } },
+    "CSE-3-2-A": { "Wednesday-09:30": { id: "crt3-cse-a1", courseCode: "CRT", room: "Auditorium" }, "Wednesday-10:30": { id: "crt3-cse-a2", courseCode: "CRT", room: "Auditorium" }, "Wednesday-11:40": { id: "crt3-cse-a3", courseCode: "CRT", room: "Auditorium" } },
+    "CSE-3-2-B": { "Wednesday-09:30": { id: "crt3-cse-b1", courseCode: "CRT", room: "Auditorium" }, "Wednesday-10:30": { id: "crt3-cse-b2", courseCode: "CRT", room: "Auditorium" }, "Wednesday-11:40": { id: "crt3-cse-b3", courseCode: "CRT", room: "Auditorium" } },
+    "CSE-3-2-C": { "Wednesday-09:30": { id: "crt3-cse-c1", courseCode: "CRT", room: "Auditorium" }, "Wednesday-10:30": { id: "crt3-cse-c2", courseCode: "CRT", room: "Auditorium" }, "Wednesday-11:40": { id: "crt3-cse-c3", courseCode: "CRT", room: "Auditorium" } },
+    "IT-3-2-A": { "Friday-01:30": { id: "crt3-it-a1", courseCode: "CRT", room: "Auditorium" }, "Friday-02:30": { id: "crt3-it-a2", courseCode: "CRT", room: "Auditorium" }, "Friday-03:30": { id: "crt3-it-a3", courseCode: "CRT", room: "Auditorium" } },
+    "IT-3-2-B": { "Friday-01:30": { id: "crt3-it-b1", courseCode: "CRT", room: "Auditorium" }, "Friday-02:30": { id: "crt3-it-b2", courseCode: "CRT", room: "Auditorium" }, "Friday-03:30": { id: "crt3-it-b3", courseCode: "CRT", room: "Auditorium" } },
+    "IT-3-2-C": { "Friday-01:30": { id: "crt3-it-c1", courseCode: "CRT", room: "Auditorium" }, "Friday-02:30": { id: "crt3-it-c2", courseCode: "CRT", room: "Auditorium" }, "Friday-03:30": { id: "crt3-it-c3", courseCode: "CRT", room: "Auditorium" } },
+    "ECE-3-2-A": { "Friday-01:30": { id: "crt3-ece-a1", courseCode: "CRT", room: "Auditorium" }, "Friday-02:30": { id: "crt3-ece-a2", courseCode: "CRT", room: "Auditorium" }, "Friday-03:30": { id: "crt3-ece-a3", courseCode: "CRT", room: "Auditorium" } },
+    "ECE-3-2-B": { "Friday-01:30": { id: "crt3-ece-b1", courseCode: "CRT", room: "Auditorium" }, "Friday-02:30": { id: "crt3-ece-b2", courseCode: "CRT", room: "Auditorium" }, "Friday-03:30": { id: "crt3-ece-b3", courseCode: "CRT", room: "Auditorium" } },
+    "ECE-3-2-C": { "Friday-01:30": { id: "crt3-ece-c1", courseCode: "CRT", room: "Auditorium" }, "Friday-02:30": { id: "crt3-ece-c2", courseCode: "CRT", room: "Auditorium" }, "Friday-03:30": { id: "crt3-ece-c3", courseCode: "CRT", room: "Auditorium" } },
 
-    "CSE-2-1-B": {
-        "Monday-01:30": { id: "cse_21B-m-4", courseCode: "4E3ED", room: "Mr. N. Kiran Kumar" },
-    },
-
-    // ── ECE BRANCH Section B Overrides (Balanced LA&ODE) ──
-    "ECE-1-1-B": {
-        "Monday-01:30": { id: "ece_11B-m-4", courseCode: "4B1AA", room: "Sreedevi" },
-    },
+    // 4th Year 7th Semester (4-1) - Twice Weekly block
+    "CSM-4-1-A": { "Monday-09:30": { id: "crt7-csm-a1-1", courseCode: "CRT", room: "Auditorium" }, "Monday-10:30": { id: "crt7-csm-a1-2", courseCode: "CRT", room: "Auditorium" }, "Monday-11:40": { id: "crt7-csm-a1-3", courseCode: "CRT", room: "Auditorium" }, "Thursday-01:30": { id: "crt7-csm-a2-1", courseCode: "CRT", room: "Auditorium" }, "Thursday-02:30": { id: "crt7-csm-a2-2", courseCode: "CRT", room: "Auditorium" }, "Thursday-03:30": { id: "crt7-csm-a2-3", courseCode: "CRT", room: "Auditorium" } },
+    "CSM-4-1-B": { "Monday-09:30": { id: "crt7-csm-b1-1", courseCode: "CRT", room: "Auditorium" }, "Monday-10:30": { id: "crt7-csm-b1-2", courseCode: "CRT", room: "Auditorium" }, "Monday-11:40": { id: "crt7-csm-b1-3", courseCode: "CRT", room: "Auditorium" }, "Thursday-01:30": { id: "crt7-csm-b2-1", courseCode: "CRT", room: "Auditorium" }, "Thursday-02:30": { id: "crt7-csm-b2-2", courseCode: "CRT", room: "Auditorium" }, "Thursday-03:30": { id: "crt7-csm-b2-3", courseCode: "CRT", room: "Auditorium" } },
+    "CSM-4-1-C": { "Monday-09:30": { id: "crt7-csm-c1-1", courseCode: "CRT", room: "Auditorium" }, "Monday-10:30": { id: "crt7-csm-c1-2", courseCode: "CRT", room: "Auditorium" }, "Monday-11:40": { id: "crt7-csm-c1-3", courseCode: "CRT", room: "Auditorium" }, "Thursday-01:30": { id: "crt7-csm-c2-1", courseCode: "CRT", room: "Auditorium" }, "Thursday-02:30": { id: "crt7-csm-c2-2", courseCode: "CRT", room: "Auditorium" }, "Thursday-03:30": { id: "crt7-csm-c2-3", courseCode: "CRT", room: "Auditorium" } },
+    "CSE-4-1-A": { "Monday-09:30": { id: "crt7-cse-a1-1", courseCode: "CRT", room: "Auditorium" }, "Monday-10:30": { id: "crt7-cse-a1-2", courseCode: "CRT", room: "Auditorium" }, "Monday-11:40": { id: "crt7-cse-a1-3", courseCode: "CRT", room: "Auditorium" }, "Thursday-01:30": { id: "crt7-cse-a2-1", courseCode: "CRT", room: "Auditorium" }, "Thursday-02:30": { id: "crt7-cse-a2-2", courseCode: "CRT", room: "Auditorium" }, "Thursday-03:30": { id: "crt7-cse-a2-3", courseCode: "CRT", room: "Auditorium" } },
+    "CSE-4-1-B": { "Monday-09:30": { id: "crt7-cse-b1-1", courseCode: "CRT", room: "Auditorium" }, "Monday-10:30": { id: "crt7-cse-b1-2", courseCode: "CRT", room: "Auditorium" }, "Monday-11:40": { id: "crt7-cse-b1-3", courseCode: "CRT", room: "Auditorium" }, "Thursday-01:30": { id: "crt7-cse-b2-1", courseCode: "CRT", room: "Auditorium" }, "Thursday-02:30": { id: "crt7-cse-b2-2", courseCode: "CRT", room: "Auditorium" }, "Thursday-03:30": { id: "crt7-cse-b2-3", courseCode: "CRT", room: "Auditorium" } },
+    "CSE-4-1-C": { "Monday-09:30": { id: "crt7-cse-c1-1", courseCode: "CRT", room: "Auditorium" }, "Monday-10:30": { id: "crt7-cse-c1-2", courseCode: "CRT", room: "Auditorium" }, "Monday-11:40": { id: "crt7-cse-c1-3", courseCode: "CRT", room: "Auditorium" }, "Thursday-01:30": { id: "crt7-cse-c2-1", courseCode: "CRT", room: "Auditorium" }, "Thursday-02:30": { id: "crt7-cse-c2-2", courseCode: "CRT", room: "Auditorium" }, "Thursday-03:30": { id: "crt7-cse-c2-3", courseCode: "CRT", room: "Auditorium" } },
+    "IT-4-1-A": { "Tuesday-09:30": { id: "crt7-it-a1-1", courseCode: "CRT", room: "Auditorium" }, "Tuesday-10:30": { id: "crt7-it-a1-2", courseCode: "CRT", room: "Auditorium" }, "Tuesday-11:40": { id: "crt7-it-a1-3", courseCode: "CRT", room: "Auditorium" }, "Friday-09:30": { id: "crt7-it-a2-1", courseCode: "CRT", room: "Auditorium" }, "Friday-10:30": { id: "crt7-it-a2-2", courseCode: "CRT", room: "Auditorium" }, "Friday-11:40": { id: "crt7-it-a2-3", courseCode: "CRT", room: "Auditorium" } },
+    "IT-4-1-B": { "Tuesday-09:30": { id: "crt7-it-b1-1", courseCode: "CRT", room: "Auditorium" }, "Tuesday-10:30": { id: "crt7-it-b1-2", courseCode: "CRT", room: "Auditorium" }, "Tuesday-11:40": { id: "crt7-it-b1-3", courseCode: "CRT", room: "Auditorium" }, "Friday-09:30": { id: "crt7-it-b2-1", courseCode: "CRT", room: "Auditorium" }, "Friday-10:30": { id: "crt7-it-b2-2", courseCode: "CRT", room: "Auditorium" }, "Friday-11:40": { id: "crt7-it-b2-3", courseCode: "CRT", room: "Auditorium" } },
+    "IT-4-1-C": { "Tuesday-09:30": { id: "crt7-it-c1-1", courseCode: "CRT", room: "Auditorium" }, "Tuesday-10:30": { id: "crt7-it-c1-2", courseCode: "CRT", room: "Auditorium" }, "Tuesday-11:40": { id: "crt7-it-c1-3", courseCode: "CRT", room: "Auditorium" }, "Friday-09:30": { id: "crt7-it-c2-1", courseCode: "CRT", room: "Auditorium" }, "Friday-10:30": { id: "crt7-it-c2-2", courseCode: "CRT", room: "Auditorium" }, "Friday-11:40": { id: "crt7-it-c2-3", courseCode: "CRT", room: "Auditorium" } },
+    "ECE-4-1-A": { "Tuesday-09:30": { id: "crt7-ece-a1-1", courseCode: "CRT", room: "Auditorium" }, "Tuesday-10:30": { id: "crt7-ece-a1-2", courseCode: "CRT", room: "Auditorium" }, "Tuesday-11:40": { id: "crt7-ece-a1-3", courseCode: "CRT", room: "Auditorium" }, "Friday-09:30": { id: "crt7-ece-a2-1", courseCode: "CRT", room: "Auditorium" }, "Friday-10:30": { id: "crt7-ece-a2-2", courseCode: "CRT", room: "Auditorium" }, "Friday-11:40": { id: "crt7-ece-a2-3", courseCode: "CRT", room: "Auditorium" } },
+    "ECE-4-1-B": { "Tuesday-09:30": { id: "crt7-ece-b1-1", courseCode: "CRT", room: "Auditorium" }, "Tuesday-10:30": { id: "crt7-ece-b1-2", courseCode: "CRT", room: "Auditorium" }, "Tuesday-11:40": { id: "crt7-ece-b1-3", courseCode: "CRT", room: "Auditorium" }, "Friday-09:30": { id: "crt7-ece-b2-1", courseCode: "CRT", room: "Auditorium" }, "Friday-10:30": { id: "crt7-ece-b2-2", courseCode: "CRT", room: "Auditorium" }, "Friday-11:40": { id: "crt7-ece-b2-3", courseCode: "CRT", room: "Auditorium" } },
+    "ECE-4-1-C": { "Tuesday-09:30": { id: "crt7-ece-c1-1", courseCode: "CRT", room: "Auditorium" }, "Tuesday-10:30": { id: "crt7-ece-c1-2", courseCode: "CRT", room: "Auditorium" }, "Tuesday-11:40": { id: "crt7-ece-c1-3", courseCode: "CRT", room: "Auditorium" }, "Friday-09:30": { id: "crt7-ece-c2-1", courseCode: "CRT", room: "Auditorium" }, "Friday-10:30": { id: "crt7-ece-c2-2", courseCode: "CRT", room: "Auditorium" }, "Friday-11:40": { id: "crt7-ece-c2-3", courseCode: "CRT", room: "Auditorium" } },
 };
 
 Object.assign(AIML_TIMETABLES, SECTION_VARIANTS);
@@ -1226,6 +1226,11 @@ export const FACULTY_LOAD = {
             "code": "4E612",
             "faculty": "D. Kavitha",
             "room": "Lab AI"
+        },
+        {
+            "code": "CRT",
+            "faculty": "Technical Trainer",
+            "room": "Auditorium"
         }
     ],
     "4-1": [
@@ -1293,6 +1298,11 @@ export const FACULTY_LOAD = {
             "code": "4P7PP1",
             "faculty": "Mrs. S. Gnaneshwari",
             "room": "Project Lab"
+        },
+        {
+            "code": "CRT",
+            "faculty": "Technical Trainer",
+            "room": "Auditorium"
         }
     ],
     "4-2": [
@@ -1857,6 +1867,11 @@ export const FACULTY_LOAD = {
             "code": "4H615",
             "faculty": "B. Gnanesh Netha",
             "room": "Language Lab"
+        },
+        {
+            "code": "CRT",
+            "faculty": "Technical Trainer",
+            "room": "Auditorium"
         }
     ],
     "IT-4-1": [
@@ -1919,6 +1934,11 @@ export const FACULTY_LOAD = {
             "code": "4P7PW",
             "faculty": "Mr. R. Naga Raju",
             "room": "Project Lab"
+        },
+        {
+            "code": "CRT",
+            "faculty": "Technical Trainer",
+            "room": "Auditorium"
         }
     ],
     "IT-4-2": [
@@ -2453,6 +2473,11 @@ export const FACULTY_LOAD = {
             "code": "4E610",
             "faculty": "Dr. A. Pramod Reddy",
             "room": "Lab 2"
+        },
+        {
+            "code": "CRT",
+            "faculty": "Technical Trainer",
+            "room": "Auditorium"
         }
     ],
     "CSE-4-1": [
@@ -2515,6 +2540,11 @@ export const FACULTY_LOAD = {
             "code": "4P7PW",
             "faculty": "Mrs. M. Vaishnavi",
             "room": "Project Lab"
+        },
+        {
+            "code": "CRT",
+            "faculty": "Technical Trainer",
+            "room": "Auditorium"
         }
     ],
     "CSE-4-2": [
@@ -3099,6 +3129,11 @@ export const FACULTY_LOAD = {
             "code": "4E608",
             "faculty": "Shanti",
             "room": "Lab 4"
+        },
+        {
+            "code": "CRT",
+            "faculty": "Technical Trainer",
+            "room": "Auditorium"
         }
     ],
     "ECE-4-1": [
@@ -3171,6 +3206,11 @@ export const FACULTY_LOAD = {
             "code": "4P7PW",
             "faculty": "Ms. D V V Deepthi",
             "room": "Project Lab"
+        },
+        {
+            "code": "CRT",
+            "faculty": "Technical Trainer",
+            "room": "Auditorium"
         }
     ],
     "ECE-4-2": [

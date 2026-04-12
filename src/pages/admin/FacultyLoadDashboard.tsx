@@ -99,44 +99,69 @@ function buildWorkloadFromTimetables(publishedTimetables: Record<string, any>): 
         Object.values(grid).forEach((slot: any) => {
             if (!slot || !slot.faculty || slot.faculty === "Staff" || slot.faculty === "PET" || slot.faculty === "Librarian") return;
 
-            const fName = slot.faculty;
-            
-            // Create record for any unknown faculty
-            if (!workloadMap[fName]) {
-                const found = MOCK_FACULTY.find(f => f.name.toLowerCase().trim() === fName.toLowerCase().trim());
-                workloadMap[fName] = {
-                    facultyId: found?.id || fName,
-                    facultyName: fName,
-                    department: found?.department || "Other",
-                    designation: found?.designation || "Faculty",
-                    totalHours: 0,
-                    theoryHours: 0,
-                    labHours: 0,
-                    theories: [],
-                    labs: [],
-                    sectionsAssigned: [],
-                    loadPercent: 0
-                };
-            }
+            // Handle multiple faculty in one slot (common in labs)
+            const rawFaculty = slot.faculty;
+            const facultyNames = rawFaculty.split(/[&,]| and /).map((s: string) => s.trim()).filter(Boolean);
 
-            const record = workloadMap[fName];
-            record.totalHours += 1;
+            facultyNames.forEach((fName: string) => {
+                // Find matching record in workloadMap using bidirectional logic
+                const normalizedSlotFaculty = fName.toLowerCase();
+                
+                // Try to find the official record for this person
+                let officialName = fName;
+                let officialId = fName;
+                let dept = "Other";
+                let desig = "Faculty";
 
-            if (slot.type === 'Lab') {
-                record.labHours += 1;
-                if (!record.labs.includes(slot.courseCode)) {
-                    record.labs.push(slot.courseCode);
+                const foundFaculty = MOCK_FACULTY.find(f => {
+                    const normalizedOfficial = f.name.toLowerCase();
+                    return normalizedOfficial === normalizedSlotFaculty || 
+                           normalizedOfficial.includes(normalizedSlotFaculty) || 
+                           normalizedSlotFaculty.includes(normalizedOfficial);
+                });
+
+                if (foundFaculty) {
+                    officialName = foundFaculty.name;
+                    officialId = foundFaculty.id;
+                    dept = foundFaculty.department;
+                    desig = foundFaculty.designation;
                 }
-            } else {
-                record.theoryHours += 1;
-                if (!record.theories.includes(slot.courseCode)) {
-                    record.theories.push(slot.courseCode);
-                }
-            }
 
-            if (!record.sectionsAssigned.includes(sectionKey)) {
-                record.sectionsAssigned.push(sectionKey);
-            }
+                if (!workloadMap[officialName]) {
+                    workloadMap[officialName] = {
+                        facultyId: officialId,
+                        facultyName: officialName,
+                        department: dept,
+                        designation: desig,
+                        totalHours: 0,
+                        theoryHours: 0,
+                        labHours: 0,
+                        theories: [],
+                        labs: [],
+                        sectionsAssigned: [],
+                        loadPercent: 0
+                    };
+                }
+
+                const record = workloadMap[officialName];
+                record.totalHours += 1;
+
+                if (slot.type === 'Lab' || (slot.courseName && slot.courseName.toLowerCase().includes('lab'))) {
+                    record.labHours += 1;
+                    if (!record.labs.includes(slot.courseCode)) {
+                        record.labs.push(slot.courseCode);
+                    }
+                } else {
+                    record.theoryHours += 1;
+                    if (!record.theories.includes(slot.courseCode)) {
+                        record.theories.push(slot.courseCode);
+                    }
+                }
+
+                if (!record.sectionsAssigned.includes(sectionKey)) {
+                    record.sectionsAssigned.push(sectionKey);
+                }
+            });
         });
     });
 

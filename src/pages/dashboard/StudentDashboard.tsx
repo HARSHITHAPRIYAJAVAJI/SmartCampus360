@@ -56,6 +56,27 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
     
     const [gpaWhatIf, setGpaWhatIf] = useState<number | string>("");
     const [storageSyncStamp, setStorageSyncStamp] = useState(0);
+    const [liveAlerts, setLiveAlerts] = useState<any[]>([]);
+
+    useEffect(() => {
+        const loadAlerts = () => {
+            const student = MOCK_STUDENTS.find(s => s.rollNumber === user.id);
+            if (!student) return;
+            const saved = localStorage.getItem('STUDENT_ALERTS');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                setLiveAlerts(parsed.filter((a: any) => 
+                    a.branch === student.branch && 
+                    a.year === student.year && 
+                    a.section === student.section
+                ).slice(0, 3));
+            }
+        };
+
+        loadAlerts();
+        window.addEventListener('student_alerts_updated', loadAlerts);
+        return () => window.removeEventListener('student_alerts_updated', loadAlerts);
+    }, [user.id]);
 
     const studentData = useMemo(() => {
         if (impersonatedStudent) return impersonatedStudent;
@@ -143,7 +164,7 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
             window.removeEventListener('storage', handleStorage);
             window.removeEventListener('timetable_published', handleCustomEvent);
         };
-    }, []);
+    }, [studentData]);
 
     const todaySchedule = useMemo(() => {
         if (!studentData) return [];
@@ -157,7 +178,6 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
         
         let publishedEntry = allTimetables ? allTimetables[strictPublishedKey] : null;
 
-        // If the institution generated the opposite semester parity but not the strict one, optimistically load it.
         if (!publishedEntry && allTimetables) {
             const altSemNum = semNum === 1 ? 2 : 1;
             const altKey = `${(studentData.branch || "").toUpperCase()}-${studentData.year}-${altSemNum}-${studentData.section}`;
@@ -166,35 +186,93 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
             }
         }
 
-        // Logic: Support both {grid, metadata} format and direct grid format. Fallback to institutional default ONLY on initial boot before any publishing happens.
         const useDemoData = publishedStoreStr === null;
         const liveTable = publishedEntry?.grid || 
-                          (publishedEntry && !publishedEntry.metadata ? publishedEntry : 
-                          (useDemoData ? getTimetable(studentData.year, semNum, studentData.section, studentData.branch) : {}));
+                          (publishedEntry && !publishedEntry.metadata ? publishedEntry : {});
         
+        // Load Live Replacements / Swaps for TODAY
+        const savedRequests = localStorage.getItem('FACULTY_REQUESTS');
+        const todayISO = format(new Date(), 'yyyy-MM-dd');
+        const approvedReplacements = savedRequests ? JSON.parse(savedRequests).filter((r: any) => 
+            r.status === 'approved' && 
+            r.date === todayISO && 
+            (r.type === 'replacement' || r.type === 'swap')
+        ) : [];
+
         const schedule: any[] = [];
         Object.entries(liveTable).forEach(([dayTime, session]: [string, any]) => {
             if (!session) return;
             let [day, time] = dayTime.split('-');
             const timeMap: Record<string, string> = { "09:30": "09:40", "10:30": "10:40", "11:40": "11:40", "01:30": "01:20", "02:30": "02:20", "03:30": "03:20" };
+            const normalizedTime = time;
             time = timeMap[time] || time;
             if (day !== today) return;
 
+            // Check if this specific session has an override for TODAY & SECTION
+            const override = approvedReplacements.find((r: any) => {
+                const sameSlot = r.period === normalizedTime && r.section === strictPublishedKey;
+                const matchesOriginalFaculty = r.senderId === session.facultyId || 
+                                              (session.faculty && r.senderName && session.faculty.toLowerCase().includes(r.senderName.toLowerCase()));
+                return sameSlot && matchesOriginalFaculty;
+            });
+
             const hour = parseInt(time.split(':')[0]);
-            const period = (hour >= 9 && hour < 12) ? "AM" : "PM";
+            const ampm = (hour >= 9 && hour < 12) ? "AM" : "PM";
 
             schedule.push({
-                time: `${time} ${period}`,
+                time: `${time} ${ampm}`,
                 rawTime: time,
                 title: formatSubjectName(session.courseName || session.courseCode),
                 room: session.room || "TBD",
-                faculty: session.faculty || "Staff",
+                faculty: override ? override.targetName : (session.faculty || "Staff"),
+                isReplacement: !!override,
                 type: (session.courseName || session.courseCode || "").toLowerCase().includes('lab') ? 'lab' : 'lecture'
             });
         });
 
-        return schedule.sort((a, b) => a.rawTime.localeCompare(b.rawTime));
-    }, [studentData, today]);
+        return schedule.sort((a, b) => {
+            const getMinutes = (timeStr: string) => {
+                const [time, period] = timeStr.split(' ');
+                let [hours, minutes] = time.split(':').map(Number);
+                if (period === 'PM' && hours !== 12) hours += 12;
+                if (period === 'AM' && hours === 12) hours = 0;
+                return hours * 60 + minutes;
+            };
+            return getMinutes(a.time) - getMinutes(b.time);
+        });
+    }, [studentData, today, storageSyncStamp]);
+
+    const activeExamToday = useMemo(() => {
+        if (!studentData) return null;
+        const examTimetablesStr = localStorage.getItem('EXAM_TIMETABLES');
+        const examSeatingStr = localStorage.getItem('EXAM_SEATING_PLAN');
+        if (!examTimetablesStr) return null;
+
+        const allTT = JSON.parse(examTimetablesStr) as any[];
+        const todayStr = format(new Date(), "yyyy-MM-dd");
+        
+        // Find if any published exam is for today and for this student's year
+        const todayExamTT = allTT.find(tt => 
+            tt.isPublished && 
+            tt.years.includes(studentData.year) &&
+            tt.slots.some((s: any) => s.date === todayStr)
+        );
+
+        if (!todayExamTT) return null;
+
+        const slot = todayExamTT.slots.find((s: any) => s.date === todayStr);
+        const seating = examSeatingStr ? (JSON.parse(examSeatingStr) as any[]).find(s => s.examId.includes(todayExamTT.id) && s.rollNumber.toUpperCase() === user.id.toUpperCase()) : null;
+
+        return {
+            title: todayExamTT.title,
+            type: todayExamTT.type,
+            time: `${slot.startTime} - ${slot.endTime}`,
+            slot: slot.session,
+            room: seating?.room || "Check Seating Plan",
+            block: seating?.block || "TBD",
+            seat: seating?.seatNumber || "TBD"
+        };
+    }, [studentData, user.id, storageSyncStamp]);
 
 
     const stats = [
@@ -342,6 +420,41 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                 
                 {/* Left Side: Academic Monitoring */}
                 <div className="lg:col-span-8 space-y-8">
+                    {activeExamToday && (
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="relative group"
+                        >
+                            <div className="absolute -inset-0.5 bg-gradient-to-r from-red-500 to-orange-500 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+                            <Card className="relative border-none shadow-2xl rounded-[2.5rem] overflow-hidden bg-white dark:bg-slate-950 border-l-[6px] border-l-red-500">
+                                <CardContent className="p-0">
+                                    <div className="bg-red-500/5 p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                                        <div className="flex gap-5 items-center">
+                                            <div className="h-16 w-16 rounded-[1.5rem] bg-red-500/20 flex items-center justify-center shrink-0">
+                                                <ShieldCheck className="h-8 w-8 text-red-600 animate-pulse" />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <Badge className="bg-red-600 text-white border-none text-[8px] font-black uppercase tracking-[0.2em] px-3">{activeExamToday.type} ACTIVE</Badge>
+                                                <h3 className="text-2xl font-black tracking-tighter text-slate-900 dark:text-white">
+                                                    {activeExamToday.title}
+                                                </h3>
+                                                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                                                    <Clock className="h-4 w-4" /> {activeExamToday.time} ({activeExamToday.slot === 'FN' ? 'Forenoon' : 'Afternoon'})
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col items-end gap-2 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-red-500/10 shadow-sm min-w-[150px]">
+                                            <span className="text-[10px] font-black text-red-600 uppercase tracking-tighter">Your Location</span>
+                                            <div className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">Hall {activeExamToday.room}</div>
+                                            <Badge variant="outline" className="border-red-200 text-red-600 font-bold bg-red-50/50">Seat: {activeExamToday.seat}</Badge>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+                    )}
+
                     {/* Today's Schedule (NEW) */}
                     <Card className="border-none shadow-xl rounded-[2rem] overflow-hidden">
                         <CardHeader className="bg-slate-50 dark:bg-slate-900/50">
@@ -376,7 +489,14 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                                                 <div className="flex items-center gap-4 text-[11px] font-bold text-muted-foreground">
                                                     <div className="flex items-center gap-1">
                                                         <User className="w-3 h-3 opacity-50" />
-                                                        <span className="truncate max-w-[100px]">{item.faculty}</span>
+                                                        <span className={`truncate max-w-[100px] ${item.isReplacement ? 'text-accent font-black' : ''}`}>
+                                                            {item.faculty}
+                                                        </span>
+                                                        {item.isReplacement && (
+                                                            <Badge variant="outline" className="text-[7px] font-black bg-accent/10 border-accent/20 text-accent px-1 h-3 ml-1 animate-pulse">
+                                                                SUBSTITUTE
+                                                            </Badge>
+                                                        )}
                                                     </div>
                                                     <div className="flex items-center gap-1">
                                                         <Building2 className="w-3 h-3 opacity-50" />

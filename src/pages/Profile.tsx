@@ -268,12 +268,7 @@ export default function Profile() {
                                         )}
                                     </div>
                                 </div>
-                                <div className="p-4 bg-muted/30 rounded-xl">
-                                    <h4 className="font-bold text-xs mb-2 uppercase text-muted-foreground tracking-widest">Recent Publication</h4>
-                                    <p className="text-sm italic font-medium leading-relaxed">
-                                        "Advanced Optimization in {facultyData?.department || 'Engineering'} Systems using Multi-Objective Algorithms", Institutional Review 2024
-                                    </p>
-                                </div>
+
                             </CardContent>
                         </Card>
                     )}

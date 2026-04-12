@@ -334,4 +334,6 @@ export const MOCK_COURSES: Course[] = [
     { id: "ece-s8-3", code: "4E8DC", name: "Optical Fiber Communications", credits: 3, type: "Theory", department: "ECE", semester: 8, instructor: { id: 927, full_name: "Mr. B. Pullarao" } },
     { id: "ece-s8-4", code: "4E8DD", name: "Computer Networks", credits: 3, type: "Theory", department: "ECE", semester: 8, instructor: { id: 928, full_name: "Mrs. S. Anusha" } },
     { id: "ece-s8-5", code: "4P8PW", name: "Project Work Phase 2", credits: 6, type: "Theory", department: "ECE", semester: 8 },
+    { id: "crt-s6", code: "CRT", name: "Campus Recruitment Training", credits: 2, type: "Theory", department: "Institutional", semester: 6 },
+    { id: "crt-s7", code: "CRT", name: "Campus Recruitment Training", credits: 2, type: "Theory", department: "Institutional", semester: 7 },
 ];

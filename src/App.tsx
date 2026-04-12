@@ -51,10 +51,13 @@ const Downloads = lazy(() => import("./pages/student/LearningPortal"));
 const CommunicationHub = lazy(() => import("./pages/dashboard/CommunicationHub"));
 
 
+const RequestsManagement = lazy(() => import("./pages/admin/RequestsManagement"));
+
 // Lazy load UI overlays to reduce initial bundle size
 const Toaster = lazy(() => import("@/components/ui/toaster").then(mod => ({ default: mod.Toaster })));
 const Sonner = lazy(() => import("@/components/ui/sonner").then(mod => ({ default: mod.Toaster })));
 const DashboardLayout = lazy(() => import("./components/layout/DashboardLayout").then(module => ({ default: module.DashboardLayout })));
+const Layout = lazy(() => import("./components/common/Layout"));
 
 const queryClient = new QueryClient();
 
@@ -121,6 +124,7 @@ const App = () => {
               <Route path="/about/vision" element={<Vision />} />
               <Route path="/about/leadership" element={<Leadership />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/courses" element={<Layout><div className="container mx-auto py-8"><CourseManagement readOnly={true} /></div></Layout>} />
               <Route path="/placements" element={<Placements />} />
               <Route path="/login">
                 <Route
@@ -216,6 +220,7 @@ const App = () => {
                 <Route path="student/fees/regular" element={<RoleGuard allowedRoles={['student', 'admin']} userRole={user?.role || ''}><RegularFeePayment /></RoleGuard>} />
                 <Route path="student/fees/*" element={<RoleGuard allowedRoles={['student', 'admin']} userRole={user?.role || ''}><StudentFees /></RoleGuard>} />
                 <Route path="student/downloads" element={<RoleGuard allowedRoles={['student', 'admin']} userRole={user?.role || ''}><Downloads /></RoleGuard>} />
+                <Route path="requests" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><RequestsManagement /></RoleGuard>} />
                 <Route path="communications" element={<CommunicationHub />} />
               </Route>
 

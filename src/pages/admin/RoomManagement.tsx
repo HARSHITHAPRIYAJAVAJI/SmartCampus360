@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Clock } from "lucide-react";
+import { format } from "date-fns";
 
 import { MOCK_ROOMS, Room } from '@/data/mockRooms';
 
@@ -26,6 +26,9 @@ const RoomManagement = () => {
     const [formData, setFormData] = useState<Partial<Room>>({});
     const [activeTab, setActiveTab] = useState("all");
     const [statusFilter, setStatusFilter] = useState<"all" | "available" | "inuse">("all");
+    
+    // Developer Tool: Simulation Time Override
+    const [simulatedTime, setSimulatedTime] = useState<string>("live");
 
     const handleAdd = () => {
         if (!formData.name) {
@@ -81,11 +84,8 @@ const RoomManagement = () => {
         const now = new Date();
         const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         const dayName = days[now.getDay()];
-        if (dayName === 'Sunday') return {};
-
         const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
 
-        // Institutional Time Slots matching TimetableEngine.slots in timetableGenerator.ts
         const slots = [
             { id: "09:40", start: "09:40", end: "10:40" },
             { id: "10:40", start: "10:40", end: "11:40" },
@@ -95,18 +95,68 @@ const RoomManagement = () => {
             { id: "03:20", start: "15:20", end: "16:20" }
         ];
 
-        const activeSlot = slots.find(s => timeStr >= s.start && timeStr < s.end);
-        
+        let activeSlot;
+        let activeDayName = dayName;
+
+        if (simulatedTime !== "live") {
+            const [simDay, simSlot] = simulatedTime.split('-');
+            activeDayName = simDay;
+            activeSlot = slots.find(s => s.id === simSlot);
+        } else {
+            activeSlot = slots.find(s => timeStr >= s.start && timeStr < s.end);
+            if (activeDayName === 'Sunday') return {};
+        }
+
         const publishedStoreStr = localStorage.getItem('published_timetables');
         const draftStoreStr = localStorage.getItem('draft_timetables');
+        const examTimetablesStr = localStorage.getItem('EXAM_TIMETABLES');
+        const examSeatingStr = localStorage.getItem('EXAM_SEATING_PLAN');
         
         const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
         const draftTimetables = draftStoreStr ? JSON.parse(draftStoreStr) : {};
+        const examTimetables = examTimetablesStr ? JSON.parse(examTimetablesStr) as any[] : [];
+        const examSeating = examSeatingStr ? JSON.parse(examSeatingStr) as any[] : [];
 
-        const status: Record<string, { info: string; isDraft: boolean; subject: string; faculty: string }> = {};
+        const status: Record<string, { info: string; isDraft: boolean; subject: string; faculty: string; isExam?: boolean }> = {};
         
+        // 1. Check EXAM Priority (Calendar Date Specific)
+        const todayStr = format(now, "yyyy-MM-dd");
+        const activeExams = examTimetables.filter(et => {
+            if (todayStr >= et.startDate && todayStr <= et.endDate) {
+                return et.slots.some((slot: any) => {
+                    if (slot.date !== todayStr) return false;
+                    const [h_start, m_start] = slot.startTime.split(' ')[0].split(':').map(Number);
+                    const [h_end, m_end] = slot.endTime.split(' ')[0].split(':').map(Number);
+                    const startMin = (slot.startTime.includes('PM') && h_start !== 12 ? h_start + 12 : h_start) * 60 + m_start;
+                    const endMin = (slot.endTime.includes('PM') && h_end !== 12 ? h_end + 12 : h_end) * 60 + m_end;
+                    const currentTotalMin = now.getHours() * 60 + now.getMinutes();
+
+                    return currentTotalMin >= startMin && currentTotalMin <= endMin;
+                });
+            }
+            return false;
+        });
+
+        if (activeExams.length > 0) {
+            activeExams.forEach(et => {
+                const relevantSeating = examSeating.filter(s => s.examId.includes(et.id) || s.examId === et.id);
+                const roomsInUse = Array.from(new Set(relevantSeating.map(s => s.room)));
+                
+                roomsInUse.forEach(rName => {
+                    status[rName] = {
+                        info: et.type + " EXAM",
+                        isDraft: false,
+                        subject: et.title,
+                        faculty: "Invigilators Assigned",
+                        isExam: true
+                    };
+                });
+            });
+        }
+
+        // 2. Check Academic Timetable (Weekly Schedule)
         if (activeSlot) {
-            const slotKey = `${dayName}-${activeSlot.id}`;
+            const slotKey = `${activeDayName}-${activeSlot.id}`;
             
             const allSources = [
                 { data: publishedTimetables, isDraft: false },
@@ -118,8 +168,7 @@ const RoomManagement = () => {
                     const grid = entry.grid || entry;
                     const sess = grid[slotKey];
                     if (sess && sess.room) {
-                        // Match by direct name (e.g. "T-101", "101", "S-401")
-                        const roomKey = sess.room;
+                        const roomKey = sess.room.trim();
                         if (!status[roomKey] || (status[roomKey].isDraft && !isDraft)) {
                             status[roomKey] = {
                                 info: sectionId,
@@ -133,7 +182,7 @@ const RoomManagement = () => {
             });
         }
         return status;
-    }, [refreshKey]);
+    }, [refreshKey, simulatedTime]);
 
     const filteredRooms = useMemo(() => {
         return rooms.filter(r => {
@@ -184,6 +233,20 @@ const RoomManagement = () => {
                             className="pl-9 h-10 shadow-sm"
                         />
                     </div>
+                    
+                    <Select value={simulatedTime} onValueChange={setSimulatedTime}>
+                        <SelectTrigger className="w-[180px] h-10 border-primary/20 bg-primary/5 text-primary font-bold">
+                            <SelectValue placeholder="Live Time" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="live"><div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" /> Live Clock</div></SelectItem>
+                            <SelectItem value="Monday-09:40">Simulate: Mon 09:40 AM</SelectItem>
+                            <SelectItem value="Monday-01:20">Simulate: Mon 01:20 PM</SelectItem>
+                            <SelectItem value="Tuesday-10:40">Simulate: Tue 10:40 AM</SelectItem>
+                            <SelectItem value="Wednesday-11:40">Simulate: Wed 11:40 AM</SelectItem>
+                        </SelectContent>
+                    </Select>
+
                     <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
                         <DialogTrigger asChild><Button className="h-10 px-4"><Plus className="mr-2 h-4 w-4" /> Add Room</Button></DialogTrigger>
                         <DialogContent>
@@ -350,7 +413,7 @@ const RoomManagement = () => {
 // Sub-components for better organization
 const RoomCard = ({ room, currentOccupancy, onEdit, onDelete, getBadgeColor }: { 
     room: Room, 
-    currentOccupancy: Record<string, { info: string; isDraft: boolean; subject: string; faculty: string }>, 
+    currentOccupancy: Record<string, { info: string; isDraft: boolean; subject: string; faculty: string; isExam?: boolean }>, 
     onEdit: () => void, 
     onDelete: () => void,
     getBadgeColor: (dept?: string) => string

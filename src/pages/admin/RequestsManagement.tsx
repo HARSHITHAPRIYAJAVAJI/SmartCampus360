@@ -1,0 +1,449 @@
+
+import { useState, useEffect, useMemo } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { 
+    Calendar, 
+    Clock, 
+    CheckCircle2, 
+    XCircle, 
+    User, 
+    FileText, 
+    AlertCircle,
+    ArrowRightCircle,
+    Building2,
+    Check,
+    X,
+    FileImage,
+    LayoutGrid,
+    Trash2
+} from "lucide-react";
+import { format } from "date-fns";
+import { useToast } from "@/hooks/use-toast";
+import { reallocateLeavePeriods, revertLeavePeriods } from "@/utils/timetableAdjuster";
+import { pushStudentAlert } from "@/utils/studentNotifications";
+
+interface FacultyRequest {
+    id: string;
+    senderId: string;
+    senderName: string;
+    targetId: string;
+    targetName: string;
+    type: "swap" | "replacement" | "leave";
+    parentId?: string;
+    date: string;
+    duration?: number;
+    reason?: string;
+    proofUrl?: string;
+    period?: string;
+    subject?: string;
+    section?: string;
+    branch?: string;
+    year?: string;
+    sectionName?: string;
+    room?: string;
+    status: "pending" | "approved" | "rejected";
+    timestamp: number;
+}
+
+const RequestsManagement = () => {
+    const { toast } = useToast();
+    const [allRequests, setAllRequests] = useState<FacultyRequest[]>([]);
+
+    useEffect(() => {
+        const loadRequests = () => {
+            const saved = localStorage.getItem('FACULTY_REQUESTS');
+            if (saved) {
+                setAllRequests(JSON.parse(saved));
+            }
+        };
+        loadRequests();
+        window.addEventListener('faculty_request_updated', loadRequests);
+        window.addEventListener('storage', loadRequests);
+        return () => {
+            window.removeEventListener('faculty_request_updated', loadRequests);
+            window.removeEventListener('storage', loadRequests);
+        };
+    }, []);
+
+    const saveRequests = (reqs: FacultyRequest[]) => {
+        localStorage.setItem('FACULTY_REQUESTS', JSON.stringify(reqs));
+        setAllRequests(reqs);
+    };
+
+    const leaveRequests = useMemo(() => 
+        allRequests.filter(r => r.type === 'leave').sort((a,b) => b.timestamp - a.timestamp), 
+    [allRequests]);
+
+    const academicRequests = useMemo(() => 
+        allRequests.filter(r => r.type === 'swap' || r.type === 'replacement').sort((a,b) => b.timestamp - a.timestamp),
+    [allRequests]);
+
+    const handleLeaveAction = (requestId: string, status: "approved" | "rejected") => {
+        const request = allRequests.find(r => r.id === requestId);
+        if (!request) return;
+
+        // 1. Update Request Status
+        const updatedRequests = allRequests.map(r => r.id === requestId ? { ...r, status } : r);
+        saveRequests(updatedRequests);
+
+        // 2. If Approved, Trigger Timetable Adjustment
+        if (status === "approved" && request.type === "leave") {
+            const publishedStoreStr = localStorage.getItem('published_timetables');
+            if (publishedStoreStr) {
+                const publishedTimetables = JSON.parse(publishedStoreStr);
+                
+                const { newRequests, totalAdjustments, adjustments } = reallocateLeavePeriods(
+                    request.senderId,
+                    request.date,
+                    request.duration || 1,
+                    publishedTimetables,
+                    request.id // Pass ID to link
+                );
+
+                if (totalAdjustments > 0) {
+                    // Update Requests storage with the new automated substitutions
+                    const updatedRequests = [...allRequests.map(r => r.id === request.id ? { ...r, status } : r), ...newRequests];
+                    localStorage.setItem('FACULTY_REQUESTS', JSON.stringify(updatedRequests));
+                    
+                    // Group adjustments by section to send consolidated alerts to students
+                    const sectionMap: Record<string, string[]> = {};
+                    adjustments.forEach(adj => {
+                        if (!sectionMap[adj.section]) sectionMap[adj.section] = [];
+                        sectionMap[adj.section].push(`${adj.day} ${adj.time} (${adj.subject})`);
+                    });
+
+                    Object.entries(sectionMap).forEach(([sectionKey, details]) => {
+                        const [branch, year, sem, section] = sectionKey.split('-');
+                        // Find the substitute names from adjustments for this section
+                        const substitutes = adjustments
+                            .filter(adj => adj.section === sectionKey)
+                            .map(adj => adj.newFaculty)
+                            .filter((v, i, a) => a.indexOf(v) === i); // Unique names
+
+                        pushStudentAlert({
+                            title: "Faculty Substitution: Assigned",
+                            message: `Due to absence of ${request.senderName}, your classes on ${request.date} will be taken by ${substitutes.join(", ")}.`,
+                            branch,
+                            year: parseInt(year),
+                            section,
+                            type: 'substitution'
+                        });
+                    });
+
+                    toast({
+                        title: "Leave Approved & Substitutions Generated",
+                        description: `Successfully assigned ${totalAdjustments} replacement sessions for the leave duration. Faculty and students notified.`,
+                        className: "bg-green-600 text-white"
+                    });
+                    
+                    window.dispatchEvent(new Event('faculty_request_updated'));
+                    return; // Avoid double updating status below
+                }
+            }
+        } else if (status === "rejected") {
+            // If rejected, revert any potential previous reallocation for this faculty
+            const publishedStoreStr = localStorage.getItem('published_timetables');
+            if (publishedStoreStr) {
+                const publishedTimetables = JSON.parse(publishedStoreStr);
+                const { updatedTimetables } = revertLeavePeriods(request.senderId, publishedTimetables);
+                localStorage.setItem('published_timetables', JSON.stringify(updatedTimetables));
+                window.dispatchEvent(new Event('timetable_published'));
+            }
+            
+            toast({
+                title: `Request ${status.charAt(0).toUpperCase() + status.slice(1)}`,
+                description: `The leave request from ${request.senderName} has been ${status}. Timeline restored.`,
+                variant: "destructive"
+            });
+        }
+    };
+
+    const handleDeleteRequest = (id: string) => {
+        const updated = allRequests.filter(r => r.id !== id && r.parentId !== id);
+        saveRequests(updated);
+        toast({
+            title: "Record Deleted",
+            description: "The request and all associated timetable changes have been removed. Original state restored.",
+        });
+        window.dispatchEvent(new Event('faculty_request_updated'));
+    };
+
+    return (
+        <div className="space-y-6 animate-in fade-in-50">
+            <div className="flex justify-between items-center">
+                <div>
+                    <h1 className="text-3xl font-black tracking-tight">Leave & Replacement Manager</h1>
+                    <p className="text-muted-foreground font-medium">Review and process faculty leave requests and automated replacements.</p>
+                </div>
+                <Badge variant="outline" className="h-10 px-4 border-primary/20 bg-primary/5 text-primary font-black uppercase tracking-widest">
+                    Live Admin Control
+                </Badge>
+            </div>
+
+            <div className="grid gap-6">
+                {/* Formal Leave Requests */}
+                <Card className="border-none shadow-premium rounded-[2rem] overflow-hidden">
+                    <CardHeader className="bg-slate-900 text-white p-8">
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <CardTitle className="text-2xl font-black">Pending Leave Requests</CardTitle>
+                                <CardDescription className="text-slate-400 font-bold uppercase tracking-wider text-[10px] mt-1">Institutional Oversight</CardDescription>
+                            </div>
+                            <div className="bg-white/10 p-3 rounded-2xl">
+                                <AlertCircle className="h-6 w-6 text-amber-400" />
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                        <Table>
+                            <TableHeader className="bg-slate-50">
+                                <TableRow>
+                                    <TableHead className="font-black uppercase text-[10px] pl-8">Faculty Member</TableHead>
+                                    <TableHead className="font-black uppercase text-[10px]">Leave Period & Duration</TableHead>
+                                    <TableHead className="font-black uppercase text-[10px]">Reason & Documentation</TableHead>
+                                    <TableHead className="font-black uppercase text-[10px]">Status</TableHead>
+                                    <TableHead className="text-right font-black uppercase text-[10px] pr-8">Decision</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {leaveRequests.length === 0 ? (
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="h-32 text-center text-muted-foreground italic">
+                                            No pending leave requests found.
+                                        </TableCell>
+                                    </TableRow>
+                                ) : (
+                                    leaveRequests.map((req) => (
+                                        <TableRow key={req.id} className="hover:bg-slate-50/50 transition-colors">
+                                            <TableCell className="pl-8">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="h-10 w-10 rounded-xl bg-indigo-100 flex items-center justify-center text-indigo-600">
+                                                        <User className="h-5 w-5" />
+                                                    </div>
+                                                    <div>
+                                                        <p className="font-black text-slate-800">{req.senderName}</p>
+                                                        <p className="text-[10px] text-muted-foreground font-bold tracking-widest uppercase">{req.senderId}</p>
+                                                    </div>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="space-y-1">
+                                                    <div className="flex items-center gap-2 text-sm font-black text-slate-700">
+                                                        <Calendar className="h-3.5 w-3.5 text-primary" /> {req.date}
+                                                    </div>
+                                                    <Badge variant="secondary" className="bg-slate-100 text-slate-700 border-none font-black text-[9px]">
+                                                        {req.duration} DAYS
+                                                    </Badge>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="max-w-[200px] space-y-2">
+                                                    <p className="text-xs text-muted-foreground line-clamp-2 italic">"{req.reason}"</p>
+                                                    {req.proofUrl && (
+                                                        <Button variant="outline" size="sm" className="h-7 text-[10px] font-black border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100">
+                                                            <FileImage className="h-3 w-3 mr-1" /> VIEW PROOF
+                                                        </Button>
+                                                    )}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Badge className={
+                                                    req.status === 'approved' ? 'bg-emerald-500 text-white' :
+                                                    req.status === 'rejected' ? 'bg-rose-500 text-white' :
+                                                    'bg-amber-100 text-amber-700 border-none'
+                                                }>
+                                                    {req.status.toUpperCase()}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell className="text-right pr-8">
+                                                {req.status === 'pending' ? (
+                                                    <div className="flex justify-end gap-2">
+                                                        <Button 
+                                                            size="sm" 
+                                                            className="rounded-xl bg-emerald-600 hover:bg-emerald-700 font-black shadow-lg shadow-emerald-600/20"
+                                                            onClick={() => handleLeaveAction(req.id, 'approved')}
+                                                        >
+                                                            <Check className="h-4 w-4 mr-1" /> APPROVE
+                                                        </Button>
+                                                        <Button 
+                                                            size="sm" 
+                                                            variant="destructive" 
+                                                            className="rounded-xl font-black shadow-lg shadow-rose-600/20"
+                                                            onClick={() => handleLeaveAction(req.id, 'rejected')}
+                                                        >
+                                                            <X className="h-4 w-4 mr-1" /> REJECT
+                                                        </Button>
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex justify-end items-center gap-4 text-muted-foreground italic text-xs text-nowrap">
+                                                        <div className="flex items-center gap-1.5 ">
+                                                            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                                                            Processed
+                                                        </div>
+                                                        <Button variant="ghost" size="sm" onClick={() => handleDeleteRequest(req.id)} className="h-8 w-8 p-0 hover:text-destructive">
+                                                            <Trash2 className="h-4 w-4" />
+                                                        </Button>
+                                                    </div>
+                                                )}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                )}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+
+                {/* Academic Swap Broadcasts */}
+                <Card className="border-none shadow-premium rounded-[2rem] overflow-hidden">
+                    <CardHeader className="bg-indigo-900 text-white p-8">
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <CardTitle className="text-2xl font-black">Active Swap & Replacement Broadcasts</CardTitle>
+                                <CardDescription className="text-indigo-400 font-bold uppercase tracking-wider text-[10px] mt-1">Peer-to-Peer Academic Transitions</CardDescription>
+                            </div>
+                            <div className="bg-white/10 p-3 rounded-2xl">
+                                <LayoutGrid className="h-6 w-6 text-indigo-300" />
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                        <Table>
+                            <TableHeader className="bg-indigo-50">
+                                <TableRow>
+                                    <TableHead className="font-black uppercase text-[10px] pl-8 text-indigo-900">Requester</TableHead>
+                                    <TableHead className="font-black uppercase text-[10px] text-indigo-900">Category</TableHead>
+                                    <TableHead className="font-black uppercase text-[10px] text-indigo-900">Target / Recipient</TableHead>
+                                    <TableHead className="font-black uppercase text-[10px] text-indigo-900">Date & Slot</TableHead>
+                                    <TableHead className="font-black uppercase text-[10px] text-indigo-900 text-right pr-8">Status</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {academicRequests.length === 0 ? (
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="h-32 text-center text-muted-foreground italic">
+                                            No active academic swaps found in the system.
+                                        </TableCell>
+                                    </TableRow>
+                                ) : (
+                                    academicRequests.map((req) => (
+                                        <TableRow key={req.id} className="hover:bg-indigo-50/30 transition-colors">
+                                            <TableCell className="pl-8">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="h-9 w-9 rounded-lg bg-indigo-100 flex items-center justify-center text-indigo-600 font-black text-xs text-nowrap">
+                                                        {req.senderName[0]}
+                                                    </div>
+                                                    <div className="text-nowrap">
+                                                        <p className="font-black text-slate-800 text-sm">{req.senderName}</p>
+                                                        <p className="text-[9px] text-muted-foreground font-bold tracking-widest uppercase">Requester ID: {req.senderId}</p>
+                                                    </div>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="space-y-0.5">
+                                                    <Badge variant="outline" className={`font-black text-[9px] uppercase ${req.type === 'swap' ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-indigo-200 bg-indigo-50 text-indigo-700'}`}>
+                                                        {req.type}
+                                                    </Badge>
+                                                    {req.subject && (
+                                                        <p className="text-[10px] font-black text-indigo-700 truncate max-w-[120px]">
+                                                            {req.subject}
+                                                        </p>
+                                                    )}
+                                                    <div className="flex flex-wrap gap-1 mt-1">
+                                                        <Badge variant="outline" className="text-[7px] font-black h-4 px-1 border-slate-200 text-slate-500 uppercase">Room: {req.room || 'TBD'}</Badge>
+                                                        <Badge variant="outline" className="text-[7px] font-black h-4 px-1 border-slate-200 text-slate-500 uppercase">{req.branch}-{req.year}Y SEC:{req.sectionName}</Badge>
+                                                    </div>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="flex items-center gap-2 text-nowrap">
+                                                    <ArrowRightCircle className="h-4 w-4 text-slate-300" />
+                                                    <div>
+                                                        <p className="font-bold text-slate-700 text-sm">{req.targetName}</p>
+                                                        <p className="text-[9px] text-muted-foreground font-black uppercase">Recipient</p>
+                                                    </div>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="space-y-0.5 text-nowrap">
+                                                    <p className="font-bold text-slate-700 text-xs">{req.date}</p>
+                                                    <p className="text-[10px] text-indigo-600 font-black">Slot: {req.period}</p>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="text-right pr-8">
+                                                <Badge className={
+                                                    req.status === 'approved' ? 'bg-emerald-500 text-white' :
+                                                    req.status === 'rejected' ? 'bg-rose-500 text-white' :
+                                                    'bg-amber-100 text-amber-700'
+                                                }>
+                                                    {req.status.toUpperCase()}
+                                                </Badge>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                )}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+
+                {/* Automation Summary Card */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <Card className="border-none shadow-premium rounded-[2rem] bg-indigo-600 text-white">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <ArrowRightCircle className="h-6 w-6" />
+                                Intelligent Replacement Logic
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <p className="text-indigo-100 text-sm">
+                                When a leave is approved, the system automatically scans all {Object.keys(JSON.parse(localStorage.getItem('published_timetables') || '{}')).length} published section timetables.
+                            </p>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-white/10 p-4 rounded-2xl border border-white/10">
+                                    <Building2 className="h-5 w-5 mb-2 text-indigo-300" />
+                                    <p className="text-[10px] font-black uppercase opacity-60">Priority 1</p>
+                                    <p className="font-bold text-sm">Same Branch Faculty</p>
+                                </div>
+                                <div className="bg-white/10 p-4 rounded-2xl border border-white/10">
+                                    <LayoutGrid className="h-5 w-5 mb-2 text-indigo-300" />
+                                    <p className="text-[10px] font-black uppercase opacity-60">Priority 2</p>
+                                    <p className="font-bold text-sm">Cross-Branch Slots</p>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="border-none shadow-premium rounded-[2rem] bg-slate-50">
+                        <CardHeader>
+                            <CardTitle className="text-slate-800">Replacement Guidelines</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <ul className="space-y-3">
+                                {[
+                                    "No double bookings allowed (free slots only)",
+                                    "Substituted periods are marked with a notification badge",
+                                    "Affected students are alerted in their dashboards",
+                                    "Substitutes receive instant assignment alerts"
+                                ].map((rule, i) => (
+                                    <li key={i} className="flex items-start gap-3 text-sm font-medium text-slate-600">
+                                        <div className="h-5 w-5 rounded-full bg-slate-200 flex items-center justify-center shrink-0 mt-0.5">
+                                            <span className="text-[10px] font-bold">{i+1}</span>
+                                        </div>
+                                        {rule}
+                                    </li>
+                                ))}
+                            </ul>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default RequestsManagement;

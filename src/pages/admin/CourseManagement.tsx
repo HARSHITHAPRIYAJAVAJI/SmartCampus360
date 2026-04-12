@@ -22,7 +22,11 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-const CourseManagement = () => {
+interface CourseManagementProps {
+    readOnly?: boolean;
+}
+
+const CourseManagement = ({ readOnly = false }: CourseManagementProps) => {
     const { toast } = useToast();
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedDept, setSelectedDept] = useState<string | null>(null);
@@ -122,62 +126,64 @@ const CourseManagement = () => {
                         />
                     </div>
 
-                    <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-                        <DialogTrigger asChild>
-                            <Button className="bg-primary hover:bg-primary/90 shadow-sm border-b-2 border-primary-foreground/20">
-                                <Plus className="mr-2 h-4 w-4" /> New Subject
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Add New Subject</DialogTitle>
-                                <DialogDescription>Enter the details for the new curriculum entry.</DialogDescription>
-                            </DialogHeader>
-                            <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right font-medium">Code</Label>
-                                    <Input value={formData.code || ''} onChange={e => setFormData({ ...formData, code: e.target.value })} className="col-span-3" placeholder="e.g. 4B1AA" />
+                    {!readOnly && (
+                        <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
+                            <DialogTrigger asChild>
+                                <Button className="bg-primary hover:bg-primary/90 shadow-sm border-b-2 border-primary-foreground/20">
+                                    <Plus className="mr-2 h-4 w-4" /> New Subject
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Add New Subject</DialogTitle>
+                                    <DialogDescription>Enter the details for the new curriculum entry.</DialogDescription>
+                                </DialogHeader>
+                                <div className="grid gap-4 py-4">
+                                    <div className="grid grid-cols-4 items-center gap-4">
+                                        <Label className="text-right font-medium">Code</Label>
+                                        <Input value={formData.code || ''} onChange={e => setFormData({ ...formData, code: e.target.value })} className="col-span-3" placeholder="e.g. 4B1AA" />
+                                    </div>
+                                    <div className="grid grid-cols-4 items-center gap-4">
+                                        <Label className="text-right font-medium">Name</Label>
+                                        <Input value={formData.name || ''} onChange={e => setFormData({ ...formData, name: e.target.value })} className="col-span-3" placeholder="Subject Title" />
+                                    </div>
+                                    <div className="grid grid-cols-4 items-center gap-4">
+                                        <Label className="text-right font-medium">Dept</Label>
+                                        <Select onValueChange={v => setFormData({ ...formData, department: v })}>
+                                            <SelectTrigger className="col-span-3"><SelectValue placeholder="Select Branch" /></SelectTrigger>
+                                            <SelectContent>
+                                                {departments.map(d => <SelectItem key={d.id} value={d.id}>{d.id}</SelectItem>)}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="grid grid-cols-4 items-center gap-4">
+                                        <Label className="text-right font-medium">Credits</Label>
+                                        <Input type="number" value={formData.credits || ''} onChange={e => setFormData({ ...formData, credits: Number(e.target.value) })} className="col-span-3" />
+                                    </div>
+                                    <div className="grid grid-cols-4 items-center gap-4">
+                                        <Label className="text-right font-medium">Type</Label>
+                                        <Select onValueChange={v => setFormData({ ...formData, type: v as any })}>
+                                            <SelectTrigger className="col-span-3"><SelectValue placeholder="Select Type" /></SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="Theory">Theory</SelectItem>
+                                                <SelectItem value="Lab">Lab</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="grid grid-cols-4 items-center gap-4">
+                                        <Label className="text-right font-medium">Sem</Label>
+                                        <Select onValueChange={v => setFormData({ ...formData, semester: Number(v) })}>
+                                            <SelectTrigger className="col-span-3"><SelectValue placeholder="Semester" /></SelectTrigger>
+                                            <SelectContent>
+                                                {[1, 2, 3, 4, 5, 6, 7, 8].map(s => <SelectItem key={s} value={s.toString()}>{s}</SelectItem>)}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
                                 </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right font-medium">Name</Label>
-                                    <Input value={formData.name || ''} onChange={e => setFormData({ ...formData, name: e.target.value })} className="col-span-3" placeholder="Subject Title" />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right font-medium">Dept</Label>
-                                    <Select onValueChange={v => setFormData({ ...formData, department: v })}>
-                                        <SelectTrigger className="col-span-3"><SelectValue placeholder="Select Branch" /></SelectTrigger>
-                                        <SelectContent>
-                                            {departments.map(d => <SelectItem key={d.id} value={d.id}>{d.id}</SelectItem>)}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right font-medium">Credits</Label>
-                                    <Input type="number" value={formData.credits || ''} onChange={e => setFormData({ ...formData, credits: Number(e.target.value) })} className="col-span-3" />
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right font-medium">Type</Label>
-                                    <Select onValueChange={v => setFormData({ ...formData, type: v as any })}>
-                                        <SelectTrigger className="col-span-3"><SelectValue placeholder="Select Type" /></SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="Theory">Theory</SelectItem>
-                                            <SelectItem value="Lab">Lab</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right font-medium">Sem</Label>
-                                    <Select onValueChange={v => setFormData({ ...formData, semester: Number(v) })}>
-                                        <SelectTrigger className="col-span-3"><SelectValue placeholder="Semester" /></SelectTrigger>
-                                        <SelectContent>
-                                            {[1, 2, 3, 4, 5, 6, 7, 8].map(s => <SelectItem key={s} value={s.toString()}>{s}</SelectItem>)}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            </div>
-                            <DialogFooter><Button onClick={handleAdd}>Add Entry</Button></DialogFooter>
-                        </DialogContent>
-                    </Dialog>
+                                <DialogFooter><Button onClick={handleAdd}>Add Entry</Button></DialogFooter>
+                            </DialogContent>
+                        </Dialog>
+                    )}
                 </div>
             </div>
 
@@ -234,7 +240,7 @@ const CourseManagement = () => {
                                                         <TableHead className="w-[100px] font-bold text-center">Type</TableHead>
                                                         <TableHead className="w-[100px] font-bold text-center">Dept</TableHead>
                                                         <TableHead className="w-[80px] font-bold text-center">Credits</TableHead>
-                                                        <TableHead className="w-[100px] text-right font-bold">Actions</TableHead>
+                                                        {!readOnly && <TableHead className="w-[100px] text-right font-bold">Actions</TableHead>}
                                                     </TableRow>
                                                 </TableHeader>
                                                 <TableBody>
@@ -258,21 +264,23 @@ const CourseManagement = () => {
                                                                 <TableCell className="text-center">
                                                                     <span className="font-mono font-bold text-muted-foreground">{course.credits}</span>
                                                                 </TableCell>
-                                                                <TableCell className="text-right">
-                                                                    <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-primary" onClick={() => openEdit(course)}>
-                                                                            <Edit className="h-4 w-4" />
-                                                                        </Button>
-                                                                        <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => handleDelete(course.id)}>
-                                                                            <Trash2 className="h-4 w-4" />
-                                                                        </Button>
-                                                                    </div>
-                                                                </TableCell>
+                                                                {!readOnly && (
+                                                                    <TableCell className="text-right">
+                                                                        <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-primary" onClick={() => openEdit(course)}>
+                                                                                <Edit className="h-4 w-4" />
+                                                                            </Button>
+                                                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => handleDelete(course.id)}>
+                                                                                <Trash2 className="h-4 w-4" />
+                                                                            </Button>
+                                                                        </div>
+                                                                    </TableCell>
+                                                                )}
                                                             </TableRow>
                                                         ))
                                                     ) : (
                                                         <TableRow>
-                                                            <TableCell colSpan={6} className="h-24 text-center text-muted-foreground italic">
+                                                            <TableCell colSpan={readOnly ? 5 : 6} className="h-24 text-center text-muted-foreground italic">
                                                                 No courses defined for Semester {sem}.
                                                             </TableCell>
                                                         </TableRow>

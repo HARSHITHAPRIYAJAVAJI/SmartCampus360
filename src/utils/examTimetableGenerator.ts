@@ -29,12 +29,19 @@ export interface ExamTimetable {
     isPublished: boolean;
 }
 
-export const generateExamTimetable = (
-    years: number[],
-    semester: number,
-    startDate: string,
-    type: "Mid-1" | "Mid-2" | "Semester"
-): ExamTimetable => {
+export interface ExamConfig {
+    years: number[];
+    semester: number;
+    startDate: string;
+    type: "Mid-1" | "Mid-2" | "Semester";
+    fnStart: string;
+    fnEnd: string;
+    anStart: string;
+    anEnd: string;
+}
+
+export const generateExamTimetable = (config: ExamConfig): ExamTimetable => {
+    const { years, semester, startDate, type, fnStart, fnEnd, anStart, anEnd } = config;
     const slots: ExamSlot[] = [];
     
     // 1. Group subjects by branch and year (Theory only)
@@ -71,8 +78,8 @@ export const generateExamTimetable = (
                 date: format(currentDate, "yyyy-MM-dd"),
                 day: format(currentDate, "EEEE"),
                 session: session,
-                startTime: session === "FN" ? "10:00 AM" : "02:00 PM",
-                endTime: session === "FN" ? (isSemester ? "01:00 PM" : "12:00 PM") : (isSemester ? "05:00 PM" : "04:00 PM"),
+                startTime: session === "FN" ? fnStart : anStart,
+                endTime: session === "FN" ? fnEnd : anEnd,
                 subjects: []
             };
 

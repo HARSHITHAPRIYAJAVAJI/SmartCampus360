@@ -122,6 +122,9 @@ const Navbar = () => {
                   <ListItem href="/academics/departments" title="Departments">
                     Faculty and research centers.
                   </ListItem>
+                  <ListItem href="/courses" title="Course Catalog">
+                    View curriculum and subject details.
+                  </ListItem>
                   <ListItem href="/academics/calendar" title="Academic Calendar">
                     Important dates and schedules.
                   </ListItem>
@@ -241,6 +244,7 @@ const Navbar = () => {
                 <Link to="/" className="text-lg font-medium">Home</Link>
                 <Link to="/about/vision" className="text-lg font-medium">About</Link>
                 <Link to="/academics/programs" className="text-lg font-medium">Academics</Link>
+                <Link to="/courses" className="text-lg font-medium">Course Catalog</Link>
                 
                 {/* Mobile Student Services Dropdown alternative */}
                 <div className="flex flex-col space-y-3 pl-4 border-l-2 border-primary/20">
