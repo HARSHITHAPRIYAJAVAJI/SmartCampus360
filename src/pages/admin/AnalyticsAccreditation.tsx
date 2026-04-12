@@ -263,7 +263,12 @@ const AnalyticsAccreditation = () => {
                                         .slice(0, 10)
                                         .map((f) => (
                                             <TableRow key={f.id} className="hover:bg-primary/5 transition-colors">
-                                                <TableCell className="font-bold underline decoration-primary/20 underline-offset-4">{f.name}</TableCell>
+                                                <TableCell className="font-bold underline decoration-primary/20 underline-offset-4 flex items-center gap-2">
+                                                    {f.name}
+                                                    {f.designation.includes('HOD') && (
+                                                        <Badge className="text-[8px] h-4 bg-indigo-600 border-none px-1.5 font-black uppercase">HOD</Badge>
+                                                    )}
+                                                </TableCell>
                                                 <TableCell>
                                                     <Badge variant={f.name.includes("Dr.") ? "default" : "outline"} className="text-[10px] font-bold">
                                                         {f.name.includes("Dr.") ? "PhD / Doctor of Phil." : "M.Tech / Post Grad"}

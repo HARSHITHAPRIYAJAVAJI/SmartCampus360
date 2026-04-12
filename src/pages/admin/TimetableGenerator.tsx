@@ -5,12 +5,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { timetableService } from "@/services/api";
 
-import { Loader2, Calendar as CalendarIcon, Save, RefreshCw, Wand2, Building2, Grip, BookOpen, Rocket, PlayCircle, ShieldCheck } from "lucide-react";
+import { Loader2, Calendar as CalendarIcon, Save, RefreshCw, Wand2, Building2, User, Grip, BookOpen, Rocket, PlayCircle, ShieldCheck, Cpu, Layers } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { timetableGeneratorService, CourseData, RoomData } from "@/services/timetableGenerator";
 import { MOCK_COURSES } from "@/data/mockCourses";
-import { AlertCircle, Terminal, CheckCircle2, Send } from "lucide-react";
+import { MOCK_FACULTY } from "@/data/mockFaculty";
+import { AlertCircle, Terminal, CheckCircle2, Send, Edit3 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
     DndContext,
@@ -141,7 +142,9 @@ const TimetableGenerator = () => {
         year: "1",
         semester: "1",
         department: "CSM",
-        section: "A"
+        section: "A",
+        classTeacherId: "",
+        yearInCharge: ""
     });
 
     const [batchLoading, setBatchLoading] = useState(false);
@@ -149,7 +152,7 @@ const TimetableGenerator = () => {
     const [batchSemester, setBatchSemester] = useState("1");
     const [isPublishing, setIsPublishing] = useState(false);
     const [lastBatchPublished, setLastBatchPublished] = useState(false);
-    const [publishedInfo, setPublishedInfo] = useState<{dept: string, sem: string} | null>(null);
+    const [publishedInfo, setPublishedInfo] = useState<{ dept: string, sem: string } | null>(null);
 
     // Data from API
     const [courses, setCourses] = useState<CourseData[]>([]);
@@ -165,32 +168,47 @@ const TimetableGenerator = () => {
     });
 
     useEffect(() => {
-        // Load mock data directly — no backend required
+        // Load mock data directly
         setCourses(MOCK_COURSES as any);
-        setRooms([
-            { id: 1, name: "A-304", room_type: "Lab" },
-            { id: 2, name: "C-201", room_type: "Lecture" },
-            { id: 3, name: "N-412", room_type: "Lecture" },
-            { id: 4, name: "S-101", room_type: "Lab" }
-        ]);
 
-        // Additionally try to load from localStorage if not already initialized
-        const saved = localStorage.getItem('published_timetables');
-        if (saved && Object.keys(savedTimetables).length === 0) {
+        // Import actual rooms and map to RoomData format
+        import("@/data/mockRooms").then(mod => {
+            const mappedRooms: RoomData[] = mod.MOCK_ROOMS.map(r => ({
+                id: r.id as any,
+                name: r.name,
+                room_type: r.type === 'Lab' ? 'Lab' : 'Lecture',
+                building: r.building,
+                dept: r.dept,
+                subjects: (r as any).subjects
+            }));
+            setRooms(mappedRooms);
+        });
+
+        // Load drafts first, otherwise published tables
+        const draft = localStorage.getItem('draft_timetables');
+        const published = localStorage.getItem('published_timetables');
+        
+        if (draft) {
             try {
-                setSavedTimetables(JSON.parse(saved));
+                setSavedTimetables(JSON.parse(draft));
+            } catch (e) { console.error("Error loading drafts", e); }
+        } else if (published && Object.keys(savedTimetables).length === 0) {
+            try {
+                setSavedTimetables(JSON.parse(published));
             } catch (e) {
                 console.error("Error loading cached tables", e);
             }
         }
     }, []);
 
-    // Keep localStorage in sync whenever savedTimetables changes
+    // Persist drafts to localStorage so they aren't lost on refresh
     useEffect(() => {
         if (Object.keys(savedTimetables).length > 0) {
-            localStorage.setItem('published_timetables', JSON.stringify(savedTimetables));
+            localStorage.setItem('draft_timetables', JSON.stringify(savedTimetables));
         }
     }, [savedTimetables]);
+
+
 
 
 
@@ -205,21 +223,26 @@ const TimetableGenerator = () => {
         const calcSemester = (parseInt(formData.year) - 1) * 2 + parseInt(formData.semester);
         return courses.filter(c =>
             c.department.toLowerCase() === formData.department.toLowerCase() &&
-            c.semester === calcSemester
+            c.semester === calcSemester &&
+            c.credits > 0
         );
     }, [formData.department, formData.year, formData.semester, courses]);
 
-    const viewTable = useMemo(() => {
+    const viewData = useMemo(() => {
         const key = `${viewFilter.department}-${viewFilter.year}-${viewFilter.semester}-${viewFilter.section}`;
-        return savedTimetables[key] || {};
+        return savedTimetables[key] || { grid: {}, metadata: null };
     }, [viewFilter, savedTimetables]);
+
+    // Handle both new format ({ grid, metadata }) and legacy format (just grid)
+    const viewTable = (viewData as any).grid || viewData || {};
+    const viewMetadata = (viewData as any).metadata || null;
 
     const handlePublish = async () => {
         if (!batchSemester) return;
         setIsPublishing(true);
         try {
             const semester = parseInt(batchSemester);
-            
+
             // Attempt backend push, but don't let it crash the frontend state update if it fails
             try {
                 await timetableService.publish(semester, "CSM");
@@ -230,13 +253,14 @@ const TimetableGenerator = () => {
                 console.warn("Backend publish failed, falling back to local state sync:", apiError);
                 // Continue with local sync
             }
-            
+
             // Critical: Ensure the currently saved timetables are pushed to the live dashboard store
             localStorage.setItem('published_timetables', JSON.stringify(savedTimetables));
-            
+            window.dispatchEvent(new Event('timetable_published'));
+
             setLastBatchPublished(true);
             setPublishedInfo({ dept: "All Departments", sem: batchSemester });
-            
+
             toast({
                 title: "🚀 Timetables Published",
                 description: `Successfully pushed Semester ${batchSemester} schedules to student & faculty dashboards (System Sync: OK).`
@@ -251,21 +275,21 @@ const TimetableGenerator = () => {
 
     const handleBatchGenerate = async () => {
         if (courses.length === 0) return toast({ title: "No data", description: "Course catalog is empty." });
-        
+
         setBatchLoading(true);
         setBatchProgress(5);
-        setLastBatchPublished(false); 
+        setLastBatchPublished(false);
         setPublishedInfo(null);
-        
+
         try {
             const depts = ["CSM", "IT", "CSE", "ECE"];
-            const years = [1, 2, 3, 4];
+            const years = [4, 3, 2, 1];
             const sections = ["A", "B", "C"];
             const semester = parseInt(batchSemester);
-            
+
             // Critical: Reset resources once before the entire batch starts
             timetableGeneratorService.reset();
-            
+
             const total = depts.length * years.length * sections.length;
             let current = 0;
             const batchResults: Record<string, any> = {};
@@ -273,45 +297,24 @@ const TimetableGenerator = () => {
             for (const dept of depts) {
                 for (const year of years) {
                     for (const section of sections) {
-                        // Pass false to shouldReset to preserve resource schedules (preventing faculty/room overlaps)
-                        const schedule = timetableGeneratorService.generate(year, semester, dept, section, courses, rooms, false);
+                        const result = timetableGeneratorService.generate(year, semester, dept, section, courses, rooms, false);
                         const key = `${dept}-${year}-${semester}-${section}`;
-                        
-                        // Organized Room Allocation Logic
-                        let room = 'T-101';
-                        const secIdx = section.charCodeAt(0) - 'A'.charCodeAt(0);
-                        
-                        if (year === 1) {
-                            // 1st Year: T-Block (Freshman Hub)
-                            const floor = dept === 'CSM' ? 1 : dept === 'IT' ? 2 : dept === 'ECE' ? 3 : dept === 'CSE' ? 4 : 5;
-                            room = `T-${floor}0${secIdx + 1}`;
-                        } else {
-                            // Upper Years: Specific Block Directives
-                            if (dept === 'CSM') room = `N-40${secIdx + 1}`;
-                            else if (dept === 'IT') room = `S-10${secIdx + 1}`;
-                            else if (dept === 'ECE') room = `C-10${secIdx + 1}`;
-                            else if (dept === 'CSE') room = `C-2${(secIdx + 1).toString().padStart(2, '0')}`;
-                            else room = `A-30${secIdx + 1}`;
-                        }
 
                         batchResults[key] = {
-                            ...schedule,
-                            room: room
+                            grid: result.grid,
+                            metadata: result.metadata
                         };
-                        
-                        // Non-blocking save to API
-                        timetableService.save(year, semester, dept, section, schedule).catch(() => {});
-                        
+
+                        timetableService.save(year, semester, dept, section, result.grid).catch(() => { });
+
                         current++;
                         setBatchProgress(Math.round((current / total) * 100));
                     }
                 }
             }
-            
+
             setSavedTimetables((prev: any) => {
                 const newState = { ...prev, ...batchResults };
-                // Persist locally for immediate dashboard visibility
-                localStorage.setItem('published_timetables', JSON.stringify(newState));
                 return newState;
             });
 
@@ -331,12 +334,13 @@ const TimetableGenerator = () => {
 
     const handleResetAll = () => {
         if (window.confirm("⚠️ DANGER: This will PERMANENTLY DELETE all generated and published academic timetables for all departments. Are you sure?")) {
-            localStorage.removeItem('published_timetables');
+            // Set to empty object instead of removing, to signal "Production Empty" state vs "Demo Initial" state
+            localStorage.setItem('published_timetables', JSON.stringify({}));
             setSavedTimetables({});
             setGridState({});
-            toast({ 
-                title: "System Reset Successful", 
-                description: "All academic timetables have been cleared from the system.",
+            toast({
+                title: "System Reset Successful",
+                description: "All academic timetables have been cleared. (Demo data disabled).",
                 variant: "destructive"
             });
         }
@@ -348,43 +352,51 @@ const TimetableGenerator = () => {
             const year = parseInt(formData.year);
             const semester = parseInt(formData.semester);
             
-            const newGrid = timetableGeneratorService.generate(year, semester, formData.department, formData.section, courses, rooms);
-            
+            const result = timetableGeneratorService.generate(
+                year, 
+                semester, 
+                formData.department, 
+                formData.section, 
+                courses, 
+                rooms,
+                true,
+                formData.classTeacherId,
+                formData.yearInCharge
+            );
+
             // Always save and display — never block on missing subjects
-            setGridState(newGrid as any);
+            setGridState(result.grid as any);
 
             const vKey = `${formData.department}-${formData.year}-${formData.semester}-${formData.section}`;
             setSavedTimetables((prev: any) => {
-                const newState = { ...prev, [vKey]: newGrid };
-                // Persist locally for immediate dashboard visibility
-                localStorage.setItem('published_timetables', JSON.stringify(newState));
+                const newState = { ...prev, [vKey]: result };
                 return newState;
             });
 
             // Auto-switch to View tab with correct filters
-            setViewFilter({ 
-                department: formData.department, 
-                year: formData.year, 
-                semester: formData.semester, 
-                section: formData.section 
+            setViewFilter({
+                department: formData.department,
+                year: formData.year,
+                semester: formData.semester,
+                section: formData.section
             });
             setViewTab('view');
 
             // Persist to backend (non-blocking)
-            timetableService.save(year, semester, formData.department, formData.section, newGrid).catch(() => {});
+            timetableService.save(year, semester, formData.department, formData.section, result.grid).catch(() => { });
 
             // Soft warning if some subjects didn't fit (informational only)
-            const assignedCodes = new Set(Object.values(newGrid).filter(Boolean).map(e => e?.courseCode));
+            const assignedCodes = new Set(Object.values(result.grid as any).filter(Boolean).map((e: any) => e?.courseCode));
             const missing = availableSubjects.filter(s => !assignedCodes.has(s.code));
             if (missing.length > 0) {
-                toast({ 
+                toast({
                     title: "⚠️ Partial Schedule Generated",
                     description: `${missing.length} subject(s) couldn't fit all slots (e.g., ${missing[0].name}). Schedule still saved — review and adjust manually.`
                 });
             } else {
-                toast({ 
-                    title: "✅ Generation Successful", 
-                    description: `Full schedule for ${formData.department} Y${formData.year} Sem ${formData.semester} Sec-${formData.section} is now visible.` 
+                toast({
+                    title: "✅ Generation Successful",
+                    description: `Full schedule for ${formData.department} Y${formData.year} Sem ${formData.semester} Sec-${formData.section} is now visible.`
                 });
             }
         } catch (e) {
@@ -393,6 +405,30 @@ const TimetableGenerator = () => {
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleUpdateViewMetadata = (field: string, value: string) => {
+        const vKey = `${viewFilter.department}-${viewFilter.year}-${viewFilter.semester}-${viewFilter.section}`;
+        if (!savedTimetables[vKey]) return;
+
+        setSavedTimetables((prev: any) => {
+            const updated = {
+                ...prev,
+                [vKey]: {
+                    ...prev[vKey],
+                    metadata: {
+                        ...prev[vKey].metadata,
+                        [field]: value
+                    }
+                }
+            };
+            return updated;
+        });
+
+        toast({
+            title: "Metadata Updated",
+            description: `Draft updated locally. Remember to Publish to make it live.`,
+        });
     };
 
     const handleDragStart = (event: any) => {
@@ -458,15 +494,19 @@ const TimetableGenerator = () => {
             {/* Top-Level Tabs: Generate vs View */}
             <Tabs value={viewTab} onValueChange={(v: any) => setViewTab(v)} className="w-full">
                 <TabsList className="grid w-full max-w-sm grid-cols-2 mb-6">
-                    <TabsTrigger value="generate">⚙️ Generate</TabsTrigger>
-                    <TabsTrigger value="view">📋 View Timetables</TabsTrigger>
+                    <TabsTrigger value="generate" className="gap-2">
+                        <Cpu className="h-4 w-4 text-purple-500" /> Generate
+                    </TabsTrigger>
+                    <TabsTrigger value="view" className="gap-2">
+                        <Layers className="h-4 w-4 text-primary" /> View Timetables
+                    </TabsTrigger>
                 </TabsList>
 
                 {/* View Timetables Tab */}
                 <TabsContent value="view" className="space-y-6 animate-in fade-in-50">
                     <Card className="border-none shadow-xl bg-gradient-to-br from-white to-primary/5 dark:from-zinc-900 dark:to-zinc-950">
                         <CardContent className="p-6">
-                            <div className="flex flex-col md:flex-row gap-4 items-end">
+                            <div className="flex flex-col md:flex-row gap-4 items-end mb-6">
                                 <div className="space-y-2">
                                     <label className="text-sm font-semibold">Branch</label>
                                     <Select value={viewFilter.department} onValueChange={v => setViewFilter(f => ({ ...f, department: v }))}>
@@ -517,7 +557,7 @@ const TimetableGenerator = () => {
                                 </Badge>
 
                                 <div className="ml-auto">
-                                    <Button 
+                                    <Button
                                         onClick={handlePublish}
                                         disabled={isPublishing}
                                         className={`${lastBatchPublished ? 'bg-green-600 hover:bg-green-700' : 'bg-amber-600 hover:bg-amber-700'} text-white shadow-lg h-10 px-6 whitespace-nowrap`}
@@ -527,6 +567,102 @@ const TimetableGenerator = () => {
                                     </Button>
                                 </div>
                             </div>
+
+                            {/* Resource Metadata Bar (REFINED) */}
+                            {viewMetadata && (
+                                <div className="flex flex-wrap items-center gap-y-4 gap-x-8 px-6 py-5 bg-white/40 dark:bg-black/20 rounded-3xl border border-white/60 dark:border-white/5 shadow-inner">
+                                    {/* Class Teacher (EDITABLE) */}
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center border border-primary/20">
+                                            <User className="h-5 w-5 text-primary" />
+                                        </div>
+                                        <div>
+                                            <div className="flex items-center gap-1.5 mb-1">
+                                                <p className="text-[9px] font-black uppercase text-muted-foreground tracking-[0.15em] leading-none">Class Teacher</p>
+                                                <Edit3 className="h-2.5 w-2.5 text-primary/40" />
+                                            </div>
+                                            <Select 
+                                                value={(viewMetadata as any).classTeacherId} 
+                                                onValueChange={(v) => {
+                                                    const faculty = MOCK_FACULTY.find(f => f.id === v);
+                                                    if (faculty) {
+                                                        handleUpdateViewMetadata('classTeacher', faculty.name);
+                                                        handleUpdateViewMetadata('classTeacherId', faculty.id);
+                                                    }
+                                                }}
+                                            >
+                                                <SelectTrigger className="h-7 text-sm font-black p-0 border-none bg-transparent focus:ring-0 w-auto hover:text-primary transition-colors">
+                                                    <SelectValue>{(viewMetadata as any).classTeacher}</SelectValue>
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {MOCK_FACULTY.filter(f => f.department.toUpperCase() === viewFilter.department.toUpperCase()).map(f => (
+                                                        <SelectItem key={f.id} value={f.id}>{f.name}</SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="hidden lg:block w-px h-10 bg-slate-200 dark:bg-slate-800" />
+                                    
+                                    {/* Year In-Charge (EDITABLE) */}
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-10 w-10 rounded-xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
+                                            <ShieldCheck className="h-5 w-5 text-purple-600" />
+                                        </div>
+                                        <div>
+                                             <div className="flex items-center gap-1.5 mb-1">
+                                                <p className="text-[9px] font-black uppercase text-purple-600/70 tracking-[0.15em] leading-none">Year In-Charge</p>
+                                                <Edit3 className="h-2.5 w-2.5 text-purple-600/40" />
+                                            </div>
+                                            <Select 
+                                                value={MOCK_FACULTY.find(f => f.name === (viewMetadata as any).yearInCharge)?.id} 
+                                                onValueChange={(v) => {
+                                                    const faculty = MOCK_FACULTY.find(f => f.id === v);
+                                                    if (faculty) {
+                                                        handleUpdateViewMetadata('yearInCharge', faculty.name);
+                                                    }
+                                                }}
+                                            >
+                                                <SelectTrigger className="h-7 text-sm font-black p-0 border-none bg-transparent focus:ring-0 w-auto hover:text-purple-600 transition-colors">
+                                                    <SelectValue>{(viewMetadata as any).yearInCharge}</SelectValue>
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {MOCK_FACULTY.filter(f => f.department.toUpperCase() === viewFilter.department.toUpperCase()).map(f => (
+                                                        <SelectItem key={`view-yic-${f.id}`} value={f.id}>{f.name}</SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                    </div>
+
+
+                                    {/* Primary Room */}
+                                    <div className="flex items-center gap-3">
+                                        <div className="h-10 w-10 rounded-xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
+                                            <Building2 className="h-5 w-5 text-blue-500" />
+                                        </div>
+                                        <div>
+                                            <p className="text-[9px] font-black uppercase text-blue-500/70 tracking-[0.15em] leading-none mb-1">Classroom</p>
+                                            <Select 
+                                                value={(viewMetadata as any).room} 
+                                                onValueChange={(val) => handleUpdateViewMetadata('room', val)}
+                                            >
+                                                <SelectTrigger className="h-7 text-sm font-black p-0 border-none bg-transparent focus:ring-0 w-auto hover:text-blue-600 transition-colors">
+                                                    <SelectValue>{(viewMetadata as any).room}</SelectValue>
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {rooms.filter(r => r.room_type === 'Classroom' || r.room_type === 'Lecture').map(r => (
+                                                        <SelectItem key={`view-room-${r.id}`} value={r.name}>{r.name} ({r.building})</SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
 
@@ -537,9 +673,8 @@ const TimetableGenerator = () => {
                                     {/* Header */}
                                     <div className="p-3 bg-muted font-bold text-center text-xs uppercase tracking-wider border-b-2 border-primary/20 flex items-center justify-center">Day</div>
                                     {timeSlots.map(slot => (
-                                        <div key={slot.id} className={`p-3 font-bold text-center text-xs border-b-2 border-primary/20 flex items-center justify-center ${
-                                            slot.type === 'break' ? 'text-yellow-600 bg-yellow-50/60' : 'bg-muted'
-                                        }`}>{slot.label}</div>
+                                        <div key={slot.id} className={`p-3 font-bold text-center text-xs border-b-2 border-primary/20 flex items-center justify-center ${slot.type === 'break' ? 'text-yellow-600 bg-yellow-50/60' : 'bg-muted'
+                                            }`}>{slot.label}</div>
                                     ))}
                                     {/* Day Rows */}
                                     {days.map(day => (
@@ -561,15 +696,14 @@ const TimetableGenerator = () => {
                                                 const isLibrarySession = session?.courseCode === 'LIBRARY' || session?.courseName?.toLowerCase().includes('library');
 
                                                 return (
-                                                    <div key={slot.id} className={`border p-2 h-20 flex flex-col justify-between overflow-hidden transition-colors ${
-                                                        isCAEG ? 'bg-orange-100/90 dark:bg-orange-900/40 border-orange-300/50' :
-                                                        isProjectV1 ? 'bg-amber-100/90 dark:bg-amber-900/40 border-amber-300/50' :
-                                                        isProjectV2 ? 'bg-rose-100/90 dark:bg-rose-900/40 border-rose-300/50' :
-                                                        isSports ? 'bg-lime-100/90 dark:bg-lime-900/40 border-lime-300/50' :
-                                                        isLibrarySession ? 'bg-violet-100/90 dark:bg-violet-900/40 border-violet-300/50' :
-                                                        isLabSession ? 'bg-fuchsia-100/90 dark:bg-fuchsia-900/40 border-fuchsia-300/50' : 
-                                                        'bg-sky-50/50 dark:bg-sky-950/10 border-border/30'
-                                                    }`}>
+                                                    <div key={slot.id} className={`border p-2 h-20 flex flex-col justify-between overflow-hidden transition-colors ${isCAEG ? 'bg-orange-100/90 dark:bg-orange-900/40 border-orange-300/50' :
+                                                            isProjectV1 ? 'bg-amber-100/90 dark:bg-amber-900/40 border-amber-300/50' :
+                                                                isProjectV2 ? 'bg-rose-100/90 dark:bg-rose-900/40 border-rose-300/50' :
+                                                                    isSports ? 'bg-lime-100/90 dark:bg-lime-900/40 border-lime-300/50' :
+                                                                        isLibrarySession ? 'bg-violet-100/90 dark:bg-violet-900/40 border-violet-300/50' :
+                                                                            isLabSession ? 'bg-fuchsia-100/90 dark:bg-fuchsia-900/40 border-fuchsia-300/50' :
+                                                                                'bg-sky-50/50 dark:bg-sky-950/10 border-border/30'
+                                                        }`}>
                                                         {session ? (
                                                             <>
                                                                 <div className="font-bold text-[11px] leading-tight text-foreground truncate">{session.courseName || session.courseCode}</div>
@@ -594,139 +728,50 @@ const TimetableGenerator = () => {
 
                 {/* Generate Tab */}
                 <TabsContent value="generate" className="space-y-6">
-
-            <Tabs defaultValue="specific" className="mb-8">
-                <TabsList className="grid w-full max-w-md grid-cols-2 mb-4">
-                    <TabsTrigger value="specific">Specific Timetable</TabsTrigger>
-                    <TabsTrigger value="batch" className="data-[state=active]:bg-purple-100 data-[state=active]:text-purple-700 dark:data-[state=active]:bg-purple-900 dark:data-[state=active]:text-purple-300">Centralized Batch</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="specific">
-                    <Card className="border-none shadow-xl bg-gradient-to-br from-white to-primary/5 dark:from-zinc-900 dark:to-zinc-950">
-                        <CardContent className="p-6">
-                            <div className="flex flex-col md:flex-row gap-6 items-end">
-                                <div className="space-y-2 w-full md:w-48">
-                                    <label className="text-sm font-semibold flex items-center gap-2">
-                                        <Wand2 className="h-4 w-4 text-purple-500" /> Branch
-                                    </label>
-                                    <Select
-                                        value={formData.department}
-                                        onValueChange={(v) => setFormData({ ...formData, department: v })}
-                                    >
-                                        <SelectTrigger className="h-12 bg-background/50 backdrop-blur-sm border-primary/20 focus:ring-purple-500">
-                                            <SelectValue placeholder="Branch" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="CSE">CSE</SelectItem>
-                                            <SelectItem value="CSM">CSM</SelectItem>
-                                            <SelectItem value="IT">IT</SelectItem>
-                                            <SelectItem value="ECE">ECE</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                <div className="space-y-2 w-full md:w-32">
-                                    <label className="text-sm font-semibold">Year</label>
-                                    <Select
-                                        value={formData.year}
-                                        onValueChange={(v) => setFormData({ ...formData, year: v })}
-                                    >
-                                        <SelectTrigger className="h-12 bg-background/50 backdrop-blur-sm border-primary/20">
-                                            <SelectValue placeholder="Year" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="1">1st Year</SelectItem>
-                                            <SelectItem value="2">2nd Year</SelectItem>
-                                            <SelectItem value="3">3rd Year</SelectItem>
-                                            <SelectItem value="4">4th Year</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                <div className="space-y-2 w-full md:w-32">
-                                    <label className="text-sm font-semibold">Semester</label>
-                                    <Select
-                                        value={formData.semester}
-                                        onValueChange={(v) => setFormData({ ...formData, semester: v })}
-                                    >
-                                        <SelectTrigger className="h-12 bg-background/50 backdrop-blur-sm border-primary/20">
-                                            <SelectValue placeholder="Sem" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="1">Sem 1</SelectItem>
-                                            <SelectItem value="2">Sem 2</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                <div className="space-y-2 w-full md:w-32">
-                                    <label className="text-sm font-semibold">Section</label>
-                                    <Select
-                                        value={formData.section}
-                                        onValueChange={(v) => setFormData({ ...formData, section: v })}
-                                    >
-                                        <SelectTrigger className="h-12 bg-background/50 backdrop-blur-sm border-primary/20">
-                                            <SelectValue placeholder="Section" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="A">Sec A</SelectItem>
-                                            <SelectItem value="B">Sec B</SelectItem>
-                                            <SelectItem value="C">Sec C</SelectItem>
-                                            <SelectItem value="D">Sec D</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                <Button
-                                    size="lg"
-                                    onClick={handleGenerate}
-                                    className="h-12 px-8 bg-purple-600 hover:bg-purple-700 shadow-lg shadow-purple-500/25 transition-all hover:scale-105 flex-1 md:flex-none"
-                                    disabled={loading}
-                                >
-                                    {loading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <Wand2 className="mr-2 h-5 w-5" />}
-                                    Generate Timetable
-                                </Button>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </TabsContent>
-
-                <TabsContent value="batch">
                     <Card className="border-2 border-purple-200 shadow-xl bg-gradient-to-r from-purple-50 to-indigo-50 dark:border-purple-900/50 dark:from-purple-950/20 dark:to-indigo-950/20">
                         <CardContent className="p-8">
                             <div className="flex flex-col md:flex-row items-center gap-8">
                                 <div className="flex-1 space-y-4 text-center md:text-left">
-                                    <h3 className="text-2xl font-bold text-purple-800 dark:text-purple-300">Centralized Generation</h3>
+                                    <h3 className="text-2xl font-bold text-purple-800 dark:text-purple-300">Centralized Batch Generation</h3>
                                     <p className="text-muted-foreground">
                                         Generate timetables collectively for all years, branches, and sections at once for the selected semester.
                                     </p>
-                                    
-                                    <div className="flex items-center justify-center md:justify-start gap-4 pt-4">
-                                        <div className="space-y-2 w-48">
-                                            <label className="text-sm font-semibold text-purple-900 dark:text-purple-200">Target Semester</label>
+                                    <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 pt-2">
+                                        <div className="space-y-1.5 min-w-[120px]">
+                                            <span className="text-[10px] font-black uppercase text-purple-600/70 tracking-widest px-1">Active Semester</span>
                                             <Select value={batchSemester} onValueChange={setBatchSemester}>
-                                                <SelectTrigger className="h-12 border-purple-300 dark:border-purple-700 focus:ring-purple-500">
-                                                    <SelectValue placeholder="Select Semester" />
+                                                <SelectTrigger className="h-11 border-purple-200 focus:ring-purple-500 bg-white/60 dark:bg-black/40">
+                                                    <SelectValue placeholder="Semester" />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="1">Semester 1</SelectItem>
-                                                    <SelectItem value="2">Semester 2</SelectItem>
+                                                    <SelectItem value="1">Semester 1 (Odd)</SelectItem>
+                                                    <SelectItem value="2">Semester 2 (Even)</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                         </div>
-                                        <div className="pt-7">
+
+                                        <div className="flex items-end h-full pt-5">
                                             <Button
                                                 size="lg"
                                                 onClick={handleBatchGenerate}
                                                 disabled={batchLoading}
-                                                className="h-12 px-8 bg-purple-600 hover:bg-purple-700 text-white shadow-lg shadow-purple-500/25 transition-all hover:scale-105"
+                                                className="h-11 px-8 bg-purple-600 hover:bg-purple-700 shadow-xl shadow-purple-500/20 text-white font-bold transition-all hover:scale-[1.02]"
                                             >
-                                                {batchLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : <PlayCircle className="mr-2 h-5 w-5" />}
-                                                Start Batch Generation
+                                                {batchLoading ? (
+                                                    <>
+                                                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                                        Generating Library...
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <Rocket className="mr-2 h-5 w-5" />
+                                                        Run AI Engine
+                                                    </>
+                                                )}
                                             </Button>
                                         </div>
                                     </div>
-                                    
+
                                     {batchLoading && (
                                         <div className="pt-6 space-y-2 animate-in fade-in slide-in-from-bottom-2">
                                             <div className="flex justify-between text-sm font-medium text-purple-700 dark:text-purple-300">
@@ -734,8 +779,8 @@ const TimetableGenerator = () => {
                                                 <span>{batchProgress}%</span>
                                             </div>
                                             <div className="h-3 w-full bg-purple-200 dark:bg-purple-900/50 rounded-full overflow-hidden">
-                                                <div 
-                                                    className="h-full bg-purple-600 dark:bg-purple-500 transition-all duration-500 ease-out" 
+                                                <div
+                                                    className="h-full bg-purple-600 dark:bg-purple-500 transition-all duration-500 ease-out"
                                                     style={{ width: `${batchProgress}%` }}
                                                 />
                                             </div>
@@ -757,183 +802,6 @@ const TimetableGenerator = () => {
                             </div>
                         </CardContent>
                     </Card>
-                </TabsContent>
-            </Tabs>
-
-            <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragStart={handleDragStart}
-                onDragEnd={handleDragEnd}
-            >
-                <div className="w-full">
-                    {/* Timetable Grid Container */}
-                    <div className="w-full min-w-0 overflow-x-auto">
-                        <div className="bg-card rounded-xl border shadow-lg overflow-hidden min-w-[1000px]">
-                            {/* Grid Top Bar (Classroom Info) */}
-                            <div className="bg-primary/5 px-6 py-2.5 border-b border-border flex justify-between items-center">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Weekly Schedule Grid</span>
-                                </div>
-                                <Badge variant="outline" className="bg-background/80 backdrop-blur-sm border-primary/20 text-primary font-bold px-3 py-1 flex items-center gap-2 shadow-sm whitespace-nowrap">
-                                    <Building2 className="h-3 w-3" />
-                                    Allotted Classroom: {
-                                        (() => {
-                                            const dept = formData.department.toUpperCase();
-                                            const year = parseInt(formData.year);
-                                            const secIdx = formData.section.charCodeAt(0) - 'A'.charCodeAt(0);
-                                            
-                                            if (year === 1) {
-                                                // 1st Year: T-Block
-                                                const floor = dept === 'CSM' ? 1 : dept === 'IT' ? 2 : dept === 'ECE' ? 3 : dept === 'CSE' ? 4 : 5;
-                                                return `T-${floor}0${secIdx + 1}`;
-                                            } else {
-                                                // Upper Years: Branch Blocks
-                                                if (dept === 'CSM') return `N-40${secIdx + 1}`;
-                                                if (dept === 'IT') return `S-10${secIdx + 1}`;
-                                                if (dept === 'ECE') return `C-10${secIdx + 1}`;
-                                                if (dept === 'CSE') return `C-2${(secIdx + 1).toString().padStart(2, '0')}`;
-                                                return `A-30${secIdx + 1}`;
-                                            }
-                                        })()
-                                    }
-                                </Badge>
-                            </div>
-
-                            {/* Header Row: Time Slots in Columns */}
-                            <div className="grid grid-cols-[120px_repeat(7,1fr)] bg-muted/30 divide-x divide-border border-b relative">
-                                <div className="p-4 font-bold text-center text-muted-foreground bg-muted flex items-center justify-center italic text-xs">Day / Time</div>
-                                {timeSlots.map(slot => (
-                                    <div key={slot.id} className={`p-4 font-bold text-center text-xs flex items-center justify-center ${slot.type === 'break' ? 'text-yellow-600 bg-yellow-50/50' : 'text-foreground'}`}>
-                                        {slot.label}
-                                    </div>
-                                ))}
-                            </div>
-
-                            {/* Rows: Days */}
-                            <div className="divide-y divide-border">
-                                {days.map((day) => {
-                                    const isSaturday4thYear = formData.year === "4" && day === "Saturday";
-                                    const isProjectAfternoonDay = formData.year === "4" && formData.semester === "2" && ["Wednesday", "Thursday", "Friday"].includes(day);
-
-                                    return (
-                                        <div key={day} className="grid grid-cols-[120px_repeat(7,1fr)] divide-x divide-border min-h-[100px]">
-                                            <div className="p-4 font-bold text-center text-muted-foreground bg-muted/10 flex items-center justify-center border-r">
-                                                {day}
-                                            </div>
-                                            {isSaturday4thYear ? (
-                                                <>
-                                                    {/* Morning Project Block (3 Periods) */}
-                                                    <div className="col-span-3 p-1.5 h-full">
-                                                        <div className="h-full w-full rounded-xl border-2 border-dashed border-primary/30 bg-primary/5 flex flex-col items-center justify-center gap-1 group hover:bg-primary/10 transition-colors shadow-sm border-secondary/20">
-                                                            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center mb-1">
-                                                                <Rocket className="h-4 w-4 text-primary" />
-                                                            </div>
-                                                            <div className="text-center">
-                                                                <div className="font-black text-primary text-xs uppercase tracking-tight">Major Project</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {/* Lunch Break (Middle) */}
-                                                    <div className="bg-yellow-50/40 flex items-center justify-center p-2 border-x border-border/50">
-                                                        <span className="text-[9px] font-black text-yellow-600/40 uppercase vertical-text tracking-[0.2em]">Break</span>
-                                                    </div>
-
-                                                    {/* Afternoon Project Block (3 Periods) */}
-                                                    <div className="col-span-3 p-1.5 h-full">
-                                                        <div className="h-full w-full rounded-xl border-2 border-dashed border-primary/30 bg-primary/5 flex flex-col items-center justify-center gap-1 group hover:bg-primary/10 transition-colors shadow-sm border-secondary/20">
-                                                            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center mb-1">
-                                                                <Rocket className="h-4 w-4 text-primary/70" />
-                                                            </div>
-                                                            <div className="text-center">
-                                                                <div className="font-black text-primary text-xs uppercase tracking-tight">Major Project</div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            ) : (
-                                                timeSlots.map((slot, sIdx) => {
-                                                    if (slot.type === 'break') {
-                                                        return (
-                                                            <div key={slot.id} className="bg-yellow-50/30 flex items-center justify-center p-2">
-                                                                <span className="text-[10px] font-bold text-yellow-600/40 uppercase vertical-text tracking-widest">Break</span>
-                                                            </div>
-                                                        );
-                                                    }
-
-                                                    // Project Afternoon Grouping (Wed, Thu, Fri Afternoon)
-                                                    if (isProjectAfternoonDay && sIdx === 4) {
-                                                        return (
-                                                            <div key="project-afternoon" className="col-span-3 p-1.5 h-full">
-                                                                <div className="h-full w-full rounded-xl border-2 border-dashed border-primary/30 bg-primary/10 flex flex-col items-center justify-center gap-1 group hover:bg-primary/20 transition-all shadow-sm">
-                                                                    <div className="h-7 w-7 rounded-full bg-primary/20 flex items-center justify-center mb-0.5">
-                                                                        <Rocket className="h-3.5 w-3.5 text-primary" />
-                                                                    </div>
-                                                                    <div className="text-center">
-                                                                        <div className="font-black text-primary text-[11px] uppercase tracking-tighter">Major Project</div>
-                                                                        <div className="text-[7px] text-muted-foreground font-bold tracking-[0.1em] uppercase opacity-70">Research Block</div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        );
-                                                    }
-                                                    // Hide individual slots that are now part of the col-span
-                                                    if (isProjectAfternoonDay && sIdx > 4) return null;
-
-                                                    const slotKey = `${day}-${slot.id}`;
-                                                    const course = gridState[slotKey];
-                                                    const isMentoringSlot = ((formData.year === "4" && formData.semester === "1" && day === "Tuesday") || (formData.year === "3" && day === "Saturday")) && slot.id === "03:20";
-
-                                                    const isLab = course?.courseCode?.toLowerCase().includes('lab');
-                                                    const isProject1 = course?.courseCode?.includes('Ph-1') || course?.courseCode === '4M1';
-                                                    const isProject2 = course?.courseCode?.includes('Ph-2') || course?.courseCode === '4M2';
-                                                    const isCAEG = course?.courseCode === 'CAEG';
-                                                    const isSports = course?.courseCode === 'Sports' || course?.courseCode === 'SPORTS';
-                                                    const isLibraryGrid = course?.courseCode === 'Library' || course?.courseCode === 'LIBRARY';
-
-                                                    return (
-                                                        <SortableContext key={slotKey} items={course ? [course.id] : []} strategy={verticalListSortingStrategy}>
-                                                            <DroppableSlot id={slotKey} day={day} time={slot.id}>
-                                                                 {course ? (
-                                                                    <div className="h-full w-full relative group transition-all">
-                                                                        <div className={`absolute inset-0 rounded-lg shadow-sm ${
-                                                                            isCAEG ? 'bg-indigo-50/60 border border-indigo-100' :
-                                                                            isProject1 ? 'bg-amber-50/60 border border-amber-100' :
-                                                                            isProject2 ? 'bg-rose-50/60 border border-rose-100' :
-                                                                            isSports ? 'bg-orange-50/60 border border-orange-100' :
-                                                                            isLibraryGrid ? 'bg-cyan-50/60 border border-cyan-100' :
-                                                                            isLab ? 'bg-emerald-50/60 border border-emerald-100' : 
-                                                                            'bg-white dark:bg-zinc-800 border border-border'
-                                                                        }`}></div>
-                                                                        <DraggableCourse id={course.id} courseCode={course.courseCode} courseName={course.courseName} room={course.room} faculty={course.faculty} />
-                                                                    </div>
-                                                                ) : isMentoringSlot ? (
-                                                                    <div className="h-full w-full flex flex-col items-center justify-center bg-indigo-50/80 dark:bg-indigo-900/30 rounded-lg border-2 border-dotted border-indigo-200 dark:border-indigo-800 p-2 text-center group transition-all">
-                                                                        <div className="text-[11px] font-black text-indigo-700 dark:text-indigo-300 uppercase tracking-tighter leading-none mb-1">Mentoring</div>
-                                                                    </div>
-                                                                ) : null}
-                                                            </DroppableSlot>
-                                                        </SortableContext>
-                                                    );
-                                                })
-                                            )}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <DragOverlay>
-                    {activeId ? (
-                        <div className="p-2 rounded-md text-xs border shadow-lg bg-white dark:bg-zinc-800 ring-2 ring-primary rotate-3 scale-105 opacity-90 cursor-grabbing">
-                            <div className="font-bold text-primary">Dragging...</div>
-                        </div>
-                    ) : null}
-                </DragOverlay>
-            </DndContext>
                 </TabsContent>
             </Tabs>
         </div>

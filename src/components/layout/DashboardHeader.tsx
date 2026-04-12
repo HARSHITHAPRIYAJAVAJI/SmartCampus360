@@ -1,5 +1,5 @@
 import { useState, useMemo, useRef, useEffect } from "react";
-import { Bell, User, LogOut, Search, Menu, Book, Users, GraduationCap, X } from "lucide-react";
+import { Bell, User, LogOut, Search, Menu, Book, Users, GraduationCap, X, AlertTriangle, CheckCircle2, Info, Inbox, Layout } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -51,23 +51,33 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
     const q = searchQuery.toLowerCase();
     const results: { type: 'course' | 'student' | 'faculty' | 'page', id: string, name: string, code?: string, sub: string, url: string }[] = [];
 
-    // Search Pages (Navigation)
-    const pages = [
-      { name: "Timetable Generator", url: "/dashboard/timetable", sub: "Schedule Management" },
-      { name: "Faculty Directory", url: "/dashboard/faculty-directory", sub: "Staff Management" },
-      { name: "Course Management", url: "/dashboard/manage-courses", sub: "Academic Records" },
-      { name: "Exam Management", url: "/dashboard/exams", sub: "Assessment Portal" },
-      { name: "User Management", url: "/dashboard/users", sub: "System Access" },
-      { name: "Compliance Dashboard", url: "/dashboard/analytics", sub: "Reporting" },
-      { name: "Room Management", url: "/dashboard/manage-rooms", sub: "Infrastructure" },
-      { name: "Student Records", url: "/dashboard/students", sub: "Registrar" },
+    // Search Pages (Navigation) - Filtered by Role
+    const allPages = [
+      { name: "Timetable", url: "/dashboard/timetable", sub: "Class Schedule", roles: ['student', 'faculty', 'admin'] },
+      { name: "Timetable Generator", url: "/dashboard/timetable", sub: "Schedule Management", roles: ['admin'] },
+      { name: "Faculty Directory", url: "/dashboard/faculty-directory", sub: "Staff Management", roles: ['faculty', 'admin'] },
+      { name: "Faculty Workload", url: "/dashboard/faculty-load", sub: "Load Analysis & Hours", roles: ['admin'] },
+      { name: "Course Management", url: "/dashboard/manage-courses", sub: "Academic Catalog", roles: ['admin'] },
+      { name: "Exam Management", url: "/dashboard/exams", sub: "Assessment Portal", roles: ['admin'] },
+      { name: "User Management", url: "/dashboard/users", sub: "System Access", roles: ['admin'] },
+      { name: "Compliance Dashboard", url: "/dashboard/analytics", sub: "Reporting", roles: ['admin'] },
+      { name: "Room Management", url: "/dashboard/manage-rooms", sub: "Infrastructure", roles: ['admin'] },
+      { name: "Student Records", url: "/dashboard/students", sub: "Registrar", roles: ['faculty', 'admin'] },
+      { name: "My Grades & Marks", url: "/dashboard/grades", sub: "Academic Performance", roles: ['student'] },
+      { name: "Learning Portal", url: "/dashboard/training", sub: "Skill Development", roles: ['student'] },
+      { name: "Downloads", url: "/dashboard/student/downloads", sub: "Academic Resources", roles: ['student'] },
+      { name: "Fee Payment", url: "/dashboard/student/fees/regular", sub: "Tuition & Dues", roles: ['student'] },
+      { name: "My Leave Management", url: "/dashboard/leave", sub: "Request Replacements", roles: ['faculty'] },
+      { name: "My Classes", url: "/dashboard/classes", sub: "Teaching Schedule", roles: ['faculty'] },
     ];
 
-    pages.forEach(p => {
-      if (p.name.toLowerCase().includes(q)) {
-        results.push({ type: 'page', id: p.url, name: p.name, sub: p.sub, url: p.url });
-      }
-    });
+    allPages
+      .filter(p => p.roles.includes(user.role))
+      .forEach(p => {
+        if (p.name.toLowerCase().includes(q) || p.sub.toLowerCase().includes(q)) {
+          results.push({ type: 'page', id: p.url, name: p.name, sub: p.sub, url: p.url });
+        }
+      });
 
     // Search Courses
     MOCK_COURSES.forEach(c => {
@@ -78,41 +88,45 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
           name: c.name,
           code: c.code,
           sub: `${c.department} | Sem ${c.semester}`,
-          url: '/dashboard/manage-courses'
+          url: user.role === 'admin' ? '/dashboard/manage-courses' : '/dashboard/courses'
         });
       }
     });
 
-    // Search Faculty
-    MOCK_FACULTY.forEach(f => {
-      if (f.name.toLowerCase().includes(q) || (f.rollNumber && f.rollNumber.toLowerCase().includes(q))) {
-        results.push({
-          type: 'faculty',
-          id: f.id,
-          name: f.name,
-          code: f.rollNumber,
-          sub: `${f.designation} | ${f.department}`,
-          url: '/dashboard/faculty-directory'
+    // Search Faculty - Restricted for Students (Item 10)
+    if (user.role !== 'student') {
+        MOCK_FACULTY.forEach(f => {
+            if (f.name.toLowerCase().includes(q) || (f.rollNumber && f.rollNumber.toLowerCase().includes(q))) {
+                results.push({
+                type: 'faculty',
+                id: f.id,
+                name: f.name,
+                code: f.rollNumber,
+                sub: `${f.designation} | ${f.department}`,
+                url: `/dashboard/faculty-directory?q=${encodeURIComponent(f.name)}`
+                });
+            }
         });
-      }
-    });
+    }
 
-    // Search Students
-    MOCK_STUDENTS.forEach(s => {
-      if (s.name.toLowerCase().includes(q) || s.rollNumber.toLowerCase().includes(q)) {
-        results.push({
-          type: 'student',
-          id: s.id,
-          name: s.name,
-          code: s.rollNumber,
-          sub: `${s.branch} | Year ${s.year}`,
-          url: '/dashboard/students'
+    // Search Students - Restricted for Students
+    if (user.role !== 'student') {
+        MOCK_STUDENTS.forEach(s => {
+            if (s.name.toLowerCase().includes(q) || s.rollNumber.toLowerCase().includes(q)) {
+                results.push({
+                type: 'student',
+                id: s.id,
+                name: s.name,
+                code: s.rollNumber,
+                sub: `${s.branch} | Year ${s.year}`,
+                url: `/dashboard/students?q=${encodeURIComponent(s.name)}`
+                });
+            }
         });
-      }
-    });
+    }
 
     return results.slice(0, 10); // Limit results for UI
-  }, [searchQuery]);
+  }, [searchQuery, user.role]);
 
   const [baseNotifications] = useState([
     { id: '1', title: "New assignment posted", type: "info", read: false },
@@ -198,35 +212,52 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
                   Top Results
                 </div>
                 {searchResults.length > 0 ? (
-                  searchResults.map((result) => (
-                    <button
-                      key={`${result.type}-${result.id}`}
-                      onClick={() => handleResultClick(result.url)}
-                      className="w-full flex items-center gap-3 p-3 hover:bg-muted/60 transition-colors rounded-xl text-left group"
-                    >
-                      <div className={`h-10 w-10 rounded-lg flex items-center justify-center transition-colors ${
-                        result.type === 'page' ? 'bg-indigo-100 text-indigo-600' :
-                        result.type === 'course' ? 'bg-green-100 text-green-600' :
-                        result.type === 'faculty' ? 'bg-amber-100 text-amber-600' :
-                        'bg-blue-100 text-blue-600'
-                      }`}>
-                        {result.type === 'page' ? <Menu className="h-5 w-5" /> :
-                         result.type === 'course' ? <Book className="h-5 w-5" /> :
-                         result.type === 'faculty' ? <Users className="h-5 w-5" /> :
-                         <GraduationCap className="h-5 w-5" />}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <span className="font-bold text-sm text-foreground truncate">{result.name}</span>
-                          {result.code && <Badge variant="outline" className="text-[10px] font-black uppercase border-muted h-5">{result.code}</Badge>}
+                    searchResults.map((result) => (
+                      <div key={`${result.type}-${result.id}`} className="flex items-center gap-1 p-1 pr-3 hover:bg-muted/60 transition-colors rounded-xl group">
+                        <button
+                          onClick={() => handleResultClick(result.url)}
+                          className="flex-1 flex items-center gap-3 p-2 text-left"
+                        >
+                          <div className={`h-10 w-10 rounded-lg flex items-center justify-center transition-colors ${
+                            result.type === 'page' ? 'bg-indigo-100 text-indigo-600' :
+                            result.type === 'course' ? 'bg-green-100 text-green-600' :
+                            result.type === 'faculty' ? 'bg-amber-100 text-amber-600' :
+                            'bg-blue-100 text-blue-600'
+                          }`}>
+                            {result.type === 'page' ? <Menu className="h-5 w-5" /> :
+                             result.type === 'course' ? <Book className="h-5 w-5" /> :
+                             result.type === 'faculty' ? <Users className="h-5 w-5" /> :
+                             <GraduationCap className="h-5 w-5" />}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <span className="font-bold text-sm text-foreground truncate">{result.name}</span>
+                              {result.code && <Badge variant="outline" className="text-[10px] font-black uppercase border-muted h-5">{result.code}</Badge>}
+                            </div>
+                            <p className="text-[11px] text-muted-foreground font-medium truncate mt-0.5">{result.sub}</p>
+                          </div>
+                        </button>
+                        
+                        {(result.type === 'faculty' || result.type === 'student') && user.role === 'admin' && (
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-9 w-9 opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:bg-primary/10 rounded-lg"
+                            title="Open Performance Dashboard"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleResultClick(`/dashboard/${result.type}/${result.id}`);
+                            }}
+                          >
+                            <Layout className="h-4 w-4" />
+                          </Button>
+                        )}
+                        
+                        <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+                           <Search className="h-3 w-3 text-muted-foreground/30" />
                         </div>
-                        <p className="text-[11px] text-muted-foreground font-medium truncate mt-0.5">{result.sub}</p>
                       </div>
-                      <div className="opacity-0 group-hover:opacity-100 transition-opacity pr-2">
-                         <Search className="h-3 w-3 text-primary" />
-                      </div>
-                    </button>
-                  ))
+                    ))
                 ) : (
                     <div className="p-8 text-center">
                         <X className="h-8 w-8 mx-auto mb-3 text-muted-foreground/30" />
@@ -248,42 +279,83 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
         {/* Notifications */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="relative h-9 w-9 rounded-full hover:bg-muted/60 transition-colors">
-              <Bell className="h-[22px] w-[22px] text-muted-foreground" />
+            <Button variant="ghost" size="icon" className="relative h-10 w-10 rounded-full hover:bg-muted/60 transition-all active:scale-95 group">
+              <Bell className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
               {unreadCount > 0 && (
-                <span
-                  className="absolute -top-0.5 -right-0.5 h-[18px] w-[18px] rounded-full bg-red-500 flex items-center justify-center text-[10px] font-bold text-white shadow-sm ring-2 ring-card"
-                >
+                <span className="absolute top-1.5 right-1.5 h-4 w-4 rounded-full bg-red-500 flex items-center justify-center text-[9px] font-black text-white shadow-lg ring-2 ring-card animate-in zoom-in-50 duration-300">
                   {unreadCount}
                 </span>
               )}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-80">
-            <DropdownMenuLabel>Notifications</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {notifications.map((notification) => (
-              <DropdownMenuItem key={notification.id} className="flex flex-col items-start p-3">
-                <div className="flex w-full items-center justify-between">
-                  <div className="flex flex-col">
-                    <span className="font-medium">{notification.title}</span>
-                    {notification.message && <span className="text-xs text-muted-foreground">{notification.message}</span>}
-                  </div>
-                  {!notification.read && (
-                    <div className="w-2 h-2 bg-primary rounded-full" />
-                  )}
+          <DropdownMenuContent align="end" className="w-[380px] p-0 rounded-2xl overflow-hidden shadow-2xl border-border/40 translate-y-1">
+            <div className="bg-gradient-to-br from-primary/5 to-transparent px-5 py-4 flex items-center justify-between border-b border-border/50">
+              <div className="flex items-center gap-2.5">
+                <div className="bg-primary/10 p-2 rounded-xl">
+                  <Bell className="h-4 w-4 text-primary" />
                 </div>
-                {notification.isLeave && (
-                    <Link to="/admin/faculty" className="text-[10px] text-primary mt-1 font-bold hover:underline">
-                        Approve/Reject Requests →
-                    </Link>
-                )}
-              </DropdownMenuItem>
-            ))}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-center text-primary">
-              View all notifications
-            </DropdownMenuItem>
+                <h3 className="font-black text-sm tracking-tight">Notification Center</h3>
+              </div>
+              <Button variant="ghost" size="sm" className="h-8 text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/10 rounded-lg">
+                Mark all as read
+              </Button>
+            </div>
+            
+            <div className="max-h-[420px] overflow-y-auto">
+              {notifications.length > 0 ? (
+                notifications.map((notification) => (
+                  <DropdownMenuItem key={notification.id} className="flex gap-4 p-4 border-b border-border/10 last:border-0 hover:bg-muted/40 transition-colors cursor-pointer group focus:bg-muted/40 items-start">
+                    <div className={`mt-1 h-10 w-10 shrink-0 rounded-xl flex items-center justify-center transition-colors shadow-sm ${
+                      notification.type === 'warning' ? 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400' :
+                      notification.type === 'success' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' :
+                      'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400'
+                    }`}>
+                      {notification.isLeave ? <Users className="h-5 w-5" /> : 
+                       notification.type === 'warning' ? <AlertTriangle className="h-5 w-5" /> :
+                       notification.type === 'success' ? <CheckCircle2 className="h-5 w-5" /> :
+                       <Info className="h-5 w-5" />}
+                    </div>
+                    <div className="flex-1 space-y-1">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className={`text-sm font-bold leading-none ${!notification.read ? 'text-foreground' : 'text-muted-foreground'}`}>
+                          {notification.title}
+                        </span>
+                        {!notification.read && <div className="h-2 w-2 rounded-full bg-primary shrink-0" />}
+                      </div>
+                      <p className="text-[12px] text-muted-foreground font-medium leading-relaxed">
+                        {notification.message || "New update regarding your academic status."}
+                      </p>
+                      <div className="flex items-center justify-between pt-1">
+                        <span className="text-[10px] font-bold text-muted-foreground opacity-60 uppercase tracking-tighter">
+                          Just now
+                        </span>
+                        {notification.isLeave && (
+                          <Link to="/admin/faculty" className="text-[10px] text-primary font-black uppercase tracking-tighter hover:underline">
+                            Review Request →
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  </DropdownMenuItem>
+                ))
+              ) : (
+                <div className="py-12 px-6 text-center space-y-3">
+                  <div className="h-16 w-16 bg-muted/30 rounded-full flex items-center justify-center mx-auto">
+                    <Inbox className="h-8 w-8 text-muted-foreground/30" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-sm font-bold text-muted-foreground">Inbox is empty</p>
+                    <p className="text-[10px] text-muted-foreground/50 uppercase tracking-widest font-black">All up to date!</p>
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            <div className="p-3 bg-muted/20 text-center">
+              <Link to="/dashboard/communications" className="text-[11px] font-black uppercase tracking-[0.15em] text-primary hover:text-primary/80 transition-colors">
+                Open Communication Hub
+              </Link>
+            </div>
           </DropdownMenuContent>
         </DropdownMenu>
 

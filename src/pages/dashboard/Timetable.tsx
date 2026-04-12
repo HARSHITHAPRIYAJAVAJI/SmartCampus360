@@ -1,15 +1,18 @@
-import { useState, useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useMemo, useEffect } from "react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar, Clock, Plus, Edit, Filter, BookOpen, User, Wand2, FileText, ShieldCheck, Printer } from "lucide-react";
+import { Calendar, Clock, Plus, Edit, Filter, BookOpen, User, Building2, Wand2, FileText, ShieldCheck, UserCheck, Printer, Mail, Phone } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { EXAM_BRANCHES, ExamTimetable } from "@/utils/examTimetableGenerator";
 import { useOutletContext } from "react-router-dom";
 import { AIML_TIMETABLES, FACULTY_LOAD, getTimetable } from "@/data/aimlTimetable";
 import { MOCK_STUDENTS } from "@/data/mockStudents";
+import { MOCK_FACULTY } from "@/data/mockFaculty";
 import { MOCK_COURSES } from "@/data/mockCourses";
+import { formatSubjectName, getSubjectAbbreviation } from "@/data/subjectMapping";
 
 interface TimetableProps {
   userRole?: string;
@@ -20,33 +23,66 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
   const [activeTab, setActiveTab] = useState('academic');
   const [selectedSemester, setSelectedSemester] = useState<number>(1);
   const userRole = propRole || user?.role || "student";
+
+  const [storageSyncStamp, setStorageSyncStamp] = useState(0);
+  useEffect(() => {
+      const handleStorage = (e: StorageEvent) => {
+          if (e.key === 'published_timetables') {
+              setStorageSyncStamp(s => s + 1);
+          }
+      };
+      window.addEventListener('storage', handleStorage);
+      const handleCustomEvent = () => setStorageSyncStamp(s => s + 1);
+      window.addEventListener('timetable_published', handleCustomEvent);
+      
+      return () => {
+          window.removeEventListener('storage', handleStorage);
+          window.removeEventListener('timetable_published', handleCustomEvent);
+      };
+  }, []);
   
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const timeSlots = ["09:40", "10:40", "11:40", "12:40", "01:20", "02:20", "03:20"];
 
+  const student = useMemo(() => MOCK_STUDENTS.find(s => s.rollNumber.toUpperCase() === user.id.toUpperCase()), [user.id]);
+
   const processedData = useMemo(() => {
     if (userRole === "student") {
-      const student = MOCK_STUDENTS.find(s => s.rollNumber.toUpperCase() === user.id.toUpperCase());
       if (!student) return {};
 
       const semNum = student.semester % 2 === 0 ? 2 : 1;
       
-      // Look for a live published table first
+      // Resolve which source of truth to use
       const publishedStoreStr = localStorage.getItem('published_timetables');
-      const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
-      const publishedKey = `${student.branch}-${student.year}-${semNum}-${student.section}`;
-      const liveTable = publishedTimetables[publishedKey];
+      const allTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : null;
+      const strictPublishedKey = `${(student.branch || "").toUpperCase()}-${student.year}-${semNum}-${student.section}`;
+      
+      let publishedEntry = allTimetables ? allTimetables[strictPublishedKey] : null;
 
-      const baseTable = liveTable || getTimetable(student.year, semNum, student.section, student.branch);
-      const key = `${student.year}-${semNum}`;
+      if (!publishedEntry && allTimetables) {
+          const altSemNum = semNum === 1 ? 2 : 1;
+          const altKey = `${(student.branch || "").toUpperCase()}-${student.year}-${altSemNum}-${student.section}`;
+          if (allTimetables[altKey]) {
+              publishedEntry = allTimetables[altKey];
+          }
+      }
 
-      const result: any = {};
-      Object.entries(baseTable).forEach(([dayTime, session]: [string, any]) => {
+      // Logic: Prioritize the specific published entry, fallback to institutional defaults ONLY on initial boot before any publishing happens.
+      const useDemoData = publishedStoreStr === null;
+      const liveTable = publishedEntry?.grid || 
+                        (publishedEntry && !publishedEntry.metadata ? publishedEntry : 
+                        (useDemoData ? getTimetable(student.year, semNum, student.section, student.branch) : {}));
+      const liveMetadata = publishedEntry?.metadata || null;
+
+      const result: any = { slots: {}, metadata: liveMetadata };
+      Object.entries(liveTable).forEach(([dayTime, session]: [string, any]) => {
         if (!session) return;
-        const [day, time] = dayTime.split('-');
-        if (!result[day]) result[day] = {};
+        let [day, time] = dayTime.split('-');
+        const timeMap: Record<string, string> = { "09:30": "09:40", "10:30": "10:40", "11:40": "11:40", "01:30": "01:20", "02:30": "02:20", "03:30": "03:20" };
+        time = timeMap[time] || time;
+        if (!result.slots[day]) result.slots[day] = {};
 
-        // Find faculty for this session: Try branch-specific load first, then generic load
+        // Find faculty for this session
         const facultyLoadKey = `${student.branch}-${student.year}-${semNum}`;
         const genericLoadKey = `${student.year}-${semNum}`;
         const currentLoad = (FACULTY_LOAD[facultyLoadKey as keyof typeof FACULTY_LOAD] || 
@@ -54,18 +90,22 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
         
         const loadInfo = currentLoad?.find(l => l.code === session.courseCode);
 
-        result[day][time] = {
-          subject: session.courseName || session.courseCode,
+        const fullName = formatSubjectName(session.courseName || session.courseCode);
+        const abbrev = getSubjectAbbreviation(session.courseName || session.courseCode);
+
+        result.slots[day][time] = {
+          subject: abbrev,
+          fullName: fullName,
+          courseCode: session.courseCode,
           room: session.room || loadInfo?.room || "TBD",
           faculty: session.faculty || loadInfo?.faculty || "Staff",
           type: (session.courseName || session.courseCode || "").toLowerCase().includes('lab') ? 'lab' : 'lecture',
           duration: 1,
-          isLive: !!liveTable
+          isLive: !!publishedEntry
         };
       });
       return result;
     } else if (userRole === "faculty") {
-      const result: any = {};
       const facultyName = user.name;
       const facultyId = user.id;
 
@@ -76,22 +116,38 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
         courseNameMap[c.code.replace(' Lab', '').trim()] = c.name;
       });
 
-      // Merge in published and static tables
+      // Resolve which source of truth to use - dynamically fetch all 4 branches without overlapping duplicates
       const publishedStoreStr = localStorage.getItem('published_timetables');
       const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
-      const allTimetables = { ...AIML_TIMETABLES, ...publishedTimetables };
+      
+      const useDemoDataFaculty = publishedStoreStr === null;
+      
+      const allTimetablesToProcess: Record<string, any> = {};
+      const branches = ["CSM", "CSE", "IT", "ECE"];
+      const years = [1, 2, 3, 4];
+      const sections = ["A", "B", "C"];
+      
+      branches.forEach(branch => {
+          years.forEach(year => {
+              sections.forEach(section => {
+                  const publishedKey = `${branch}-${year}-${selectedSemester}-${section}`;
+                  const publishedEntry = publishedTimetables[publishedKey];
+                  if (publishedEntry) {
+                      allTimetablesToProcess[publishedKey] = publishedEntry.grid || publishedEntry;
+                  } else if (useDemoDataFaculty) {
+                      const fallback = getTimetable(year, selectedSemester, section, branch);
+                      if (Object.keys(fallback).length > 0) {
+                          allTimetablesToProcess[publishedKey] = fallback;
+                      }
+                  }
+              });
+          });
+      });
 
-      Object.entries(allTimetables).forEach(([key, table]: [string, any]) => {
-        const parts = key.split('-');
-        let dept, year, sem, section;
+      const facultyResult: any = { slots: {}, metadata: null };
 
-        if (parts.length === 4) {
-          [dept, year, sem, section] = parts;
-        } else {
-          [year, sem, section] = parts;
-          dept = "AIML";
-          section = section || 'A';
-        }
+      Object.entries(allTimetablesToProcess).forEach(([key, table]: [string, any]) => {
+        const [dept, year, sem, section] = key.split('-');
 
         const semKey = `${year}-${sem}`;
         const load = FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || [];
@@ -100,13 +156,13 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
           if (!session) return;
           
           let isAssigned = false;
-          
-          // PRIORITY 1: ID-BASED MATCHING (Most secure)
           if (session.facultyId && facultyId) {
             isAssigned = session.facultyId === facultyId;
           } 
+          if (!isAssigned && session.facultyIds && session.facultyIds.includes(facultyId)) {
+              isAssigned = true;
+          }
           
-          // PRIORITY 2: NAME-BASED MATCHING (Fallback for legacy/static data)
           if (!isAssigned) {
             if (session.faculty) {
               isAssigned = session.faculty.trim().toLowerCase() === facultyName.trim().toLowerCase();
@@ -115,7 +171,6 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
             }
           }
 
-          // PRIORITY 3: GENERIC ROUND-ROBIN (Fallback if no faculty assigned yet)
           if (!isAssigned && !session.faculty && (!session.room || (!session.room.includes("Mrs.") && !session.room.includes("Dr.")))) {
             const courseCode = session.courseCode || (session.subject?.split(' (')[0]);
             const eligibleFaculty = (load as any[])
@@ -132,34 +187,37 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
             }
           }
 
-          // PRIORITY 4: FILTER BY SEMESTER
           const isSameSemester = sem === selectedSemester.toString();
           if (!isSameSemester) isAssigned = false;
           
           if (isAssigned) {
-            const [day, time] = dayTime.split('-');
-            if (!result[day]) result[day] = {};
+            let [day, time] = dayTime.split('-');
+            const timeMap: Record<string, string> = { "09:30": "09:40", "10:30": "10:40", "11:40": "11:40", "01:30": "01:20", "02:30": "02:20", "03:30": "03:20" };
+            time = timeMap[time] || time;
+            if (!facultyResult.slots[day]) facultyResult.slots[day] = {};
             
             const rawSubject = session.courseName || session.courseCode || session.subject || "Unknown";
             const cleanCode = rawSubject.split(' (')[0].trim();
             const fullName = courseNameMap[cleanCode] || cleanCode;
-            const subjectDisplay = `${fullName} (${dept}-${year}${section})`;
+            const abbrev = getSubjectAbbreviation(fullName);
+            const subjectDisplay = `${abbrev} (${dept}-${year}${section})`;
 
-            result[day][time] = {
-              subject: subjectDisplay,
+            facultyResult.slots[day][time] = {
+              subject: abbrev,
+              fullName: `${fullName} (${dept}-${year}${section})`,
               room: session.room && (session.room.includes("Mrs.") || session.room.includes("Dr.")) ? "TBD" : (session.room || "TBD"),
               branch: `${dept} | Y${year} S${sem} - Sec ${section}`,
               type: (fullName || "").toLowerCase().includes('lab') ? 'lab' : 'lecture',
               duration: 1,
-              isLive: !!publishedTimetables[key]
+              isLive: true
             };
           }
         });
       });
-      return result;
+      return facultyResult;
     }
-    return {};
-  }, [userRole, user.id, user.name, selectedSemester]);
+    return { slots: {}, metadata: null };
+  }, [userRole, student, user.id, user.name, selectedSemester, storageSyncStamp]);
 
   const publishedExamTimetables = useMemo(() => {
     const saved = localStorage.getItem('EXAM_TIMETABLES');
@@ -179,13 +237,14 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
     return published; // Faculty see all published for now
   }, [userRole, user.id]);
 
-  const timetableData = processedData;
+  const timetableData = (processedData as any).slots || {};
 
   const stats = useMemo(() => {
     let totalSessions = 0;
+    const slots = (processedData as any).slots || {};
     days.forEach(day => {
-      if (timetableData[day]) {
-        totalSessions += Object.keys(timetableData[day]).length;
+      if (slots[day]) {
+        totalSessions += Object.keys(slots[day]).length;
       }
     });
 
@@ -193,7 +252,35 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
     const freeSlots = totalPossibleSlots - totalSessions;
 
     return { totalSessions, freeSlots, contactHours: totalSessions };
-  }, [timetableData]);
+  }, [processedData]);
+
+  const subjectFacultyMapping = useMemo(() => {
+    const mapping: Record<string, any> = {};
+    const slots = (processedData as any).slots || {};
+    Object.values(slots).forEach((daySlots: any) => {
+      Object.values(daySlots).forEach((session: any) => {
+        const title = session.fullName || session.subject;
+        if (title && session.faculty && !isSpecialSession(title)) {
+          if (!mapping[title]) {
+            const facultyDetails = MOCK_FACULTY.find(f => 
+              f.name.toLowerCase().trim() === session.faculty.toLowerCase().trim()
+            );
+            mapping[title] = {
+              name: session.faculty,
+              email: facultyDetails?.email || "N/A",
+              phone: facultyDetails?.phone || "N/A"
+            };
+          }
+        }
+      });
+    });
+    return Object.entries(mapping);
+  }, [processedData]);
+
+  function isSpecialSession(name: string) {
+    const n = name.toLowerCase();
+    return n.includes('sports') || n.includes('library') || n.includes('lunch') || n.includes('break');
+  }
 
   const getSubjectColor = (type: string) => {
     switch (type) {
@@ -247,7 +334,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
               : 'bg-primary/5 dark:bg-primary/10 border-l-primary'
           }`}
         >
-          <div className={`font-black text-[15px] tracking-tight text-center px-2 ${
+          <div className={`font-black text-[14px] tracking-tight text-center px-2 ${
             isProject ? 'text-violet-700 dark:text-violet-300' : 'text-slate-900 dark:text-slate-100'
           }`}>
             {session.subject}
@@ -255,11 +342,13 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
           <div className="text-[12px] text-slate-500 dark:text-slate-400 font-bold opacity-80 mb-1">
             {userRole === 'student' ? session.faculty : session.branch}
           </div>
-          <div className={`text-[11px] font-mono px-3 py-1 rounded-md font-black uppercase tracking-tighter border ${
-            isProject ? 'bg-violet-100 border-violet-200 text-violet-600 dark:bg-violet-900/40 dark:text-violet-300' : 'bg-primary/10 border-primary/10 text-primary dark:bg-primary/20'
-          }`}>
-            {session.room}
-          </div>
+          {(isLab || session.room) && session.room !== "TBD" && (
+            <div className={`text-[11px] font-mono px-3 py-1 rounded-md font-black uppercase tracking-tighter border ${
+              isProject ? 'bg-violet-100 border-violet-200 text-violet-600 dark:bg-violet-900/40 dark:text-violet-300' : 'bg-primary/10 border-primary/10 text-primary dark:bg-primary/20'
+            }`}>
+              {session.room}
+            </div>
+          )}
         </div>
       );
     }
@@ -273,7 +362,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
         }`}
       >
         <div className="flex flex-col gap-1">
-          <div className="font-black text-[13px] lg:text-[14px] leading-tight text-slate-900 dark:text-slate-100 line-clamp-2 flex items-center gap-1 group-hover:text-primary transition-colors">
+          <div className="font-black text-[12px] lg:text-[13px] leading-tight text-slate-900 dark:text-slate-100 line-clamp-2 flex items-center gap-1 group-hover:text-primary transition-colors">
             {session.subject}
           </div>
           <div className="text-[11px] lg:text-[12px] text-slate-500 dark:text-slate-400 font-bold truncate flex items-center gap-1.5 border-t border-border/10 pt-1 mt-1">
@@ -283,12 +372,13 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
         </div>
         
         <div className="flex items-center justify-between mt-auto">
-           <div className="text-[10px] lg:text-[11px] font-mono bg-primary/10 text-primary dark:bg-primary/20 px-2 py-0.5 rounded-sm font-black uppercase tracking-tighter shadow-sm border border-primary/10 group-hover:bg-primary group-hover:text-white transition-all">
-             {session.room}
-           </div>
-           <div className="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest group-hover:text-primary transition-colors">
-             {time}
-           </div>
+          {session.room && session.room !== "TBD" ? (
+            <div className="text-[10px] lg:text-[11px] font-mono bg-primary/10 text-primary dark:bg-primary/20 px-2 py-0.5 rounded-sm font-black uppercase tracking-tighter shadow-sm border border-primary/10 group-hover:bg-primary group-hover:text-white transition-all">
+              {session.room}
+            </div>
+          ) : (
+            <div className="w-1 h-1" /> // Spacer
+          )}
         </div>
 
         {/* Decorative corner accent */}
@@ -316,10 +406,75 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
         </TabsList>
 
         <TabsContent value="academic" className="space-y-6">
+          {/* Section Metadata Header (NEW) */}
+          {(processedData as any).metadata && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 animate-in fade-in-50 duration-500">
+                {/* Class Teacher */}
+                <Card className="border-none shadow-premium rounded-3xl bg-gradient-to-br from-purple-50 to-white dark:from-purple-950/10">
+                    <CardContent className="p-5 flex items-center gap-4">
+                        <div className="h-10 w-10 rounded-2xl bg-purple-100 flex items-center justify-center text-purple-600">
+                            <User className="h-5 w-5" />
+                        </div>
+                        <div>
+                            <p className="text-[9px] font-black uppercase text-purple-400 tracking-widest leading-none mb-1">Class Teacher</p>
+                            <p className="text-base font-black text-slate-800 dark:text-slate-100 italic">{(processedData as any).metadata.classTeacher}</p>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Year In-Charge */}
+                <Card className="border-none shadow-premium rounded-3xl bg-gradient-to-br from-indigo-50 to-white dark:from-indigo-950/10">
+                    <CardContent className="p-5 flex items-center gap-4">
+                        <div className="h-10 w-10 rounded-2xl bg-indigo-100 flex items-center justify-center text-indigo-600">
+                            <ShieldCheck className="h-5 w-5" />
+                        </div>
+                        <div>
+                            <p className="text-[9px] font-black uppercase text-indigo-400 tracking-widest leading-none mb-1">Year In-Charge</p>
+                            <p className="text-base font-black text-slate-800 dark:text-slate-100">{(processedData as any).metadata.yearInCharge || "N/A"}</p>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Class Representative */}
+                <Card className="border-none shadow-premium rounded-3xl bg-gradient-to-br from-orange-50 to-white dark:from-orange-950/10">
+                    <CardContent className="p-5 flex items-center gap-4">
+                        <div className="h-10 w-10 rounded-2xl bg-orange-100 flex items-center justify-center text-orange-600">
+                            <UserCheck className="h-5 w-5" />
+                        </div>
+                        <div>
+                            <p className="text-[9px] font-black uppercase text-orange-400 tracking-widest leading-none mb-1">Class Rep (CR)</p>
+                            <p className="text-sm font-bold text-slate-800 dark:text-slate-100">{(processedData as any).metadata.classRepresentative || "TBD"}</p>
+                        </div>
+                    </CardContent>
+                </Card>
+
+                {/* Classroom */}
+                <Card className="border-none shadow-premium rounded-3xl bg-gradient-to-br from-blue-50 to-white dark:from-blue-950/10">
+                    <CardContent className="p-5 flex items-center gap-4">
+                        <div className="h-10 w-10 rounded-2xl bg-blue-100 flex items-center justify-center text-blue-600">
+                            <Building2 className="h-5 w-5" />
+                        </div>
+                        <div>
+                            <p className="text-[9px] font-black uppercase text-blue-400 tracking-widest leading-none mb-1">Primary Classroom</p>
+                            <p className="text-base font-black text-slate-800 dark:text-slate-100">{(processedData as any).metadata.room}</p>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+          )}
+
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center justify-between">
-                <span>Semester Academic Schedule</span>
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl font-black tracking-tight">{userRole === 'student' ? 'My Schedule' : 'Teaching Schedule'}</span>
+                  <Badge variant="outline" className="rounded-full border-primary/20 text-primary uppercase text-[8px] font-black tracking-widest">Official Release</Badge>
+                  {userRole === 'student' && student && (
+                      <Badge className="ml-2 bg-primary/10 border-primary/30 text-primary font-black uppercase text-[10px]">
+                          {student.branch} | Y{student.year} | S{student.semester} | Sec {student.section}
+                      </Badge>
+                  )}
+                </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-medium text-muted-foreground mr-2">Displaying:</span>
                   <div className="flex bg-muted p-1 rounded-lg">
@@ -353,55 +508,106 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
                   ))}
 
                   {/* Day Rows */}
-                  {days.map((day) => {
-                    const mergedSlots: { time: string; span: number }[] = [];
-                    let i = 0;
-                    while (i < timeSlots.length) {
-                      const time = timeSlots[i];
-                      const session = timetableData[day as keyof typeof timetableData]?.[time];
-                      const courseCode = session?.subject ?? null;
+                    {days.map((day) => {
+                      const mergedSlots: { time: string; span: number }[] = [];
+                      let i = 0;
+                      const slots = (processedData as any).slots || {};
+                      
+                      while (i < timeSlots.length) {
+                        const time = timeSlots[i];
+                        const session = slots[day as keyof typeof slots]?.[time];
+                        const courseCode = session?.subject ?? null;
 
-                      if (time === "12:40" || !courseCode) {
-                        mergedSlots.push({ time, span: 1 });
-                        i++;
-                        continue;
-                      }
-
-                      let span = 1;
-                      while (i + span < timeSlots.length && timeSlots[i + span] !== "12:40") {
-                        const nextSession = timetableData[day as keyof typeof timetableData]?.[timeSlots[i + span]];
-                        if (nextSession?.subject === courseCode) {
-                          span++;
-                        } else {
-                          break;
+                        if (time === "12:40" || !courseCode) {
+                          mergedSlots.push({ time, span: 1 });
+                          i++;
+                          continue;
                         }
+
+                        let span = 1;
+                        while (i + span < timeSlots.length && timeSlots[i + span] !== "12:40") {
+                          const nextSession = slots[day as keyof typeof slots]?.[timeSlots[i + span]];
+                          if (nextSession?.subject === courseCode && nextSession?.branch === session?.branch) {
+                            span++;
+                          } else {
+                            break;
+                          }
+                        }
+
+                        mergedSlots.push({ time, span });
+                        i += span;
                       }
 
-                      mergedSlots.push({ time, span });
-                      i += span;
-                    }
-
-                    return (
-                      <div key={day} className="contents text-xs">
-                        <div className="p-3 bg-muted/50 font-black text-center flex items-center justify-center border-r-2 border-muted h-full uppercase min-h-[84px] tracking-widest text-[10px]">
-                          {day}
-                        </div>
-                        {mergedSlots.map(({ time, span }) => (
-                          <div
-                            key={`${day}-${time}`}
-                            className="h-full"
-                            style={{ gridColumn: span > 1 ? `span ${span}` : undefined }}
-                          >
-                            {renderTimeSlot(day, time, span)}
+                      return (
+                        <div key={day} className="contents text-xs">
+                          <div className="p-3 bg-muted/50 font-black text-center flex items-center justify-center border-r-2 border-muted h-full uppercase min-h-[84px] tracking-widest text-[10px]">
+                            {day}
                           </div>
-                        ))}
-                      </div>
-                    );
-                  })}
+                          {mergedSlots.map(({ time, span }) => (
+                            <div
+                              key={`${day}-${time}`}
+                              className="h-full"
+                              style={{ gridColumn: span > 1 ? `span ${span}` : undefined }}
+                            >
+                              {renderTimeSlot(day, time, span)}
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
+              </CardContent>
+            </Card>
+
+            {/* Subject-Faculty Mapping Module */}
+            {subjectFacultyMapping.length > 0 && (
+                <Card className="border-none shadow-premium rounded-[2.5rem] overflow-hidden mt-8 animate-in slide-in-from-bottom-4 duration-500">
+                    <CardHeader className="bg-slate-50 dark:bg-slate-900/50 p-6 border-b">
+                        <CardTitle className="text-lg font-black flex items-center gap-2">
+                            <BookOpen className="h-5 w-5 text-primary" /> Instructional Mapping & Directory
+                        </CardTitle>
+                        <CardDescription className="text-xs font-medium">Full Subject-to-Faculty assignments with institutional contact details.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-0">
+                        <Table>
+                            <TableHeader>
+                                <TableRow className="bg-slate-50/50 dark:bg-transparent">
+                                    <TableHead className="font-black uppercase tracking-widest text-[10px] pl-8">Course Subject</TableHead>
+                                    <TableHead className="font-black uppercase tracking-widest text-[10px]">Instructional Faculty</TableHead>
+                                    <TableHead className="font-black uppercase tracking-widest text-[10px]">Contact Email</TableHead>
+                                    <TableHead className="font-black uppercase tracking-widest text-[10px] pr-8 text-right">Office Number</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {subjectFacultyMapping.map(([subject, details]: [string, any]) => (
+                                    <TableRow key={subject} className="hover:bg-muted/30 transition-colors">
+                                        <TableCell className="font-bold text-sm pl-8 text-slate-800 dark:text-slate-100">{subject}</TableCell>
+                                        <TableCell>
+                                            <div className="flex items-center gap-2">
+                                                <div className="h-7 w-7 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary">FT</div>
+                                                <span className="text-sm font-black text-slate-600 dark:text-slate-400">{details.name}</span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="flex items-center gap-2 text-muted-foreground group">
+                                                <Mail className="h-3 w-3 opacity-40 group-hover:text-primary transition-colors" />
+                                                <span className="text-xs font-medium cursor-pointer hover:text-primary">{details.email}</span>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell className="text-right pr-8">
+                                            <div className="flex items-center justify-end gap-2 text-muted-foreground group">
+                                                <Phone className="h-3 w-3 opacity-40 group-hover:text-primary transition-colors" />
+                                                <span className="text-xs font-black tracking-tighter cursor-pointer hover:text-primary">{details.phone}</span>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+            )}
         </TabsContent>
 
         <TabsContent value="exams" className="space-y-6">
@@ -464,7 +670,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
                                   {relevantSubjects.map((sub, subIdx) => (
                                     <div key={subIdx} className="p-3 rounded-xl bg-muted/30 border border-border/40 group-hover:border-primary/20 transition-all flex justify-between items-center gap-4">
                                       <div className="space-y-1">
-                                        <div className="text-[11px] font-black text-foreground">{sub.courseName}</div>
+                                        <div className="text-[11px] font-black text-foreground">{formatSubjectName(sub.courseName)}</div>
                                         <div className="text-[9px] font-mono font-bold text-muted-foreground opacity-60 uppercase">{sub.courseCode} | {sub.branch} (Year {sub.year})</div>
                                       </div>
                                       <Badge variant="outline" className="text-[8px] font-black uppercase border-primary/20 text-primary">Theo-II</Badge>

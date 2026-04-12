@@ -352,12 +352,12 @@ const LeaveManagement = () => {
                                             <SelectValue placeholder="Select period to swap/replace" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="09:40-10:40">09:40 AM - 10:40 AM</SelectItem>
-                                            <SelectItem value="10:40-11:40">10:40 AM - 11:40 AM</SelectItem>
+                                            <SelectItem value="09:30-10:30">09:30 AM - 10:30 AM</SelectItem>
+                                            <SelectItem value="10:30-11:30">10:30 AM - 11:30 AM</SelectItem>
                                             <SelectItem value="11:40-12:40">11:40 AM - 12:40 PM</SelectItem>
-                                            <SelectItem value="13:20-14:20">01:20 PM - 02:20 PM</SelectItem>
-                                            <SelectItem value="14:20-15:20">02:20 PM - 03:20 PM</SelectItem>
-                                            <SelectItem value="15:20-16:20">03:20 PM - 04:20 PM</SelectItem>
+                                            <SelectItem value="13:30-14:30">01:30 PM - 02:30 PM</SelectItem>
+                                            <SelectItem value="14:30-15:30">02:30 PM - 03:30 PM</SelectItem>
+                                            <SelectItem value="15:30-16:30">03:30 PM - 04:30 PM</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>

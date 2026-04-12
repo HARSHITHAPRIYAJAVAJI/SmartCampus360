@@ -11,15 +11,32 @@ import {
 } from "lucide-react";
 
 import { useNavigate, useOutletContext } from "react-router-dom";
-import { useMemo } from "react";
-import { AIML_TIMETABLES, FACULTY_LOAD } from "@/data/aimlTimetable";
+import { useMemo, useState, useEffect } from "react";
+import { FACULTY_LOAD, getTimetable } from "@/data/aimlTimetable";
 import { MOCK_COURSES } from "@/data/mockCourses";
 import { format } from "date-fns";
+import { formatSubjectName } from "@/data/subjectMapping";
 import { cn } from "@/lib/utils";
 
-export default function FacultyDashboard() {
+import { MOCK_FACULTY } from "@/data/mockFaculty";
+
+export default function FacultyDashboard({ facultyId: propFacultyId }: { facultyId?: string }) {
     const navigate = useNavigate();
-    const { user } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
+    const { user: authUser } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
+
+    // If facultyId is provided (e.g. from admin view), use that faculty's data
+    const impersonatedFaculty = useMemo(() => {
+        if (!propFacultyId) return null;
+        return MOCK_FACULTY.find(f => f.id === propFacultyId || f.rollNumber === propFacultyId);
+    }, [propFacultyId]);
+
+    const user = impersonatedFaculty ? { 
+        name: impersonatedFaculty.name, 
+        id: impersonatedFaculty.id, 
+        role: 'faculty' 
+    } : authUser;
+
+    const isImpersonating = !!impersonatedFaculty;
 
     const stats = [
         { title: "My Classes", value: "8", icon: BookOpen, change: "Today", color: "text-primary" },
@@ -31,29 +48,60 @@ export default function FacultyDashboard() {
     const today = useMemo(() => format(new Date(), "EEEE"), []);
     const todayISO = useMemo(() => format(new Date(), "yyyy-MM-dd"), []);
 
+    const [storageSyncStamp, setStorageSyncStamp] = useState(0);
+    useEffect(() => {
+        const handleStorage = (e: StorageEvent) => {
+            if (e.key === 'published_timetables') {
+                setStorageSyncStamp(s => s + 1);
+            }
+        };
+        window.addEventListener('storage', handleStorage);
+        const handleCustomEvent = () => setStorageSyncStamp(s => s + 1);
+        window.addEventListener('timetable_published', handleCustomEvent);
+        
+        return () => {
+            window.removeEventListener('storage', handleStorage);
+            window.removeEventListener('timetable_published', handleCustomEvent);
+        };
+    }, []);
+
     const todaySchedule = useMemo(() => {
         const schedule: any[] = [];
-        const facultyName = user.name;
-        const facultyId = user.id;
+        const nameToMatch = user.name;
+        const idToMatch = user.id;
 
         // 1. Get Base Schedule from static and published stores
         const publishedStoreStr = localStorage.getItem('published_timetables');
+        const useDemoData = publishedStoreStr === null;
         const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
-        const allTimetables = { ...AIML_TIMETABLES, ...publishedTimetables };
+        
+        const allTimetablesToProcess: Record<string, any> = {};
+        const branches = ["CSM", "CSE", "IT", "ECE"];
+        const years = [1, 2, 3, 4];
+        const sections = ["A", "B", "C"];
+        
+        branches.forEach(branch => {
+            years.forEach(year => {
+                [1, 2].forEach(sem => {
+                    sections.forEach(section => {
+                        const publishedKey = `${branch}-${year}-${sem}-${section}`;
+                        const publishedEntry = publishedTimetables[publishedKey];
+                        if (publishedEntry) {
+                            allTimetablesToProcess[publishedKey] = publishedEntry.grid || publishedEntry;
+                        } else if (useDemoData) {
+                            // Check fallback generic keys synchronously
+                            const fallback = getTimetable(year, sem, section, branch);
+                            if (Object.keys(fallback).length > 0) {
+                                allTimetablesToProcess[publishedKey] = fallback;
+                            }
+                        }
+                    });
+                });
+            });
+        });
 
-        Object.entries(allTimetables).forEach(([key, table]: [string, any]) => {
-            const parts = key.split('-');
-            
-            // Format can be year-sem-sec (static) or dept-year-sem-sec (published)
-            let dept = "AIML";
-            let year, sem, section;
-
-            if (parts.length === 4) {
-                [dept, year, sem, section] = parts;
-            } else {
-                [year, sem, section] = parts;
-                section = section || 'A';
-            }
+        Object.entries(allTimetablesToProcess).forEach(([key, table]: [string, any]) => {
+            const [dept, year, sem, section] = key.split('-');
 
             const semKey = `${year}-${sem}`;
             const load = FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || [];
@@ -67,22 +115,28 @@ export default function FacultyDashboard() {
 
             Object.entries(table).forEach(([dayTime, session]: [string, any]) => {
                 if (!session) return;
-                const [day, time] = dayTime.split('-');
+                let [day, time] = dayTime.split('-');
                 if (day !== today) return;
+                
+                const timeMap: Record<string, string> = { "09:30": "09:40", "10:30": "10:40", "11:40": "11:40", "01:30": "01:20", "02:30": "02:20", "03:30": "03:20" };
+                time = timeMap[time] || time;
                 
                 let isAssigned = false;
                 
                 // PRIORITY 1: ID-BASED MATCHING
-                if (session.facultyId && facultyId) {
-                    isAssigned = session.facultyId === facultyId;
+                if (session.facultyId && idToMatch) {
+                    isAssigned = session.facultyId === idToMatch;
+                }
+                if (!isAssigned && session.facultyIds && session.facultyIds.includes(idToMatch)) {
+                    isAssigned = true;
                 }
                 
                 // PRIORITY 2: NAME-BASED MATCHING
                 if (!isAssigned) {
                     if (session.faculty) {
-                        isAssigned = session.faculty.trim().toLowerCase() === facultyName.trim().toLowerCase();
+                        isAssigned = session.faculty.trim().toLowerCase() === nameToMatch.trim().toLowerCase();
                     } else if (session.room && (session.room.includes("Mrs.") || session.room.includes("Dr."))) {
-                        isAssigned = session.room.trim().toLowerCase() === facultyName.trim().toLowerCase();
+                        isAssigned = session.room.trim().toLowerCase() === nameToMatch.trim().toLowerCase();
                     }
                 }
 
@@ -98,8 +152,8 @@ export default function FacultyDashboard() {
                         const assignedIndex = sectionIndex % eligibleFaculty.length;
                         const assignedFaculty = eligibleFaculty[assignedIndex];
                         
-                        isAssigned = assignedFaculty.id === facultyId || 
-                                     assignedFaculty.name?.trim().toLowerCase() === facultyName.trim().toLowerCase();
+                        isAssigned = assignedFaculty.id === idToMatch || 
+                                     assignedFaculty.name?.trim().toLowerCase() === nameToMatch.trim().toLowerCase();
                     }
                 }
                 
@@ -115,10 +169,14 @@ export default function FacultyDashboard() {
                         id: `${key}-${dayTime}-${session.courseCode || session.name}`,
                         time: `${time} ${period}`,
                         rawTime: time,
-                        title: `${fullName} (Sec ${section})`,
+                        title: `${formatSubjectName(fullName)} (Sec ${section})`,
                         room: session.room && (session.room.includes("Mrs.") || session.room.includes("Dr.")) ? "TBD" : (session.room || "TBD"),
                         type: (fullName || '').toLowerCase().includes('lab') ? 'lab' : 'lecture',
-                        isLive: !!publishedTimetables[key]
+                        isLive: !!publishedTimetables[key],
+                        dept,
+                        year,
+                        section,
+                        code: cleanCode
                     });
                 }
             });
@@ -131,7 +189,7 @@ export default function FacultyDashboard() {
             const approvedForToday = requests.filter((r: any) => r.status === 'approved' && r.date === todayISO);
 
             approvedForToday.forEach((req: any) => {
-                if (req.senderId === facultyId) {
+                if (req.senderId === idToMatch) {
                     const idx = schedule.findIndex(s => s.rawTime === req.period);
                     if (idx !== -1) {
                         schedule[idx].title = `${schedule[idx].title} (Handed to ${req.targetName})`;
@@ -139,7 +197,7 @@ export default function FacultyDashboard() {
                     }
                 }
                 
-                if (req.targetId === facultyId) {
+                if (req.targetId === idToMatch) {
                     const hour = parseInt(req.period.split(':')[0]);
                     const period = (hour >= 9 && hour < 12) ? "AM" : "PM";
                     
@@ -157,7 +215,7 @@ export default function FacultyDashboard() {
         }
         
         return schedule.sort((a, b) => a.time.localeCompare(b.time));
-    }, [user.name, user.id, today, todayISO]);
+    }, [user.name, user.id, today, todayISO, storageSyncStamp]);
 
     const quickActions = [
         { title: "Open Student Data", description: "Filter branches, view attendance, change grades", action: () => navigate('/dashboard/students') },
@@ -169,17 +227,29 @@ export default function FacultyDashboard() {
     return (
         <div className="space-y-6">
             {/* Welcome Section */}
-            <div className="bg-gradient-to-r from-teal-600 to-emerald-800 rounded-lg p-6 text-white shadow-lg">
+            <div className={cn(
+                "rounded-lg p-6 text-white shadow-lg",
+                isImpersonating ? "bg-gradient-to-r from-slate-700 to-slate-900" : "bg-gradient-to-r from-teal-600 to-emerald-800"
+            )}>
+                {isImpersonating && (
+                    <div className="bg-amber-500/20 text-amber-200 text-[10px] font-black uppercase tracking-[0.2em] mb-4 py-1 px-3 rounded-full border border-amber-500/30 w-fit">
+                        Admin Viewing Mode
+                    </div>
+                )}
                 <h1 className="text-3xl font-bold mb-2">Welcome back, {user.name}!</h1>
-                <p className="text-teal-100">
-                    Track your classes, students, and academic responsibilities.
+                <p className="text-teal-100 italic">
+                    {isImpersonating ? "Viewing academic profile and schedule as Administrator." : "Track your classes, students, and academic responsibilities."}
                 </p>
             </div>
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat, index) => (
-                    <Card key={index} className="hover:shadow-md transition-shadow">
+                    <Card 
+                        key={index} 
+                        className="hover:shadow-md transition-all cursor-pointer hover:border-primary/50"
+                        onClick={() => navigate(stat.title === "My Classes" ? '/dashboard/classes' : '/dashboard/students')}
+                    >
                         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                             <CardTitle className="text-sm font-medium text-muted-foreground">
                                 {stat.title}
@@ -219,37 +289,7 @@ export default function FacultyDashboard() {
                     </CardContent>
                 </Card>
 
-                {/* Recent Activity */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center space-x-2">
-                            <Bell className="h-5 w-5" />
-                            <span>Recent Activity</span>
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="flex items-start space-x-3">
-                            <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
-                            <div>
-                                <p className="text-sm font-medium">New assignment posted</p>
-                                <p className="text-xs text-muted-foreground">Data Structures - Due in 3 days</p>
-                            </div>
-                        </div>
-                        <div className="flex items-start space-x-3">
-                            <div className="w-2 h-2 bg-success rounded-full mt-2"></div>
-                            <div>
-                                <p className="text-sm font-medium">Grade published</p>
-                                <p className="text-xs text-muted-foreground">Database Systems - 89/100</p>
-                            </div>
-                        </div>
-                        <Button variant="outline" className="w-full mt-4">
-                            View All Notifications
-                        </Button>
-                    </CardContent>
-                </Card>
-            </div>
-
-            {/* Today's Schedule Preview */}
+                {/* Today's Schedule Preview */}
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center space-x-2">
@@ -275,12 +315,25 @@ export default function FacultyDashboard() {
                                         <p className="text-sm text-muted-foreground">{item.room}</p>
                                     </div>
                                 </div>
-                                <div className="flex flex-col items-end gap-1">
-                                    <Badge variant={item.type === "lecture" ? "default" : item.type === "lab" ? "secondary" : "outline"}>
-                                        {item.type}
-                                    </Badge>
-                                    {item.status === 'transferred' && <span className="text-[10px] text-red-500 font-bold uppercase">Transferred</span>}
-                                </div>
+                                    <div className="flex flex-col items-end gap-1">
+                                        <Badge variant={item.type === "lecture" ? "default" : item.type === "lab" ? "secondary" : "outline"}>
+                                            {item.type}
+                                        </Badge>
+                                        {item.status !== 'transferred' && (
+                                            <Button 
+                                                size="sm" 
+                                                variant="ghost" 
+                                                className="h-6 text-[10px] font-black text-primary hover:bg-primary/10 px-2"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    navigate(`/dashboard/students?dept=${item.dept}&year=${item.year}&section=${item.section}&course=${item.code}&mode=attendance`);
+                                                }}
+                                            >
+                                                Mark Attendance
+                                            </Button>
+                                        )}
+                                        {item.status === 'transferred' && <span className="text-[10px] text-red-500 font-bold uppercase">Transferred</span>}
+                                    </div>
                             </div>
                         ))}
                     </div>
@@ -289,6 +342,7 @@ export default function FacultyDashboard() {
                     </Button>
                 </CardContent>
             </Card>
+            </div>
         </div>
     );
 }

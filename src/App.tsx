@@ -23,6 +23,7 @@ const TimetableGenerator = lazy(() => import("./pages/admin/TimetableGenerator")
 const ComplianceDashboard = lazy(() => import("./pages/admin/ComplianceDashboard"));
 const LearningPortal = lazy(() => import("./pages/student/LearningPortal"));
 const FacultyManagement = lazy(() => import("./pages/admin/FacultyManagement"));
+const FacultyLoad = lazy(() => import("./pages/admin/FacultyLoadDashboard"));
 const CourseManagement = lazy(() => import("./pages/admin/CourseManagement"));
 const RoomManagement = lazy(() => import("./pages/admin/RoomManagement"));
 const AnalyticsAccreditation = lazy(() => import("./pages/admin/AnalyticsAccreditation"));
@@ -45,7 +46,9 @@ const ExamManagement = lazy(() => import("./pages/admin/ExamManagement"));
 const ForgotPassword = lazy(() => import("./pages/auth/ForgotPassword"));
 const ResetPassword = lazy(() => import("./pages/auth/ResetPassword"));
 const StudentFees = lazy(() => import("./pages/student/StudentFees"));
-const Downloads = lazy(() => import("./pages/student/LearningPortal")); // Use LearningPortal as placeholder for downloads
+const RegularFeePayment = lazy(() => import("./pages/student/RegularFeePayment"));
+const Downloads = lazy(() => import("./pages/student/LearningPortal")); 
+const CommunicationHub = lazy(() => import("./pages/dashboard/CommunicationHub"));
 
 
 // Lazy load UI overlays to reduce initial bundle size
@@ -56,10 +59,25 @@ const DashboardLayout = lazy(() => import("./components/layout/DashboardLayout")
 const queryClient = new QueryClient();
 
 const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center bg-background">
-    <Loader2 className="h-12 w-12 animate-spin text-primary" />
-  </div>
+    <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="h-12 w-12 animate-spin text-primary" />
+    </div>
 );
+
+const RoleGuard = ({
+    allowedRoles,
+    userRole,
+    children
+}: {
+    allowedRoles: string[],
+    userRole: string,
+    children: React.ReactNode
+}) => {
+    if (!allowedRoles.includes(userRole)) {
+        return <Navigate to="/dashboard" replace />;
+    }
+    return <>{children}</>;
+};
 
 const App = () => {
   const [user, setUser] = useState<{ name: string; id: string; role: string } | null>(() => {
@@ -161,32 +179,44 @@ const App = () => {
                 }
               >
                 <Route index element={<Dashboard userRole={user?.role || ''} />} />
-                <Route path="admin" element={<Dashboard userRole="admin" />} />
-                <Route path="faculty" element={<Dashboard userRole="faculty" />} />
-                <Route path="student" element={<Dashboard userRole="student" />} />
+                <Route path="admin" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><Dashboard userRole="admin" /></RoleGuard>} />
+                <Route path="faculty" element={<RoleGuard allowedRoles={['faculty', 'admin']} userRole={user?.role || ''}><Dashboard userRole="faculty" /></RoleGuard>} />
+                <Route path="faculty/:id" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><Dashboard userRole="faculty" /></RoleGuard>} />
+                <Route path="student" element={<RoleGuard allowedRoles={['student', 'admin']} userRole={user?.role || ''}><Dashboard userRole="student" /></RoleGuard>} />
+                <Route path="student/:id" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><Dashboard userRole="student" /></RoleGuard>} />
+                
                 <Route path="timetable" element={user?.role === 'admin' ? <TimetableGenerator /> : <Timetable userRole={user?.role || 'student'} />} />
-                <Route path="faculty-directory" element={<FacultyManagement userRole={user?.role || 'student'} />} />
-                <Route path="manage-courses" element={<CourseManagement />} />
-                <Route path="manage-rooms" element={<RoomManagement />} />
-                <Route path="analytics" element={<AnalyticsAccreditation />} />
-                <Route path="accreditation" element={<AnalyticsAccreditation />} />
-                <Route path="exams" element={<ExamManagement />} />
+                <Route path="faculty-directory" element={<RoleGuard allowedRoles={['faculty', 'admin']} userRole={user?.role || ''}><FacultyManagement userRole={user?.role || ''} /></RoleGuard>} />
+                <Route path="faculty-load" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><FacultyLoad /></RoleGuard>} />
+                
+                {/* Admin Only Routes */}
+                <Route path="manage-courses" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><CourseManagement /></RoleGuard>} />
+                <Route path="manage-rooms" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><RoomManagement /></RoleGuard>} />
+                <Route path="analytics" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><AnalyticsAccreditation /></RoleGuard>} />
+                <Route path="accreditation" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><AnalyticsAccreditation /></RoleGuard>} />
+                <Route path="analytics-accreditation" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><AnalyticsAccreditation /></RoleGuard>} />
+                <Route path="exams" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><ExamManagement /></RoleGuard>} />
+                <Route path="users" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><UserManagement /></RoleGuard>} />
+                
+                {/* Faculty/Admin Routes */}
+                <Route path="classes" element={<RoleGuard allowedRoles={['faculty', 'admin']} userRole={user?.role || ''}><MyClasses /></RoleGuard>} />
+                <Route path="leave" element={<RoleGuard allowedRoles={['faculty', 'admin']} userRole={user?.role || ''}><LeaveManagement /></RoleGuard>} />
+                <Route path="students" element={<RoleGuard allowedRoles={['faculty', 'admin']} userRole={user?.role || ''}><StudentRecords /></RoleGuard>} />
+                
+                {/* Student/Admin Common Routes */}
                 <Route path="training" element={<LearningPortal />} />
                 <Route path="notifications" element={<NotificationsPage />} />
                 <Route path="settings" element={<Settings />} />
-                {/* Role-specific routes */}
-                <Route path="classes" element={<MyClasses />} />
-                <Route path="leave" element={<LeaveManagement />} />
-                <Route path="students" element={<StudentRecords />} />
-                <Route path="courses" element={<MyCourses />} />
-                <Route path="grades" element={<Grades />} />
                 <Route path="profile" element={<Profile />} />
-                <Route path="analytics-accreditation" element={<AnalyticsAccreditation />} />
-                <Route path="users" element={<UserManagement />} />
+                <Route path="profile/:id" element={<Profile />} />
                 
-                {/* Fee Routes */}
-                <Route path="student/fees/*" element={<StudentFees />} />
-                <Route path="student/downloads" element={<Downloads />} />
+                {/* Student Specific Routes */}
+                <Route path="courses" element={<RoleGuard allowedRoles={['student', 'admin']} userRole={user?.role || ''}><MyCourses /></RoleGuard>} />
+                <Route path="grades" element={<RoleGuard allowedRoles={['student', 'admin']} userRole={user?.role || ''}><Grades /></RoleGuard>} />
+                <Route path="student/fees/regular" element={<RoleGuard allowedRoles={['student', 'admin']} userRole={user?.role || ''}><RegularFeePayment /></RoleGuard>} />
+                <Route path="student/fees/*" element={<RoleGuard allowedRoles={['student', 'admin']} userRole={user?.role || ''}><StudentFees /></RoleGuard>} />
+                <Route path="student/downloads" element={<RoleGuard allowedRoles={['student', 'admin']} userRole={user?.role || ''}><Downloads /></RoleGuard>} />
+                <Route path="communications" element={<CommunicationHub />} />
               </Route>
 
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

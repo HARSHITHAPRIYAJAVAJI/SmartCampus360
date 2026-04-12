@@ -1,4 +1,5 @@
-import { useOutletContext } from "react-router-dom";
+import { useMemo } from "react";
+import { useOutletContext, useParams } from "react-router-dom";
 import { MOCK_STUDENTS } from "@/data/mockStudents";
 import { MOCK_FACULTY } from "@/data/mockFaculty";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -12,34 +13,67 @@ import {
     ShieldCheck, CalendarDays, History
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { YEAR_IN_CHARGES, CLASS_TEACHERS, getSectionCR } from "@/data/mockHierarchy";
 
 export default function Profile() {
     const { user } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
-    const isStudent = user.role === 'student';
-    const isFaculty = user.role === 'faculty';
+    const { id: paramId } = useParams();
+
+    // Data lookup: prefer paramId if provided, otherwise use logged-in user's ID
+    const targetId = paramId || user.id;
+
+    // Determine target data based on identification
+    // Handle both ID, Roll Number, and Name (as fallback for current user)
+    const facultyData = MOCK_FACULTY.find(f => 
+        f.id === targetId || 
+        f.rollNumber === targetId || 
+        (!paramId && f.name === user.name)
+    );
+    
+    const studentData = useMemo(() => {
+        if (facultyData) return null;
+        const saved = localStorage.getItem('smartcampus_student_directory');
+        if (saved) {
+            const students = JSON.parse(saved);
+            const found = students.find((s: any) => 
+                s.id === targetId || 
+                s.rollNumber.toUpperCase() === targetId.toUpperCase()
+            );
+            if (found) return found;
+        }
+        return MOCK_STUDENTS.find(s => 
+            s.id === targetId || 
+            s.rollNumber.toUpperCase() === targetId.toUpperCase()
+        );
+    }, [targetId, facultyData]);
+
+    const isStudent = !!studentData;
+    const isFaculty = !!facultyData;
     const isAdmin = user.role === 'admin';
 
-    // Data lookup
-    const studentData = isStudent ? MOCK_STUDENTS.find(s => s.rollNumber.toUpperCase() === user.id.toUpperCase()) : null;
-    const facultyData = (isFaculty || isAdmin) ? MOCK_FACULTY.find(f => f.id === user.id || f.name === user.name) : null;
-
     const profileData = isStudent ? {
-        name: studentData?.name || user.name,
+        name: studentData?.name || "Student",
         role: "Student",
-        id: studentData?.rollNumber || user.id,
+        id: studentData?.rollNumber || targetId,
         dept: studentData?.branch || "N/A",
         email: studentData?.email || "n/a",
         phone: studentData?.phone || "n/a",
         imageType: "avataaars"
     } : {
-        name: facultyData?.name || user.name,
-        role: facultyData?.designation || (isAdmin ? "Administrator" : "Faculty"),
-        id: facultyData?.rollNumber || user.id,
-        dept: facultyData?.department || "Administration",
+        name: facultyData?.name || (isAdmin && !paramId ? user.name : "Faculty Member"),
+        role: facultyData?.designation || (isAdmin && !paramId ? "Administrator" : "Faculty"),
+        id: facultyData?.rollNumber || targetId,
+        dept: facultyData?.department || (isAdmin && !paramId ? "Administration" : "N/A"),
         email: facultyData?.email || "n/a",
         phone: facultyData?.phone || "n/a",
         imageType: "initials"
     };
+
+    // Role-specific hierarchy checks
+    const isCR = isStudent && studentData && getSectionCR(studentData.branch, studentData.year, studentData.section)?.id === studentData.id;
+    
+    const classTeacherSection = isFaculty && facultyData ? CLASS_TEACHERS.filter(ct => ct.facultyId === facultyData.id) : [];
+    const yearInChargeInfo = isFaculty && facultyData ? YEAR_IN_CHARGES.filter(yic => yic.facultyId === facultyData.id) : [];
 
     const infoCards = isStudent ? [
         { label: "Roll Number", value: profileData.id, icon: UserCircle, color: "text-blue-500", bg: "bg-blue-50" },
@@ -92,6 +126,21 @@ export default function Profile() {
                                 {isStudent ? <GraduationCap className="w-4 h-4" /> : <Briefcase className="w-4 h-4" />}
                                 {profileData.role === 'Student' ? `${profileData.dept} Department` : profileData.role}
                             </div>
+                            {isCR && (
+                                <Badge className="bg-amber-100 text-amber-700 border-amber-200 font-black px-3 ml-2">
+                                    <Star className="w-3 h-3 mr-1 fill-amber-500" /> CLASS REPRESENTATIVE
+                                </Badge>
+                            )}
+                            {classTeacherSection.length > 0 && (
+                                <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 font-black px-3 ml-2">
+                                    CLASS TEACHER: {classTeacherSection.map(ct => `${ct.year}-${ct.section}`).join(', ')}
+                                </Badge>
+                            )}
+                            {yearInChargeInfo.length > 0 && (
+                                <Badge className="bg-violet-100 text-violet-700 border-violet-200 font-black px-3 ml-2">
+                                    YEAR IN-CHARGE: {yearInChargeInfo.map(yic => `${yic.year}${yic.year === 1 ? 'st' : yic.year === 2 ? 'nd' : yic.year === 3 ? 'rd' : 'th'} Year`).join(', ')}
+                                </Badge>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -199,50 +248,36 @@ export default function Profile() {
                     {isFaculty && (
                         <Card className="border-none shadow-md">
                             <CardHeader>
-                                <CardTitle className="text-lg font-bold">Research & Specialization</CardTitle>
+                                <CardTitle className="text-lg font-bold flex items-center gap-2">
+                                    <BookOpen className="w-5 h-5 text-indigo-500" />
+                                    Academic Specializations
+                                </CardTitle>
                             </CardHeader>
                             <CardContent className="space-y-4">
                                 <div className="p-4 bg-muted/30 rounded-xl">
-                                    <h4 className="font-bold text-sm mb-2 uppercase text-muted-foreground">Expertise</h4>
+                                    <h4 className="font-bold text-xs mb-3 uppercase text-muted-foreground tracking-widest">Subjects Taught</h4>
                                     <div className="flex flex-wrap gap-2">
-                                        <Badge variant="secondary">Distributed Systems</Badge>
-                                        <Badge variant="secondary">Big Data Analytics</Badge>
-                                        <Badge variant="secondary">Machine Learning</Badge>
-                                        <Badge variant="secondary">Cloud Computing</Badge>
+                                        {facultyData?.specialization && facultyData.specialization.length > 0 ? (
+                                            facultyData.specialization.map((subject, idx) => (
+                                                <Badge key={idx} variant="secondary" className="bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border-indigo-100 font-bold px-3 py-1">
+                                                    {subject}
+                                                </Badge>
+                                            ))
+                                        ) : (
+                                            <span className="text-xs text-muted-foreground italic">No specialized subjects listed</span>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="p-4 bg-muted/30 rounded-xl">
-                                    <h4 className="font-bold text-sm mb-2 uppercase text-muted-foreground">Recent Publication</h4>
-                                    <p className="text-sm italic">"Optimization of Load Balancing in Hybrid Clouds using Genetic Algorithms", IEEE 2024</p>
+                                    <h4 className="font-bold text-xs mb-2 uppercase text-muted-foreground tracking-widest">Recent Publication</h4>
+                                    <p className="text-sm italic font-medium leading-relaxed">
+                                        "Advanced Optimization in {facultyData?.department || 'Engineering'} Systems using Multi-Objective Algorithms", Institutional Review 2024
+                                    </p>
                                 </div>
                             </CardContent>
                         </Card>
                     )}
 
-                    <Card className="border-none shadow-md overflow-hidden bg-muted/20">
-                        <CardHeader>
-                            <CardTitle className="text-lg font-bold flex items-center gap-2">
-                                <ShieldCheck className="w-5 h-5 text-green-600" />
-                                Credentials & Security
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="flex items-center justify-between p-3 border rounded-xl bg-background">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-2 h-2 rounded-full bg-green-500" />
-                                    <span className="text-sm font-medium">Single Sign-On (SSO) Status</span>
-                                </div>
-                                <Badge className="bg-green-500">Connected</Badge>
-                            </div>
-                            <div className="flex items-center justify-between p-3 border rounded-xl bg-background">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-2 h-2 rounded-full bg-green-500" />
-                                    <span className="text-sm font-medium">Digital Identity Verification</span>
-                                </div>
-                                <Badge className="bg-green-500">E-Verified</Badge>
-                            </div>
-                        </CardContent>
-                    </Card>
                 </div>
             </div>
         </div>

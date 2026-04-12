@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, Mail, Phone, BookOpen, GraduationCap, Users, User, ArrowLeft, Building2, Plus, Edit, Trash2, LayoutGrid, List, Grip, X, Clock, Check, X as XIcon, Upload } from "lucide-react";
+import { Search, Mail, Phone, BookOpen, GraduationCap, Users, User, ArrowLeft, Building2, Plus, Edit, Trash2, LayoutGrid, List, Grip, X, Clock, Check, X as XIcon, Upload, Layout } from "lucide-react";
 import { FACULTY_LOAD } from "@/data/aimlTimetable";
 import { MOCK_FACULTY } from "@/data/mockFaculty";
 import {
@@ -16,6 +16,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MOCK_LEAVE_REQUESTS, LeaveRequest } from "@/data/mockLeaves";
+import { formatSubject } from "@/data/subjectMapping";
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 // Types
 interface FacultyMember {
@@ -35,9 +37,25 @@ interface FacultyManagementProps {
 }
 
 const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
+    const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedDept, setSelectedDept] = useState<string | null>(null);
     const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const [searchParams] = useSearchParams();
+
+    // Handle search parameter from navigation (e.g., from DashboardHeader search)
+    useEffect(() => {
+        const q = searchParams.get('q');
+        if (q) {
+            setSearchQuery(q);
+            // If we have a query, find the department of the first match and auto-select it
+            const faculty = MOCK_FACULTY.find(f => f.name.toLowerCase().includes(q.toLowerCase()));
+            if (faculty) {
+                setSelectedDept(faculty.department);
+            }
+        }
+    }, [searchParams]);
 
     const departments = useMemo(() => [
         { id: "CSM", name: "CSE (AI & Machine Learning)", icon: BookOpen, color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30", description: "Department of AI & ML" },
@@ -113,7 +131,10 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
     const filteredFaculty = useMemo(() => {
         return facultyList.filter(f =>
             f.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            f.subjects.some(s => s.toLowerCase().includes(searchQuery.toLowerCase()))
+            f.subjects.some(s => {
+                const formatted = formatSubject(s);
+                return formatted.some(fs => fs.toLowerCase().includes(searchQuery.toLowerCase()));
+            })
         );
     }, [facultyList, searchQuery]);
 
@@ -310,6 +331,7 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
                                             </AvatarFallback>
                                         </Avatar>
                                         <div className="flex gap-1">
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 text-primary" title="View Dashboard" onClick={() => navigate(`/dashboard/faculty/${faculty.id}`)}><Layout className="h-4 w-4" /></Button>
                                             <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => { setCurrentFaculty(faculty); setFormData(faculty); setIsEditOpen(true); }}><Edit className="h-4 w-4" /></Button>
                                             <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600" onClick={() => handleDelete(faculty.id)}><Trash2 className="h-4 w-4" /></Button>
                                         </div>
@@ -321,6 +343,11 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
                                                 <Badge variant="outline" className="text-[9px] font-black uppercase tracking-widest text-primary border-primary/20 bg-primary/5">
                                                     ID: {faculty.rollNumber}
                                                 </Badge>
+                                                {faculty.designation.includes('HOD') && (
+                                                    <Badge className="text-[9px] font-black uppercase tracking-widest bg-indigo-600 border-indigo-200">
+                                                        HOD
+                                                    </Badge>
+                                                )}
                                                 <span className="text-[10px] font-bold text-muted-foreground">• {faculty.designation}</span>
                                             </div>
                                         </div>
@@ -333,7 +360,7 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
                                         <div className="space-y-1.5 mt-2">
                                             <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Expertise</p>
                                             <div className="flex flex-wrap gap-1.5">
-                                                {faculty.subjects.map((sub, idx) => (
+                                                {Array.from(new Set(faculty.subjects.flatMap(sub => formatSubject(sub)))).map((sub, idx) => (
                                                     <Badge key={idx} variant="outline" className="text-[10px] bg-primary/5 border-primary/20 text-primary font-bold">
                                                         {sub}
                                                     </Badge>

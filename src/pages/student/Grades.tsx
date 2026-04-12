@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TrendingUp, Award, BookOpen } from "lucide-react";
+import { calculateAcademicMetrics } from "@/utils/academicCalculations";
 
 // Helper to generate realistic dummy marks
 const getMarks = (course: Course) => {
@@ -18,8 +19,8 @@ const getMarks = (course: Course) => {
     };
 
     if (isLab) {
-        const labInt = pseudoRandom(25, 30);
-        const labExt = pseudoRandom(55, 68);
+        const labInt = pseudoRandom(34, 39); // Out of 40
+        const labExt = pseudoRandom(48, 58); // Out of 60
         return {
             mid1: null, assgn1: null, mid2: null, assgn2: null,
             labInternal: labInt, labExternal: labExt,
@@ -54,8 +55,11 @@ const Grades = () => {
     // Filter courses for student branch
     const branchCourses = MOCK_COURSES.filter(c => c.department === branch);
     
-    // Group by semester
-    const semesters = [1, 2, 3, 4, 5, 6, 7, 8];
+    // Group by semester - only show up to current year (2 semesters per year)
+    const currentYear = studentData?.year || 4;
+    const maxSemToShow = currentYear * 2;
+    const semesters = Array.from({ length: maxSemToShow }, (_, i) => i + 1);
+    
     const resultsBySem = semesters.reduce((acc, sem) => {
         const semCourses = branchCourses.filter(c => c.semester === sem);
         if (semCourses.length > 0) {
@@ -67,6 +71,11 @@ const Grades = () => {
         }
         return acc;
     }, {} as Record<number, any[]>);
+
+    const academicMetrics = useMemo(() => {
+        if (!studentData) return { earnedCredits: 0, totalCredits: 160 };
+        return calculateAcademicMetrics(branch, studentData.semester || 7);
+    }, [studentData, branch]);
 
     return (
         <div className="space-y-6 animate-in fade-in-50">
@@ -94,7 +103,7 @@ const Grades = () => {
                         <Award className="h-4 w-4 text-primary" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-3xl font-black text-primary">8.85</div>
+                        <div className="text-3xl font-black text-primary">{studentData?.grade?.toFixed(2) || "0.00"}</div>
                         <p className="text-xs font-bold text-success mt-1">↑ 0.12 from last semester</p>
                     </CardContent>
                 </Card>
@@ -104,8 +113,8 @@ const Grades = () => {
                         <BookOpen className="h-4 w-4 text-blue-500" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-3xl font-black">124</div>
-                        <p className="text-xs font-bold text-muted-foreground mt-1">Out of 160 required</p>
+                        <div className="text-3xl font-black">{academicMetrics.earnedCredits}</div>
+                        <p className="text-xs font-bold text-muted-foreground mt-1">Out of {academicMetrics.totalCredits} required</p>
                     </CardContent>
                 </Card>
                 <Card className="border-none shadow-md">
@@ -150,15 +159,15 @@ const Grades = () => {
                                                         <TableHead rowSpan={2} className="w-[100px] font-black border-r text-sm uppercase tracking-tighter">Code</TableHead>
                                                         <TableHead rowSpan={2} className="w-[250px] font-black border-r text-sm uppercase tracking-tighter">Subject</TableHead>
                                                         <TableHead colSpan={3} className="text-center font-black border-r bg-blue-50/50 dark:bg-blue-900/10 text-blue-700 text-sm uppercase tracking-widest">Internals (35M)</TableHead>
-                                                        <TableHead colSpan={3} className="text-center font-black border-r bg-green-50/50 dark:bg-green-900/10 text-green-700 text-sm uppercase tracking-widest">Practical/Lab</TableHead>
+                                                        <TableHead colSpan={3} className="text-center font-black border-r bg-green-50/50 dark:bg-green-900/10 text-green-700 text-sm uppercase tracking-widest">Practical/Lab (100M)</TableHead>
                                                         <TableHead colSpan={3} className="text-center font-black bg-amber-50/50 dark:bg-amber-900/10 text-amber-700 text-sm uppercase tracking-widest">Summary</TableHead>
                                                     </TableRow>
                                                     <TableRow className="bg-slate-50/50 dark:bg-slate-900/20">
                                                         <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Mid 1+2</TableHead>
                                                         <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Assgn</TableHead>
                                                         <TableHead className="text-center text-[11px] font-black py-2 border-r bg-blue-100/30">Total</TableHead>
-                                                        <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Int</TableHead>
-                                                        <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Ext</TableHead>
+                                                        <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Int (40)</TableHead>
+                                                        <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Ext (60)</TableHead>
                                                         <TableHead className="text-center text-[11px] font-black py-2 border-r bg-green-100/30">Total</TableHead>
                                                         <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Exam</TableHead>
                                                         <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Total</TableHead>
@@ -196,7 +205,7 @@ const Grades = () => {
                                         <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                                             <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border flex flex-col gap-1 shadow-sm">
                                                 <span className="text-[10px] uppercase font-black text-muted-foreground tracking-widest">Attendance</span>
-                                                <span className="text-2xl font-black text-slate-900 dark:text-white">92%</span>
+                                                <span className="text-2xl font-black text-slate-900 dark:text-white">{studentData?.attendance || 0}%</span>
                                             </div>
                                             <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border flex flex-col gap-1 shadow-sm">
                                                 <span className="text-[10px] uppercase font-black text-muted-foreground tracking-widest">SGPA</span>

@@ -1,4 +1,4 @@
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,6 +15,7 @@ import { MOCK_COURSES } from "@/data/mockCourses";
 
 export default function MyClasses() {
     const { user } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
+    const navigate = useNavigate();
     const today = useMemo(() => format(new Date(), "EEEE"), []);
     const currentTime = new Date();
 
@@ -157,7 +158,12 @@ export default function MyClasses() {
                                                 Section {session.dept}-{session.year}{session.section}
                                             </p>
                                             <div className="mt-3 flex gap-2">
-                                                <Button size="sm" variant="secondary" className="h-7 text-[10px] font-bold bg-white/10 hover:bg-white/20 border-none text-white">
+                                                <Button 
+                                                    size="sm" 
+                                                    variant="secondary" 
+                                                    className="h-7 text-[10px] font-bold bg-white/10 hover:bg-white/20 border-none text-white transition-all hover:scale-105 active:scale-95"
+                                                    onClick={() => navigate(`/dashboard/students?dept=${session.dept}&year=${session.year}&section=${session.section}&course=${session.code}&mode=attendance`)}
+                                                >
                                                     Attendance
                                                 </Button>
                                                 <Button size="sm" variant="secondary" className="h-7 text-[10px] font-bold bg-white/10 hover:bg-white/20 border-none text-white">

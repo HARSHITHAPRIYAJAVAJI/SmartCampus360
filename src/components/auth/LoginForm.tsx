@@ -46,9 +46,9 @@ export function LoginForm({
     return `${value.slice(0, 2)}${value[2].toUpperCase()}${value.slice(3, 5)}${value[5].toUpperCase()}${value.slice(6, 10)}`;
   };
 
-  // Validate ID format (22K91A6664)
+  // Validate ID format (22K91A6664) or Super Admin ID (11)
   const isValidId = (id: string) => {
-    return /^\d{2}[A-Z]\d{2}[A-Z]\d{4}$/.test(id);
+    return id === "11" || /^\d{2}[A-Z]\d{2}[A-Z]\d{4}$/.test(id);
   };
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -118,12 +118,16 @@ export function LoginForm({
     }
 
     if (!isValidId(cleanId)) {
-      toast({
-        title: "Invalid ID Format",
-        description: "ID must be in the format 22K91A6664 (2 digits, 1 letter, 2 digits, 1 letter, 4 digits).",
-        variant: "destructive",
-      });
-      return;
+      if (role === 'admin' && cleanId === '11') {
+        // Allow
+      } else {
+        toast({
+          title: "Invalid ID Format",
+          description: "ID must be in the format 22K91A6664 (2 digits, 1 letter, 2 digits, 1 letter, 4 digits).",
+          variant: "destructive",
+        });
+        return;
+      }
     }
 
     // Use ID as password if password is not provided
@@ -163,7 +167,9 @@ export function LoginForm({
       }
 
       // Simulate credential check (ID must match password for demo)
-      if (loginPassword !== id) {
+      if (role === 'admin' && cleanId === '11' && loginPassword === '11') {
+        // Valid super admin login
+      } else if (loginPassword !== id) {
         throw new Error('Invalid password. For demo purposes, please use your ID as password.');
       }
 
@@ -297,9 +303,13 @@ export function LoginForm({
                     <Input
                       id="id"
                       type="text"
-                      placeholder={role === 'faculty' ? '22F91F6604' : '22K91A6664'}
+                      placeholder={role === 'admin' ? '11' : (role === 'faculty' ? '22F91F6604' : '22K91A6664')}
                       value={id}
-                      onChange={(e) => setId(formatId(e.target.value))}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (val === "11") setId(val);
+                        else setId(formatId(val));
+                      }}
                       maxLength={10}
                       className="h-12 pl-12 pr-12 font-mono tracking-widest bg-muted/30 border-muted/50 focus:border-primary/50 focus:bg-background transition-all rounded-xl"
                       disabled={isLoading}
@@ -321,10 +331,10 @@ export function LoginForm({
                   <div className="flex items-center justify-between">
                     <Label htmlFor="password" className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                       <Lock className="h-3 w-3" />
-                      Security Code
+                      password
                     </Label>
                     <Link to="/forgot-password" className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline" tabIndex={-1}>
-                      Forgotten?
+                      forgot password
                     </Link>
                   </div>
                   <div className="relative group">

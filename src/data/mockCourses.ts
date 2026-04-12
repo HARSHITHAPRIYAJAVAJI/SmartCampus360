@@ -20,7 +20,7 @@ export const MOCK_COURSES: Course[] = [
     { id: "s1-4", code: "4E1AJ", name: "C Programming for Problem Solving", credits: 3, type: "Theory", department: "CSM", semester: 1, instructor: { id: 6602, full_name: "Dr. D. Anitha Kumari" } },
     { id: "s1-5", code: "4E1DD", name: "Computer Aided Engineering Graphics", credits: 3, type: "Theory", department: "CSM", semester: 1, instructor: { id: 908, full_name: "Dhanunjayasingh" } },
     { id: "s1-6", code: "4B108", name: "English Language and Communication Skills Lab", credits: 1, type: "Lab", department: "CSM", semester: 1, instructor: { id: 6643, full_name: "Sudha Menon" } },
-    { id: "s1-7", code: "4E114", name: "Engineering Chemistry Lab", credits: 1, type: "Lab", department: "CSM", semester: 1 },
+    { id: "s1-7", code: "4E114", name: "Engineering Chemistry Lab", credits: 1, type: "Lab", department: "CSM", semester: 1, instructor: { id: 911, full_name: "U.Anand" } },
     { id: "s1-8", code: "4E112", name: "C Programming for Problem Solving Lab", credits: 1, type: "Lab", department: "CSM", semester: 1, instructor: { id: 6602, full_name: "Dr. D. Anitha Kumari" } },
     { id: "s1-9", code: "4E115", name: "IT Workshop and Elements of Computer Engineering", credits: 1, type: "Lab", department: "CSM", semester: 1, instructor: { id: 6619, full_name: "Mrs. M. Suryakumari" } },
 
@@ -30,19 +30,19 @@ export const MOCK_COURSES: Course[] = [
     { id: "s2-3", code: "4E2AP", name: "Basic Electrical Engineering", credits: 3, type: "Theory", department: "CSM", semester: 2, instructor: { id: 603, full_name: "Mr. Ch. Naveen" } },
     { id: "s2-4", code: "4B2AN", name: "Applied Physics", credits: 4, type: "Theory", department: "CSM", semester: 2, instructor: { id: 903, full_name: "Dr. K. Rama Rao" } },
     { id: "s2-5", code: "4E2AQ", name: "Data Structures", credits: 3, type: "Theory", department: "CSM", semester: 2, instructor: { id: 6627, full_name: "Varsha" } },
-    { id: "s2-6", code: "4B209", name: "Applied Physics Lab", credits: 1, type: "Lab", department: "CSM", semester: 2 },
-    { id: "s2-7", code: "4E210", name: "Basic Electrical and Simulation Lab", credits: 1, type: "Lab", department: "CSM", semester: 2 },
+    { id: "s2-6", code: "4B209", name: "Applied Physics Lab", credits: 1, type: "Lab", department: "CSM", semester: 2, instructor: { id: 903, full_name: "Dr. K. Rama Rao" } },
+    { id: "s2-7", code: "4E210", name: "Basic Electrical and Simulation Lab", credits: 1, type: "Lab", department: "CSM", semester: 2, instructor: { id: 603, full_name: "Mr. Ch. Naveen" } },
     { id: "s2-8", code: "4E211", name: "Data Structures Lab", credits: 1, type: "Lab", department: "CSM", semester: 2, instructor: { id: 6627, full_name: "Varsha" } },
 
     // --- SEMESTER 3 ---
-    { id: "s3-1", code: "4B3AD", name: "Probability and statistics", credits: 4, type: "Theory", department: "CSM", semester: 3 },
-    { id: "s3-2", code: "4E3EA", name: "Semiconductor Devices and Circuits", credits: 3, type: "Theory", department: "CSM", semester: 3 },
+    { id: "s3-1", code: "4B3AD", name: "Probability and statistics", credits: 4, type: "Theory", department: "CSM", semester: 3, instructor: { id: 7001, full_name: "Mrs. P. Manjula" } },
+    { id: "s3-2", code: "4E3EA", name: "Semiconductor Devices and Circuits", credits: 3, type: "Theory", department: "CSM", semester: 3, instructor: { id: 7002, full_name: "Mrs. Jagruthi" } },
     { id: "s3-3", code: "4E3EB", name: "Python Programming", credits: 2, type: "Theory", department: "CSM", semester: 3, instructor: { id: 6615, full_name: "Mrs. D. Mounika" } },
     { id: "s3-4", code: "4E3EC", name: "Mathematical Foundations of Computer Science", credits: 3, type: "Theory", department: "CSM", semester: 3, instructor: { id: 6608, full_name: "Mrs. T. Praneetha" } },
     { id: "s3-5", code: "4E3ED", name: "Computer Architecture and Organization", credits: 3, type: "Theory", department: "CSM", semester: 3, instructor: { id: 6604, full_name: "Mrs. M. Indira" } },
     { id: "s3-6", code: "4E3EE", name: "Computer Networks", credits: 3, type: "Theory", department: "CSM", semester: 3, instructor: { id: 6610, full_name: "Mrs. S. Swathi" } },
     { id: "s3-7", code: "4E303", name: "Python Programming Lab", credits: 1, type: "Lab", department: "CSM", semester: 3, instructor: { id: 6615, full_name: "Mrs. D. Mounika" } },
-    { id: "s3-8", code: "4E312", name: "Semiconductor Devices and Circuits Lab", credits: 1, type: "Lab", department: "CSM", semester: 3 },
+    { id: "s3-8", code: "4E312", name: "Semiconductor Devices and Circuits Lab", credits: 1, type: "Lab", department: "CSM", semester: 3, instructor: { id: 7003, full_name: "Mrs. Srujana Reddy Aynala" } },
 
     // --- SEMESTER 4 ---
     { id: "s4-1", code: "4E4EA", name: "Object Oriented Programming through JAVA", credits: 3, type: "Theory", department: "CSM", semester: 4, instructor: { id: 6602, full_name: "Dr. D. Anitha Kumari" } },
@@ -64,7 +64,7 @@ export const MOCK_COURSES: Course[] = [
     { id: "s5-5", code: "4P5GC", name: "DevOps", credits: 3, type: "Theory", department: "CSM", semester: 5, instructor: { id: 6623, full_name: "Mr. Ande Srinivasa Reddy" } },
     { id: "s5-6", code: "4P5GD", name: "Object Oriented Analysis & Design", credits: 3, type: "Theory", department: "CSM", semester: 5, instructor: { id: 6618, full_name: "Mrs. P. Geethanjali" } },
     { id: "s5-7", code: "4E513", name: "Machine Learning Lab", credits: 1, type: "Lab", department: "CSM", semester: 5, instructor: { id: 6605, full_name: "Mrs. C. Jaya Lakshmi" } },
-    { id: "s5-8", code: "4E514", name: "Skill Development Course (Node JS/ React JS/ Django)/ DevOps", credits: 1, type: "Lab", department: "CSM", semester: 5 },
+    { id: "s5-8", code: "4E514", name: "Skill Development", credits: 1, type: "Lab", department: "CSM", semester: 5, instructor: { id: 6619, full_name: "Mrs. M. Suryakumari" } },
     { id: "s5-9", code: "4M501", name: "Constitution of India", credits: 0, type: "Theory", department: "CSM", semester: 5 },
 
     // --- SEMESTER 6 ---
@@ -100,7 +100,7 @@ export const MOCK_COURSES: Course[] = [
     { id: "it-s1-2", code: "4B1AK", name: "Applied Physics", credits: 4, type: "Theory", department: "IT", semester: 1 },
     { id: "it-s1-3", code: "4B1AL", name: "Basic Electrical Engineering", credits: 3, type: "Theory", department: "IT", semester: 1 },
     { id: "it-s1-4", code: "4B1AM", name: "Problem Solving using C Programming", credits: 3, type: "Theory", department: "IT", semester: 1 },
-    { id: "it-s1-5", code: "4E1DC", name: "Computer Aided Engineering Graphics", credits: 3, type: "Theory", department: "IT", semester: 1 },
+    { id: "it-s1-5", code: "4E1DC", name: "Computer Aided Engineering Graphics", credits: 3, type: "Theory", department: "IT", semester: 1, instructor: { id: 7723, full_name: "Mrs. Pavani" } },
     { id: "it-s1-6", code: "4B116", name: "Applied Physics Lab", credits: 1, type: "Lab", department: "IT", semester: 1 },
     { id: "it-s1-7", code: "4B118", name: "Problem Solving using C Programming Lab", credits: 1, type: "Lab", department: "IT", semester: 1 },
     { id: "it-s1-8", code: "4B117", name: "Basic Electrical and Simulation Lab", credits: 1, type: "Lab", department: "IT", semester: 1 },
@@ -118,7 +118,7 @@ export const MOCK_COURSES: Course[] = [
     { id: "it-s2-10", code: "4E214", name: "IT Workshop", credits: 1, type: "Lab", department: "IT", semester: 2 },
 
     // Semester 3
-    { id: "it-s3-1", code: "4B3AD", name: "Probability and statistics", credits: 4, type: "Theory", department: "IT", semester: 3 },
+    { id: "it-s3-1", code: "4B3AD", name: "Probability and statistics", credits: 4, type: "Theory", department: "IT", semester: 3, instructor: { id: 7001, full_name: "Mrs. P. Manjula" } },
     { id: "it-s3-2", code: "4H3FA", name: "Business Economics & Financial Analysis", credits: 3, type: "Theory", department: "IT", semester: 3 },
     { id: "it-s3-3", code: "4E3FD", name: "Object Oriented Programming through JAVA", credits: 3, type: "Theory", department: "IT", semester: 3 },
     { id: "it-s3-4", code: "4E3FC", name: "Data Structures", credits: 3, type: "Theory", department: "IT", semester: 3 },
@@ -194,17 +194,16 @@ export const MOCK_COURSES: Course[] = [
     { id: "cse-s2-5", code: "4E211", name: "Data Structures Lab", credits: 1, type: "Lab", department: "CSE", semester: 2 },
     { id: "cse-s2-6", code: "4E2AP", name: "Basic Electrical Engineering", credits: 3, type: "Theory", department: "CSE", semester: 2 },
     { id: "cse-s2-7", code: "4E2AQ", name: "Data Structures", credits: 3, type: "Theory", department: "CSE", semester: 2 },
-    { id: "cse-s2-8", code: "4H2AL", name: "Business Economics and Financial Analysis", credits: 3, type: "Theory", department: "CSE", semester: 2 },
 
     // Semester 3
-    { id: "cse-s3-1", code: "4B3AD", name: "Probability and statistics", credits: 4, type: "Theory", department: "CSE", semester: 3 },
-    { id: "cse-s3-2", code: "4E3EA", name: "Semiconductor Devices and Circuits", credits: 3, type: "Theory", department: "CSE", semester: 3 },
+    { id: "cse-s3-1", code: "4B3AD", name: "Probability and statistics", credits: 4, type: "Theory", department: "CSE", semester: 3, instructor: { id: 7001, full_name: "Mrs. P. Manjula" } },
+    { id: "cse-s3-2", code: "4E3EA", name: "Semiconductor Devices and Circuits", credits: 3, type: "Theory", department: "CSE", semester: 3, instructor: { id: 7002, full_name: "Mrs. Jagruthi" } },
     { id: "cse-s3-3", code: "4E3EB", name: "Python Programming", credits: 2, type: "Theory", department: "CSE", semester: 3 },
     { id: "cse-s3-4", code: "4E3EC", name: "Mathematical Foundations of Computer Science", credits: 3, type: "Theory", department: "CSE", semester: 3 },
     { id: "cse-s3-5", code: "4E3ED", name: "Computer Architecture and Organization", credits: 3, type: "Theory", department: "CSE", semester: 3 },
     { id: "cse-s3-6", code: "4E3EE", name: "Computer Networks", credits: 3, type: "Theory", department: "CSE", semester: 3 },
     { id: "cse-s3-7", code: "4E303", name: "Python Programming Lab", credits: 1, type: "Lab", department: "CSE", semester: 3 },
-    { id: "cse-s3-8", code: "4E312", name: "Semiconductor Devices and Circuits Lab", credits: 1, type: "Lab", department: "CSE", semester: 3 },
+    { id: "cse-s3-8", code: "4E312", name: "Semiconductor Devices and Circuits Lab", credits: 1, type: "Lab", department: "CSE", semester: 3, instructor: { id: 7003, full_name: "Mrs. Srujana Reddy Aynala" } },
 
     // Semester 4
     { id: "cse-s4-1", code: "4E4EA", name: "Object Oriented Programming through JAVA", credits: 3, type: "Theory", department: "CSE", semester: 4 },
@@ -268,9 +267,9 @@ export const MOCK_COURSES: Course[] = [
     { id: "ece-s1-9", code: "4E1AC", name: "C Programming for Problem Solving", credits: 3, type: "Theory", department: "ECE", semester: 1 },
 
     // Semester 2
-    { id: "ece-s2-1", code: "4B206", name: "Engineering Chemistry Lab", credits: 1, type: "Lab", department: "ECE", semester: 2 },
+    { id: "ece-s2-1", code: "4B206", name: "Engineering Chemistry Lab", credits: 1, type: "Lab", department: "ECE", semester: 2, instructor: { id: 9933, full_name: "Mrs. Mamatha" } },
     { id: "ece-s2-2", code: "4B2AF", name: "Mathematical Transforms", credits: 4, type: "Theory", department: "ECE", semester: 2 },
-    { id: "ece-s2-3", code: "4B2AJ", name: "Engineering Chemistry", credits: 4, type: "Theory", department: "ECE", semester: 2 },
+    { id: "ece-s2-3", code: "4B2AJ", name: "Engineering Chemistry", credits: 4, type: "Theory", department: "ECE", semester: 2, instructor: { id: 9933, full_name: "Mrs. Mamatha" } },
     { id: "ece-s2-4", code: "4E207", name: "Electronic Devices and Circuits Lab", credits: 1, type: "Lab", department: "ECE", semester: 2 },
     { id: "ece-s2-5", code: "4E208", name: "Applied Python Programming Lab", credits: 2, type: "Lab", department: "ECE", semester: 2 },
     { id: "ece-s2-6", code: "4E2AJ", name: "Electronic Devices and Circuits", credits: 2, type: "Theory", department: "ECE", semester: 2 },

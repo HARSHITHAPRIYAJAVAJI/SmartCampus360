@@ -11,12 +11,14 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { MOCK_STUDENTS, Student } from "@/data/mockStudents";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Check, X, ClipboardCheck, GraduationCap, ArrowLeft, MoreVertical, Book, RefreshCw } from "lucide-react";
+import { Check, X, ClipboardCheck, GraduationCap, ArrowLeft, MoreVertical, Book, RefreshCw, Layout, ExternalLink } from "lucide-react";
 import { attendanceService } from "@/services/attendanceService";
 import { MOCK_COURSES } from "@/data/mockCourses";
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const StudentRecords = () => {
     const { toast } = useToast();
+    const navigate = useNavigate();
     // Calculate dynamic attendance based on (Attended / Total) formula
     const getStudentAttendance = (student: Student) => {
         // We use a base of 240 classes for the semester baseline to keep numbers realistic
@@ -46,6 +48,48 @@ const StudentRecords = () => {
     }, [students]);
 
     const [searchQuery, setSearchQuery] = useState("");
+
+    const [searchParams] = useSearchParams();
+
+    // Handle search parameters from navigation
+    useEffect(() => {
+        const q = searchParams.get('q');
+        const dept = searchParams.get('dept');
+        const year = searchParams.get('year');
+        const section = searchParams.get('section');
+        const course = searchParams.get('course');
+        const mode = searchParams.get('mode');
+
+        if (q) {
+            setSearchQuery(q);
+            const student = MOCK_STUDENTS.find(s => 
+                s.name.toLowerCase().includes(q.toLowerCase()) || 
+                s.rollNumber.toLowerCase().includes(q.toLowerCase())
+            );
+            if (student) {
+                setSelectedBranch(student.branch);
+                setSelectedYear(student.year);
+                setSelectedSection(student.section);
+                setView('students');
+            }
+        } else if (dept && year && section) {
+            setSelectedBranch(dept.toUpperCase());
+            setSelectedYear(parseInt(year));
+            setSelectedSection(section.toUpperCase());
+            
+            if (course) {
+                setSelectedCourse(course);
+                setView('students');
+                if (mode === 'attendance') {
+                    setActiveMode('attendance');
+                } else if (mode === 'marks') {
+                    setActiveMode('marks');
+                }
+            } else {
+                setView('courses');
+            }
+        }
+    }, [searchParams]);
     
     // Navigation State
     const [view, setView] = useState<'branches' | 'years' | 'sections' | 'courses' | 'students' | 'student-detail'>('branches');
@@ -129,9 +173,9 @@ const StudentRecords = () => {
         });
     }, [students, searchQuery, selectedBranch, selectedYear, selectedSection]);
 
-    const branches = ["CSE", "CSM", "IT", "ECE", "MECH", "CIVIL"];
+    const branches = ["CSE", "CSM", "IT", "ECE"];
     const years = [1, 2, 3, 4];
-    const sections = ["A", "B", "C", "D"];
+    const sections = ["A", "B", "C"];
 
     const handleBranchSelect = (branch: string) => {
         setSelectedBranch(branch);
@@ -214,18 +258,18 @@ const StudentRecords = () => {
     };
 
     const handleSaveBatchAttendance = async () => {
-        // Enforce Indian Time Policy: 9:40 AM to 5:00 PM
+        // Enforce Indian Time Policy: 9:40 AM to 8:00 PM
         const now = new Date();
         const hour = now.getHours();
         const minute = now.getMinutes();
         const currentTime = hour * 60 + minute;
         const startTime = 9 * 60 + 40; // 9:40 AM
-        const endTime = 17 * 60; // 5:00 PM
+        const endTime = 20 * 60; // 8:00 PM
 
         if (currentTime < startTime || currentTime > endTime) {
             toast({ 
                 title: "Access Restricted", 
-                description: "Attendance can only be marked between 9:40 AM and 5:00 PM (IST).", 
+                description: "Attendance can only be marked between 9:40 AM and 8:00 PM (IST).", 
                 variant: "destructive" 
             });
             return;
@@ -336,7 +380,7 @@ const StudentRecords = () => {
             email: `${newStudent.rollNumber.toLowerCase()}@smartcampus.com`,
             branch: newStudent.branch || "CSE",
             year: newStudent.year || 1,
-            semester: ((newStudent.year || 1) - 1) * 2 + 1,
+            semester: (newStudent.year || 1) * 2, // Align with even semester requirement
             section: newStudent.section || "A",
             phone: "+910000000000",
             attendance: Number(newStudent.attendance) || 100,
@@ -436,46 +480,46 @@ const StudentRecords = () => {
             </div>
 
             {/* Breadcrumbs / Navigation */}
-            <div className="flex items-center gap-2 text-sm text-muted-foreground animate-in slide-in-from-left-2 duration-300">
-                <Button variant="ghost" size="sm" onClick={resetNavigation} className="h-7 px-2 hover:text-primary">
+            <div className="flex items-center gap-1 text-xs text-muted-foreground bg-muted/30 p-2 rounded-xl border border-border/40 animate-in slide-in-from-left-2 duration-300 w-fit">
+                <Button variant="ghost" size="sm" onClick={resetNavigation} className="h-7 px-2 hover:bg-background hover:text-primary transition-colors">
                     Records
                 </Button>
                 {selectedBranch && (
                     <>
-                        <span>/</span>
-                        <Button variant="ghost" size="sm" onClick={() => { setView('years'); setSelectedYear(null); setSelectedSection(null); }} className="h-7 px-2 hover:text-primary text-foreground font-medium">
+                        <span className="mx-1 text-muted-foreground/50">-</span>
+                        <Button variant="ghost" size="sm" onClick={() => { setView('years'); setSelectedYear(null); setSelectedSection(null); }} className="h-7 px-2 hover:bg-background hover:text-primary text-foreground font-bold transition-colors">
                             {selectedBranch}
                         </Button>
                     </>
                 )}
                 {selectedYear && (
                     <>
-                        <span>/</span>
-                        <Button variant="ghost" size="sm" onClick={() => { setView('sections'); setSelectedSection(null); }} className="h-7 px-2 hover:text-primary text-foreground font-medium">
+                        <span className="mx-1 text-muted-foreground/50">-</span>
+                        <Button variant="ghost" size="sm" onClick={() => { setView('sections'); setSelectedSection(null); }} className="h-7 px-2 hover:bg-background hover:text-primary text-foreground font-bold transition-colors">
                             {selectedYear}{selectedYear === 1 ? 'st' : selectedYear === 2 ? 'nd' : selectedYear === 3 ? 'rd' : 'th'} Year
                         </Button>
                     </>
                 )}
                 {selectedSection && (
                     <>
-                        <span>/</span>
-                        <Button variant="ghost" size="sm" onClick={() => { setView('courses'); setSelectedCourse(null); }} className="h-7 px-2 hover:text-primary text-foreground font-medium">
+                        <span className="mx-1 text-muted-foreground/50">-</span>
+                        <Button variant="ghost" size="sm" onClick={() => { setView('courses'); setSelectedCourse(null); }} className="h-7 px-2 hover:bg-background hover:text-primary text-foreground font-bold transition-colors">
                             Section {selectedSection}
                         </Button>
                     </>
                 )}
                 {selectedCourse && (
                     <>
-                        <span>/</span>
-                        <Button variant="ghost" size="sm" onClick={() => { setView('students'); setSelectedStudentProfile(null); }} className={`h-7 px-2 hover:text-primary text-foreground font-medium ${!selectedStudentProfile ? 'font-bold italic' : ''}`}>
-                             {selectedCourse}
+                        <span className="mx-1 text-muted-foreground/50">-</span>
+                        <Button variant="ghost" size="sm" onClick={() => { setView('students'); setSelectedStudentProfile(null); }} className={`h-7 px-2 hover:bg-background hover:text-primary text-foreground font-black italic transition-colors ${!selectedStudentProfile ? 'text-primary' : ''}`}>
+                             {MOCK_COURSES.find(c => c.code === selectedCourse)?.name || selectedCourse}
                         </Button>
                     </>
                 )}
                 {selectedStudentProfile && (
                     <>
-                        <span>/</span>
-                        <span className="h-7 px-2 flex items-center text-foreground font-bold italic underline decoration-primary decoration-2 underline-offset-4">
+                        <span className="mx-1 text-muted-foreground/50">-</span>
+                        <span className="h-7 px-2 flex items-center text-primary font-black italic underline decoration-primary/30 decoration-2 underline-offset-4">
                             {selectedStudentProfile.name} Profile
                         </span>
                     </>
@@ -619,21 +663,26 @@ const StudentRecords = () => {
                             const semCourses = MOCK_COURSES.filter(c => c.department === selectedBranch && c.semester === sem);
                             if (semCourses.length === 0) return null;
 
+                            const isEvenSem = sem % 2 === 0;
+                            const isPastSem = !isEvenSem; // Since we are currently in Even Semester policy
+
                             return (
                                 <div key={sem} className="space-y-6">
                                     <div className="flex items-center gap-4">
                                         <h3 className="text-2xl font-black text-slate-800 dark:text-white flex items-center gap-2">
-                                            <Badge className="h-8 w-8 rounded-full bg-primary text-white flex items-center justify-center p-0 text-lg">{sem}</Badge>
+                                            <Badge className={`h-8 w-8 rounded-full ${isEvenSem ? 'bg-primary' : 'bg-slate-400'} text-white flex items-center justify-center p-0 text-lg`}>{sem}</Badge>
                                             Semester {sem}
+                                            {isEvenSem ? (
+                                                <Badge variant="outline" className="ml-2 border-primary text-primary font-bold animate-pulse">In Progress (Even Sem)</Badge>
+                                            ) : (
+                                                <Badge variant="outline" className="ml-2 border-slate-300 text-slate-500 font-bold bg-slate-50">Completed (Odd Sem)</Badge>
+                                            )}
                                         </h3>
                                         <div className="h-px flex-1 bg-gradient-to-r from-muted to-transparent" />
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                                         {semCourses.map((course) => (
                                             <Card key={course.code} className={`group hover:border-primary/50 cursor-pointer transition-all hover:shadow-lg overflow-hidden border-2 h-full ${course.type === 'Lab' ? 'bg-orange-50/20 border-orange-100/50' : 'bg-white'}`} onClick={() => handleCourseSelect(course.code)}>
-                                                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                                                    <Book className="w-20 h-20" />
-                                                </div>
                                                 <CardHeader className="pb-2">
                                                     <div className="flex items-center gap-2 mb-2">
                                                         <Badge variant="secondary" className="font-mono text-[10px]">{course.code}</Badge>
@@ -766,14 +815,14 @@ const StudentRecords = () => {
                                                     {MOCK_COURSES.find(c => c.code === selectedCourse)?.type === 'Lab' ? (
                                                         <>
                                                             <TableHead className="w-[120px] font-black text-xs uppercase text-primary">Lab Internal (0-40M)</TableHead>
-                                                            <TableHead className="w-[120px] font-black text-xs uppercase text-primary">Lab External (0-60M)</TableHead>
+                                                            <TableHead className="w-[120px] font-black text-xs uppercase text-primary opacity-50">Lab External (Locked)</TableHead>
                                                         </>
                                                     ) : (
                                                         <>
-                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Assign 1 (0-5M)</TableHead>
-                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Mid 1 (0-30M)</TableHead>
-                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Assign 2 (0-5M)</TableHead>
-                                                            <TableHead className="w-[100px] font-black text-[11px] uppercase text-primary text-center">Mid 2 (0-30M)</TableHead>
+                                                            <TableHead className="w-[130px] font-black text-[11px] uppercase text-primary text-center">Assign 1 (0-5M)</TableHead>
+                                                            <TableHead className="w-[130px] font-black text-[11px] uppercase text-primary text-center">Mid 1 (0-30M)</TableHead>
+                                                            <TableHead className="w-[130px] font-black text-[11px] uppercase text-muted-foreground text-center bg-muted/20">Assign 2 (Future)</TableHead>
+                                                            <TableHead className="w-[130px] font-black text-[11px] uppercase text-muted-foreground text-center bg-muted/20">Mid 2 (Future)</TableHead>
                                                         </>
                                                     )}
                                                 </>
@@ -832,6 +881,9 @@ const StudentRecords = () => {
                                                             </TableCell>
                                                             <TableCell className="text-right">
                                                                 <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                                    <Button variant="outline" size="sm" title="View Student Dashboard" onClick={() => navigate(`/dashboard/student/${student.id}`)} className="hover:text-primary border-primary/20 text-primary">
+                                                                        <Layout className="h-4 w-4" />
+                                                                    </Button>
                                                                     <Button variant="outline" size="sm" onClick={() => { setSelectedStudentProfile(student); setView('student-detail'); }} className="hover:text-primary border-primary/20 bg-primary/5">
                                                                         <BookOpen className="h-4 w-4" />
                                                                     </Button>
@@ -904,15 +956,8 @@ const StudentRecords = () => {
                                                                             className="h-8 w-24 text-center font-bold"
                                                                         />
                                                                     </TableCell>
-                                                                    <TableCell>
-                                                                        <Input 
-                                                                            type="number" 
-                                                                            max={60}
-                                                                            placeholder="Max 60"
-                                                                            value={sessionMarks[student.id]?.labExternal || 0} 
-                                                                            onChange={(e) => updateMark(student.id, 'labExternal', e.target.value)} 
-                                                                            className="h-8 w-24 text-center font-bold"
-                                                                        />
+                                                                    <TableCell className="bg-muted/10">
+                                                                        <div className="text-[10px] font-bold text-muted-foreground text-center italic">Institutional Lock</div>
                                                                     </TableCell>
                                                                 </>
                                                             ) : (
@@ -937,25 +982,11 @@ const StudentRecords = () => {
                                                                             className="h-8 w-20 text-center"
                                                                         />
                                                                     </TableCell>
-                                                                    <TableCell>
-                                                                        <Input 
-                                                                            type="number" 
-                                                                            max={5}
-                                                                            placeholder="Max 5"
-                                                                            value={sessionMarks[student.id]?.assignment2 || 0} 
-                                                                            onChange={(e) => updateMark(student.id, 'assignment2', e.target.value)} 
-                                                                            className="h-8 w-20 text-center"
-                                                                        />
+                                                                    <TableCell className="bg-muted/10 opacity-50">
+                                                                        <div className="text-[10px] font-bold text-center">N/A</div>
                                                                     </TableCell>
-                                                                    <TableCell>
-                                                                        <Input 
-                                                                            type="number" 
-                                                                            max={30}
-                                                                            placeholder="Max 30"
-                                                                            value={sessionMarks[student.id]?.mid2 || 0} 
-                                                                            onChange={(e) => updateMark(student.id, 'mid2', e.target.value)} 
-                                                                            className="h-8 w-20 text-center"
-                                                                        />
+                                                                    <TableCell className="bg-muted/10 opacity-50">
+                                                                        <div className="text-[10px] font-bold text-center">N/A</div>
                                                                     </TableCell>
                                                                 </>
                                                             )}
@@ -1031,25 +1062,13 @@ const StudentRecords = () => {
                                         onChange={e => setEditingStudent(prev => prev ? {...prev, mid1: parseInt(e.target.value) || 0} : null)} 
                                     />
                                 </div>
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Assignment 2 (5M)</Label>
-                                    <Input 
-                                        type="number" 
-                                        max={5}
-                                        className="h-9"
-                                        value={editingStudent?.assignment2 || 0} 
-                                        onChange={e => setEditingStudent(prev => prev ? {...prev, assignment2: parseInt(e.target.value) || 0} : null)} 
-                                    />
+                                <div className="space-y-2 opacity-50 grayscale pointer-events-none">
+                                    <Label className="text-[10px] uppercase font-bold">Assignment 2 (Future)</Label>
+                                    <Input disabled className="h-9 bg-muted" value={0} />
                                 </div>
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Midterm 2 (30M)</Label>
-                                    <Input 
-                                        type="number" 
-                                        max={30}
-                                        className="h-9"
-                                        value={editingStudent?.mid2 || 0} 
-                                        onChange={e => setEditingStudent(prev => prev ? {...prev, mid2: parseInt(e.target.value) || 0} : null)} 
-                                    />
+                                <div className="space-y-2 opacity-50 grayscale pointer-events-none">
+                                    <Label className="text-[10px] uppercase font-bold">Midterm 2 (Future)</Label>
+                                    <Input disabled className="h-9 bg-muted" value={0} />
                                 </div>
                             </div>
                         </div>
@@ -1069,27 +1088,48 @@ const StudentRecords = () => {
 // --- Detailed Student Profile Component ---
 const StudentDetailView = ({ student, onBack }: { student: Student, onBack: () => void }) => {
     // Helper to generate marks (same seed logic as student grades page)
-    const getMarks = (courseCode: string, type: string) => {
+    const getMarks = (courseCode: string, type: string, courseSem: number, currentSem: number) => {
         const seed = courseCode.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
         const pseudoRandom = (min: number, max: number) => {
             const val = ((seed * 9301 + 49297) % 233280) / 233280;
             return Math.floor(min + val * (max - min));
         };
 
+        const isFutureSem = courseSem > currentSem;
+        const isCurrentSem = courseSem === currentSem;
+
+        if (isFutureSem) {
+            return { mid: '-', assgn: '-', total: 0, status: "-", type, isFuture: true };
+        }
+
         if (type === 'Lab') {
             const labInt = pseudoRandom(25, 30);
             const labExt = pseudoRandom(55, 68);
-            return { mid: '-', assgn: '-', total: labInt + labExt, status: "Pass", type: 'Lab' };
+            
+            if (isCurrentSem) {
+                // Current semester labs only show ongoing internal progress (Mid-1 period)
+                const ongoingInt = Math.floor(labInt * 0.4); // Only 40% of internal work done
+                return { mid: '-', assgn: '-', total: ongoingInt, status: "Ongoing", type: 'Lab', isCurrent: true, labInt: ongoingInt, labExt: '-' };
+            }
+            
+            return { mid: '-', assgn: '-', total: labInt + labExt, status: "Pass", type: 'Lab', labInt, labExt };
         } else {
             const m1 = pseudoRandom(22, 28);
             const a1 = 5;
             const ex = pseudoRandom(40, 60);
-            return { mid: m1, assgn: a1, total: m1 + a1 + ex, status: "Pass", type: 'Theory' };
+
+            if (isCurrentSem) {
+                // Current semester theory only shows Mid-1 and Assignment-1
+                return { mid: m1, assgn: a1, total: m1 + a1, status: "Ongoing", type: 'Theory', isCurrent: true, ex: '-' };
+            }
+
+            return { mid: m1, assgn: a1, total: m1 + a1 + ex, status: "Pass", type: 'Theory', ex };
         }
     };
 
     const branchCourses = MOCK_COURSES.filter(c => c.department === student.branch);
-    const semesters = [1, 2, 3, 4, 5, 6, 7, 8];
+    // Only show semesters up to the student's current semester
+    const semesters = Array.from({ length: student.semester }, (_, i) => i + 1);
 
     return (
         <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
@@ -1142,8 +1182,8 @@ const StudentDetailView = ({ student, onBack }: { student: Student, onBack: () =
                                         <div className="space-y-4">
                                             {isActiveSem && (
                                                 <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 flex items-center gap-2">
-                                                    <Badge className="bg-primary animate-pulse">CURRENT</Badge>
-                                                    <span className="text-xs font-bold text-primary">Student is currently enrolled in this semester. Attendance and internal data is live.</span>
+                                                    <Badge className="bg-primary animate-pulse">CURRENT PROGRESS (MID-1)</Badge>
+                                                    <span className="text-xs font-bold text-primary">Transcript shows current semester evaluation limited to Mid-1 and Assignment-1 as per academic policy.</span>
                                                 </div>
                                             )}
                                             
@@ -1166,21 +1206,30 @@ const StudentDetailView = ({ student, onBack }: { student: Student, onBack: () =
                                                     </TableHeader>
                                                     <TableBody>
                                                         {semCourses.map(course => {
-                                                            const marks = getMarks(course.code, course.type);
-                                                            const external = marks.type === 'Lab' ? 60 : 50; // Simple logic
-                                                            const grandTotal = marks.total + external;
+                                                            const marks = getMarks(course.code, course.type, semNum, student.semester);
+                                                            
                                                             return (
                                                                 <TableRow key={course.code} className="hover:bg-slate-50/50">
                                                                     <TableCell className="font-mono font-bold text-[10px] border-r">{course.code}</TableCell>
                                                                     <TableCell className="font-bold border-r text-sm">{course.name}</TableCell>
-                                                                    <TableCell className="text-center border-r font-medium">{marks.mid}</TableCell>
+                                                                    <TableCell className="text-center border-r font-medium">
+                                                                        {marks.mid}
+                                                                    </TableCell>
                                                                     <TableCell className="text-center border-r font-medium">
                                                                         {typeof marks.assgn === 'number' ? ((marks.assgn as number) * 2) : marks.assgn}
                                                                     </TableCell>
-                                                                    <TableCell className="text-center border-r font-black bg-blue-50/30 text-blue-700">{marks.total}</TableCell>
-                                                                    <TableCell className="text-center border-r font-black text-slate-400 italic">60</TableCell>
-                                                                    <TableCell className="text-center font-black bg-primary/10 text-primary text-base">
-                                                                        {marks.total + 60}
+                                                                    <TableCell className="text-center border-r font-black bg-blue-50/30 text-blue-700">
+                                                                        {marks.total}
+                                                                    </TableCell>
+                                                                    <TableCell className="text-center border-r font-black text-slate-400 italic">
+                                                                        {marks.type === 'Lab' ? (marks as any).labExt : (marks as any).ex}
+                                                                    </TableCell>
+                                                                    <TableCell className={`text-center font-black text-base ${isActiveSem ? 'bg-amber-50/50 text-amber-600' : 'bg-primary/10 text-primary'}`}>
+                                                                        {isActiveSem ? (
+                                                                            <span className="text-xs uppercase italic opacity-70">Awaiting External</span>
+                                                                        ) : (
+                                                                            marks.total + (marks.type === 'Lab' ? ((marks as any).labExt || 0) : ((marks as any).ex || 0))
+                                                                        )}
                                                                     </TableCell>
                                                                 </TableRow>
                                                             );
@@ -1204,5 +1253,6 @@ const StudentDetailView = ({ student, onBack }: { student: Student, onBack: () =
         </div>
     );
 };
+
 
 export default StudentRecords;

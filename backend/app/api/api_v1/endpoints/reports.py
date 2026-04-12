@@ -12,7 +12,7 @@ router = APIRouter()
 def generate_compliance_report_endpoint(
     request: ai_schemas.ComplianceReportRequest,
     db: Session = Depends(deps.get_db),
-    current_user: models.User = Depends(deps.get_current_active_user),
+    current_user: models.User = Depends(deps.get_current_active_admin),
 ) -> Any:
     """
     Generates automated Accreditation & Compliance Report (NBA/NAAC) using AI model.

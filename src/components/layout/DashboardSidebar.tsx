@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+// Force re-build to fix ReferenceErrors
 import {
   Calendar,
   Users,
@@ -17,7 +18,9 @@ import {
   Award,
   UserCircle,
   ChevronDown,
-  ShieldCheck
+  ShieldCheck,
+  MessageSquare,
+  Link
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -25,6 +28,7 @@ interface NavItem {
   title: string;
   url?: string;
   icon: any;
+  badge?: string | number;
   children?: { title: string; url: string }[];
 }
 
@@ -38,13 +42,29 @@ interface DashboardSidebarProps {
 
 export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, onMobileClose }: DashboardSidebarProps) {
   const location = useLocation();
+  const [unreadCount, setUnreadCount] = useState<number>(0);
+
+  // Poll for global unread count
+  useEffect(() => {
+    const checkUnread = () => {
+      const count = localStorage.getItem('smartcampus_unread_count');
+      setUnreadCount(count ? parseInt(count) : 0);
+    };
+    checkUnread();
+    const interval = setInterval(checkUnread, 2000);
+    window.addEventListener('storage', checkUnread);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('storage', checkUnread);
+    };
+  }, []);
 
   const getNavigationItems = (): NavItem[] => {
     const commonItems: NavItem[] = [
       { title: "Dashboard", url: "/dashboard", icon: Home },
       { title: "My Profile", url: "/dashboard/profile", icon: UserCircle },
       { title: "Timetable", url: "/dashboard/timetable", icon: Calendar },
-      { title: "Notifications", url: "/dashboard/notifications", icon: Bell },
+      { title: "Communication Hub", url: "/dashboard/communications", icon: MessageSquare, badge: unreadCount > 0 ? unreadCount : undefined },
       { title: "Settings", url: "/dashboard/settings", icon: Settings },
     ];
 
@@ -52,6 +72,7 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
       admin: [
         { title: "Exam Management", url: "/dashboard/exams", icon: ShieldCheck },
         { title: "Faculty Management", url: "/dashboard/faculty-directory", icon: Users },
+        { title: "Faculty Workload", url: "/dashboard/faculty-load", icon: BarChart3 },
         { title: "Student Management", url: "/dashboard/students", icon: GraduationCap },
         { title: "Course Management", url: "/dashboard/manage-courses", icon: BookOpen },
         { title: "Room Management", url: "/dashboard/manage-rooms", icon: Home },
@@ -195,6 +216,14 @@ function SidebarItem({ item, collapsed, mobileOpen, onMobileClose }: {
     <>
       <item.icon className={`h-5 w-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-110 ${isActive && collapsed && !mobileOpen ? 'text-primary-foreground' : ''}`} />
       {(!collapsed || mobileOpen) && <span className="text-sm font-bold tracking-tight whitespace-nowrap">{item.title}</span>}
+      {item.badge && (
+        <div className={`
+          ${collapsed && !mobileOpen ? 'absolute top-0 right-0 -translate-y-1 translate-x-1 scale-90' : 'ml-auto'}
+          bg-emerald-500 text-white text-[9px] font-black h-4 w-4 rounded-full flex items-center justify-center shadow-lg shadow-emerald-500/40 ring-2 ring-white animate-in zoom-in duration-300
+        `}>
+          {item.badge}
+        </div>
+      )}
       {hasChildren && (!collapsed || mobileOpen) && (
         <ChevronDown className={`ml-auto h-4 w-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
       )}

@@ -38,12 +38,14 @@ def read_attendance(
 def create_bulk_attendance(
     *,
     db: Session = Depends(deps.get_db),
-    attendance_in: List[AttendanceCreate]
+    attendance_in: List[AttendanceCreate],
 ) -> Any:
     """
     Create bulk attendance records. Accepts a List[AttendanceCreate].
     Uses an upsert strategy for student_id + course_code + attendance_date + period.
     """
+    if current_user.role not in ["admin", "faculty"]:
+        raise HTTPException(status_code=403, detail="Not authorized to post attendance")
     print(f"INFO: Processing {len(attendance_in)} records")
     new_records = []
     try:

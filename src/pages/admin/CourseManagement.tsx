@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MOCK_COURSES, Course } from "@/data/mockCourses";
+import { formatSubjectName } from "@/data/subjectMapping";
 import {
     Table,
     TableBody,
@@ -243,7 +244,7 @@ const CourseManagement = () => {
                                                                 <TableCell className="font-mono text-xs font-bold text-primary">{course.code}</TableCell>
                                                                 <TableCell>
                                                                     <div className="flex flex-col">
-                                                                        <span className="font-semibold text-foreground group-hover:text-primary transition-colors">{course.name}</span>
+                                                                        <span className="font-semibold text-foreground group-hover:text-primary transition-colors">{formatSubjectName(course.name)}</span>
                                                                     </div>
                                                                 </TableCell>
                                                                 <TableCell className="text-center">

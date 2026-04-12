@@ -4,16 +4,31 @@ import {
     Users,
     BookOpen,
     TrendingUp,
-    Bell
+    Bell,
+    Mail,
+    Phone,
+    ShieldCheck,
+    Building2
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { MOCK_STUDENTS } from "@/data/mockStudents";
 import { MOCK_FACULTY } from "@/data/mockFaculty";
 import { MOCK_COURSES } from "@/data/mockCourses";
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+} from "@/components/ui/dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
+    const [selectedFaculty, setSelectedFaculty] = useState<any>(null);
     
     // Real-time data counts
     const totalStudents = MOCK_STUDENTS.length.toLocaleString();
@@ -79,6 +94,31 @@ export default function AdminDashboard() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                {/* Departmental Leadership */}
+                <Card className="lg:col-span-3">
+                    <CardHeader>
+                        <CardTitle className="text-xl font-bold flex items-center gap-2">
+                            <Users className="h-5 w-5 text-indigo-600" />
+                            Departmental Leadership (HODs)
+                        </CardTitle>
+                        <CardDescription>Academic heads for each institutional branch</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            {MOCK_FACULTY.filter(f => f.designation.includes('HOD')).map((hod) => (
+                                <div key={hod.id} className="p-4 border border-border rounded-xl bg-muted/20 flex flex-col items-center text-center">
+                                    <div className="h-12 w-12 rounded-full border-2 border-primary/20 bg-primary/5 flex items-center justify-center mb-3">
+                                        <Users className="h-6 w-6 text-primary" />
+                                    </div>
+                                    <h4 className="font-bold text-sm">{hod.name}</h4>
+                                    <p className="text-[10px] text-muted-foreground uppercase font-black tracking-wider mt-1">{hod.department} HOD</p>
+                                    <Button variant="link" size="sm" className="h-8 mt-2 text-primary" onClick={() => setSelectedFaculty(hod)}>View Profile</Button>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+
                 {/* Quick Actions */}
                 <Card className="lg:col-span-2">
                     <CardHeader>
@@ -101,42 +141,81 @@ export default function AdminDashboard() {
                     </CardContent>
                 </Card>
 
-                {/* Recent Activity */}
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center space-x-2">
-                            <Bell className="h-5 w-5" />
-                            <span>Recent Activity</span>
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="flex items-start space-x-3">
-                            <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
-                            <div>
-                                <p className="text-sm font-medium">New assignment posted</p>
-                                <p className="text-xs text-muted-foreground">Data Structures - Due in 3 days</p>
-                            </div>
-                        </div>
-                        <div className="flex items-start space-x-3">
-                            <div className="w-2 h-2 bg-warning rounded-full mt-2"></div>
-                            <div>
-                                <p className="text-sm font-medium">Class rescheduled</p>
-                                <p className="text-xs text-muted-foreground">Advanced Algorithms moved to 2 PM</p>
-                            </div>
-                        </div>
-                        <div className="flex items-start space-x-3">
-                            <div className="w-2 h-2 bg-success rounded-full mt-2"></div>
-                            <div>
-                                <p className="text-sm font-medium">Grade published</p>
-                                <p className="text-xs text-muted-foreground">Database Systems - 89/100</p>
-                            </div>
-                        </div>
-                        <Button variant="outline" className="w-full mt-4">
-                            View All Notifications
-                        </Button>
-                    </CardContent>
-                </Card>
             </div>
+
+            {/* Faculty Info Dialog */}
+            <Dialog open={!!selectedFaculty} onOpenChange={(open) => !open && setSelectedFaculty(null)}>
+                <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                        <DialogTitle>Faculty Information</DialogTitle>
+                        <DialogDescription>
+                            Professional contact and departmental details.
+                        </DialogDescription>
+                    </DialogHeader>
+                    {selectedFaculty && (
+                        <div className="space-y-6 pt-4">
+                            <div className="flex items-center gap-4">
+                                <Avatar className="h-16 w-16 border-2 border-primary/20">
+                                    <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${selectedFaculty.name}`} />
+                                    <AvatarFallback>{selectedFaculty.name[0]}</AvatarFallback>
+                                </Avatar>
+                                <div>
+                                    <h3 className="text-lg font-bold">{selectedFaculty.name}</h3>
+                                    <Badge variant="secondary" className="font-bold bg-primary/10 text-primary">
+                                        {selectedFaculty.rollNumber}
+                                    </Badge>
+                                </div>
+                            </div>
+
+                            <div className="grid gap-4">
+                                <div className="flex items-center gap-3 text-sm">
+                                    <ShieldCheck className="w-4 h-4 text-indigo-600" />
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Designation</p>
+                                        <p className="font-semibold">{selectedFaculty.designation}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3 text-sm">
+                                    <Building2 className="w-4 h-4 text-indigo-600" />
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Department</p>
+                                        <p className="font-semibold">{selectedFaculty.department}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3 text-sm">
+                                    <Mail className="w-4 h-4 text-indigo-600" />
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Institutional Email</p>
+                                        <p className="font-semibold">{selectedFaculty.email}</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3 text-sm">
+                                    <Phone className="w-4 h-4 text-indigo-600" />
+                                    <div>
+                                        <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Direct Phone</p>
+                                        <p className="font-semibold">{selectedFaculty.phone}</p>
+                                    </div>
+                                </div>
+                                {selectedFaculty.specialization && (
+                                    <div className="flex items-start gap-3 text-sm">
+                                        <BookOpen className="w-4 h-4 text-indigo-600 mt-1" />
+                                        <div>
+                                            <p className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">Specialization</p>
+                                            <div className="flex flex-wrap gap-1 mt-1">
+                                                {selectedFaculty.specialization.map((s: string, i: number) => (
+                                                    <Badge key={i} variant="outline" className="text-[9px] font-bold border-indigo-100 bg-indigo-50/30 text-indigo-700">
+                                                        {s}
+                                                    </Badge>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }

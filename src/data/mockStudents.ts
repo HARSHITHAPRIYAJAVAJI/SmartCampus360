@@ -29,11 +29,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0501@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917206264204",
         "attendance": 91,
-        "grade": 8.52
+        "grade": 8.52,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-2",
@@ -42,11 +44,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0502@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918848586048",
         "attendance": 78,
-        "grade": 8.07
+        "grade": 8.07,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-3",
@@ -55,11 +59,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0503@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918323619010",
         "attendance": 78,
-        "grade": 7.24
+        "grade": 7.24,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-4",
@@ -68,11 +74,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0504@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918538429068",
         "attendance": 91,
-        "grade": 8.46
+        "grade": 8.46,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-5",
@@ -81,11 +89,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0505@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916248737267",
-        "attendance": 99,
-        "grade": 9.77
+        "attendance": 92,
+        "grade": 9.77,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-6",
@@ -94,11 +104,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0506@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919302941026",
         "attendance": 91,
-        "grade": 8.54
+        "grade": 8.54,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-7",
@@ -107,11 +119,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0507@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916356070800",
-        "attendance": 98,
-        "grade": 7.85
+        "attendance": 92,
+        "grade": 7.85,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-8",
@@ -120,11 +134,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0508@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919304415728",
         "attendance": 84,
-        "grade": 8.99
+        "grade": 8.99,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-9",
@@ -133,11 +149,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0509@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918247025527",
-        "attendance": 97,
-        "grade": 9.78
+        "attendance": 92,
+        "grade": 9.78,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-10",
@@ -146,11 +164,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0510@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919284596954",
         "attendance": 89,
-        "grade": 7.54
+        "grade": 7.54,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-11",
@@ -159,11 +179,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0511@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917456208663",
         "attendance": 88,
-        "grade": 9.87
+        "grade": 9.87,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-12",
@@ -172,11 +194,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0512@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919203619344",
         "attendance": 75,
-        "grade": 8.99
+        "grade": 8.99,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-13",
@@ -185,11 +209,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0513@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919419646839",
-        "attendance": 99,
-        "grade": 9.51
+        "attendance": 92,
+        "grade": 9.51,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-14",
@@ -198,11 +224,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0514@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917344658217",
-        "attendance": 94,
-        "grade": 9.94
+        "attendance": 92,
+        "grade": 9.94,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-15",
@@ -211,11 +239,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0515@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918286400719",
         "attendance": 89,
-        "grade": 6.83
+        "grade": 6.83,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-16",
@@ -224,11 +254,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0516@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917970729612",
-        "attendance": 97,
-        "grade": 8.01
+        "attendance": 92,
+        "grade": 8.01,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-17",
@@ -237,11 +269,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0517@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919977561657",
         "attendance": 92,
-        "grade": 7.41
+        "grade": 7.41,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-18",
@@ -250,11 +284,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0518@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917887578216",
         "attendance": 86,
-        "grade": 9.58
+        "grade": 9.58,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-19",
@@ -263,11 +299,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0519@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917517879821",
         "attendance": 85,
-        "grade": 9.31
+        "grade": 9.31,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-20",
@@ -276,11 +314,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0520@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919313786014",
         "attendance": 90,
-        "grade": 6.63
+        "grade": 6.63,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-21",
@@ -289,11 +329,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0521@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919510438710",
         "attendance": 83,
-        "grade": 9.54
+        "grade": 9.54,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-22",
@@ -302,11 +344,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0522@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918861262439",
         "attendance": 90,
-        "grade": 7.86
+        "grade": 7.86,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-23",
@@ -315,11 +359,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0523@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917548547433",
         "attendance": 78,
-        "grade": 7.04
+        "grade": 7.04,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-24",
@@ -328,11 +374,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0524@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916960880638",
         "attendance": 90,
-        "grade": 9.64
+        "grade": 9.64,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-25",
@@ -341,11 +389,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0525@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917758329444",
         "attendance": 80,
-        "grade": 8.2
+        "grade": 8.2,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-26",
@@ -354,11 +404,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0526@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917192714281",
         "attendance": 92,
-        "grade": 9.88
+        "grade": 9.88,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-27",
@@ -367,11 +419,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0527@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918657095839",
         "attendance": 75,
-        "grade": 8.09
+        "grade": 8.09,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-28",
@@ -380,11 +434,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0528@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916773770990",
         "attendance": 75,
-        "grade": 6.52
+        "grade": 6.52,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-29",
@@ -393,11 +449,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0529@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918525317121",
-        "attendance": 99,
-        "grade": 6.93
+        "attendance": 92,
+        "grade": 6.93,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-30",
@@ -406,11 +464,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0530@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916866781059",
-        "attendance": 93,
-        "grade": 7.17
+        "attendance": 92,
+        "grade": 7.17,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-31",
@@ -419,11 +479,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0531@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919133996791",
-        "attendance": 99,
-        "grade": 7.09
+        "attendance": 92,
+        "grade": 7.09,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-32",
@@ -432,11 +494,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0532@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919607747583",
         "attendance": 91,
-        "grade": 8.83
+        "grade": 8.83,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-33",
@@ -445,11 +509,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0533@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916271657138",
-        "attendance": 94,
-        "grade": 9.87
+        "attendance": 92,
+        "grade": 9.87,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-34",
@@ -458,11 +524,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0534@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919408651432",
-        "attendance": 93,
-        "grade": 8.72
+        "attendance": 92,
+        "grade": 8.72,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-35",
@@ -471,11 +539,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0535@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917319624735",
-        "attendance": 95,
-        "grade": 7.47
+        "attendance": 92,
+        "grade": 7.47,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-36",
@@ -484,11 +554,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0536@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919858121217",
-        "attendance": 96,
-        "grade": 7.22
+        "attendance": 92,
+        "grade": 7.22,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-37",
@@ -497,11 +569,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0537@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918518613557",
         "attendance": 84,
-        "grade": 7.08
+        "grade": 7.08,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-38",
@@ -510,11 +584,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0538@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916667923816",
-        "attendance": 93,
-        "grade": 7.43
+        "attendance": 92,
+        "grade": 7.43,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-39",
@@ -523,11 +599,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0539@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916036445994",
         "attendance": 76,
-        "grade": 9.05
+        "grade": 9.05,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-40",
@@ -536,11 +614,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0540@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917620043715",
-        "attendance": 96,
-        "grade": 7.13
+        "attendance": 92,
+        "grade": 7.13,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-41",
@@ -549,11 +629,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0541@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918793248903",
         "attendance": 84,
-        "grade": 7.34
+        "grade": 7.34,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-42",
@@ -562,11 +644,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0542@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916213765325",
-        "attendance": 98,
-        "grade": 7.67
+        "attendance": 92,
+        "grade": 7.67,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-43",
@@ -575,11 +659,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0543@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918281425800",
         "attendance": 76,
-        "grade": 8.79
+        "grade": 8.79,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-44",
@@ -588,11 +674,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0544@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918123513879",
-        "attendance": 97,
-        "grade": 9.96
+        "attendance": 92,
+        "grade": 9.96,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-45",
@@ -601,11 +689,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0545@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916201257745",
         "attendance": 92,
-        "grade": 8.9
+        "grade": 8.9,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-46",
@@ -614,11 +704,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0546@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919396659105",
         "attendance": 88,
-        "grade": 6.9
+        "grade": 6.9,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-47",
@@ -627,11 +719,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0547@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919216644754",
         "attendance": 88,
-        "grade": 9.65
+        "grade": 9.65,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-48",
@@ -640,11 +734,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0548@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919513310495",
         "attendance": 84,
-        "grade": 9.67
+        "grade": 9.67,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-49",
@@ -653,11 +749,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0549@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919791497824",
         "attendance": 89,
-        "grade": 8.08
+        "grade": 8.08,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-50",
@@ -666,11 +764,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0550@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917627811958",
         "attendance": 81,
-        "grade": 9.76
+        "grade": 9.76,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-51",
@@ -679,11 +779,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0551@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919760690816",
-        "attendance": 99,
-        "grade": 9.39
+        "attendance": 92,
+        "grade": 9.39,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-52",
@@ -692,11 +794,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0552@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916749249571",
         "attendance": 81,
-        "grade": 6.91
+        "grade": 6.91,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-53",
@@ -705,11 +809,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0553@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918130195881",
-        "attendance": 98,
-        "grade": 7.77
+        "attendance": 92,
+        "grade": 7.77,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-54",
@@ -718,11 +824,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0554@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918997170141",
         "attendance": 88,
-        "grade": 7.18
+        "grade": 7.18,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-55",
@@ -731,11 +839,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0555@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918832805968",
         "attendance": 84,
-        "grade": 9.89
+        "grade": 9.89,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-56",
@@ -744,11 +854,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0556@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919217386179",
-        "attendance": 97,
-        "grade": 6.87
+        "attendance": 92,
+        "grade": 6.87,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-57",
@@ -757,11 +869,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0557@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917594492537",
-        "attendance": 99,
-        "grade": 9.96
+        "attendance": 92,
+        "grade": 9.96,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-58",
@@ -770,11 +884,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0558@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917475973399",
         "attendance": 84,
-        "grade": 7.73
+        "grade": 7.73,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-59",
@@ -783,11 +899,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0559@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916744437331",
         "attendance": 89,
-        "grade": 9.34
+        "grade": 9.34,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-60",
@@ -796,11 +914,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0560@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919018447520",
         "attendance": 81,
-        "grade": 9.05
+        "grade": 9.05,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-61",
@@ -809,11 +929,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0561@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919165324542",
         "attendance": 79,
-        "grade": 8
+        "grade": 8,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-62",
@@ -822,11 +944,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0562@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917079894624",
         "attendance": 77,
-        "grade": 8.45
+        "grade": 8.45,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-63",
@@ -835,11 +959,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0563@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917112645293",
         "attendance": 79,
-        "grade": 9.72
+        "grade": 9.72,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-64",
@@ -848,11 +974,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0564@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916624903729",
         "attendance": 85,
-        "grade": 8.78
+        "grade": 8.78,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-65",
@@ -861,11 +989,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0565@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917451364240",
         "attendance": 91,
-        "grade": 8.75
+        "grade": 8.75,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-66",
@@ -874,11 +1004,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0566@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919030956108",
         "attendance": 84,
-        "grade": 6.51
+        "grade": 6.51,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-67",
@@ -887,11 +1019,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0567@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916883593960",
         "attendance": 91,
-        "grade": 7.31
+        "grade": 7.31,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-68",
@@ -900,11 +1034,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0568@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917188746693",
         "attendance": 83,
-        "grade": 8.07
+        "grade": 8.07,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-69",
@@ -913,11 +1049,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0569@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919952786501",
         "attendance": 92,
-        "grade": 6.57
+        "grade": 6.57,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-70",
@@ -926,11 +1064,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0570@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916445766072",
-        "attendance": 97,
-        "grade": 7.65
+        "attendance": 92,
+        "grade": 7.65,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-71",
@@ -939,11 +1079,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0571@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918937947456",
         "attendance": 85,
-        "grade": 9.72
+        "grade": 9.72,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-72",
@@ -952,11 +1094,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0572@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916531079042",
         "attendance": 76,
-        "grade": 6.89
+        "grade": 6.89,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-73",
@@ -965,11 +1109,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0573@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918108229629",
         "attendance": 77,
-        "grade": 9.1
+        "grade": 9.1,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-74",
@@ -978,11 +1124,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0574@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916342162383",
-        "attendance": 95,
-        "grade": 8.72
+        "attendance": 92,
+        "grade": 8.72,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-75",
@@ -991,11 +1139,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0575@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919063595328",
         "attendance": 79,
-        "grade": 7.24
+        "grade": 7.24,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-76",
@@ -1004,11 +1154,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0576@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919890229484",
-        "attendance": 94,
-        "grade": 8.82
+        "attendance": 92,
+        "grade": 8.82,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-77",
@@ -1017,11 +1169,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0577@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918589738390",
         "attendance": 87,
-        "grade": 9.39
+        "grade": 9.39,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-78",
@@ -1030,11 +1184,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0578@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916498871997",
         "attendance": 90,
-        "grade": 8.92
+        "grade": 8.92,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-79",
@@ -1043,11 +1199,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0579@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919351312635",
         "attendance": 82,
-        "grade": 9.71
+        "grade": 9.71,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-80",
@@ -1056,11 +1214,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0580@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919064555024",
         "attendance": 89,
-        "grade": 8.03
+        "grade": 8.03,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-81",
@@ -1069,11 +1229,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0581@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919377784989",
-        "attendance": 93,
-        "grade": 8.72
+        "attendance": 92,
+        "grade": 8.72,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-82",
@@ -1082,11 +1244,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0582@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917202486911",
         "attendance": 81,
-        "grade": 7.07
+        "grade": 7.07,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-83",
@@ -1095,11 +1259,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0583@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917177113609",
-        "attendance": 94,
-        "grade": 8.12
+        "attendance": 92,
+        "grade": 8.12,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-84",
@@ -1108,11 +1274,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0584@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917099450375",
         "attendance": 78,
-        "grade": 7.18
+        "grade": 7.18,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-85",
@@ -1121,11 +1289,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0585@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919899638929",
         "attendance": 75,
-        "grade": 9.57
+        "grade": 9.57,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-86",
@@ -1134,11 +1304,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0586@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916913945191",
         "attendance": 86,
-        "grade": 7.49
+        "grade": 7.49,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-87",
@@ -1147,11 +1319,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0587@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918589419345",
         "attendance": 77,
-        "grade": 8.28
+        "grade": 8.28,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-88",
@@ -1160,11 +1334,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0588@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916039247678",
         "attendance": 86,
-        "grade": 8.71
+        "grade": 8.71,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-89",
@@ -1173,11 +1349,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0589@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918521547479",
         "attendance": 81,
-        "grade": 8.5
+        "grade": 8.5,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-90",
@@ -1186,11 +1364,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0590@smartcampus.com",
         "branch": "CSE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917214603101",
         "attendance": 86,
-        "grade": 9.45
+        "grade": 9.45,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-91",
@@ -1199,11 +1379,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0501@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917616835353",
         "attendance": 89,
-        "grade": 7.53
+        "grade": 7.53,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-92",
@@ -1212,11 +1394,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0502@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917658756671",
         "attendance": 81,
-        "grade": 7.35
+        "grade": 7.35,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-93",
@@ -1225,11 +1409,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0503@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917919923870",
         "attendance": 85,
-        "grade": 7.76
+        "grade": 7.76,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-94",
@@ -1238,11 +1424,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0504@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917524150923",
         "attendance": 82,
-        "grade": 6.98
+        "grade": 6.98,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-95",
@@ -1251,11 +1439,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0505@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919732744506",
         "attendance": 88,
-        "grade": 6.61
+        "grade": 6.61,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-96",
@@ -1264,11 +1454,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0506@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919745274519",
-        "attendance": 96,
-        "grade": 9
+        "attendance": 92,
+        "grade": 9,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-97",
@@ -1277,11 +1469,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0507@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919546574501",
         "attendance": 89,
-        "grade": 6.9
+        "grade": 6.9,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-98",
@@ -1290,11 +1484,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0508@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917557096370",
         "attendance": 76,
-        "grade": 7.4
+        "grade": 7.4,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-99",
@@ -1303,11 +1499,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0509@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916162827079",
         "attendance": 84,
-        "grade": 9.35
+        "grade": 9.35,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-100",
@@ -1316,11 +1514,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0510@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916358708503",
         "attendance": 91,
-        "grade": 9.67
+        "grade": 9.67,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-101",
@@ -1329,11 +1529,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0511@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916663061777",
-        "attendance": 98,
-        "grade": 7.94
+        "attendance": 92,
+        "grade": 7.94,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-102",
@@ -1342,11 +1544,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0512@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918348247119",
-        "attendance": 97,
-        "grade": 6.51
+        "attendance": 92,
+        "grade": 6.51,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-103",
@@ -1355,11 +1559,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0513@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916352309479",
         "attendance": 82,
-        "grade": 7.33
+        "grade": 7.33,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-104",
@@ -1368,11 +1574,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0514@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916975822999",
-        "attendance": 97,
-        "grade": 7.19
+        "attendance": 92,
+        "grade": 7.19,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-105",
@@ -1381,11 +1589,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0515@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918951896225",
         "attendance": 75,
-        "grade": 9.05
+        "grade": 9.05,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-106",
@@ -1394,11 +1604,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0516@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919758684450",
-        "attendance": 99,
-        "grade": 7.37
+        "attendance": 92,
+        "grade": 7.37,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-107",
@@ -1407,11 +1619,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0517@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919588212428",
         "attendance": 77,
-        "grade": 9.54
+        "grade": 9.54,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-108",
@@ -1420,11 +1634,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0518@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918421326079",
-        "attendance": 97,
-        "grade": 6.81
+        "attendance": 92,
+        "grade": 6.81,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-109",
@@ -1433,11 +1649,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0519@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919232967731",
         "attendance": 91,
-        "grade": 6.6
+        "grade": 6.6,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-110",
@@ -1446,11 +1664,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0520@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918558582094",
-        "attendance": 99,
-        "grade": 9.65
+        "attendance": 92,
+        "grade": 9.65,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-111",
@@ -1459,11 +1679,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0521@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918278679787",
         "attendance": 79,
-        "grade": 8.1
+        "grade": 8.1,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-112",
@@ -1472,11 +1694,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0522@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916522152767",
-        "attendance": 93,
-        "grade": 9.91
+        "attendance": 92,
+        "grade": 9.91,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-113",
@@ -1485,11 +1709,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0523@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918131135126",
-        "attendance": 98,
-        "grade": 9.02
+        "attendance": 92,
+        "grade": 9.02,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-114",
@@ -1498,11 +1724,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0524@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919019683669",
         "attendance": 82,
-        "grade": 8.66
+        "grade": 8.66,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-115",
@@ -1511,11 +1739,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0525@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919934184709",
         "attendance": 77,
-        "grade": 8.18
+        "grade": 8.18,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-116",
@@ -1524,11 +1754,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0526@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918646209794",
-        "attendance": 99,
-        "grade": 8.8
+        "attendance": 92,
+        "grade": 8.8,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-117",
@@ -1537,11 +1769,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0527@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918801839977",
         "attendance": 92,
-        "grade": 7.56
+        "grade": 7.56,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-118",
@@ -1550,11 +1784,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0528@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917436158868",
-        "attendance": 99,
-        "grade": 8.3
+        "attendance": 92,
+        "grade": 8.3,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-119",
@@ -1563,11 +1799,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0529@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916348083407",
         "attendance": 87,
-        "grade": 9.11
+        "grade": 9.11,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-120",
@@ -1576,11 +1814,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0530@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916967362992",
         "attendance": 87,
-        "grade": 9.69
+        "grade": 9.69,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-121",
@@ -1589,11 +1829,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0531@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919602436273",
         "attendance": 83,
-        "grade": 9.28
+        "grade": 9.28,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-122",
@@ -1602,11 +1844,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0532@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918194046166",
         "attendance": 83,
-        "grade": 8.39
+        "grade": 8.39,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-123",
@@ -1615,11 +1859,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0533@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916779775584",
         "attendance": 86,
-        "grade": 9.62
+        "grade": 9.62,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-124",
@@ -1628,11 +1874,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0534@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919602870441",
-        "attendance": 99,
-        "grade": 8.11
+        "attendance": 92,
+        "grade": 8.11,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-125",
@@ -1641,11 +1889,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0535@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916065608330",
         "attendance": 90,
-        "grade": 7.8
+        "grade": 7.8,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-126",
@@ -1654,11 +1904,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0536@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919796473021",
         "attendance": 92,
-        "grade": 7.64
+        "grade": 7.64,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-127",
@@ -1667,11 +1919,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0537@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916893938246",
         "attendance": 81,
-        "grade": 7.38
+        "grade": 7.38,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-128",
@@ -1680,11 +1934,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0538@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916319363186",
         "attendance": 78,
-        "grade": 8.93
+        "grade": 8.93,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-129",
@@ -1693,11 +1949,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0539@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918314691185",
         "attendance": 75,
-        "grade": 8.67
+        "grade": 8.67,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-130",
@@ -1706,11 +1964,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0540@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918618901773",
         "attendance": 87,
-        "grade": 9.03
+        "grade": 9.03,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-131",
@@ -1719,11 +1979,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0541@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916519452515",
         "attendance": 89,
-        "grade": 7.98
+        "grade": 7.98,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-132",
@@ -1732,11 +1994,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0542@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919609510533",
         "attendance": 82,
-        "grade": 8.34
+        "grade": 8.34,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-133",
@@ -1745,11 +2009,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0543@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918143254309",
-        "attendance": 93,
-        "grade": 7.17
+        "attendance": 92,
+        "grade": 7.17,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-134",
@@ -1758,11 +2024,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0544@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918144930697",
-        "attendance": 95,
-        "grade": 7.1
+        "attendance": 92,
+        "grade": 7.1,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-135",
@@ -1771,11 +2039,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0545@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916430842158",
         "attendance": 83,
-        "grade": 6.9
+        "grade": 6.9,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-136",
@@ -1784,11 +2054,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0546@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918110430206",
         "attendance": 86,
-        "grade": 9.81
+        "grade": 9.81,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-137",
@@ -1797,11 +2069,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0547@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916082930972",
         "attendance": 87,
-        "grade": 8.85
+        "grade": 8.85,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-138",
@@ -1810,11 +2084,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0548@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917973126011",
         "attendance": 92,
-        "grade": 9.17
+        "grade": 9.17,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-139",
@@ -1823,11 +2099,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0549@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918072373951",
         "attendance": 82,
-        "grade": 7.07
+        "grade": 7.07,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-140",
@@ -1836,11 +2114,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0550@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917405294492",
-        "attendance": 96,
-        "grade": 7.62
+        "attendance": 92,
+        "grade": 7.62,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-141",
@@ -1849,11 +2129,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0551@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917153095484",
         "attendance": 83,
-        "grade": 7.16
+        "grade": 7.16,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-142",
@@ -1862,11 +2144,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0552@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917053608200",
-        "attendance": 93,
-        "grade": 6.56
+        "attendance": 92,
+        "grade": 6.56,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-143",
@@ -1875,11 +2159,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0553@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917638102173",
         "attendance": 91,
-        "grade": 6.84
+        "grade": 6.84,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-144",
@@ -1888,11 +2174,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0554@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917143712528",
-        "attendance": 93,
-        "grade": 6.79
+        "attendance": 92,
+        "grade": 6.79,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-145",
@@ -1901,11 +2189,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0555@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918694028240",
         "attendance": 76,
-        "grade": 8.34
+        "grade": 8.34,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-146",
@@ -1914,11 +2204,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0556@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918869532950",
-        "attendance": 97,
-        "grade": 7.12
+        "attendance": 92,
+        "grade": 7.12,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-147",
@@ -1927,11 +2219,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0557@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917438890479",
-        "attendance": 93,
-        "grade": 6.57
+        "attendance": 92,
+        "grade": 6.57,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-148",
@@ -1940,11 +2234,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0558@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917363554840",
         "attendance": 89,
-        "grade": 7.86
+        "grade": 7.86,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-149",
@@ -1953,11 +2249,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0559@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916637556888",
         "attendance": 89,
-        "grade": 8.73
+        "grade": 8.73,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-150",
@@ -1966,11 +2264,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0560@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919613249501",
         "attendance": 91,
-        "grade": 8.96
+        "grade": 8.96,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-151",
@@ -1979,11 +2279,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0561@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917544059431",
-        "attendance": 98,
-        "grade": 7.26
+        "attendance": 92,
+        "grade": 7.26,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-152",
@@ -1992,11 +2294,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0562@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918461647537",
         "attendance": 87,
-        "grade": 8.98
+        "grade": 8.98,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-153",
@@ -2005,11 +2309,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0563@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919415887470",
-        "attendance": 96,
-        "grade": 9.93
+        "attendance": 92,
+        "grade": 9.93,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-154",
@@ -2018,11 +2324,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0564@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917640541848",
         "attendance": 91,
-        "grade": 8.43
+        "grade": 8.43,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-155",
@@ -2031,11 +2339,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0565@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916975927727",
-        "attendance": 96,
-        "grade": 7.73
+        "attendance": 92,
+        "grade": 7.73,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-156",
@@ -2044,11 +2354,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0566@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917160601339",
         "attendance": 79,
-        "grade": 7.38
+        "grade": 7.38,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-157",
@@ -2057,11 +2369,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0567@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917575643022",
         "attendance": 77,
-        "grade": 8.57
+        "grade": 8.57,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-158",
@@ -2070,11 +2384,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0568@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917437521270",
         "attendance": 90,
-        "grade": 9.49
+        "grade": 9.49,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-159",
@@ -2083,11 +2399,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0569@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918896961437",
-        "attendance": 98,
-        "grade": 8.58
+        "attendance": 92,
+        "grade": 8.58,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-160",
@@ -2096,11 +2414,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0570@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918684337703",
-        "attendance": 97,
-        "grade": 6.78
+        "attendance": 92,
+        "grade": 6.78,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-161",
@@ -2109,11 +2429,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0571@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919847670417",
         "attendance": 88,
-        "grade": 6.54
+        "grade": 6.54,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-162",
@@ -2122,11 +2444,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0572@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918227849961",
-        "attendance": 93,
-        "grade": 8.48
+        "attendance": 92,
+        "grade": 8.48,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-163",
@@ -2135,11 +2459,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0573@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916405766976",
-        "attendance": 99,
-        "grade": 9.9
+        "attendance": 92,
+        "grade": 9.9,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-164",
@@ -2148,11 +2474,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0574@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916379306329",
         "attendance": 83,
-        "grade": 7.43
+        "grade": 7.43,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-165",
@@ -2161,11 +2489,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0575@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918168986556",
         "attendance": 78,
-        "grade": 8.61
+        "grade": 8.61,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-166",
@@ -2174,11 +2504,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0576@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916432340801",
         "attendance": 91,
-        "grade": 6.77
+        "grade": 6.77,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-167",
@@ -2187,11 +2519,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0577@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917446115773",
         "attendance": 92,
-        "grade": 8.36
+        "grade": 8.36,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-168",
@@ -2200,11 +2534,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0578@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918531380274",
-        "attendance": 96,
-        "grade": 8.41
+        "attendance": 92,
+        "grade": 8.41,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-169",
@@ -2213,11 +2549,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0579@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919510714288",
         "attendance": 85,
-        "grade": 7.6
+        "grade": 7.6,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-170",
@@ -2226,11 +2564,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0580@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918323503128",
         "attendance": 86,
-        "grade": 9.67
+        "grade": 9.67,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-171",
@@ -2239,11 +2579,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0581@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917441766664",
-        "attendance": 95,
-        "grade": 7.09
+        "attendance": 92,
+        "grade": 7.09,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-172",
@@ -2252,11 +2594,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0582@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919998337002",
         "attendance": 79,
-        "grade": 7.69
+        "grade": 7.69,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-173",
@@ -2265,11 +2609,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0583@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918541632430",
         "attendance": 89,
-        "grade": 7.35
+        "grade": 7.35,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-174",
@@ -2278,11 +2624,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0584@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916023734016",
         "attendance": 91,
-        "grade": 6.6
+        "grade": 6.6,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-175",
@@ -2291,11 +2639,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0585@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918203354362",
         "attendance": 82,
-        "grade": 9.19
+        "grade": 9.19,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-176",
@@ -2304,11 +2654,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0586@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918438822348",
         "attendance": 91,
-        "grade": 9.54
+        "grade": 9.54,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-177",
@@ -2317,11 +2669,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0587@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919617550008",
         "attendance": 86,
-        "grade": 6.59
+        "grade": 6.59,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-178",
@@ -2330,11 +2684,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0588@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917784995245",
         "attendance": 88,
-        "grade": 9.49
+        "grade": 9.49,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-179",
@@ -2343,11 +2699,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0589@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916681322091",
         "attendance": 87,
-        "grade": 9.03
+        "grade": 9.03,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-180",
@@ -2356,11 +2714,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0590@smartcampus.com",
         "branch": "CSE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917557726871",
         "attendance": 88,
-        "grade": 7.16
+        "grade": 7.16,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-181",
@@ -2369,11 +2729,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0501@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919728107452",
         "attendance": 77,
-        "grade": 7.51
+        "grade": 7.51,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-182",
@@ -2382,11 +2744,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0502@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919549839948",
         "attendance": 82,
-        "grade": 7.38
+        "grade": 7.38,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-183",
@@ -2395,11 +2759,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0503@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918873264803",
-        "attendance": 97,
-        "grade": 9.49
+        "attendance": 92,
+        "grade": 9.49,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-184",
@@ -2408,11 +2774,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0504@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919403738296",
-        "attendance": 99,
-        "grade": 8.5
+        "attendance": 92,
+        "grade": 8.5,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-185",
@@ -2421,11 +2789,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0505@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918733117078",
-        "attendance": 94,
-        "grade": 9.9
+        "attendance": 92,
+        "grade": 9.9,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-186",
@@ -2434,11 +2804,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0506@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919881914924",
         "attendance": 83,
-        "grade": 7.03
+        "grade": 7.03,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-187",
@@ -2447,11 +2819,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0507@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917240912817",
         "attendance": 77,
-        "grade": 7.95
+        "grade": 7.95,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-188",
@@ -2460,11 +2834,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0508@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918409511605",
         "attendance": 92,
-        "grade": 8.42
+        "grade": 8.42,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-189",
@@ -2473,11 +2849,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0509@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918254619894",
-        "attendance": 98,
-        "grade": 9.57
+        "attendance": 92,
+        "grade": 9.57,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-190",
@@ -2486,11 +2864,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0510@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916622771761",
         "attendance": 83,
-        "grade": 6.63
+        "grade": 6.63,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-191",
@@ -2499,11 +2879,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0511@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918825820608",
         "attendance": 83,
-        "grade": 7.25
+        "grade": 7.25,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-192",
@@ -2512,11 +2894,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0512@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917031042798",
         "attendance": 75,
-        "grade": 9.28
+        "grade": 9.28,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-193",
@@ -2525,11 +2909,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0513@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916090832904",
         "attendance": 90,
-        "grade": 7.05
+        "grade": 7.05,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-194",
@@ -2538,11 +2924,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0514@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916504478507",
         "attendance": 75,
-        "grade": 7.19
+        "grade": 7.19,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-195",
@@ -2551,11 +2939,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0515@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918713940243",
-        "attendance": 96,
-        "grade": 8.8
+        "attendance": 92,
+        "grade": 8.8,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-196",
@@ -2564,11 +2954,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0516@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917632171916",
         "attendance": 81,
-        "grade": 8.07
+        "grade": 8.07,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-197",
@@ -2577,11 +2969,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0517@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916820381705",
         "attendance": 80,
-        "grade": 7.32
+        "grade": 7.32,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-198",
@@ -2590,11 +2984,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0518@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917335544603",
-        "attendance": 95,
-        "grade": 8.87
+        "attendance": 92,
+        "grade": 8.87,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-199",
@@ -2603,11 +2999,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0519@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919656331593",
         "attendance": 75,
-        "grade": 8.71
+        "grade": 8.71,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-200",
@@ -2616,11 +3014,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0520@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918455278859",
         "attendance": 89,
-        "grade": 9.3
+        "grade": 9.3,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-201",
@@ -2629,11 +3029,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0521@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919435500782",
-        "attendance": 95,
-        "grade": 6.97
+        "attendance": 92,
+        "grade": 6.97,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-202",
@@ -2642,11 +3044,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0522@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917016291988",
         "attendance": 83,
-        "grade": 8.93
+        "grade": 8.93,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-203",
@@ -2655,11 +3059,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0523@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918632233145",
         "attendance": 90,
-        "grade": 7.91
+        "grade": 7.91,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-204",
@@ -2668,11 +3074,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0524@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917478357168",
-        "attendance": 98,
-        "grade": 6.99
+        "attendance": 92,
+        "grade": 6.99,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-205",
@@ -2681,11 +3089,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0525@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919178679001",
         "attendance": 89,
-        "grade": 8.18
+        "grade": 8.18,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-206",
@@ -2694,11 +3104,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0526@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919613987660",
-        "attendance": 96,
-        "grade": 8.47
+        "attendance": 92,
+        "grade": 8.47,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-207",
@@ -2707,11 +3119,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0527@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916568538556",
-        "attendance": 94,
-        "grade": 7.64
+        "attendance": 92,
+        "grade": 7.64,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-208",
@@ -2720,11 +3134,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0528@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919527545189",
         "attendance": 81,
-        "grade": 6.69
+        "grade": 6.69,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-209",
@@ -2733,11 +3149,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0529@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918002336244",
         "attendance": 84,
-        "grade": 7.48
+        "grade": 7.48,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-210",
@@ -2746,11 +3164,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0530@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916991125015",
         "attendance": 90,
-        "grade": 6.67
+        "grade": 6.67,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-211",
@@ -2759,11 +3179,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0531@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919019579142",
         "attendance": 75,
-        "grade": 9.98
+        "grade": 9.98,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-212",
@@ -2772,11 +3194,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0532@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917198631147",
         "attendance": 90,
-        "grade": 6.6
+        "grade": 6.6,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-213",
@@ -2785,11 +3209,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0533@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916428704992",
         "attendance": 75,
-        "grade": 7.78
+        "grade": 7.78,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-214",
@@ -2798,11 +3224,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0534@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919996771908",
         "attendance": 92,
-        "grade": 7.68
+        "grade": 7.68,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-215",
@@ -2811,11 +3239,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0535@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917926842909",
-        "attendance": 93,
-        "grade": 9.19
+        "attendance": 92,
+        "grade": 9.19,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-216",
@@ -2824,11 +3254,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0536@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919885770147",
         "attendance": 79,
-        "grade": 9.83
+        "grade": 9.83,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-217",
@@ -2837,11 +3269,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0537@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919888305810",
         "attendance": 81,
-        "grade": 8.5
+        "grade": 8.5,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-218",
@@ -2850,11 +3284,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0538@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917421512732",
         "attendance": 84,
-        "grade": 7.77
+        "grade": 7.77,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-219",
@@ -2863,11 +3299,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0539@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918957582704",
-        "attendance": 97,
-        "grade": 6.82
+        "attendance": 92,
+        "grade": 6.82,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-220",
@@ -2876,11 +3314,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0540@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916913817544",
-        "attendance": 99,
-        "grade": 7.28
+        "attendance": 92,
+        "grade": 7.28,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-221",
@@ -2889,11 +3329,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0541@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917901038693",
-        "attendance": 94,
-        "grade": 7.64
+        "attendance": 92,
+        "grade": 7.64,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-222",
@@ -2902,11 +3344,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0542@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919205549528",
         "attendance": 85,
-        "grade": 9.47
+        "grade": 9.47,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-223",
@@ -2915,11 +3359,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0543@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917017065981",
         "attendance": 79,
-        "grade": 9.61
+        "grade": 9.61,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-224",
@@ -2928,11 +3374,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0544@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919858487115",
         "attendance": 80,
-        "grade": 8.66
+        "grade": 8.66,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-225",
@@ -2941,11 +3389,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0545@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919406382138",
-        "attendance": 96,
-        "grade": 7.53
+        "attendance": 92,
+        "grade": 7.53,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-226",
@@ -2954,11 +3404,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0546@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916262714486",
         "attendance": 89,
-        "grade": 7.24
+        "grade": 7.24,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-227",
@@ -2967,11 +3419,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0547@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919221932967",
         "attendance": 91,
-        "grade": 9.65
+        "grade": 9.65,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-228",
@@ -2980,11 +3434,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0548@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917352171844",
         "attendance": 77,
-        "grade": 9.56
+        "grade": 9.56,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-229",
@@ -2993,11 +3449,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0549@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918218283080",
         "attendance": 77,
-        "grade": 8.92
+        "grade": 8.92,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-230",
@@ -3006,11 +3464,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0550@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918211027875",
-        "attendance": 96,
-        "grade": 6.55
+        "attendance": 92,
+        "grade": 6.55,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-231",
@@ -3019,11 +3479,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0551@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917787934709",
         "attendance": 85,
-        "grade": 7.55
+        "grade": 7.55,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-232",
@@ -3032,11 +3494,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0552@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919022408359",
         "attendance": 79,
-        "grade": 9.34
+        "grade": 9.34,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-233",
@@ -3045,11 +3509,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0553@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918441620448",
-        "attendance": 94,
-        "grade": 9.6
+        "attendance": 92,
+        "grade": 9.6,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-234",
@@ -3058,11 +3524,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0554@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917278951171",
         "attendance": 88,
-        "grade": 8.74
+        "grade": 8.74,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-235",
@@ -3071,11 +3539,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0555@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919833591351",
         "attendance": 81,
-        "grade": 7.89
+        "grade": 7.89,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-236",
@@ -3084,11 +3554,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0556@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919820031999",
         "attendance": 87,
-        "grade": 9.07
+        "grade": 9.07,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-237",
@@ -3097,11 +3569,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0557@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919717583819",
-        "attendance": 93,
-        "grade": 6.77
+        "attendance": 92,
+        "grade": 6.77,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-238",
@@ -3110,11 +3584,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0558@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918350358916",
         "attendance": 91,
-        "grade": 9.7
+        "grade": 9.7,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-239",
@@ -3123,11 +3599,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0559@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918531177125",
         "attendance": 91,
-        "grade": 9.9
+        "grade": 9.9,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-240",
@@ -3136,11 +3614,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0560@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916728231937",
         "attendance": 84,
-        "grade": 7.33
+        "grade": 7.33,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-241",
@@ -3149,11 +3629,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0561@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919339136985",
         "attendance": 77,
-        "grade": 9.87
+        "grade": 9.87,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-242",
@@ -3162,11 +3644,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0562@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918314380843",
         "attendance": 82,
-        "grade": 9.34
+        "grade": 9.34,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-243",
@@ -3175,11 +3659,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0563@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919208118675",
         "attendance": 82,
-        "grade": 7.55
+        "grade": 7.55,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-244",
@@ -3188,11 +3674,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0564@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919367439192",
-        "attendance": 96,
-        "grade": 7.55
+        "attendance": 92,
+        "grade": 7.55,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-245",
@@ -3201,11 +3689,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0565@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916835589650",
         "attendance": 75,
-        "grade": 7.43
+        "grade": 7.43,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-246",
@@ -3214,11 +3704,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0566@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919862092227",
         "attendance": 81,
-        "grade": 9.44
+        "grade": 9.44,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-247",
@@ -3227,11 +3719,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0567@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918206786496",
         "attendance": 81,
-        "grade": 6.77
+        "grade": 6.77,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-248",
@@ -3240,11 +3734,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0568@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919428524123",
         "attendance": 90,
-        "grade": 8.47
+        "grade": 8.47,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-249",
@@ -3253,11 +3749,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0569@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916563224051",
         "attendance": 89,
-        "grade": 8.92
+        "grade": 8.92,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-250",
@@ -3266,11 +3764,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0570@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919518481179",
         "attendance": 75,
-        "grade": 9.72
+        "grade": 9.72,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-251",
@@ -3279,11 +3779,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0571@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919375815089",
         "attendance": 80,
-        "grade": 8.33
+        "grade": 8.33,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-252",
@@ -3292,11 +3794,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0572@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917040695354",
         "attendance": 92,
-        "grade": 8.69
+        "grade": 8.69,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-253",
@@ -3305,11 +3809,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0573@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919552399183",
         "attendance": 84,
-        "grade": 7.12
+        "grade": 7.12,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-254",
@@ -3318,11 +3824,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0574@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918299397903",
-        "attendance": 98,
-        "grade": 8.25
+        "attendance": 92,
+        "grade": 8.25,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-255",
@@ -3331,11 +3839,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0575@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916183261419",
         "attendance": 77,
-        "grade": 9.42
+        "grade": 9.42,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-256",
@@ -3344,11 +3854,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0576@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919871868456",
         "attendance": 87,
-        "grade": 7.06
+        "grade": 7.06,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-257",
@@ -3357,11 +3869,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0577@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916927718456",
         "attendance": 91,
-        "grade": 8.13
+        "grade": 8.13,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-258",
@@ -3370,11 +3884,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0578@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918605778736",
-        "attendance": 94,
-        "grade": 8.99
+        "attendance": 92,
+        "grade": 8.99,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-259",
@@ -3383,11 +3899,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0579@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916057757409",
         "attendance": 78,
-        "grade": 9.05
+        "grade": 9.05,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-260",
@@ -3396,11 +3914,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0580@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916505326858",
         "attendance": 90,
-        "grade": 9.51
+        "grade": 9.51,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-261",
@@ -3409,11 +3929,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0581@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918697394210",
-        "attendance": 94,
-        "grade": 9.15
+        "attendance": 92,
+        "grade": 9.15,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-262",
@@ -3422,11 +3944,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0582@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917690054324",
-        "attendance": 94,
-        "grade": 6.87
+        "attendance": 92,
+        "grade": 6.87,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-263",
@@ -3435,11 +3959,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0583@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918578655745",
         "attendance": 75,
-        "grade": 7.08
+        "grade": 7.08,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-264",
@@ -3448,11 +3974,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0584@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916599973014",
         "attendance": 86,
-        "grade": 7.51
+        "grade": 7.51,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-265",
@@ -3461,11 +3989,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0585@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918123439145",
         "attendance": 80,
-        "grade": 8.53
+        "grade": 8.53,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-266",
@@ -3474,11 +4004,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0586@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919161368212",
-        "attendance": 97,
-        "grade": 9.93
+        "attendance": 92,
+        "grade": 9.93,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-267",
@@ -3487,11 +4019,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0587@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917224842250",
         "attendance": 76,
-        "grade": 9
+        "grade": 9,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-268",
@@ -3500,11 +4034,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0588@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916567648640",
-        "attendance": 96,
-        "grade": 8.36
+        "attendance": 92,
+        "grade": 8.36,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-269",
@@ -3513,11 +4049,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0589@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919873677712",
         "attendance": 82,
-        "grade": 7.55
+        "grade": 7.55,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-270",
@@ -3526,11 +4064,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0590@smartcampus.com",
         "branch": "CSE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917160903330",
-        "attendance": 95,
-        "grade": 8
+        "attendance": 92,
+        "grade": 8,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-271",
@@ -3539,11 +4079,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0501@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916810108272",
-        "attendance": 94,
-        "grade": 9.09
+        "attendance": 92,
+        "grade": 9.09,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-272",
@@ -3552,11 +4094,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0502@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918408759336",
         "attendance": 87,
-        "grade": 7.22
+        "grade": 7.22,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-273",
@@ -3565,11 +4109,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0503@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919041688488",
-        "attendance": 97,
-        "grade": 6.87
+        "attendance": 92,
+        "grade": 6.87,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-274",
@@ -3578,11 +4124,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0504@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917775663648",
-        "attendance": 98,
-        "grade": 8.18
+        "attendance": 92,
+        "grade": 8.18,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-275",
@@ -3591,11 +4139,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0505@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918073865565",
         "attendance": 83,
-        "grade": 8.49
+        "grade": 8.49,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-276",
@@ -3604,11 +4154,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0506@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919629615545",
         "attendance": 76,
-        "grade": 8.2
+        "grade": 8.2,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-277",
@@ -3617,11 +4169,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0507@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917177580094",
-        "attendance": 94,
-        "grade": 8.54
+        "attendance": 92,
+        "grade": 8.54,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-278",
@@ -3630,11 +4184,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0508@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917505227889",
         "attendance": 78,
-        "grade": 6.61
+        "grade": 6.61,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-279",
@@ -3643,11 +4199,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0509@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918437992166",
         "attendance": 90,
-        "grade": 6.59
+        "grade": 6.59,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-280",
@@ -3656,11 +4214,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0510@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918600408525",
-        "attendance": 96,
-        "grade": 8.3
+        "attendance": 92,
+        "grade": 8.3,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-281",
@@ -3669,11 +4229,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0511@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917093376364",
-        "attendance": 95,
-        "grade": 8.39
+        "attendance": 92,
+        "grade": 8.39,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-282",
@@ -3682,11 +4244,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0512@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918750618470",
         "attendance": 84,
-        "grade": 8.66
+        "grade": 8.66,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-283",
@@ -3695,11 +4259,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0513@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918897381178",
-        "attendance": 96,
-        "grade": 9.5
+        "attendance": 92,
+        "grade": 9.5,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-284",
@@ -3708,11 +4274,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0514@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917183308182",
-        "attendance": 96,
-        "grade": 8.18
+        "attendance": 92,
+        "grade": 8.18,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-285",
@@ -3721,11 +4289,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0515@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919537456458",
         "attendance": 91,
-        "grade": 7.8
+        "grade": 7.8,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-286",
@@ -3734,11 +4304,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0516@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918024448389",
         "attendance": 90,
-        "grade": 7.55
+        "grade": 7.55,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-287",
@@ -3747,11 +4319,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0517@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918441361142",
         "attendance": 78,
-        "grade": 7.21
+        "grade": 7.21,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-288",
@@ -3760,11 +4334,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0518@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918646423735",
         "attendance": 82,
-        "grade": 8.82
+        "grade": 8.82,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-289",
@@ -3773,11 +4349,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0519@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917497146746",
-        "attendance": 97,
-        "grade": 7.58
+        "attendance": 92,
+        "grade": 7.58,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-290",
@@ -3786,11 +4364,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0520@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919610739741",
-        "attendance": 97,
-        "grade": 8.06
+        "attendance": 92,
+        "grade": 8.06,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-291",
@@ -3799,11 +4379,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0521@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917516219303",
         "attendance": 80,
-        "grade": 8.87
+        "grade": 8.87,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-292",
@@ -3812,11 +4394,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0522@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919752861236",
         "attendance": 90,
-        "grade": 8.31
+        "grade": 8.31,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-293",
@@ -3825,11 +4409,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0523@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919242387845",
         "attendance": 78,
-        "grade": 8.86
+        "grade": 8.86,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-294",
@@ -3838,11 +4424,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0524@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918619057833",
         "attendance": 82,
-        "grade": 9.78
+        "grade": 9.78,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-295",
@@ -3851,11 +4439,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0525@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916364911182",
         "attendance": 85,
-        "grade": 8.31
+        "grade": 8.31,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-296",
@@ -3864,11 +4454,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0526@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916694312889",
         "attendance": 76,
-        "grade": 8.06
+        "grade": 8.06,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-297",
@@ -3877,11 +4469,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0527@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918900474133",
         "attendance": 77,
-        "grade": 8.8
+        "grade": 8.8,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-298",
@@ -3890,11 +4484,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0528@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918394654490",
-        "attendance": 97,
-        "grade": 7.23
+        "attendance": 92,
+        "grade": 7.23,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-299",
@@ -3903,11 +4499,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0529@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917611995824",
-        "attendance": 95,
-        "grade": 7.74
+        "attendance": 92,
+        "grade": 7.74,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-300",
@@ -3916,11 +4514,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0530@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918541057803",
-        "attendance": 96,
-        "grade": 7.76
+        "attendance": 92,
+        "grade": 7.76,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-301",
@@ -3929,11 +4529,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0531@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916725129938",
         "attendance": 79,
-        "grade": 7.32
+        "grade": 7.32,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-302",
@@ -3942,11 +4544,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0532@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919662283403",
         "attendance": 83,
-        "grade": 7.63
+        "grade": 7.63,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-303",
@@ -3955,11 +4559,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0533@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916157236647",
         "attendance": 78,
-        "grade": 8.38
+        "grade": 8.38,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-304",
@@ -3968,11 +4574,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0534@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916485047742",
         "attendance": 92,
-        "grade": 9.11
+        "grade": 9.11,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-305",
@@ -3981,11 +4589,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0535@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919457957881",
         "attendance": 85,
-        "grade": 9.74
+        "grade": 9.74,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-306",
@@ -3994,11 +4604,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0536@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919399593275",
-        "attendance": 95,
-        "grade": 7.34
+        "attendance": 92,
+        "grade": 7.34,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-307",
@@ -4007,11 +4619,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0537@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919672404320",
         "attendance": 88,
-        "grade": 7.93
+        "grade": 7.93,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-308",
@@ -4020,11 +4634,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0538@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917524149880",
-        "attendance": 96,
-        "grade": 6.79
+        "attendance": 92,
+        "grade": 6.79,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-309",
@@ -4033,11 +4649,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0539@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917995189709",
-        "attendance": 95,
-        "grade": 9.24
+        "attendance": 92,
+        "grade": 9.24,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-310",
@@ -4046,11 +4664,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0540@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918140821096",
         "attendance": 90,
-        "grade": 7.87
+        "grade": 7.87,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-311",
@@ -4059,11 +4679,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0541@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919186427206",
         "attendance": 77,
-        "grade": 7.65
+        "grade": 7.65,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-312",
@@ -4072,11 +4694,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0542@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919559935963",
         "attendance": 79,
-        "grade": 8.36
+        "grade": 8.36,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-313",
@@ -4085,11 +4709,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0543@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916649517829",
-        "attendance": 99,
-        "grade": 6.79
+        "attendance": 92,
+        "grade": 6.79,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-314",
@@ -4098,11 +4724,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0544@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917407332893",
         "attendance": 75,
-        "grade": 9.66
+        "grade": 9.66,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-315",
@@ -4111,11 +4739,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0545@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919137230854",
-        "attendance": 93,
-        "grade": 9.7
+        "attendance": 92,
+        "grade": 9.7,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-316",
@@ -4124,11 +4754,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0546@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919250117166",
-        "attendance": 93,
-        "grade": 6.64
+        "attendance": 92,
+        "grade": 6.64,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-317",
@@ -4137,11 +4769,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0547@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918841796207",
         "attendance": 89,
-        "grade": 10
+        "grade": 10,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-318",
@@ -4150,11 +4784,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0548@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916578601422",
-        "attendance": 97,
-        "grade": 7.73
+        "attendance": 92,
+        "grade": 7.73,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-319",
@@ -4163,11 +4799,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0549@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919921781096",
-        "attendance": 95,
-        "grade": 8.04
+        "attendance": 92,
+        "grade": 8.04,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-320",
@@ -4176,11 +4814,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0550@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918294119267",
-        "attendance": 95,
-        "grade": 9.83
+        "attendance": 92,
+        "grade": 9.83,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-321",
@@ -4189,11 +4829,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0551@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918886813975",
         "attendance": 89,
-        "grade": 9.95
+        "grade": 9.95,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-322",
@@ -4202,11 +4844,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0552@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919123347350",
-        "attendance": 93,
-        "grade": 7.38
+        "attendance": 92,
+        "grade": 7.38,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-323",
@@ -4215,11 +4859,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0553@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917404049916",
         "attendance": 82,
-        "grade": 9.26
+        "grade": 9.26,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-324",
@@ -4228,11 +4874,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0554@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917979239396",
-        "attendance": 97,
-        "grade": 8.28
+        "attendance": 92,
+        "grade": 8.28,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-325",
@@ -4241,11 +4889,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0555@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917339893230",
         "attendance": 88,
-        "grade": 8.34
+        "grade": 8.34,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-326",
@@ -4254,11 +4904,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0556@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918298493345",
         "attendance": 90,
-        "grade": 8.81
+        "grade": 8.81,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-327",
@@ -4267,11 +4919,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0557@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916734753774",
         "attendance": 76,
-        "grade": 7.49
+        "grade": 7.49,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-328",
@@ -4280,11 +4934,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0558@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916586745640",
         "attendance": 79,
-        "grade": 8.79
+        "grade": 8.79,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-329",
@@ -4293,11 +4949,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0559@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916281052748",
         "attendance": 83,
-        "grade": 9.71
+        "grade": 9.71,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-330",
@@ -4306,11 +4964,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0560@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916914999273",
         "attendance": 85,
-        "grade": 8.68
+        "grade": 8.68,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-331",
@@ -4319,11 +4979,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0561@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919062688195",
-        "attendance": 97,
-        "grade": 9.8
+        "attendance": 92,
+        "grade": 9.8,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-332",
@@ -4332,11 +4994,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0562@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919856977171",
-        "attendance": 94,
-        "grade": 6.77
+        "attendance": 92,
+        "grade": 6.77,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-333",
@@ -4345,11 +5009,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0563@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916931857191",
         "attendance": 80,
-        "grade": 8.17
+        "grade": 8.17,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-334",
@@ -4358,11 +5024,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0564@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918527369454",
         "attendance": 86,
-        "grade": 7.77
+        "grade": 7.77,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-335",
@@ -4371,11 +5039,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0565@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919764582683",
         "attendance": 87,
-        "grade": 9.25
+        "grade": 9.25,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-336",
@@ -4384,11 +5054,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0566@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918610098358",
         "attendance": 83,
-        "grade": 7.19
+        "grade": 7.19,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-337",
@@ -4397,11 +5069,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0567@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919075093937",
-        "attendance": 99,
-        "grade": 7.29
+        "attendance": 92,
+        "grade": 7.29,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-338",
@@ -4410,11 +5084,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0568@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919415500017",
         "attendance": 79,
-        "grade": 7.02
+        "grade": 7.02,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-339",
@@ -4423,11 +5099,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0569@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916811759717",
         "attendance": 82,
-        "grade": 7.38
+        "grade": 7.38,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-340",
@@ -4436,11 +5114,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0570@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919579323675",
         "attendance": 91,
-        "grade": 7.04
+        "grade": 7.04,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-341",
@@ -4449,11 +5129,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0571@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917337750440",
         "attendance": 76,
-        "grade": 7.07
+        "grade": 7.07,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-342",
@@ -4462,11 +5144,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0572@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917205668233",
         "attendance": 89,
-        "grade": 8.23
+        "grade": 8.23,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-343",
@@ -4475,11 +5159,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0573@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917465677020",
         "attendance": 87,
-        "grade": 7.87
+        "grade": 7.87,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-344",
@@ -4488,11 +5174,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0574@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917998467957",
         "attendance": 88,
-        "grade": 8
+        "grade": 8,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-345",
@@ -4501,11 +5189,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0575@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916882363999",
         "attendance": 83,
-        "grade": 9.85
+        "grade": 9.85,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-346",
@@ -4514,11 +5204,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0576@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918924830220",
         "attendance": 84,
-        "grade": 7.04
+        "grade": 7.04,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-347",
@@ -4527,11 +5219,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0577@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919474839877",
         "attendance": 90,
-        "grade": 7.05
+        "grade": 7.05,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-348",
@@ -4540,11 +5234,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0578@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919610794102",
         "attendance": 78,
-        "grade": 9.48
+        "grade": 9.48,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-349",
@@ -4553,11 +5249,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0579@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917963462075",
-        "attendance": 96,
-        "grade": 6.95
+        "attendance": 92,
+        "grade": 6.95,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-350",
@@ -4566,11 +5264,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0580@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916920509393",
         "attendance": 76,
-        "grade": 7.95
+        "grade": 7.95,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-351",
@@ -4579,11 +5279,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0581@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916760990278",
         "attendance": 90,
-        "grade": 8.07
+        "grade": 8.07,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-352",
@@ -4592,11 +5294,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0582@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917684260666",
-        "attendance": 97,
-        "grade": 9.65
+        "attendance": 92,
+        "grade": 9.65,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-353",
@@ -4605,11 +5309,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0583@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917794925132",
         "attendance": 78,
-        "grade": 9.99
+        "grade": 9.99,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-354",
@@ -4618,11 +5324,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0584@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918301482636",
         "attendance": 80,
-        "grade": 8.82
+        "grade": 8.82,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-355",
@@ -4631,11 +5339,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0585@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917961736392",
         "attendance": 79,
-        "grade": 9.55
+        "grade": 9.55,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-356",
@@ -4644,11 +5354,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0586@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918784339820",
         "attendance": 81,
-        "grade": 9.09
+        "grade": 9.09,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-357",
@@ -4657,11 +5369,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0587@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918321040806",
-        "attendance": 93,
-        "grade": 8.24
+        "attendance": 92,
+        "grade": 8.24,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-358",
@@ -4670,11 +5384,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0588@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918697193925",
         "attendance": 90,
-        "grade": 7.2
+        "grade": 7.2,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-359",
@@ -4683,11 +5399,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0589@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917472770930",
         "attendance": 84,
-        "grade": 7.92
+        "grade": 7.92,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-360",
@@ -4696,11 +5414,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0590@smartcampus.com",
         "branch": "CSE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919290968893",
         "attendance": 81,
-        "grade": 7.57
+        "grade": 7.57,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-361",
@@ -4709,11 +5429,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6601@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916065835773",
         "attendance": 91,
-        "grade": 7.66
+        "grade": 7.66,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-362",
@@ -4722,11 +5444,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6602@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917694276092",
-        "attendance": 96,
-        "grade": 6.87
+        "attendance": 92,
+        "grade": 6.87,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-363",
@@ -4735,11 +5459,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6603@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917742287794",
         "attendance": 78,
-        "grade": 7.42
+        "grade": 7.42,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-364",
@@ -4748,11 +5474,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6604@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918241240266",
-        "attendance": 97,
-        "grade": 9.35
+        "attendance": 92,
+        "grade": 9.35,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-365",
@@ -4761,11 +5489,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6605@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918052699722",
         "attendance": 77,
-        "grade": 6.95
+        "grade": 6.95,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-366",
@@ -4774,11 +5504,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6606@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916637700588",
-        "attendance": 95,
-        "grade": 7
+        "attendance": 92,
+        "grade": 7,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-367",
@@ -4787,11 +5519,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6607@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918211341679",
-        "attendance": 96,
-        "grade": 7.05
+        "attendance": 92,
+        "grade": 7.05,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-368",
@@ -4800,11 +5534,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6608@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916077674877",
         "attendance": 91,
-        "grade": 6.58
+        "grade": 6.58,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-369",
@@ -4813,11 +5549,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6609@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918958142417",
         "attendance": 87,
-        "grade": 8.12
+        "grade": 8.12,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-370",
@@ -4826,11 +5564,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6610@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918474104084",
         "attendance": 87,
-        "grade": 8.05
+        "grade": 8.05,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-371",
@@ -4839,11 +5579,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6611@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917350390758",
         "attendance": 91,
-        "grade": 6.81
+        "grade": 6.81,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-372",
@@ -4852,11 +5594,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6612@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917905651997",
         "attendance": 78,
-        "grade": 8.42
+        "grade": 8.42,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-373",
@@ -4865,11 +5609,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6613@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919439020162",
         "attendance": 76,
-        "grade": 8.03
+        "grade": 8.03,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-374",
@@ -4878,11 +5624,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6614@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918247639754",
         "attendance": 90,
-        "grade": 7.37
+        "grade": 7.37,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-375",
@@ -4891,11 +5639,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6615@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919589208761",
         "attendance": 80,
-        "grade": 7.2
+        "grade": 7.2,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-376",
@@ -4904,11 +5654,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6616@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917089921561",
         "attendance": 90,
-        "grade": 8.34
+        "grade": 8.34,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-377",
@@ -4917,11 +5669,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6617@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918010198382",
         "attendance": 78,
-        "grade": 6.94
+        "grade": 6.94,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-378",
@@ -4930,11 +5684,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6618@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916678078918",
         "attendance": 80,
-        "grade": 6.94
+        "grade": 6.94,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-379",
@@ -4943,11 +5699,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6619@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918971098579",
-        "attendance": 98,
-        "grade": 9.58
+        "attendance": 92,
+        "grade": 9.58,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-380",
@@ -4956,11 +5714,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6620@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917594966416",
         "attendance": 75,
-        "grade": 7.53
+        "grade": 7.53,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-381",
@@ -4969,11 +5729,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6621@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916196740533",
-        "attendance": 94,
-        "grade": 9.39
+        "attendance": 92,
+        "grade": 9.39,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-382",
@@ -4982,11 +5744,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6622@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918216043768",
         "attendance": 86,
-        "grade": 9.47
+        "grade": 9.47,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-383",
@@ -4995,11 +5759,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6623@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917518730312",
         "attendance": 82,
-        "grade": 6.89
+        "grade": 6.89,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-384",
@@ -5008,11 +5774,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6624@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917563902803",
         "attendance": 76,
-        "grade": 9.41
+        "grade": 9.41,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-385",
@@ -5021,11 +5789,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6625@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916075451751",
         "attendance": 75,
-        "grade": 6.53
+        "grade": 6.53,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-386",
@@ -5034,11 +5804,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6626@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916343977476",
         "attendance": 79,
-        "grade": 9.9
+        "grade": 9.9,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-387",
@@ -5047,11 +5819,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6627@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917350473872",
-        "attendance": 93,
-        "grade": 8.93
+        "attendance": 92,
+        "grade": 8.93,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-388",
@@ -5060,11 +5834,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6628@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919907945744",
         "attendance": 92,
-        "grade": 9.01
+        "grade": 9.01,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-389",
@@ -5073,11 +5849,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6629@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916347353270",
         "attendance": 78,
-        "grade": 9.68
+        "grade": 9.68,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-390",
@@ -5086,11 +5864,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6630@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918977484933",
-        "attendance": 98,
-        "grade": 7.71
+        "attendance": 92,
+        "grade": 7.71,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-391",
@@ -5099,11 +5879,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6631@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919156724250",
         "attendance": 91,
-        "grade": 9.48
+        "grade": 9.48,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-392",
@@ -5112,11 +5894,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6632@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918293619271",
-        "attendance": 95,
-        "grade": 8.4
+        "attendance": 92,
+        "grade": 8.4,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-393",
@@ -5125,11 +5909,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6633@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919057039426",
         "attendance": 80,
-        "grade": 7.08
+        "grade": 7.08,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-394",
@@ -5138,11 +5924,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6634@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917683749581",
         "attendance": 84,
-        "grade": 7.27
+        "grade": 7.27,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-395",
@@ -5151,11 +5939,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6635@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917059378901",
-        "attendance": 99,
-        "grade": 9.24
+        "attendance": 92,
+        "grade": 9.24,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-396",
@@ -5164,11 +5954,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6636@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919369451697",
         "attendance": 80,
-        "grade": 8.6
+        "grade": 8.6,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-397",
@@ -5177,11 +5969,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6637@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918691555737",
         "attendance": 90,
-        "grade": 9.75
+        "grade": 9.75,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-398",
@@ -5190,11 +5984,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6638@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918887346805",
         "attendance": 88,
-        "grade": 6.77
+        "grade": 6.77,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-399",
@@ -5203,11 +5999,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6639@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919024744625",
-        "attendance": 93,
-        "grade": 10
+        "attendance": 92,
+        "grade": 10,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-400",
@@ -5216,11 +6014,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6640@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916055624128",
         "attendance": 88,
-        "grade": 8.24
+        "grade": 8.24,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-401",
@@ -5229,11 +6029,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6641@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919075320107",
         "attendance": 92,
-        "grade": 6.64
+        "grade": 6.64,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-402",
@@ -5242,11 +6044,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6642@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918002587941",
         "attendance": 90,
-        "grade": 9.38
+        "grade": 9.38,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-403",
@@ -5255,11 +6059,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6643@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917407473326",
-        "attendance": 98,
-        "grade": 8.73
+        "attendance": 92,
+        "grade": 8.73,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-404",
@@ -5268,11 +6074,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6644@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918344390241",
-        "attendance": 95,
-        "grade": 7.23
+        "attendance": 92,
+        "grade": 7.23,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-405",
@@ -5281,11 +6089,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6645@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919497666958",
         "attendance": 91,
-        "grade": 7.06
+        "grade": 7.06,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-406",
@@ -5294,11 +6104,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6646@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916872046111",
         "attendance": 76,
-        "grade": 8.16
+        "grade": 8.16,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-407",
@@ -5307,11 +6119,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6647@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916717947941",
         "attendance": 86,
-        "grade": 6.9
+        "grade": 6.9,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-408",
@@ -5320,11 +6134,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6648@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917785748797",
-        "attendance": 94,
-        "grade": 7.3
+        "attendance": 92,
+        "grade": 7.3,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-409",
@@ -5333,11 +6149,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6649@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916069922077",
         "attendance": 82,
-        "grade": 6.98
+        "grade": 6.98,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-410",
@@ -5346,11 +6164,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6650@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919384787298",
         "attendance": 78,
-        "grade": 9.54
+        "grade": 9.54,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-411",
@@ -5359,11 +6179,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6651@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917843227966",
-        "attendance": 97,
-        "grade": 8.99
+        "attendance": 92,
+        "grade": 8.99,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-412",
@@ -5372,11 +6194,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6652@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916149096338",
         "attendance": 76,
-        "grade": 9.36
+        "grade": 9.36,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-413",
@@ -5385,11 +6209,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6653@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917715917517",
         "attendance": 77,
-        "grade": 8.57
+        "grade": 8.57,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-414",
@@ -5398,11 +6224,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6654@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918891115813",
         "attendance": 82,
-        "grade": 9.7
+        "grade": 9.7,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-415",
@@ -5411,11 +6239,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6655@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918404791030",
         "attendance": 86,
-        "grade": 7.44
+        "grade": 7.44,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-416",
@@ -5424,11 +6254,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6656@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918154407261",
         "attendance": 90,
-        "grade": 8.3
+        "grade": 8.3,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-417",
@@ -5437,11 +6269,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6657@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918313630210",
-        "attendance": 98,
-        "grade": 8.55
+        "attendance": 92,
+        "grade": 8.55,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-418",
@@ -5450,11 +6284,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6658@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918073937425",
         "attendance": 76,
-        "grade": 7.52
+        "grade": 7.52,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-419",
@@ -5463,11 +6299,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6659@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918299961890",
         "attendance": 91,
-        "grade": 8.13
+        "grade": 8.13,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-420",
@@ -5476,11 +6314,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6660@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917011501951",
         "attendance": 82,
-        "grade": 7.19
+        "grade": 7.19,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-421",
@@ -5489,11 +6329,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6661@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918094774517",
         "attendance": 81,
-        "grade": 7.78
+        "grade": 7.78,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-422",
@@ -5502,11 +6344,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6662@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917981771149",
-        "attendance": 93,
-        "grade": 8.68
+        "attendance": 92,
+        "grade": 8.68,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-423",
@@ -5515,11 +6359,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6663@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917017922495",
         "attendance": 84,
-        "grade": 6.81
+        "grade": 6.81,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-424",
@@ -5528,11 +6374,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6664@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916374217215",
-        "attendance": 99,
-        "grade": 8.21
+        "attendance": 92,
+        "grade": 8.21,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-425",
@@ -5541,11 +6389,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6665@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916459354239",
         "attendance": 85,
-        "grade": 7.83
+        "grade": 7.83,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-426",
@@ -5554,11 +6404,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6666@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918705852056",
         "attendance": 88,
-        "grade": 8.94
+        "grade": 8.94,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-427",
@@ -5567,11 +6419,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6667@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918628529031",
-        "attendance": 96,
-        "grade": 8.81
+        "attendance": 92,
+        "grade": 8.81,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-428",
@@ -5580,11 +6434,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6668@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919889760951",
-        "attendance": 96,
-        "grade": 8.26
+        "attendance": 92,
+        "grade": 8.26,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-429",
@@ -5593,11 +6449,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6669@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917801698242",
-        "attendance": 96,
-        "grade": 7.51
+        "attendance": 92,
+        "grade": 7.51,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-430",
@@ -5606,11 +6464,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6670@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919428024814",
         "attendance": 90,
-        "grade": 9.68
+        "grade": 9.68,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-431",
@@ -5619,11 +6479,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6671@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918197287557",
-        "attendance": 94,
-        "grade": 8.28
+        "attendance": 92,
+        "grade": 8.28,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-432",
@@ -5632,11 +6494,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6672@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919436366061",
-        "attendance": 94,
-        "grade": 9.63
+        "attendance": 92,
+        "grade": 9.63,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-433",
@@ -5645,11 +6509,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6673@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919015856613",
         "attendance": 75,
-        "grade": 8.27
+        "grade": 8.27,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-434",
@@ -5658,11 +6524,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6674@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919087561953",
-        "attendance": 95,
-        "grade": 8.1
+        "attendance": 92,
+        "grade": 8.1,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-435",
@@ -5671,11 +6539,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6675@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919179867449",
         "attendance": 75,
-        "grade": 9.75
+        "grade": 9.75,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-436",
@@ -5684,11 +6554,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6676@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918706582525",
         "attendance": 85,
-        "grade": 8.93
+        "grade": 8.93,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-437",
@@ -5697,11 +6569,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6677@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919773198942",
         "attendance": 82,
-        "grade": 9.25
+        "grade": 9.25,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-438",
@@ -5710,11 +6584,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6678@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918123999604",
         "attendance": 76,
-        "grade": 8.22
+        "grade": 8.22,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-439",
@@ -5723,11 +6599,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6679@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918760979808",
         "attendance": 85,
-        "grade": 7.95
+        "grade": 7.95,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-440",
@@ -5736,11 +6614,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6680@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918110303427",
         "attendance": 88,
-        "grade": 9.06
+        "grade": 9.06,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-441",
@@ -5749,11 +6629,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6681@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916371584645",
         "attendance": 84,
-        "grade": 8.56
+        "grade": 8.56,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-442",
@@ -5762,11 +6644,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6682@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916161551666",
         "attendance": 91,
-        "grade": 6.7
+        "grade": 6.7,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-443",
@@ -5775,11 +6659,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6683@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919476293621",
-        "attendance": 93,
-        "grade": 7.01
+        "attendance": 92,
+        "grade": 7.01,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-444",
@@ -5788,11 +6674,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6684@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918174005553",
-        "attendance": 94,
-        "grade": 9.21
+        "attendance": 92,
+        "grade": 9.21,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-445",
@@ -5801,11 +6689,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6685@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916477477197",
         "attendance": 90,
-        "grade": 7.86
+        "grade": 7.86,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-446",
@@ -5814,11 +6704,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6686@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918976825026",
         "attendance": 78,
-        "grade": 7.2
+        "grade": 7.2,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-447",
@@ -5827,11 +6719,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6687@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919095504857",
-        "attendance": 96,
-        "grade": 7.59
+        "attendance": 92,
+        "grade": 7.59,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-448",
@@ -5840,11 +6734,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6688@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919890678164",
         "attendance": 87,
-        "grade": 6.61
+        "grade": 6.61,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-449",
@@ -5853,11 +6749,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6689@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917428513257",
         "attendance": 78,
-        "grade": 7.19
+        "grade": 7.19,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-450",
@@ -5866,11 +6764,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a6690@smartcampus.com",
         "branch": "CSM",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916096008128",
-        "attendance": 95,
-        "grade": 7.03
+        "attendance": 92,
+        "grade": 7.03,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-451",
@@ -5879,11 +6779,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6601@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919052001060",
         "attendance": 92,
-        "grade": 9.2
+        "grade": 9.2,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-452",
@@ -5892,11 +6794,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6602@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918925461619",
         "attendance": 80,
-        "grade": 9.67
+        "grade": 9.67,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-453",
@@ -5905,11 +6809,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6603@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916577642785",
         "attendance": 76,
-        "grade": 8.54
+        "grade": 8.54,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-454",
@@ -5918,11 +6824,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6604@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916637125501",
         "attendance": 83,
-        "grade": 9.09
+        "grade": 9.09,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-455",
@@ -5931,11 +6839,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6605@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918746533380",
         "attendance": 75,
-        "grade": 8.02
+        "grade": 8.02,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-456",
@@ -5944,11 +6854,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6606@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916435444260",
         "attendance": 91,
-        "grade": 6.91
+        "grade": 6.91,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-457",
@@ -5957,11 +6869,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6607@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918577464448",
-        "attendance": 94,
-        "grade": 8.31
+        "attendance": 92,
+        "grade": 8.31,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-458",
@@ -5970,11 +6884,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6608@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916523259632",
-        "attendance": 93,
-        "grade": 7.43
+        "attendance": 92,
+        "grade": 7.43,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-459",
@@ -5983,11 +6899,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6609@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917483969115",
         "attendance": 90,
-        "grade": 9.33
+        "grade": 9.33,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-460",
@@ -5996,11 +6914,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6610@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918761546309",
         "attendance": 82,
-        "grade": 9.56
+        "grade": 9.56,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-461",
@@ -6009,11 +6929,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6611@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916262861677",
         "attendance": 83,
-        "grade": 9.53
+        "grade": 9.53,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-462",
@@ -6022,11 +6944,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6612@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916783018622",
         "attendance": 85,
-        "grade": 9.44
+        "grade": 9.44,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-463",
@@ -6035,11 +6959,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6613@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917042409588",
         "attendance": 92,
-        "grade": 9.4
+        "grade": 9.4,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-464",
@@ -6048,11 +6974,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6614@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917091710993",
         "attendance": 83,
-        "grade": 7.01
+        "grade": 7.01,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-465",
@@ -6061,11 +6989,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6615@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916604233538",
-        "attendance": 95,
-        "grade": 7.35
+        "attendance": 92,
+        "grade": 7.35,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-466",
@@ -6074,11 +7004,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6616@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917760010503",
-        "attendance": 95,
-        "grade": 8.54
+        "attendance": 92,
+        "grade": 8.54,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-467",
@@ -6087,11 +7019,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6617@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919216407597",
         "attendance": 88,
-        "grade": 9.28
+        "grade": 9.28,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-468",
@@ -6100,11 +7034,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6618@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917399062371",
         "attendance": 87,
-        "grade": 9.62
+        "grade": 9.62,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-469",
@@ -6113,11 +7049,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6619@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916918821029",
         "attendance": 89,
-        "grade": 6.72
+        "grade": 6.72,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-470",
@@ -6126,11 +7064,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6620@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917796112195",
-        "attendance": 93,
-        "grade": 9.13
+        "attendance": 92,
+        "grade": 9.13,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-471",
@@ -6139,11 +7079,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6621@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918629518341",
         "attendance": 85,
-        "grade": 6.88
+        "grade": 6.88,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-472",
@@ -6152,11 +7094,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6622@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919496777405",
-        "attendance": 94,
-        "grade": 8.64
+        "attendance": 92,
+        "grade": 8.64,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-473",
@@ -6165,11 +7109,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6623@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916554290488",
         "attendance": 87,
-        "grade": 7.42
+        "grade": 7.42,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-474",
@@ -6178,11 +7124,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6624@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919580284059",
         "attendance": 77,
-        "grade": 7.77
+        "grade": 7.77,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-475",
@@ -6191,11 +7139,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6625@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919507417389",
         "attendance": 86,
-        "grade": 9.51
+        "grade": 9.51,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-476",
@@ -6204,11 +7154,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6626@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918869774408",
         "attendance": 82,
-        "grade": 7.18
+        "grade": 7.18,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-477",
@@ -6217,11 +7169,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6627@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916510319104",
         "attendance": 86,
-        "grade": 6.71
+        "grade": 6.71,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-478",
@@ -6230,11 +7184,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6628@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918141315612",
         "attendance": 76,
-        "grade": 9.94
+        "grade": 9.94,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-479",
@@ -6243,11 +7199,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6629@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917261728169",
-        "attendance": 94,
-        "grade": 7.68
+        "attendance": 92,
+        "grade": 7.68,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-480",
@@ -6256,11 +7214,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6630@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919630094044",
         "attendance": 89,
-        "grade": 6.92
+        "grade": 6.92,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-481",
@@ -6269,11 +7229,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6631@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919703662170",
         "attendance": 75,
-        "grade": 9.95
+        "grade": 9.95,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-482",
@@ -6282,11 +7244,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6632@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916185545172",
         "attendance": 79,
-        "grade": 9.55
+        "grade": 9.55,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-483",
@@ -6295,11 +7259,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6633@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917064409176",
-        "attendance": 93,
-        "grade": 7.27
+        "attendance": 92,
+        "grade": 7.27,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-484",
@@ -6308,11 +7274,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6634@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917417412841",
         "attendance": 76,
-        "grade": 9.55
+        "grade": 9.55,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-485",
@@ -6321,11 +7289,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6635@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918606645148",
         "attendance": 85,
-        "grade": 8.77
+        "grade": 8.77,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-486",
@@ -6334,11 +7304,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6636@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918609960413",
         "attendance": 91,
-        "grade": 8.96
+        "grade": 8.96,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-487",
@@ -6347,11 +7319,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6637@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916315916367",
         "attendance": 76,
-        "grade": 8.85
+        "grade": 8.85,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-488",
@@ -6360,11 +7334,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6638@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919047706521",
-        "attendance": 98,
-        "grade": 8.43
+        "attendance": 92,
+        "grade": 8.43,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-489",
@@ -6373,11 +7349,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6639@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916555623768",
         "attendance": 82,
-        "grade": 8.13
+        "grade": 8.13,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-490",
@@ -6386,11 +7364,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6640@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916191210061",
         "attendance": 80,
-        "grade": 8.26
+        "grade": 8.26,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-491",
@@ -6399,11 +7379,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6641@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916162304457",
         "attendance": 78,
-        "grade": 7.68
+        "grade": 7.68,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-492",
@@ -6412,11 +7394,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6642@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916016765956",
         "attendance": 92,
-        "grade": 9.41
+        "grade": 9.41,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-493",
@@ -6425,11 +7409,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6643@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917380923018",
-        "attendance": 95,
-        "grade": 8.67
+        "attendance": 92,
+        "grade": 8.67,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-494",
@@ -6438,11 +7424,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6644@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918529631014",
-        "attendance": 99,
-        "grade": 7.73
+        "attendance": 92,
+        "grade": 7.73,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-495",
@@ -6451,11 +7439,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6645@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916921044713",
         "attendance": 85,
-        "grade": 6.69
+        "grade": 6.69,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-496",
@@ -6464,11 +7454,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6646@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916895556605",
-        "attendance": 95,
-        "grade": 9.2
+        "attendance": 92,
+        "grade": 9.2,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-497",
@@ -6477,11 +7469,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6647@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918179854036",
         "attendance": 90,
-        "grade": 7.11
+        "grade": 7.11,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-498",
@@ -6490,11 +7484,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6648@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916638147380",
         "attendance": 84,
-        "grade": 9.81
+        "grade": 9.81,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-499",
@@ -6503,11 +7499,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6649@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918737766578",
         "attendance": 88,
-        "grade": 9.27
+        "grade": 9.27,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-500",
@@ -6516,11 +7514,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6650@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917808447841",
         "attendance": 89,
-        "grade": 8.41
+        "grade": 8.41,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-501",
@@ -6529,11 +7529,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6651@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918906498885",
-        "attendance": 99,
-        "grade": 8.32
+        "attendance": 92,
+        "grade": 8.32,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-502",
@@ -6542,11 +7544,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6652@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917371455034",
         "attendance": 87,
-        "grade": 8.34
+        "grade": 8.34,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-503",
@@ -6555,11 +7559,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6653@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916333746837",
         "attendance": 89,
-        "grade": 9.87
+        "grade": 9.87,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-504",
@@ -6568,11 +7574,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6654@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917215705312",
         "attendance": 91,
-        "grade": 6.86
+        "grade": 6.86,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-505",
@@ -6581,11 +7589,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6655@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919687884267",
-        "attendance": 98,
-        "grade": 6.97
+        "attendance": 92,
+        "grade": 6.97,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-506",
@@ -6594,11 +7604,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6656@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919375863522",
         "attendance": 75,
-        "grade": 8.44
+        "grade": 8.44,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-507",
@@ -6607,11 +7619,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6657@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919298668544",
         "attendance": 76,
-        "grade": 7.62
+        "grade": 7.62,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-508",
@@ -6620,11 +7634,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6658@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918777487195",
         "attendance": 87,
-        "grade": 7.29
+        "grade": 7.29,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-509",
@@ -6633,11 +7649,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6659@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919070195665",
-        "attendance": 98,
-        "grade": 9.66
+        "attendance": 92,
+        "grade": 9.66,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-510",
@@ -6646,11 +7664,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6660@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918656026414",
         "attendance": 85,
-        "grade": 7.99
+        "grade": 7.99,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-511",
@@ -6659,11 +7679,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6661@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919555073214",
-        "attendance": 93,
-        "grade": 8.78
+        "attendance": 92,
+        "grade": 8.78,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-512",
@@ -6672,11 +7694,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6662@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916198107082",
         "attendance": 80,
-        "grade": 8.35
+        "grade": 8.35,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-513",
@@ -6685,11 +7709,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6663@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916114019603",
         "attendance": 84,
-        "grade": 9.61
+        "grade": 9.61,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-514",
@@ -6698,11 +7724,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6664@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918504005729",
         "attendance": 81,
-        "grade": 8.21
+        "grade": 8.21,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-515",
@@ -6711,11 +7739,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6665@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919856778388",
         "attendance": 76,
-        "grade": 8.67
+        "grade": 8.67,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-516",
@@ -6724,11 +7754,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6666@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916461534104",
-        "attendance": 94,
-        "grade": 7.62
+        "attendance": 92,
+        "grade": 7.62,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-517",
@@ -6737,11 +7769,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6667@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919457340563",
         "attendance": 86,
-        "grade": 6.92
+        "grade": 6.92,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-518",
@@ -6750,11 +7784,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6668@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919551372637",
         "attendance": 81,
-        "grade": 9.02
+        "grade": 9.02,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-519",
@@ -6763,11 +7799,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6669@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917456954278",
         "attendance": 80,
-        "grade": 9.03
+        "grade": 9.03,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-520",
@@ -6776,11 +7814,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6670@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917536882518",
         "attendance": 86,
-        "grade": 7.76
+        "grade": 7.76,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-521",
@@ -6789,11 +7829,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6671@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917005042710",
-        "attendance": 98,
-        "grade": 6.55
+        "attendance": 92,
+        "grade": 6.55,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-522",
@@ -6802,11 +7844,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6672@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916683702028",
-        "attendance": 96,
-        "grade": 6.51
+        "attendance": 92,
+        "grade": 6.51,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-523",
@@ -6815,11 +7859,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6673@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917151207383",
-        "attendance": 98,
-        "grade": 8.95
+        "attendance": 92,
+        "grade": 8.95,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-524",
@@ -6828,11 +7874,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6674@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918421012017",
         "attendance": 84,
-        "grade": 7.04
+        "grade": 7.04,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-525",
@@ -6841,11 +7889,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6675@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918785956581",
         "attendance": 81,
-        "grade": 7.47
+        "grade": 7.47,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-526",
@@ -6854,11 +7904,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6676@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918644013686",
         "attendance": 85,
-        "grade": 7.01
+        "grade": 7.01,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-527",
@@ -6867,11 +7919,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6677@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919988459107",
         "attendance": 86,
-        "grade": 8.49
+        "grade": 8.49,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-528",
@@ -6880,11 +7934,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6678@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919177309606",
         "attendance": 78,
-        "grade": 9.23
+        "grade": 9.23,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-529",
@@ -6893,11 +7949,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6679@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919694101586",
         "attendance": 92,
-        "grade": 7.09
+        "grade": 7.09,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-530",
@@ -6906,11 +7964,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6680@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918609484050",
-        "attendance": 96,
-        "grade": 9.57
+        "attendance": 92,
+        "grade": 9.57,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-531",
@@ -6919,11 +7979,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6681@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916842152945",
-        "attendance": 96,
-        "grade": 7.28
+        "attendance": 92,
+        "grade": 7.28,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-532",
@@ -6932,11 +7994,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6682@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919012300719",
-        "attendance": 94,
-        "grade": 8.95
+        "attendance": 92,
+        "grade": 8.95,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-533",
@@ -6945,11 +8009,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6683@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917034028117",
-        "attendance": 98,
-        "grade": 8.2
+        "attendance": 92,
+        "grade": 8.2,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-534",
@@ -6958,11 +8024,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6684@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919154190373",
-        "attendance": 94,
-        "grade": 8.58
+        "attendance": 92,
+        "grade": 8.58,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-535",
@@ -6971,11 +8039,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6685@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917643281367",
         "attendance": 82,
-        "grade": 9.13
+        "grade": 9.13,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-536",
@@ -6984,11 +8054,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6686@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918035567966",
         "attendance": 82,
-        "grade": 9.6
+        "grade": 9.6,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-537",
@@ -6997,11 +8069,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6687@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919549653611",
         "attendance": 80,
-        "grade": 9.41
+        "grade": 9.41,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-538",
@@ -7010,11 +8084,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6688@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919711272856",
-        "attendance": 97,
-        "grade": 8.78
+        "attendance": 92,
+        "grade": 8.78,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-539",
@@ -7023,11 +8099,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6689@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919102295665",
         "attendance": 87,
-        "grade": 7.45
+        "grade": 7.45,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-540",
@@ -7036,11 +8114,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a6690@smartcampus.com",
         "branch": "CSM",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916428866283",
         "attendance": 88,
-        "grade": 6.87
+        "grade": 6.87,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-541",
@@ -7049,11 +8129,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6601@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918581972809",
         "attendance": 75,
-        "grade": 8.33
+        "grade": 8.33,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-542",
@@ -7062,11 +8144,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6602@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919023668350",
-        "attendance": 97,
-        "grade": 9.83
+        "attendance": 92,
+        "grade": 9.83,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-543",
@@ -7075,11 +8159,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6603@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917291260172",
         "attendance": 88,
-        "grade": 7.57
+        "grade": 7.57,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-544",
@@ -7088,11 +8174,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6604@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917554082863",
         "attendance": 77,
-        "grade": 9.24
+        "grade": 9.24,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-545",
@@ -7101,11 +8189,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6605@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916213421992",
-        "attendance": 98,
-        "grade": 8.32
+        "attendance": 92,
+        "grade": 8.32,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-546",
@@ -7114,11 +8204,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6606@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916058901195",
         "attendance": 91,
-        "grade": 7.4
+        "grade": 7.4,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-547",
@@ -7127,11 +8219,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6607@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919802743236",
-        "attendance": 93,
-        "grade": 6.61
+        "attendance": 92,
+        "grade": 6.61,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-548",
@@ -7140,11 +8234,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6608@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917659457166",
         "attendance": 75,
-        "grade": 9.86
+        "grade": 9.86,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-549",
@@ -7153,11 +8249,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6609@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919677614433",
         "attendance": 77,
-        "grade": 9.67
+        "grade": 9.67,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-550",
@@ -7166,11 +8264,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6610@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918873459143",
-        "attendance": 99,
-        "grade": 6.72
+        "attendance": 92,
+        "grade": 6.72,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-551",
@@ -7179,11 +8279,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6611@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918349118194",
         "attendance": 89,
-        "grade": 9.68
+        "grade": 9.68,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-552",
@@ -7192,11 +8294,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6612@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919125474586",
         "attendance": 87,
-        "grade": 7.02
+        "grade": 7.02,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-553",
@@ -7205,11 +8309,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6613@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919378622380",
         "attendance": 77,
-        "grade": 6.55
+        "grade": 6.55,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-554",
@@ -7218,11 +8324,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6614@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917737452500",
         "attendance": 78,
-        "grade": 7.61
+        "grade": 7.61,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-555",
@@ -7231,11 +8339,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6615@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917228793972",
-        "attendance": 93,
-        "grade": 6.79
+        "attendance": 92,
+        "grade": 6.79,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-556",
@@ -7244,11 +8354,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6616@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919718018596",
-        "attendance": 98,
-        "grade": 9.09
+        "attendance": 92,
+        "grade": 9.09,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-557",
@@ -7257,11 +8369,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6617@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916986273360",
         "attendance": 87,
-        "grade": 8.14
+        "grade": 8.14,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-558",
@@ -7270,11 +8384,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6618@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919043525708",
-        "attendance": 93,
-        "grade": 9.82
+        "attendance": 92,
+        "grade": 9.82,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-559",
@@ -7283,11 +8399,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6619@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918195918784",
         "attendance": 84,
-        "grade": 9.87
+        "grade": 9.87,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-560",
@@ -7296,11 +8414,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6620@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918035832691",
-        "attendance": 94,
-        "grade": 6.6
+        "attendance": 92,
+        "grade": 6.6,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-561",
@@ -7309,11 +8429,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6621@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918480172251",
-        "attendance": 93,
-        "grade": 6.6
+        "attendance": 92,
+        "grade": 6.6,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-562",
@@ -7322,11 +8444,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6622@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916295008461",
         "attendance": 90,
-        "grade": 9.97
+        "grade": 9.97,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-563",
@@ -7335,11 +8459,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6623@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917352495720",
         "attendance": 82,
-        "grade": 8.43
+        "grade": 8.43,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-564",
@@ -7348,11 +8474,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6624@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919901312585",
         "attendance": 86,
-        "grade": 7.58
+        "grade": 7.58,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-565",
@@ -7361,11 +8489,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6625@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918586087040",
         "attendance": 82,
-        "grade": 8.5
+        "grade": 8.5,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-566",
@@ -7374,11 +8504,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6626@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918877191801",
         "attendance": 76,
-        "grade": 7.61
+        "grade": 7.61,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-567",
@@ -7387,11 +8519,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6627@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918105968612",
         "attendance": 77,
-        "grade": 7.77
+        "grade": 7.77,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-568",
@@ -7400,11 +8534,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6628@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917860193317",
         "attendance": 79,
-        "grade": 9.14
+        "grade": 9.14,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-569",
@@ -7413,11 +8549,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6629@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918793856628",
         "attendance": 77,
-        "grade": 7.65
+        "grade": 7.65,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-570",
@@ -7426,11 +8564,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6630@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917801432718",
         "attendance": 90,
-        "grade": 9.39
+        "grade": 9.39,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-571",
@@ -7439,11 +8579,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6631@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918466791672",
         "attendance": 87,
-        "grade": 7.91
+        "grade": 7.91,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-572",
@@ -7452,11 +8594,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6632@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917112110623",
         "attendance": 76,
-        "grade": 6.53
+        "grade": 6.53,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-573",
@@ -7465,11 +8609,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6633@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917203438196",
         "attendance": 84,
-        "grade": 8.43
+        "grade": 8.43,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-574",
@@ -7478,11 +8624,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6634@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919416460320",
         "attendance": 82,
-        "grade": 7.51
+        "grade": 7.51,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-575",
@@ -7491,11 +8639,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6635@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916308534222",
         "attendance": 88,
-        "grade": 7.07
+        "grade": 7.07,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-576",
@@ -7504,11 +8654,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6636@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916325414071",
         "attendance": 84,
-        "grade": 6.89
+        "grade": 6.89,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-577",
@@ -7517,11 +8669,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6637@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919992144893",
-        "attendance": 93,
-        "grade": 8.59
+        "attendance": 92,
+        "grade": 8.59,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-578",
@@ -7530,11 +8684,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6638@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916080130185",
         "attendance": 88,
-        "grade": 7.53
+        "grade": 7.53,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-579",
@@ -7543,11 +8699,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6639@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919626379308",
         "attendance": 82,
-        "grade": 7.93
+        "grade": 7.93,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-580",
@@ -7556,11 +8714,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6640@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919229981683",
         "attendance": 84,
-        "grade": 8.96
+        "grade": 8.96,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-581",
@@ -7569,11 +8729,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6641@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919925757794",
         "attendance": 79,
-        "grade": 8.9
+        "grade": 8.9,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-582",
@@ -7582,11 +8744,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6642@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918959642595",
         "attendance": 86,
-        "grade": 7.67
+        "grade": 7.67,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-583",
@@ -7595,11 +8759,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6643@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917453101060",
         "attendance": 90,
-        "grade": 6.97
+        "grade": 6.97,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-584",
@@ -7608,11 +8774,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6644@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917219294354",
         "attendance": 86,
-        "grade": 7.04
+        "grade": 7.04,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-585",
@@ -7621,11 +8789,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6645@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917777272079",
         "attendance": 92,
-        "grade": 9.23
+        "grade": 9.23,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-586",
@@ -7634,11 +8804,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6646@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918746286949",
-        "attendance": 95,
-        "grade": 9.17
+        "attendance": 92,
+        "grade": 9.17,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-587",
@@ -7647,11 +8819,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6647@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918972640342",
         "attendance": 88,
-        "grade": 7.74
+        "grade": 7.74,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-588",
@@ -7660,11 +8834,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6648@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916509250349",
         "attendance": 86,
-        "grade": 7.14
+        "grade": 7.14,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-589",
@@ -7673,11 +8849,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6649@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917033840415",
         "attendance": 87,
-        "grade": 7.12
+        "grade": 7.12,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-590",
@@ -7686,11 +8864,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6650@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916009962781",
         "attendance": 84,
-        "grade": 8.91
+        "grade": 8.91,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-591",
@@ -7699,11 +8879,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6651@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916945789968",
         "attendance": 80,
-        "grade": 6.81
+        "grade": 6.81,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-592",
@@ -7712,11 +8894,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6652@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916355006913",
-        "attendance": 93,
-        "grade": 7.18
+        "attendance": 92,
+        "grade": 7.18,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-593",
@@ -7725,11 +8909,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6653@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917799657639",
         "attendance": 87,
-        "grade": 9.83
+        "grade": 9.83,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-594",
@@ -7738,11 +8924,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6654@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919080089581",
         "attendance": 88,
-        "grade": 7.63
+        "grade": 7.63,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-595",
@@ -7751,11 +8939,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6655@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917913921233",
         "attendance": 92,
-        "grade": 6.57
+        "grade": 6.57,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-596",
@@ -7764,11 +8954,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6656@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917198494712",
         "attendance": 91,
-        "grade": 9.79
+        "grade": 9.79,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-597",
@@ -7777,11 +8969,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6657@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917900341445",
-        "attendance": 94,
-        "grade": 8.37
+        "attendance": 92,
+        "grade": 8.37,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-598",
@@ -7790,11 +8984,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6658@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919501641233",
         "attendance": 81,
-        "grade": 6.96
+        "grade": 6.96,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-599",
@@ -7803,11 +8999,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6659@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917701262675",
         "attendance": 77,
-        "grade": 7.67
+        "grade": 7.67,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-600",
@@ -7816,11 +9014,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6660@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918809176215",
         "attendance": 85,
-        "grade": 8.78
+        "grade": 8.78,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-601",
@@ -7829,11 +9029,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6661@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917249292053",
-        "attendance": 94,
-        "grade": 8.21
+        "attendance": 92,
+        "grade": 8.21,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-602",
@@ -7842,11 +9044,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6662@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917978040918",
-        "attendance": 95,
-        "grade": 7.43
+        "attendance": 92,
+        "grade": 7.43,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-603",
@@ -7855,11 +9059,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6663@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917112782816",
         "attendance": 76,
-        "grade": 7.25
+        "grade": 7.25,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-604",
@@ -7868,11 +9074,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6664@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918746977398",
         "attendance": 88,
-        "grade": 8.42
+        "grade": 8.42,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-605",
@@ -7881,11 +9089,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6665@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916903098991",
         "attendance": 86,
-        "grade": 7.4
+        "grade": 7.4,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-606",
@@ -7894,11 +9104,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6666@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916216508324",
         "attendance": 92,
-        "grade": 6.94
+        "grade": 6.94,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-607",
@@ -7907,11 +9119,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6667@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917458390697",
         "attendance": 89,
-        "grade": 6.53
+        "grade": 6.53,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-608",
@@ -7920,11 +9134,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6668@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919912332274",
-        "attendance": 98,
-        "grade": 7.71
+        "attendance": 92,
+        "grade": 7.71,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-609",
@@ -7933,11 +9149,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6669@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916385400208",
         "attendance": 78,
-        "grade": 8.68
+        "grade": 8.68,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-610",
@@ -7946,11 +9164,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6670@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919126304324",
-        "attendance": 95,
-        "grade": 7.83
+        "attendance": 92,
+        "grade": 7.83,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-611",
@@ -7959,11 +9179,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6671@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919792036381",
         "attendance": 78,
-        "grade": 7.95
+        "grade": 7.95,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-612",
@@ -7972,11 +9194,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6672@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918325165659",
         "attendance": 84,
-        "grade": 8.55
+        "grade": 8.55,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-613",
@@ -7985,11 +9209,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6673@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918922223019",
         "attendance": 81,
-        "grade": 8.43
+        "grade": 8.43,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-614",
@@ -7998,11 +9224,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6674@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917065985739",
         "attendance": 82,
-        "grade": 8.61
+        "grade": 8.61,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-615",
@@ -8011,11 +9239,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6675@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919788795819",
         "attendance": 81,
-        "grade": 6.59
+        "grade": 6.59,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-616",
@@ -8024,11 +9254,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6676@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918751922501",
         "attendance": 84,
-        "grade": 7.24
+        "grade": 7.24,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-617",
@@ -8037,11 +9269,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6677@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916385885124",
-        "attendance": 99,
-        "grade": 9.36
+        "attendance": 92,
+        "grade": 9.36,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-618",
@@ -8050,11 +9284,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6678@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918638576691",
         "attendance": 83,
-        "grade": 9.09
+        "grade": 9.09,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-619",
@@ -8063,11 +9299,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6679@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916378510574",
-        "attendance": 94,
-        "grade": 9.2
+        "attendance": 92,
+        "grade": 9.2,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-620",
@@ -8076,11 +9314,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6680@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917357162379",
         "attendance": 76,
-        "grade": 6.75
+        "grade": 6.75,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-621",
@@ -8089,11 +9329,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6681@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919819609576",
         "attendance": 90,
-        "grade": 7.53
+        "grade": 7.53,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-622",
@@ -8102,11 +9344,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6682@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916973409642",
-        "attendance": 99,
-        "grade": 9.74
+        "attendance": 92,
+        "grade": 9.74,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-623",
@@ -8115,11 +9359,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6683@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917339684811",
         "attendance": 86,
-        "grade": 9.4
+        "grade": 9.4,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-624",
@@ -8128,11 +9374,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6684@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918202167838",
-        "attendance": 94,
-        "grade": 8.13
+        "attendance": 92,
+        "grade": 8.13,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-625",
@@ -8141,11 +9389,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6685@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918603567283",
-        "attendance": 94,
-        "grade": 9.36
+        "attendance": 92,
+        "grade": 9.36,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-626",
@@ -8154,11 +9404,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6686@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918775055853",
         "attendance": 90,
-        "grade": 6.55
+        "grade": 6.55,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-627",
@@ -8167,11 +9419,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6687@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917927575924",
         "attendance": 87,
-        "grade": 7.39
+        "grade": 7.39,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-628",
@@ -8180,11 +9434,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6688@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916001527926",
         "attendance": 80,
-        "grade": 8.18
+        "grade": 8.18,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-629",
@@ -8193,11 +9449,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6689@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917564925510",
         "attendance": 89,
-        "grade": 7.82
+        "grade": 7.82,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-630",
@@ -8206,11 +9464,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a6690@smartcampus.com",
         "branch": "CSM",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919729736223",
         "attendance": 85,
-        "grade": 8.89
+        "grade": 8.89,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-631",
@@ -8219,11 +9479,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6601@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916177266502",
         "attendance": 81,
-        "grade": 7.52
+        "grade": 7.52,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-632",
@@ -8232,11 +9494,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6602@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918023364543",
         "attendance": 81,
-        "grade": 6.77
+        "grade": 6.77,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-633",
@@ -8245,11 +9509,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6603@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916629271151",
         "attendance": 81,
-        "grade": 6.92
+        "grade": 6.92,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-634",
@@ -8258,11 +9524,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6604@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919965466156",
-        "attendance": 93,
-        "grade": 6.74
+        "attendance": 92,
+        "grade": 6.74,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-635",
@@ -8271,11 +9539,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6605@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917005321995",
         "attendance": 87,
-        "grade": 8.14
+        "grade": 8.14,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-636",
@@ -8284,11 +9554,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6606@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919734828951",
         "attendance": 75,
-        "grade": 8.36
+        "grade": 8.36,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-637",
@@ -8297,11 +9569,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6607@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917213037054",
         "attendance": 83,
-        "grade": 8.48
+        "grade": 8.48,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-638",
@@ -8310,11 +9584,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6608@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919153602886",
         "attendance": 90,
-        "grade": 9.28
+        "grade": 9.28,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-639",
@@ -8323,11 +9599,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6609@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919122333503",
-        "attendance": 95,
-        "grade": 8.52
+        "attendance": 92,
+        "grade": 8.52,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-640",
@@ -8336,11 +9614,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6610@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917535189128",
         "attendance": 77,
-        "grade": 7.62
+        "grade": 7.62,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-641",
@@ -8349,11 +9629,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6611@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919939616500",
-        "attendance": 99,
-        "grade": 7.66
+        "attendance": 92,
+        "grade": 7.66,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-642",
@@ -8362,11 +9644,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6612@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916074941129",
         "attendance": 79,
-        "grade": 9.23
+        "grade": 9.23,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-643",
@@ -8375,11 +9659,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6613@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918394048210",
-        "attendance": 94,
-        "grade": 7.34
+        "attendance": 92,
+        "grade": 7.34,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-644",
@@ -8388,11 +9674,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6614@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916247841500",
-        "attendance": 95,
-        "grade": 7.58
+        "attendance": 92,
+        "grade": 7.58,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-645",
@@ -8401,11 +9689,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6615@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919226080761",
         "attendance": 78,
-        "grade": 8.59
+        "grade": 8.59,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-646",
@@ -8414,11 +9704,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6616@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917130412188",
         "attendance": 83,
-        "grade": 6.92
+        "grade": 6.92,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-647",
@@ -8427,11 +9719,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6617@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918293085745",
         "attendance": 78,
-        "grade": 9.01
+        "grade": 9.01,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-648",
@@ -8440,11 +9734,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6618@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919919912396",
         "attendance": 82,
-        "grade": 9.36
+        "grade": 9.36,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-649",
@@ -8453,11 +9749,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6619@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916647010471",
-        "attendance": 94,
-        "grade": 7.24
+        "attendance": 92,
+        "grade": 7.24,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-650",
@@ -8466,11 +9764,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6620@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918014500584",
         "attendance": 78,
-        "grade": 7.36
+        "grade": 7.36,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-651",
@@ -8479,11 +9779,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6621@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916519545698",
         "attendance": 79,
-        "grade": 9.39
+        "grade": 9.39,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-652",
@@ -8492,11 +9794,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6622@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917647222395",
         "attendance": 87,
-        "grade": 6.97
+        "grade": 6.97,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-653",
@@ -8505,11 +9809,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6623@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916714541355",
         "attendance": 80,
-        "grade": 9.74
+        "grade": 9.74,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-654",
@@ -8518,11 +9824,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6624@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917711685355",
-        "attendance": 97,
-        "grade": 9.61
+        "attendance": 92,
+        "grade": 9.61,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-655",
@@ -8531,11 +9839,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6625@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916694872501",
-        "attendance": 99,
-        "grade": 8.54
+        "attendance": 92,
+        "grade": 8.54,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-656",
@@ -8544,11 +9854,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6626@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918038274972",
         "attendance": 80,
-        "grade": 8.67
+        "grade": 8.67,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-657",
@@ -8557,11 +9869,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6627@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918129509740",
-        "attendance": 98,
-        "grade": 8.28
+        "attendance": 92,
+        "grade": 8.28,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-658",
@@ -8570,11 +9884,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6628@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918364085724",
         "attendance": 83,
-        "grade": 10
+        "grade": 10,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-659",
@@ -8583,11 +9899,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6629@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918979611692",
-        "attendance": 99,
-        "grade": 9.52
+        "attendance": 92,
+        "grade": 9.52,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-660",
@@ -8596,11 +9914,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6630@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918500643303",
         "attendance": 81,
-        "grade": 9.52
+        "grade": 9.52,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-661",
@@ -8609,11 +9929,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6631@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919461823889",
         "attendance": 80,
-        "grade": 7.93
+        "grade": 7.93,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-662",
@@ -8622,11 +9944,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6632@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919158207797",
         "attendance": 84,
-        "grade": 6.97
+        "grade": 6.97,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-663",
@@ -8635,11 +9959,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6633@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917026707352",
-        "attendance": 94,
-        "grade": 9.65
+        "attendance": 92,
+        "grade": 9.65,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-664",
@@ -8648,11 +9974,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6634@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919210172609",
         "attendance": 80,
-        "grade": 9.04
+        "grade": 9.04,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-665",
@@ -8661,11 +9989,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6635@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917221055934",
         "attendance": 89,
-        "grade": 7.67
+        "grade": 7.67,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-666",
@@ -8674,11 +10004,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6636@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916164348621",
         "attendance": 81,
-        "grade": 8.76
+        "grade": 8.76,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-667",
@@ -8687,11 +10019,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6637@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919277935301",
-        "attendance": 94,
-        "grade": 9.61
+        "attendance": 92,
+        "grade": 9.61,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-668",
@@ -8700,11 +10034,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6638@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917118528838",
         "attendance": 81,
-        "grade": 7.45
+        "grade": 7.45,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-669",
@@ -8713,11 +10049,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6639@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919355978206",
         "attendance": 82,
-        "grade": 8.8
+        "grade": 8.8,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-670",
@@ -8726,11 +10064,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6640@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918400121239",
         "attendance": 86,
-        "grade": 8.02
+        "grade": 8.02,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-671",
@@ -8739,11 +10079,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6641@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917548574740",
         "attendance": 89,
-        "grade": 6.95
+        "grade": 6.95,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-672",
@@ -8752,11 +10094,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6642@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919282000942",
         "attendance": 82,
-        "grade": 7.41
+        "grade": 7.41,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-673",
@@ -8765,11 +10109,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6643@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919393545871",
         "attendance": 87,
-        "grade": 8.27
+        "grade": 8.27,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-674",
@@ -8778,11 +10124,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6644@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919609416244",
         "attendance": 90,
-        "grade": 9.01
+        "grade": 9.01,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-675",
@@ -8791,11 +10139,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6645@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917032451069",
         "attendance": 75,
-        "grade": 8.12
+        "grade": 8.12,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-676",
@@ -8804,11 +10154,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6646@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918459417469",
         "attendance": 92,
-        "grade": 7.47
+        "grade": 7.47,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-677",
@@ -8817,11 +10169,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6647@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916961878579",
         "attendance": 89,
-        "grade": 9.91
+        "grade": 9.91,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-678",
@@ -8830,11 +10184,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6648@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917820562287",
         "attendance": 75,
-        "grade": 8.14
+        "grade": 8.14,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-679",
@@ -8843,11 +10199,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6649@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918484775507",
         "attendance": 75,
-        "grade": 8.29
+        "grade": 8.29,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-680",
@@ -8856,11 +10214,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6650@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916292084871",
         "attendance": 76,
-        "grade": 7.83
+        "grade": 7.83,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-681",
@@ -8869,11 +10229,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6651@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918376866324",
-        "attendance": 95,
-        "grade": 9.56
+        "attendance": 92,
+        "grade": 9.56,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-682",
@@ -8882,11 +10244,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6652@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917696550155",
         "attendance": 86,
-        "grade": 9.26
+        "grade": 9.26,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-683",
@@ -8895,11 +10259,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6653@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918540458689",
         "attendance": 78,
-        "grade": 7.71
+        "grade": 7.71,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-684",
@@ -8908,11 +10274,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6654@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916379151235",
-        "attendance": 98,
-        "grade": 8.86
+        "attendance": 92,
+        "grade": 8.86,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-685",
@@ -8921,11 +10289,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6655@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916550962208",
         "attendance": 77,
-        "grade": 7.31
+        "grade": 7.31,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-686",
@@ -8934,11 +10304,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6656@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918304988322",
         "attendance": 78,
-        "grade": 7.6
+        "grade": 7.6,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-687",
@@ -8947,11 +10319,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6657@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919044941654",
         "attendance": 91,
-        "grade": 7.72
+        "grade": 7.72,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-688",
@@ -8960,11 +10334,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6658@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918834414437",
         "attendance": 92,
-        "grade": 7.03
+        "grade": 7.03,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-689",
@@ -8973,11 +10349,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6659@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917632624503",
         "attendance": 91,
-        "grade": 7.58
+        "grade": 7.58,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-690",
@@ -8986,11 +10364,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6660@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918614207953",
         "attendance": 92,
-        "grade": 7.85
+        "grade": 7.85,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-691",
@@ -8999,11 +10379,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6661@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917662425156",
         "attendance": 75,
-        "grade": 9.65
+        "grade": 9.65,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-692",
@@ -9012,11 +10394,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6662@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916477754900",
         "attendance": 92,
-        "grade": 9.81
+        "grade": 9.81,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-693",
@@ -9025,11 +10409,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6663@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916086602051",
-        "attendance": 95,
-        "grade": 9.84
+        "attendance": 92,
+        "grade": 9.84,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-694",
@@ -9038,11 +10424,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6664@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916054898188",
         "attendance": 75,
-        "grade": 6.58
+        "grade": 6.58,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-695",
@@ -9051,11 +10439,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6665@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916701869648",
         "attendance": 77,
-        "grade": 7.1
+        "grade": 7.1,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-696",
@@ -9064,11 +10454,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6666@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919196113913",
-        "attendance": 93,
-        "grade": 7.45
+        "attendance": 92,
+        "grade": 7.45,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-697",
@@ -9077,11 +10469,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6667@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917794695326",
-        "attendance": 95,
-        "grade": 8.63
+        "attendance": 92,
+        "grade": 8.63,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-698",
@@ -9090,11 +10484,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6668@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919435922917",
         "attendance": 84,
-        "grade": 7.82
+        "grade": 7.82,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-699",
@@ -9103,11 +10499,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6669@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916194480493",
         "attendance": 87,
-        "grade": 8.21
+        "grade": 8.21,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-700",
@@ -9116,11 +10514,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6670@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916514075920",
         "attendance": 88,
-        "grade": 6.73
+        "grade": 6.73,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-701",
@@ -9129,11 +10529,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6671@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918340328625",
         "attendance": 87,
-        "grade": 8.78
+        "grade": 8.78,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-702",
@@ -9142,11 +10544,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6672@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916353431068",
-        "attendance": 98,
-        "grade": 8.94
+        "attendance": 92,
+        "grade": 8.94,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-703",
@@ -9155,11 +10559,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6673@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917019977011",
         "attendance": 80,
-        "grade": 7.22
+        "grade": 7.22,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-704",
@@ -9168,11 +10574,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6674@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917647661277",
         "attendance": 92,
-        "grade": 9.18
+        "grade": 9.18,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-705",
@@ -9181,11 +10589,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6675@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916362632399",
-        "attendance": 98,
-        "grade": 8.45
+        "attendance": 92,
+        "grade": 8.45,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-706",
@@ -9194,11 +10604,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6676@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918730193341",
         "attendance": 91,
-        "grade": 6.55
+        "grade": 6.55,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-707",
@@ -9207,11 +10619,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6677@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916187153523",
-        "attendance": 95,
-        "grade": 9.53
+        "attendance": 92,
+        "grade": 9.53,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-708",
@@ -9220,11 +10634,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6678@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918495037912",
         "attendance": 90,
-        "grade": 8.27
+        "grade": 8.27,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-709",
@@ -9233,11 +10649,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6679@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916446875626",
-        "attendance": 95,
-        "grade": 6.7
+        "attendance": 92,
+        "grade": 6.7,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-710",
@@ -9246,11 +10664,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6680@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916448933244",
         "attendance": 82,
-        "grade": 6.6
+        "grade": 6.6,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-711",
@@ -9259,11 +10679,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6681@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917119201405",
-        "attendance": 93,
-        "grade": 6.69
+        "attendance": 92,
+        "grade": 6.69,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-712",
@@ -9272,11 +10694,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6682@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917879418410",
-        "attendance": 97,
-        "grade": 7.76
+        "attendance": 92,
+        "grade": 7.76,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-713",
@@ -9285,11 +10709,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6683@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917044257606",
         "attendance": 76,
-        "grade": 9.78
+        "grade": 9.78,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-714",
@@ -9298,11 +10724,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6684@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916479831021",
         "attendance": 77,
-        "grade": 7.89
+        "grade": 7.89,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-715",
@@ -9311,11 +10739,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6685@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918649819413",
         "attendance": 86,
-        "grade": 8.51
+        "grade": 8.51,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-716",
@@ -9324,11 +10754,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6686@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917732897256",
-        "attendance": 94,
-        "grade": 6.83
+        "attendance": 92,
+        "grade": 6.83,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-717",
@@ -9337,11 +10769,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6687@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917505024069",
-        "attendance": 93,
-        "grade": 9.39
+        "attendance": 92,
+        "grade": 9.39,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-718",
@@ -9350,11 +10784,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6688@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919155094606",
-        "attendance": 97,
-        "grade": 6.68
+        "attendance": 92,
+        "grade": 6.68,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-719",
@@ -9363,11 +10799,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6689@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916738157729",
         "attendance": 89,
-        "grade": 6.61
+        "grade": 6.61,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-720",
@@ -9376,11 +10814,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a6690@smartcampus.com",
         "branch": "CSM",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916888478195",
         "attendance": 81,
-        "grade": 8.53
+        "grade": 8.53,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-721",
@@ -9389,11 +10829,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1201@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917308133624",
         "attendance": 80,
-        "grade": 8.23
+        "grade": 8.23,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-722",
@@ -9402,11 +10844,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1202@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917685997608",
         "attendance": 81,
-        "grade": 7.52
+        "grade": 7.52,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-723",
@@ -9415,11 +10859,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1203@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917843208423",
         "attendance": 88,
-        "grade": 9.99
+        "grade": 9.99,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-724",
@@ -9428,11 +10874,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1204@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916524395986",
-        "attendance": 95,
-        "grade": 7.84
+        "attendance": 92,
+        "grade": 7.84,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-725",
@@ -9441,11 +10889,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1205@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917139559603",
         "attendance": 86,
-        "grade": 8
+        "grade": 8,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-726",
@@ -9454,11 +10904,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1206@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917350753446",
         "attendance": 77,
-        "grade": 9.2
+        "grade": 9.2,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-727",
@@ -9467,11 +10919,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1207@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919875701140",
         "attendance": 82,
-        "grade": 9.58
+        "grade": 9.58,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-728",
@@ -9480,11 +10934,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1208@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919959779601",
         "attendance": 88,
-        "grade": 8.33
+        "grade": 8.33,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-729",
@@ -9493,11 +10949,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1209@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918441810872",
-        "attendance": 95,
-        "grade": 9.71
+        "attendance": 92,
+        "grade": 9.71,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-730",
@@ -9506,11 +10964,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1210@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916662710933",
-        "attendance": 93,
-        "grade": 7.07
+        "attendance": 92,
+        "grade": 7.07,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-731",
@@ -9519,11 +10979,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1211@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919444579895",
         "attendance": 86,
-        "grade": 9.86
+        "grade": 9.86,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-732",
@@ -9532,11 +10994,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1212@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916545296805",
-        "attendance": 97,
-        "grade": 7.5
+        "attendance": 92,
+        "grade": 7.5,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-733",
@@ -9545,11 +11009,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1213@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917634696929",
-        "attendance": 94,
-        "grade": 6.54
+        "attendance": 92,
+        "grade": 6.54,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-734",
@@ -9558,11 +11024,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1214@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918038444366",
-        "attendance": 99,
-        "grade": 8.32
+        "attendance": 92,
+        "grade": 8.32,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-735",
@@ -9571,11 +11039,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1215@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916748648081",
         "attendance": 88,
-        "grade": 8.09
+        "grade": 8.09,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-736",
@@ -9584,11 +11054,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1216@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916202819728",
         "attendance": 81,
-        "grade": 8.1
+        "grade": 8.1,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-737",
@@ -9597,11 +11069,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1217@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919832535962",
-        "attendance": 96,
-        "grade": 9.34
+        "attendance": 92,
+        "grade": 9.34,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-738",
@@ -9610,11 +11084,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1218@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917034794527",
-        "attendance": 98,
-        "grade": 9.16
+        "attendance": 92,
+        "grade": 9.16,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-739",
@@ -9623,11 +11099,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1219@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916686047866",
         "attendance": 75,
-        "grade": 8.8
+        "grade": 8.8,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-740",
@@ -9636,11 +11114,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1220@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917957074204",
-        "attendance": 94,
-        "grade": 8.62
+        "attendance": 92,
+        "grade": 8.62,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-741",
@@ -9649,11 +11129,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1221@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919672564628",
-        "attendance": 99,
-        "grade": 6.69
+        "attendance": 92,
+        "grade": 6.69,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-742",
@@ -9662,11 +11144,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1222@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916698986004",
-        "attendance": 95,
-        "grade": 9.69
+        "attendance": 92,
+        "grade": 9.69,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-743",
@@ -9675,11 +11159,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1223@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918638012936",
-        "attendance": 98,
-        "grade": 7.1
+        "attendance": 92,
+        "grade": 7.1,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-744",
@@ -9688,11 +11174,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1224@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919948104786",
         "attendance": 81,
-        "grade": 9.43
+        "grade": 9.43,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-745",
@@ -9701,11 +11189,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1225@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919647075134",
         "attendance": 77,
-        "grade": 7.61
+        "grade": 7.61,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-746",
@@ -9714,11 +11204,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1226@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917820532731",
         "attendance": 79,
-        "grade": 7.33
+        "grade": 7.33,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-747",
@@ -9727,11 +11219,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1227@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918629212290",
         "attendance": 82,
-        "grade": 8.41
+        "grade": 8.41,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-748",
@@ -9740,11 +11234,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1228@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916428688192",
         "attendance": 92,
-        "grade": 9.25
+        "grade": 9.25,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-749",
@@ -9753,11 +11249,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1229@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916144178724",
-        "attendance": 99,
-        "grade": 8.61
+        "attendance": 92,
+        "grade": 8.61,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-750",
@@ -9766,11 +11264,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1230@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916402154202",
         "attendance": 77,
-        "grade": 7.6
+        "grade": 7.6,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-751",
@@ -9779,11 +11279,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1231@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918083355684",
         "attendance": 89,
-        "grade": 8.42
+        "grade": 8.42,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-752",
@@ -9792,11 +11294,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1232@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918192023738",
         "attendance": 80,
-        "grade": 9.48
+        "grade": 9.48,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-753",
@@ -9805,11 +11309,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1233@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916784541269",
         "attendance": 76,
-        "grade": 9.66
+        "grade": 9.66,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-754",
@@ -9818,11 +11324,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1234@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919062821882",
-        "attendance": 93,
-        "grade": 9.21
+        "attendance": 92,
+        "grade": 9.21,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-755",
@@ -9831,11 +11339,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1235@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919805443845",
         "attendance": 91,
-        "grade": 9.14
+        "grade": 9.14,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-756",
@@ -9844,11 +11354,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1236@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919470147877",
         "attendance": 89,
-        "grade": 7.11
+        "grade": 7.11,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-757",
@@ -9857,11 +11369,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1237@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917499549290",
-        "attendance": 99,
-        "grade": 9.27
+        "attendance": 92,
+        "grade": 9.27,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-758",
@@ -9870,11 +11384,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1238@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916333665957",
         "attendance": 90,
-        "grade": 9.16
+        "grade": 9.16,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-759",
@@ -9883,11 +11399,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1239@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916275032289",
         "attendance": 76,
-        "grade": 8.03
+        "grade": 8.03,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-760",
@@ -9896,11 +11414,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1240@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918881137544",
         "attendance": 87,
-        "grade": 9.07
+        "grade": 9.07,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-761",
@@ -9909,11 +11429,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1241@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919575147588",
         "attendance": 83,
-        "grade": 8.54
+        "grade": 8.54,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-762",
@@ -9922,11 +11444,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1242@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916524040947",
         "attendance": 83,
-        "grade": 9.33
+        "grade": 9.33,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-763",
@@ -9935,11 +11459,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1243@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918609425924",
-        "attendance": 95,
-        "grade": 9.78
+        "attendance": 92,
+        "grade": 9.78,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-764",
@@ -9948,11 +11474,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1244@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919922387636",
         "attendance": 76,
-        "grade": 8.34
+        "grade": 8.34,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-765",
@@ -9961,11 +11489,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1245@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918950214701",
         "attendance": 89,
-        "grade": 7.21
+        "grade": 7.21,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-766",
@@ -9974,11 +11504,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1246@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919471807638",
-        "attendance": 97,
-        "grade": 8.88
+        "attendance": 92,
+        "grade": 8.88,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-767",
@@ -9987,11 +11519,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1247@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919322386951",
         "attendance": 78,
-        "grade": 7.09
+        "grade": 7.09,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-768",
@@ -10000,11 +11534,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1248@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917580055734",
-        "attendance": 98,
-        "grade": 7.78
+        "attendance": 92,
+        "grade": 7.78,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-769",
@@ -10013,11 +11549,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1249@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917577595126",
         "attendance": 88,
-        "grade": 8.7
+        "grade": 8.7,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-770",
@@ -10026,11 +11564,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1250@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916609704270",
         "attendance": 83,
-        "grade": 8.92
+        "grade": 8.92,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-771",
@@ -10039,11 +11579,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1251@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916433075979",
         "attendance": 87,
-        "grade": 7.58
+        "grade": 7.58,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-772",
@@ -10052,11 +11594,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1252@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916116712523",
         "attendance": 82,
-        "grade": 7.82
+        "grade": 7.82,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-773",
@@ -10065,11 +11609,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1253@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917954122305",
-        "attendance": 98,
-        "grade": 8.38
+        "attendance": 92,
+        "grade": 8.38,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-774",
@@ -10078,11 +11624,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1254@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916550728612",
         "attendance": 84,
-        "grade": 7.88
+        "grade": 7.88,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-775",
@@ -10091,11 +11639,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1255@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918978377545",
-        "attendance": 95,
-        "grade": 8.88
+        "attendance": 92,
+        "grade": 8.88,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-776",
@@ -10104,11 +11654,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1256@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917207034072",
         "attendance": 82,
-        "grade": 8.71
+        "grade": 8.71,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-777",
@@ -10117,11 +11669,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1257@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919574536206",
-        "attendance": 95,
-        "grade": 8.43
+        "attendance": 92,
+        "grade": 8.43,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-778",
@@ -10130,11 +11684,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1258@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918138917745",
         "attendance": 83,
-        "grade": 8.43
+        "grade": 8.43,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-779",
@@ -10143,11 +11699,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1259@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917670007535",
-        "attendance": 98,
-        "grade": 8.33
+        "attendance": 92,
+        "grade": 8.33,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-780",
@@ -10156,11 +11714,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1260@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918102688178",
         "attendance": 92,
-        "grade": 8.12
+        "grade": 8.12,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-781",
@@ -10169,11 +11729,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1261@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918217498918",
-        "attendance": 93,
-        "grade": 8.93
+        "attendance": 92,
+        "grade": 8.93,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-782",
@@ -10182,11 +11744,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1262@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916692872584",
         "attendance": 77,
-        "grade": 7.98
+        "grade": 7.98,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-783",
@@ -10195,11 +11759,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1263@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918905920271",
         "attendance": 77,
-        "grade": 8.24
+        "grade": 8.24,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-784",
@@ -10208,11 +11774,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1264@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918254626172",
         "attendance": 83,
-        "grade": 7.65
+        "grade": 7.65,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-785",
@@ -10221,11 +11789,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1265@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919957537119",
-        "attendance": 94,
-        "grade": 6.91
+        "attendance": 92,
+        "grade": 6.91,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-786",
@@ -10234,11 +11804,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1266@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919104343249",
         "attendance": 90,
-        "grade": 7.74
+        "grade": 7.74,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-787",
@@ -10247,11 +11819,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1267@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919071246359",
         "attendance": 82,
-        "grade": 9.59
+        "grade": 9.59,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-788",
@@ -10260,11 +11834,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1268@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917348162581",
         "attendance": 84,
-        "grade": 8.96
+        "grade": 8.96,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-789",
@@ -10273,11 +11849,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1269@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919700435850",
-        "attendance": 99,
-        "grade": 7.29
+        "attendance": 92,
+        "grade": 7.29,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-790",
@@ -10286,11 +11864,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1270@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918467521831",
         "attendance": 91,
-        "grade": 7.96
+        "grade": 7.96,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-791",
@@ -10299,11 +11879,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1271@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916652010505",
-        "attendance": 93,
-        "grade": 8.79
+        "attendance": 92,
+        "grade": 8.79,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-792",
@@ -10312,11 +11894,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1272@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919455157740",
         "attendance": 90,
-        "grade": 6.85
+        "grade": 6.85,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-793",
@@ -10325,11 +11909,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1273@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918814751407",
         "attendance": 77,
-        "grade": 9.05
+        "grade": 9.05,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-794",
@@ -10338,11 +11924,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1274@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916432769510",
         "attendance": 78,
-        "grade": 8.54
+        "grade": 8.54,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-795",
@@ -10351,11 +11939,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1275@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916652214196",
-        "attendance": 96,
-        "grade": 7.93
+        "attendance": 92,
+        "grade": 7.93,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-796",
@@ -10364,11 +11954,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1276@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918096236091",
-        "attendance": 98,
-        "grade": 8.08
+        "attendance": 92,
+        "grade": 8.08,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-797",
@@ -10377,11 +11969,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1277@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917668725345",
         "attendance": 81,
-        "grade": 9.93
+        "grade": 9.93,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-798",
@@ -10390,11 +11984,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1278@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918927301685",
         "attendance": 89,
-        "grade": 8.68
+        "grade": 8.68,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-799",
@@ -10403,11 +11999,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1279@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918917189914",
         "attendance": 81,
-        "grade": 8.17
+        "grade": 8.17,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-800",
@@ -10416,11 +12014,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1280@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916679843594",
         "attendance": 82,
-        "grade": 7.67
+        "grade": 7.67,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-801",
@@ -10429,11 +12029,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1281@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916374164037",
         "attendance": 82,
-        "grade": 8.53
+        "grade": 8.53,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-802",
@@ -10442,11 +12044,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1282@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916089763002",
         "attendance": 80,
-        "grade": 9.25
+        "grade": 9.25,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-803",
@@ -10455,11 +12059,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1283@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917425728030",
         "attendance": 78,
-        "grade": 8.37
+        "grade": 8.37,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-804",
@@ -10468,11 +12074,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1284@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916060385029",
         "attendance": 90,
-        "grade": 9.66
+        "grade": 9.66,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-805",
@@ -10481,11 +12089,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1285@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918629797897",
-        "attendance": 93,
-        "grade": 6.55
+        "attendance": 92,
+        "grade": 6.55,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-806",
@@ -10494,11 +12104,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1286@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916660067249",
-        "attendance": 95,
-        "grade": 9.6
+        "attendance": 92,
+        "grade": 9.6,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-807",
@@ -10507,11 +12119,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1287@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918927893753",
         "attendance": 85,
-        "grade": 9.62
+        "grade": 9.62,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-808",
@@ -10520,11 +12134,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1288@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918372698324",
         "attendance": 79,
-        "grade": 7.85
+        "grade": 7.85,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-809",
@@ -10533,11 +12149,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1289@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918049595870",
-        "attendance": 97,
-        "grade": 9.39
+        "attendance": 92,
+        "grade": 9.39,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-810",
@@ -10546,11 +12164,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a1290@smartcampus.com",
         "branch": "IT",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918413226245",
         "attendance": 92,
-        "grade": 7.87
+        "grade": 7.87,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-811",
@@ -10559,11 +12179,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1201@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918240378237",
-        "attendance": 97,
-        "grade": 9.36
+        "attendance": 92,
+        "grade": 9.36,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-812",
@@ -10572,11 +12194,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1202@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916809176142",
-        "attendance": 98,
-        "grade": 8.56
+        "attendance": 92,
+        "grade": 8.56,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-813",
@@ -10585,11 +12209,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1203@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919413494003",
         "attendance": 83,
-        "grade": 7.4
+        "grade": 7.4,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-814",
@@ -10598,11 +12224,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1204@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916624412625",
         "attendance": 92,
-        "grade": 8.64
+        "grade": 8.64,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-815",
@@ -10611,11 +12239,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1205@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918349968817",
         "attendance": 79,
-        "grade": 7.87
+        "grade": 7.87,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-816",
@@ -10624,11 +12254,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1206@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918025043066",
         "attendance": 84,
-        "grade": 8.74
+        "grade": 8.74,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-817",
@@ -10637,11 +12269,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1207@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917575698960",
         "attendance": 77,
-        "grade": 8.07
+        "grade": 8.07,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-818",
@@ -10650,11 +12284,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1208@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916719226444",
         "attendance": 83,
-        "grade": 8.86
+        "grade": 8.86,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-819",
@@ -10663,11 +12299,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1209@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916688602767",
         "attendance": 83,
-        "grade": 9.32
+        "grade": 9.32,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-820",
@@ -10676,11 +12314,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1210@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917886724982",
         "attendance": 76,
-        "grade": 9.19
+        "grade": 9.19,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-821",
@@ -10689,11 +12329,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1211@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916433065303",
-        "attendance": 98,
-        "grade": 7.05
+        "attendance": 92,
+        "grade": 7.05,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-822",
@@ -10702,11 +12344,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1212@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917328724510",
-        "attendance": 93,
-        "grade": 9.03
+        "attendance": 92,
+        "grade": 9.03,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-823",
@@ -10715,11 +12359,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1213@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919050751324",
-        "attendance": 97,
-        "grade": 8.37
+        "attendance": 92,
+        "grade": 8.37,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-824",
@@ -10728,11 +12374,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1214@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916709408945",
         "attendance": 80,
-        "grade": 7.24
+        "grade": 7.24,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-825",
@@ -10741,11 +12389,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1215@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916274935489",
         "attendance": 80,
-        "grade": 8.75
+        "grade": 8.75,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-826",
@@ -10754,11 +12404,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1216@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916964335420",
-        "attendance": 99,
-        "grade": 7.44
+        "attendance": 92,
+        "grade": 7.44,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-827",
@@ -10767,11 +12419,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1217@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919087064213",
         "attendance": 85,
-        "grade": 9.36
+        "grade": 9.36,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-828",
@@ -10780,11 +12434,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1218@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918964575509",
         "attendance": 87,
-        "grade": 9.19
+        "grade": 9.19,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-829",
@@ -10793,11 +12449,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1219@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917706408610",
         "attendance": 90,
-        "grade": 7.77
+        "grade": 7.77,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-830",
@@ -10806,11 +12464,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1220@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916064609073",
         "attendance": 84,
-        "grade": 9.57
+        "grade": 9.57,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-831",
@@ -10819,11 +12479,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1221@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918106411833",
         "attendance": 81,
-        "grade": 7.01
+        "grade": 7.01,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-832",
@@ -10832,11 +12494,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1222@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918450572239",
         "attendance": 77,
-        "grade": 8.68
+        "grade": 8.68,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-833",
@@ -10845,11 +12509,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1223@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918239775282",
         "attendance": 86,
-        "grade": 7.05
+        "grade": 7.05,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-834",
@@ -10858,11 +12524,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1224@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917118607370",
         "attendance": 75,
-        "grade": 8.38
+        "grade": 8.38,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-835",
@@ -10871,11 +12539,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1225@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918263626560",
         "attendance": 79,
-        "grade": 9.79
+        "grade": 9.79,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-836",
@@ -10884,11 +12554,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1226@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916914147942",
         "attendance": 88,
-        "grade": 6.74
+        "grade": 6.74,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-837",
@@ -10897,11 +12569,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1227@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919778347803",
         "attendance": 87,
-        "grade": 7.6
+        "grade": 7.6,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-838",
@@ -10910,11 +12584,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1228@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918240660175",
         "attendance": 87,
-        "grade": 7.11
+        "grade": 7.11,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-839",
@@ -10923,11 +12599,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1229@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919321433198",
         "attendance": 83,
-        "grade": 7.18
+        "grade": 7.18,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-840",
@@ -10936,11 +12614,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1230@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917036812451",
         "attendance": 92,
-        "grade": 8.81
+        "grade": 8.81,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-841",
@@ -10949,11 +12629,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1231@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919609137687",
         "attendance": 86,
-        "grade": 6.64
+        "grade": 6.64,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-842",
@@ -10962,11 +12644,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1232@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916175137872",
         "attendance": 89,
-        "grade": 9.25
+        "grade": 9.25,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-843",
@@ -10975,11 +12659,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1233@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918092904752",
-        "attendance": 94,
-        "grade": 7.75
+        "attendance": 92,
+        "grade": 7.75,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-844",
@@ -10988,11 +12674,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1234@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917370474356",
         "attendance": 79,
-        "grade": 9.3
+        "grade": 9.3,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-845",
@@ -11001,11 +12689,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1235@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918357571762",
-        "attendance": 99,
-        "grade": 9.13
+        "attendance": 92,
+        "grade": 9.13,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-846",
@@ -11014,11 +12704,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1236@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918488956153",
         "attendance": 92,
-        "grade": 8.43
+        "grade": 8.43,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-847",
@@ -11027,11 +12719,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1237@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918540112776",
         "attendance": 88,
-        "grade": 6.99
+        "grade": 6.99,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-848",
@@ -11040,11 +12734,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1238@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918680253276",
         "attendance": 81,
-        "grade": 8.36
+        "grade": 8.36,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-849",
@@ -11053,11 +12749,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1239@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917926610854",
-        "attendance": 94,
-        "grade": 9.64
+        "attendance": 92,
+        "grade": 9.64,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-850",
@@ -11066,11 +12764,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1240@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919466592774",
         "attendance": 92,
-        "grade": 8.14
+        "grade": 8.14,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-851",
@@ -11079,11 +12779,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1241@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918547284319",
-        "attendance": 95,
-        "grade": 6.61
+        "attendance": 92,
+        "grade": 6.61,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-852",
@@ -11092,11 +12794,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1242@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917083728576",
         "attendance": 84,
-        "grade": 8.74
+        "grade": 8.74,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-853",
@@ -11105,11 +12809,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1243@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916138636767",
         "attendance": 87,
-        "grade": 9.16
+        "grade": 9.16,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-854",
@@ -11118,11 +12824,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1244@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916841837662",
         "attendance": 77,
-        "grade": 9.67
+        "grade": 9.67,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-855",
@@ -11131,11 +12839,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1245@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917441787415",
-        "attendance": 93,
-        "grade": 7.52
+        "attendance": 92,
+        "grade": 7.52,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-856",
@@ -11144,11 +12854,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1246@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919883743410",
         "attendance": 88,
-        "grade": 7.5
+        "grade": 7.5,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-857",
@@ -11157,11 +12869,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1247@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919462744043",
-        "attendance": 96,
-        "grade": 6.83
+        "attendance": 92,
+        "grade": 6.83,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-858",
@@ -11170,11 +12884,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1248@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919672811073",
         "attendance": 92,
-        "grade": 7.52
+        "grade": 7.52,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-859",
@@ -11183,11 +12899,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1249@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918920901488",
         "attendance": 92,
-        "grade": 9.39
+        "grade": 9.39,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-860",
@@ -11196,11 +12914,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1250@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916729073355",
         "attendance": 79,
-        "grade": 9.97
+        "grade": 9.97,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-861",
@@ -11209,11 +12929,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1251@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919066200292",
-        "attendance": 95,
-        "grade": 8.74
+        "attendance": 92,
+        "grade": 8.74,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-862",
@@ -11222,11 +12944,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1252@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917120831765",
         "attendance": 84,
-        "grade": 8.55
+        "grade": 8.55,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-863",
@@ -11235,11 +12959,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1253@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918976626314",
-        "attendance": 99,
-        "grade": 6.51
+        "attendance": 92,
+        "grade": 6.51,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-864",
@@ -11248,11 +12974,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1254@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917327631566",
-        "attendance": 98,
-        "grade": 8.29
+        "attendance": 92,
+        "grade": 8.29,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-865",
@@ -11261,11 +12989,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1255@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918024202424",
         "attendance": 79,
-        "grade": 7.79
+        "grade": 7.79,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-866",
@@ -11274,11 +13004,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1256@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916422851693",
-        "attendance": 98,
-        "grade": 8.15
+        "attendance": 92,
+        "grade": 8.15,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-867",
@@ -11287,11 +13019,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1257@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916179057341",
         "attendance": 76,
-        "grade": 7.96
+        "grade": 7.96,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-868",
@@ -11300,11 +13034,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1258@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916509875362",
         "attendance": 76,
-        "grade": 6.92
+        "grade": 6.92,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-869",
@@ -11313,11 +13049,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1259@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916417592606",
         "attendance": 89,
-        "grade": 9.05
+        "grade": 9.05,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-870",
@@ -11326,11 +13064,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1260@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918229027486",
         "attendance": 83,
-        "grade": 6.72
+        "grade": 6.72,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-871",
@@ -11339,11 +13079,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1261@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919061277565",
         "attendance": 79,
-        "grade": 7.08
+        "grade": 7.08,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-872",
@@ -11352,11 +13094,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1262@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917037191258",
         "attendance": 77,
-        "grade": 7.5
+        "grade": 7.5,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-873",
@@ -11365,11 +13109,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1263@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919426695753",
         "attendance": 80,
-        "grade": 8.47
+        "grade": 8.47,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-874",
@@ -11378,11 +13124,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1264@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918741625315",
         "attendance": 90,
-        "grade": 7.6
+        "grade": 7.6,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-875",
@@ -11391,11 +13139,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1265@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917997593978",
         "attendance": 86,
-        "grade": 7.39
+        "grade": 7.39,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-876",
@@ -11404,11 +13154,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1266@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918392401037",
-        "attendance": 94,
-        "grade": 9.14
+        "attendance": 92,
+        "grade": 9.14,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-877",
@@ -11417,11 +13169,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1267@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918988006161",
-        "attendance": 99,
-        "grade": 9.15
+        "attendance": 92,
+        "grade": 9.15,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-878",
@@ -11430,11 +13184,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1268@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918131363977",
         "attendance": 76,
-        "grade": 9.66
+        "grade": 9.66,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-879",
@@ -11443,11 +13199,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1269@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918933842224",
-        "attendance": 95,
-        "grade": 7.67
+        "attendance": 92,
+        "grade": 7.67,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-880",
@@ -11456,11 +13214,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1270@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918987077502",
         "attendance": 91,
-        "grade": 9.6
+        "grade": 9.6,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-881",
@@ -11469,11 +13229,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1271@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919306904947",
         "attendance": 89,
-        "grade": 9.34
+        "grade": 9.34,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-882",
@@ -11482,11 +13244,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1272@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919577973711",
         "attendance": 78,
-        "grade": 8.6
+        "grade": 8.6,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-883",
@@ -11495,11 +13259,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1273@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916975021720",
         "attendance": 92,
-        "grade": 9.1
+        "grade": 9.1,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-884",
@@ -11508,11 +13274,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1274@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916343096439",
         "attendance": 81,
-        "grade": 8.56
+        "grade": 8.56,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-885",
@@ -11521,11 +13289,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1275@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918179231478",
         "attendance": 85,
-        "grade": 7.88
+        "grade": 7.88,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-886",
@@ -11534,11 +13304,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1276@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918389537793",
         "attendance": 77,
-        "grade": 6.54
+        "grade": 6.54,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-887",
@@ -11547,11 +13319,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1277@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916175453850",
-        "attendance": 99,
-        "grade": 8.13
+        "attendance": 92,
+        "grade": 8.13,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-888",
@@ -11560,11 +13334,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1278@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918103592130",
         "attendance": 90,
-        "grade": 7.2
+        "grade": 7.2,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-889",
@@ -11573,11 +13349,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1279@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916530607139",
         "attendance": 92,
-        "grade": 6.7
+        "grade": 6.7,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-890",
@@ -11586,11 +13364,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1280@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919714336839",
-        "attendance": 98,
-        "grade": 8.87
+        "attendance": 92,
+        "grade": 8.87,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-891",
@@ -11599,11 +13379,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1281@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919117723561",
-        "attendance": 94,
-        "grade": 9.35
+        "attendance": 92,
+        "grade": 9.35,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-892",
@@ -11612,11 +13394,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1282@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917923299308",
         "attendance": 91,
-        "grade": 6.89
+        "grade": 6.89,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-893",
@@ -11625,11 +13409,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1283@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918977140750",
         "attendance": 78,
-        "grade": 9.67
+        "grade": 9.67,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-894",
@@ -11638,11 +13424,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1284@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918505504624",
         "attendance": 91,
-        "grade": 8.71
+        "grade": 8.71,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-895",
@@ -11651,11 +13439,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1285@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916574509891",
-        "attendance": 98,
-        "grade": 9.71
+        "attendance": 92,
+        "grade": 9.71,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-896",
@@ -11664,11 +13454,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1286@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919869548929",
         "attendance": 80,
-        "grade": 8.8
+        "grade": 8.8,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-897",
@@ -11677,11 +13469,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1287@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918592222256",
         "attendance": 86,
-        "grade": 6.58
+        "grade": 6.58,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-898",
@@ -11690,11 +13484,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1288@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919543894525",
         "attendance": 75,
-        "grade": 8.49
+        "grade": 8.49,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-899",
@@ -11703,11 +13499,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1289@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919485185989",
-        "attendance": 98,
-        "grade": 6.95
+        "attendance": 92,
+        "grade": 6.95,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-900",
@@ -11716,11 +13514,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a1290@smartcampus.com",
         "branch": "IT",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917712570005",
-        "attendance": 94,
-        "grade": 9.3
+        "attendance": 92,
+        "grade": 9.3,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-901",
@@ -11729,11 +13529,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1201@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918039436805",
         "attendance": 77,
-        "grade": 9.81
+        "grade": 9.81,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-902",
@@ -11742,11 +13544,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1202@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917918655925",
         "attendance": 85,
-        "grade": 9.2
+        "grade": 9.2,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-903",
@@ -11755,11 +13559,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1203@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918894931565",
         "attendance": 89,
-        "grade": 9.46
+        "grade": 9.46,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-904",
@@ -11768,11 +13574,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1204@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919394887132",
         "attendance": 81,
-        "grade": 9.58
+        "grade": 9.58,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-905",
@@ -11781,11 +13589,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1205@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919586317660",
         "attendance": 80,
-        "grade": 8.34
+        "grade": 8.34,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-906",
@@ -11794,11 +13604,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1206@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918275854918",
         "attendance": 87,
-        "grade": 7.7
+        "grade": 7.7,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-907",
@@ -11807,11 +13619,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1207@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918781836901",
         "attendance": 79,
-        "grade": 8.8
+        "grade": 8.8,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-908",
@@ -11820,11 +13634,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1208@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918523376324",
-        "attendance": 94,
-        "grade": 9.7
+        "attendance": 92,
+        "grade": 9.7,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-909",
@@ -11833,11 +13649,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1209@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917426850977",
         "attendance": 86,
-        "grade": 6.9
+        "grade": 6.9,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-910",
@@ -11846,11 +13664,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1210@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919375664583",
         "attendance": 87,
-        "grade": 7.2
+        "grade": 7.2,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-911",
@@ -11859,11 +13679,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1211@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918090574827",
-        "attendance": 98,
-        "grade": 7.89
+        "attendance": 92,
+        "grade": 7.89,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-912",
@@ -11872,11 +13694,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1212@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916103358468",
         "attendance": 77,
-        "grade": 9.02
+        "grade": 9.02,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-913",
@@ -11885,11 +13709,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1213@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918479472975",
         "attendance": 87,
-        "grade": 7.35
+        "grade": 7.35,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-914",
@@ -11898,11 +13724,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1214@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916835261914",
-        "attendance": 99,
-        "grade": 9.95
+        "attendance": 92,
+        "grade": 9.95,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-915",
@@ -11911,11 +13739,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1215@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916421175071",
         "attendance": 76,
-        "grade": 7.29
+        "grade": 7.29,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-916",
@@ -11924,11 +13754,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1216@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916208984774",
         "attendance": 85,
-        "grade": 9.1
+        "grade": 9.1,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-917",
@@ -11937,11 +13769,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1217@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918055769720",
         "attendance": 90,
-        "grade": 8.6
+        "grade": 8.6,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-918",
@@ -11950,11 +13784,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1218@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919007341295",
-        "attendance": 96,
-        "grade": 7.85
+        "attendance": 92,
+        "grade": 7.85,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-919",
@@ -11963,11 +13799,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1219@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918417307353",
-        "attendance": 99,
-        "grade": 9.27
+        "attendance": 92,
+        "grade": 9.27,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-920",
@@ -11976,11 +13814,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1220@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916830804628",
         "attendance": 83,
-        "grade": 9.58
+        "grade": 9.58,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-921",
@@ -11989,11 +13829,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1221@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918242753917",
         "attendance": 81,
-        "grade": 7.82
+        "grade": 7.82,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-922",
@@ -12002,11 +13844,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1222@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919794974213",
         "attendance": 81,
-        "grade": 8.05
+        "grade": 8.05,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-923",
@@ -12015,11 +13859,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1223@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917839852278",
         "attendance": 89,
-        "grade": 8.2
+        "grade": 8.2,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-924",
@@ -12028,11 +13874,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1224@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917017867831",
         "attendance": 81,
-        "grade": 6.56
+        "grade": 6.56,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-925",
@@ -12041,11 +13889,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1225@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919186001571",
         "attendance": 77,
-        "grade": 7.78
+        "grade": 7.78,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-926",
@@ -12054,11 +13904,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1226@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919106128940",
-        "attendance": 97,
-        "grade": 8.39
+        "attendance": 92,
+        "grade": 8.39,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-927",
@@ -12067,11 +13919,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1227@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918149642060",
         "attendance": 77,
-        "grade": 9.89
+        "grade": 9.89,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-928",
@@ -12080,11 +13934,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1228@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916922222085",
         "attendance": 89,
-        "grade": 7.11
+        "grade": 7.11,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-929",
@@ -12093,11 +13949,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1229@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916734114417",
-        "attendance": 98,
-        "grade": 7.1
+        "attendance": 92,
+        "grade": 7.1,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-930",
@@ -12106,11 +13964,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1230@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918510327622",
-        "attendance": 94,
-        "grade": 8.99
+        "attendance": 92,
+        "grade": 8.99,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-931",
@@ -12119,11 +13979,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1231@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917055268141",
-        "attendance": 96,
-        "grade": 8.69
+        "attendance": 92,
+        "grade": 8.69,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-932",
@@ -12132,11 +13994,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1232@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916407724453",
-        "attendance": 99,
-        "grade": 9.39
+        "attendance": 92,
+        "grade": 9.39,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-933",
@@ -12145,11 +14009,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1233@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918730100668",
         "attendance": 83,
-        "grade": 7.12
+        "grade": 7.12,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-934",
@@ -12158,11 +14024,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1234@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918827980808",
         "attendance": 88,
-        "grade": 7.58
+        "grade": 7.58,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-935",
@@ -12171,11 +14039,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1235@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917429291684",
         "attendance": 82,
-        "grade": 8.27
+        "grade": 8.27,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-936",
@@ -12184,11 +14054,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1236@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919328498726",
         "attendance": 80,
-        "grade": 9.69
+        "grade": 9.69,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-937",
@@ -12197,11 +14069,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1237@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919388205153",
-        "attendance": 95,
-        "grade": 9.29
+        "attendance": 92,
+        "grade": 9.29,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-938",
@@ -12210,11 +14084,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1238@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919147764968",
         "attendance": 75,
-        "grade": 7.16
+        "grade": 7.16,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-939",
@@ -12223,11 +14099,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1239@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918080546911",
-        "attendance": 97,
-        "grade": 8.28
+        "attendance": 92,
+        "grade": 8.28,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-940",
@@ -12236,11 +14114,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1240@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918369840152",
         "attendance": 76,
-        "grade": 8.65
+        "grade": 8.65,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-941",
@@ -12249,11 +14129,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1241@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916020874869",
         "attendance": 83,
-        "grade": 9.91
+        "grade": 9.91,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-942",
@@ -12262,11 +14144,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1242@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919721200447",
         "attendance": 86,
-        "grade": 6.54
+        "grade": 6.54,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-943",
@@ -12275,11 +14159,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1243@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918826361705",
         "attendance": 87,
-        "grade": 8.87
+        "grade": 8.87,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-944",
@@ -12288,11 +14174,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1244@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917590779383",
         "attendance": 86,
-        "grade": 7.24
+        "grade": 7.24,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-945",
@@ -12301,11 +14189,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1245@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917681947342",
-        "attendance": 97,
-        "grade": 8.76
+        "attendance": 92,
+        "grade": 8.76,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-946",
@@ -12314,11 +14204,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1246@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919197034501",
         "attendance": 83,
-        "grade": 8.56
+        "grade": 8.56,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-947",
@@ -12327,11 +14219,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1247@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919276448393",
-        "attendance": 97,
-        "grade": 9.25
+        "attendance": 92,
+        "grade": 9.25,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-948",
@@ -12340,11 +14234,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1248@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918197888275",
         "attendance": 77,
-        "grade": 9.82
+        "grade": 9.82,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-949",
@@ -12353,11 +14249,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1249@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916316028457",
         "attendance": 82,
-        "grade": 9.4
+        "grade": 9.4,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-950",
@@ -12366,11 +14264,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1250@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916402688544",
         "attendance": 85,
-        "grade": 9.59
+        "grade": 9.59,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-951",
@@ -12379,11 +14279,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1251@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918478279017",
         "attendance": 81,
-        "grade": 7.02
+        "grade": 7.02,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-952",
@@ -12392,11 +14294,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1252@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919205374630",
         "attendance": 89,
-        "grade": 8.88
+        "grade": 8.88,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-953",
@@ -12405,11 +14309,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1253@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917473523508",
         "attendance": 86,
-        "grade": 8.28
+        "grade": 8.28,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-954",
@@ -12418,11 +14324,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1254@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919803113334",
         "attendance": 81,
-        "grade": 8.74
+        "grade": 8.74,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-955",
@@ -12431,11 +14339,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1255@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916079067486",
-        "attendance": 96,
-        "grade": 6.75
+        "attendance": 92,
+        "grade": 6.75,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-956",
@@ -12444,11 +14354,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1256@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919664559677",
         "attendance": 78,
-        "grade": 7.65
+        "grade": 7.65,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-957",
@@ -12457,11 +14369,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1257@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917699017812",
         "attendance": 78,
-        "grade": 8.36
+        "grade": 8.36,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-958",
@@ -12470,11 +14384,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1258@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918288322664",
         "attendance": 81,
-        "grade": 8.19
+        "grade": 8.19,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-959",
@@ -12483,11 +14399,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1259@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919122282699",
         "attendance": 89,
-        "grade": 9.74
+        "grade": 9.74,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-960",
@@ -12496,11 +14414,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1260@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917198256928",
         "attendance": 82,
-        "grade": 9.99
+        "grade": 9.99,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-961",
@@ -12509,11 +14429,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1261@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919135864962",
         "attendance": 80,
-        "grade": 6.54
+        "grade": 6.54,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-962",
@@ -12522,11 +14444,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1262@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917282049934",
         "attendance": 78,
-        "grade": 9.88
+        "grade": 9.88,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-963",
@@ -12535,11 +14459,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1263@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919000937784",
         "attendance": 80,
-        "grade": 8.93
+        "grade": 8.93,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-964",
@@ -12548,11 +14474,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1264@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917427071262",
-        "attendance": 96,
-        "grade": 9.71
+        "attendance": 92,
+        "grade": 9.71,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-965",
@@ -12561,11 +14489,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1265@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919266869939",
         "attendance": 87,
-        "grade": 8.27
+        "grade": 8.27,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-966",
@@ -12574,11 +14504,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1266@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917808741578",
         "attendance": 80,
-        "grade": 8.73
+        "grade": 8.73,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-967",
@@ -12587,11 +14519,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1267@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916609197487",
         "attendance": 84,
-        "grade": 9.82
+        "grade": 9.82,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-968",
@@ -12600,11 +14534,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1268@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919348663794",
-        "attendance": 98,
-        "grade": 9.5
+        "attendance": 92,
+        "grade": 9.5,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-969",
@@ -12613,11 +14549,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1269@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919114535264",
         "attendance": 75,
-        "grade": 7.28
+        "grade": 7.28,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-970",
@@ -12626,11 +14564,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1270@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917867086994",
         "attendance": 80,
-        "grade": 7.82
+        "grade": 7.82,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-971",
@@ -12639,11 +14579,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1271@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919796003010",
         "attendance": 91,
-        "grade": 6.76
+        "grade": 6.76,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-972",
@@ -12652,11 +14594,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1272@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918717747405",
-        "attendance": 98,
-        "grade": 7.68
+        "attendance": 92,
+        "grade": 7.68,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-973",
@@ -12665,11 +14609,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1273@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917151115767",
         "attendance": 83,
-        "grade": 9.18
+        "grade": 9.18,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-974",
@@ -12678,11 +14624,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1274@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918436603333",
         "attendance": 80,
-        "grade": 7.06
+        "grade": 7.06,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-975",
@@ -12691,11 +14639,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1275@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916232846590",
-        "attendance": 99,
-        "grade": 8.9
+        "attendance": 92,
+        "grade": 8.9,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-976",
@@ -12704,11 +14654,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1276@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918936412110",
         "attendance": 84,
-        "grade": 6.57
+        "grade": 6.57,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-977",
@@ -12717,11 +14669,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1277@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917468405892",
-        "attendance": 96,
-        "grade": 9.45
+        "attendance": 92,
+        "grade": 9.45,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-978",
@@ -12730,11 +14684,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1278@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919649438576",
-        "attendance": 98,
-        "grade": 8.87
+        "attendance": 92,
+        "grade": 8.87,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-979",
@@ -12743,11 +14699,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1279@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918901304213",
         "attendance": 75,
-        "grade": 7.76
+        "grade": 7.76,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-980",
@@ -12756,11 +14714,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1280@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916760379932",
         "attendance": 81,
-        "grade": 6.73
+        "grade": 6.73,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-981",
@@ -12769,11 +14729,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1281@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916082893089",
         "attendance": 86,
-        "grade": 7.73
+        "grade": 7.73,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-982",
@@ -12782,11 +14744,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1282@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917934134481",
         "attendance": 86,
-        "grade": 9.9
+        "grade": 9.9,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-983",
@@ -12795,11 +14759,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1283@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916937176874",
-        "attendance": 97,
-        "grade": 9.79
+        "attendance": 92,
+        "grade": 9.79,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-984",
@@ -12808,11 +14774,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1284@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918085755617",
         "attendance": 84,
-        "grade": 7.36
+        "grade": 7.36,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-985",
@@ -12821,11 +14789,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1285@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916198366367",
         "attendance": 82,
-        "grade": 8.92
+        "grade": 8.92,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-986",
@@ -12834,11 +14804,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1286@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918824888668",
         "attendance": 81,
-        "grade": 8.48
+        "grade": 8.48,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-987",
@@ -12847,11 +14819,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1287@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916469150700",
-        "attendance": 94,
-        "grade": 8.18
+        "attendance": 92,
+        "grade": 8.18,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-988",
@@ -12860,11 +14834,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1288@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917980187607",
         "attendance": 87,
-        "grade": 9.55
+        "grade": 9.55,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-989",
@@ -12873,11 +14849,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1289@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916467470887",
         "attendance": 79,
-        "grade": 7.74
+        "grade": 7.74,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-990",
@@ -12886,11 +14864,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a1290@smartcampus.com",
         "branch": "IT",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916235295319",
-        "attendance": 95,
-        "grade": 9.68
+        "attendance": 92,
+        "grade": 9.68,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-991",
@@ -12899,11 +14879,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1201@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917778728431",
-        "attendance": 94,
-        "grade": 7.86
+        "attendance": 92,
+        "grade": 7.86,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-992",
@@ -12912,11 +14894,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1202@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919205144262",
         "attendance": 92,
-        "grade": 6.84
+        "grade": 6.84,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-993",
@@ -12925,11 +14909,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1203@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916174955654",
         "attendance": 91,
-        "grade": 8.65
+        "grade": 8.65,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-994",
@@ -12938,11 +14924,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1204@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918169087898",
         "attendance": 85,
-        "grade": 6.52
+        "grade": 6.52,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-995",
@@ -12951,11 +14939,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1205@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917648541865",
         "attendance": 91,
-        "grade": 9.8
+        "grade": 9.8,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-996",
@@ -12964,11 +14954,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1206@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916238801453",
         "attendance": 82,
-        "grade": 9.53
+        "grade": 9.53,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-997",
@@ -12977,11 +14969,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1207@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918824064581",
         "attendance": 85,
-        "grade": 6.84
+        "grade": 6.84,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-998",
@@ -12990,11 +14984,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1208@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917486064298",
         "attendance": 90,
-        "grade": 8.27
+        "grade": 8.27,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-999",
@@ -13003,11 +14999,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1209@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918785260940",
         "attendance": 77,
-        "grade": 7.3
+        "grade": 7.3,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1000",
@@ -13016,11 +15014,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1210@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916672333312",
         "attendance": 91,
-        "grade": 9.39
+        "grade": 9.39,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1001",
@@ -13029,11 +15029,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1211@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918963708833",
         "attendance": 92,
-        "grade": 7.2
+        "grade": 7.2,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1002",
@@ -13042,11 +15044,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1212@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916897484223",
         "attendance": 90,
-        "grade": 8.78
+        "grade": 8.78,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1003",
@@ -13055,11 +15059,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1213@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917369231530",
-        "attendance": 97,
-        "grade": 7.64
+        "attendance": 92,
+        "grade": 7.64,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1004",
@@ -13068,11 +15074,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1214@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916759253532",
         "attendance": 76,
-        "grade": 8.14
+        "grade": 8.14,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-1005",
@@ -13081,11 +15089,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1215@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916374057779",
         "attendance": 91,
-        "grade": 8.81
+        "grade": 8.81,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1006",
@@ -13094,11 +15104,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1216@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917724021433",
         "attendance": 90,
-        "grade": 8.3
+        "grade": 8.3,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1007",
@@ -13107,11 +15119,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1217@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916983372012",
         "attendance": 76,
-        "grade": 8.78
+        "grade": 8.78,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1008",
@@ -13120,11 +15134,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1218@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919008717424",
         "attendance": 80,
-        "grade": 9.32
+        "grade": 9.32,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1009",
@@ -13133,11 +15149,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1219@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918087156771",
         "attendance": 80,
-        "grade": 6.68
+        "grade": 6.68,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1010",
@@ -13146,11 +15164,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1220@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918772162993",
         "attendance": 78,
-        "grade": 9.22
+        "grade": 9.22,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1011",
@@ -13159,11 +15179,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1221@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918068732943",
         "attendance": 75,
-        "grade": 9.75
+        "grade": 9.75,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1012",
@@ -13172,11 +15194,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1222@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919670085411",
         "attendance": 86,
-        "grade": 7.08
+        "grade": 7.08,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1013",
@@ -13185,11 +15209,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1223@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917345651884",
         "attendance": 91,
-        "grade": 9.32
+        "grade": 9.32,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1014",
@@ -13198,11 +15224,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1224@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916566090325",
         "attendance": 88,
-        "grade": 9
+        "grade": 9,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1015",
@@ -13211,11 +15239,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1225@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916993550332",
         "attendance": 75,
-        "grade": 9.1
+        "grade": 9.1,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1016",
@@ -13224,11 +15254,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1226@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918655508048",
-        "attendance": 98,
-        "grade": 8.8
+        "attendance": 92,
+        "grade": 8.8,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1017",
@@ -13237,11 +15269,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1227@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919974939885",
-        "attendance": 97,
-        "grade": 7.34
+        "attendance": 92,
+        "grade": 7.34,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1018",
@@ -13250,11 +15284,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1228@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916290214427",
         "attendance": 79,
-        "grade": 8.11
+        "grade": 8.11,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1019",
@@ -13263,11 +15299,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1229@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918282027887",
         "attendance": 91,
-        "grade": 7.72
+        "grade": 7.72,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1020",
@@ -13276,11 +15314,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1230@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918236200369",
-        "attendance": 93,
-        "grade": 8.45
+        "attendance": 92,
+        "grade": 8.45,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1021",
@@ -13289,11 +15329,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1231@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919531724615",
         "attendance": 78,
-        "grade": 8.55
+        "grade": 8.55,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1022",
@@ -13302,11 +15344,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1232@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918827013502",
-        "attendance": 93,
-        "grade": 8.69
+        "attendance": 92,
+        "grade": 8.69,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1023",
@@ -13315,11 +15359,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1233@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917750641159",
         "attendance": 76,
-        "grade": 8.98
+        "grade": 8.98,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1024",
@@ -13328,11 +15374,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1234@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916920016254",
-        "attendance": 96,
-        "grade": 9.57
+        "attendance": 92,
+        "grade": 9.57,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1025",
@@ -13341,11 +15389,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1235@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918012839179",
         "attendance": 76,
-        "grade": 9.74
+        "grade": 9.74,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1026",
@@ -13354,11 +15404,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1236@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917928008509",
-        "attendance": 98,
-        "grade": 8.29
+        "attendance": 92,
+        "grade": 8.29,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1027",
@@ -13367,11 +15419,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1237@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916055551624",
-        "attendance": 95,
-        "grade": 6.51
+        "attendance": 92,
+        "grade": 6.51,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1028",
@@ -13380,11 +15434,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1238@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919789170343",
         "attendance": 75,
-        "grade": 7.85
+        "grade": 7.85,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1029",
@@ -13393,11 +15449,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1239@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918703562969",
-        "attendance": 93,
-        "grade": 9.2
+        "attendance": 92,
+        "grade": 9.2,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1030",
@@ -13406,11 +15464,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1240@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917008265995",
         "attendance": 76,
-        "grade": 7.61
+        "grade": 7.61,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1031",
@@ -13419,11 +15479,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1241@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916515130430",
         "attendance": 79,
-        "grade": 7.18
+        "grade": 7.18,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1032",
@@ -13432,11 +15494,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1242@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917826589521",
-        "attendance": 99,
-        "grade": 7.99
+        "attendance": 92,
+        "grade": 7.99,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1033",
@@ -13445,11 +15509,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1243@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916659025072",
         "attendance": 85,
-        "grade": 7.81
+        "grade": 7.81,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1034",
@@ -13458,11 +15524,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1244@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916741814222",
         "attendance": 76,
-        "grade": 6.91
+        "grade": 6.91,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-1035",
@@ -13471,11 +15539,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1245@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918599445277",
-        "attendance": 95,
-        "grade": 9.99
+        "attendance": 92,
+        "grade": 9.99,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1036",
@@ -13484,11 +15554,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1246@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917491798211",
-        "attendance": 97,
-        "grade": 7.4
+        "attendance": 92,
+        "grade": 7.4,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1037",
@@ -13497,11 +15569,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1247@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919316366531",
         "attendance": 79,
-        "grade": 8.39
+        "grade": 8.39,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1038",
@@ -13510,11 +15584,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1248@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919881980542",
-        "attendance": 98,
-        "grade": 7.31
+        "attendance": 92,
+        "grade": 7.31,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1039",
@@ -13523,11 +15599,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1249@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919400770584",
         "attendance": 79,
-        "grade": 8.23
+        "grade": 8.23,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-1040",
@@ -13536,11 +15614,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1250@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916331048635",
         "attendance": 91,
-        "grade": 9.5
+        "grade": 9.5,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-1041",
@@ -13549,11 +15629,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1251@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919780287004",
-        "attendance": 93,
-        "grade": 8.4
+        "attendance": 92,
+        "grade": 8.4,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1042",
@@ -13562,11 +15644,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1252@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917959823236",
         "attendance": 87,
-        "grade": 8.72
+        "grade": 8.72,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1043",
@@ -13575,11 +15659,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1253@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919482586035",
-        "attendance": 94,
-        "grade": 6.53
+        "attendance": 92,
+        "grade": 6.53,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1044",
@@ -13588,11 +15674,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1254@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916625145979",
         "attendance": 89,
-        "grade": 7.73
+        "grade": 7.73,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1045",
@@ -13601,11 +15689,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1255@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916881281500",
         "attendance": 90,
-        "grade": 8.58
+        "grade": 8.58,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-1046",
@@ -13614,11 +15704,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1256@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919227863185",
         "attendance": 79,
-        "grade": 6.55
+        "grade": 6.55,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1047",
@@ -13627,11 +15719,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1257@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916743559987",
-        "attendance": 99,
-        "grade": 7.43
+        "attendance": 92,
+        "grade": 7.43,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1048",
@@ -13640,11 +15734,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1258@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917943309659",
-        "attendance": 96,
-        "grade": 9.71
+        "attendance": 92,
+        "grade": 9.71,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1049",
@@ -13653,11 +15749,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1259@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916367137651",
         "attendance": 77,
-        "grade": 7.68
+        "grade": 7.68,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1050",
@@ -13666,11 +15764,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1260@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919620360238",
-        "attendance": 97,
-        "grade": 7.32
+        "attendance": 92,
+        "grade": 7.32,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1051",
@@ -13679,11 +15779,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1261@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917052776871",
         "attendance": 92,
-        "grade": 9.79
+        "grade": 9.79,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1052",
@@ -13692,11 +15794,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1262@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918783279886",
-        "attendance": 99,
-        "grade": 7.7
+        "attendance": 92,
+        "grade": 7.7,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1053",
@@ -13705,11 +15809,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1263@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918714032506",
-        "attendance": 96,
-        "grade": 9.47
+        "attendance": 92,
+        "grade": 9.47,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1054",
@@ -13718,11 +15824,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1264@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918101760008",
         "attendance": 89,
-        "grade": 9.24
+        "grade": 9.24,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1055",
@@ -13731,11 +15839,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1265@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916621391941",
-        "attendance": 94,
-        "grade": 9.37
+        "attendance": 92,
+        "grade": 9.37,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1056",
@@ -13744,11 +15854,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1266@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918263100279",
         "attendance": 81,
-        "grade": 9.28
+        "grade": 9.28,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-1057",
@@ -13757,11 +15869,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1267@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916195571324",
         "attendance": 80,
-        "grade": 8.9
+        "grade": 8.9,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1058",
@@ -13770,11 +15884,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1268@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917487184788",
         "attendance": 83,
-        "grade": 9.18
+        "grade": 9.18,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-1059",
@@ -13783,11 +15899,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1269@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919333461508",
         "attendance": 87,
-        "grade": 7.13
+        "grade": 7.13,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1060",
@@ -13796,11 +15914,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1270@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919716808994",
         "attendance": 87,
-        "grade": 6.71
+        "grade": 6.71,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1061",
@@ -13809,11 +15929,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1271@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917327579559",
-        "attendance": 99,
-        "grade": 9.89
+        "attendance": 92,
+        "grade": 9.89,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1062",
@@ -13822,11 +15944,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1272@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919003090135",
         "attendance": 75,
-        "grade": 8.33
+        "grade": 8.33,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1063",
@@ -13835,11 +15959,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1273@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919225072031",
         "attendance": 75,
-        "grade": 9.54
+        "grade": 9.54,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1064",
@@ -13848,11 +15974,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1274@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919883492140",
-        "attendance": 93,
-        "grade": 6.63
+        "attendance": 92,
+        "grade": 6.63,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1065",
@@ -13861,11 +15989,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1275@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919864405630",
         "attendance": 92,
-        "grade": 7.9
+        "grade": 7.9,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1066",
@@ -13874,11 +16004,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1276@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916398532712",
-        "attendance": 95,
-        "grade": 8.84
+        "attendance": 92,
+        "grade": 8.84,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1067",
@@ -13887,11 +16019,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1277@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919905498193",
         "attendance": 84,
-        "grade": 9.58
+        "grade": 9.58,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-1068",
@@ -13900,11 +16034,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1278@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918758723509",
-        "attendance": 99,
-        "grade": 7.58
+        "attendance": 92,
+        "grade": 7.58,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1069",
@@ -13913,11 +16049,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1279@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916174812548",
-        "attendance": 96,
-        "grade": 6.84
+        "attendance": 92,
+        "grade": 6.84,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1070",
@@ -13926,11 +16064,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1280@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918367277581",
-        "attendance": 98,
-        "grade": 7.01
+        "attendance": 92,
+        "grade": 7.01,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1071",
@@ -13939,11 +16079,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1281@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916394144313",
-        "attendance": 94,
-        "grade": 7.15
+        "attendance": 92,
+        "grade": 7.15,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1072",
@@ -13952,11 +16094,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1282@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918102024004",
         "attendance": 76,
-        "grade": 7.29
+        "grade": 7.29,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1073",
@@ -13965,11 +16109,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1283@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916306574519",
         "attendance": 92,
-        "grade": 8.45
+        "grade": 8.45,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1074",
@@ -13978,11 +16124,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1284@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917085632653",
         "attendance": 89,
-        "grade": 7.65
+        "grade": 7.65,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1075",
@@ -13991,11 +16139,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1285@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919323169095",
         "attendance": 86,
-        "grade": 8.17
+        "grade": 8.17,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1076",
@@ -14004,11 +16154,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1286@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918071218267",
-        "attendance": 94,
-        "grade": 8.18
+        "attendance": 92,
+        "grade": 8.18,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1077",
@@ -14017,11 +16169,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1287@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917420761375",
         "attendance": 92,
-        "grade": 9.29
+        "grade": 9.29,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1078",
@@ -14030,11 +16184,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1288@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918433567124",
         "attendance": 84,
-        "grade": 7.21
+        "grade": 7.21,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1079",
@@ -14043,11 +16199,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1289@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917195633405",
         "attendance": 76,
-        "grade": 6.65
+        "grade": 6.65,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1080",
@@ -14056,11 +16214,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a1290@smartcampus.com",
         "branch": "IT",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919127570650",
-        "attendance": 94,
-        "grade": 9.39
+        "attendance": 92,
+        "grade": 9.39,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1081",
@@ -14069,11 +16229,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0401@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919907893563",
         "attendance": 87,
-        "grade": 9.84
+        "grade": 9.84,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1082",
@@ -14082,11 +16244,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0402@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916744732056",
         "attendance": 79,
-        "grade": 9.22
+        "grade": 9.22,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1083",
@@ -14095,11 +16259,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0403@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916037852496",
         "attendance": 78,
-        "grade": 7.17
+        "grade": 7.17,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1084",
@@ -14108,11 +16274,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0404@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917083790838",
         "attendance": 81,
-        "grade": 9.35
+        "grade": 9.35,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1085",
@@ -14121,11 +16289,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0405@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916184908006",
         "attendance": 91,
-        "grade": 6.93
+        "grade": 6.93,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1086",
@@ -14134,11 +16304,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0406@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916752837444",
-        "attendance": 94,
-        "grade": 8.47
+        "attendance": 92,
+        "grade": 8.47,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1087",
@@ -14147,11 +16319,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0407@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916491716370",
         "attendance": 79,
-        "grade": 9.91
+        "grade": 9.91,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1088",
@@ -14160,11 +16334,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0408@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916394510956",
-        "attendance": 97,
-        "grade": 7.97
+        "attendance": 92,
+        "grade": 7.97,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-1089",
@@ -14173,11 +16349,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0409@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919095106906",
         "attendance": 77,
-        "grade": 7.71
+        "grade": 7.71,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1090",
@@ -14186,11 +16364,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0410@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918752540218",
         "attendance": 88,
-        "grade": 8.85
+        "grade": 8.85,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1091",
@@ -14199,11 +16379,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0411@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919433832262",
         "attendance": 80,
-        "grade": 7.72
+        "grade": 7.72,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1092",
@@ -14212,11 +16394,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0412@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917268629959",
         "attendance": 77,
-        "grade": 9.33
+        "grade": 9.33,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1093",
@@ -14225,11 +16409,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0413@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916140286881",
-        "attendance": 96,
-        "grade": 9.18
+        "attendance": 92,
+        "grade": 9.18,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-1094",
@@ -14238,11 +16424,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0414@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916900608939",
-        "attendance": 96,
-        "grade": 7.32
+        "attendance": 92,
+        "grade": 7.32,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1095",
@@ -14251,11 +16439,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0415@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917564988015",
-        "attendance": 98,
-        "grade": 8.04
+        "attendance": 92,
+        "grade": 8.04,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1096",
@@ -14264,11 +16454,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0416@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917222475561",
-        "attendance": 94,
-        "grade": 9.58
+        "attendance": 92,
+        "grade": 9.58,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1097",
@@ -14277,11 +16469,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0417@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918875781044",
         "attendance": 81,
-        "grade": 7.35
+        "grade": 7.35,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-1098",
@@ -14290,11 +16484,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0418@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916444320114",
         "attendance": 92,
-        "grade": 8.25
+        "grade": 8.25,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-1099",
@@ -14303,11 +16499,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0419@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919752723800",
         "attendance": 84,
-        "grade": 9.89
+        "grade": 9.89,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1100",
@@ -14316,11 +16514,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0420@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918841446074",
         "attendance": 92,
-        "grade": 7.56
+        "grade": 7.56,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1101",
@@ -14329,11 +16529,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0421@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918615453671",
         "attendance": 84,
-        "grade": 9
+        "grade": 9,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1102",
@@ -14342,11 +16544,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0422@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+916510610291",
         "attendance": 82,
-        "grade": 7.38
+        "grade": 7.38,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1103",
@@ -14355,11 +16559,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0423@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+917950314954",
         "attendance": 76,
-        "grade": 7.26
+        "grade": 7.26,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1104",
@@ -14368,11 +16574,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0424@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919119581614",
         "attendance": 88,
-        "grade": 9.09
+        "grade": 9.09,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1105",
@@ -14381,11 +16589,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0425@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918971906166",
         "attendance": 81,
-        "grade": 7.4
+        "grade": 7.4,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1106",
@@ -14394,11 +16604,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0426@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+918213641667",
         "attendance": 90,
-        "grade": 7.7
+        "grade": 7.7,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1107",
@@ -14407,11 +16619,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0427@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919865192431",
-        "attendance": 97,
-        "grade": 9.67
+        "attendance": 92,
+        "grade": 9.67,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1108",
@@ -14420,11 +16634,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0428@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919560449964",
         "attendance": 75,
-        "grade": 8.43
+        "grade": 8.43,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1109",
@@ -14433,11 +16649,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0429@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919149417239",
-        "attendance": 97,
-        "grade": 6.84
+        "attendance": 92,
+        "grade": 6.84,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1110",
@@ -14446,11 +16664,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0430@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "A",
         "phone": "+919059208983",
         "attendance": 81,
-        "grade": 7.76
+        "grade": 7.76,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1111",
@@ -14459,11 +16679,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0431@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919073418242",
         "attendance": 87,
-        "grade": 6.75
+        "grade": 6.75,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1112",
@@ -14472,11 +16694,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0432@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917213766433",
-        "attendance": 99,
-        "grade": 9.29
+        "attendance": 92,
+        "grade": 9.29,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-1113",
@@ -14485,11 +16709,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0433@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919763777010",
         "attendance": 90,
-        "grade": 9.89
+        "grade": 9.89,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1114",
@@ -14498,11 +16724,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0434@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919884665561",
         "attendance": 83,
-        "grade": 7.66
+        "grade": 7.66,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1115",
@@ -14511,11 +16739,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0435@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919211819979",
         "attendance": 86,
-        "grade": 7.6
+        "grade": 7.6,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1116",
@@ -14524,11 +16754,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0436@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917494651710",
         "attendance": 78,
-        "grade": 8.73
+        "grade": 8.73,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-1117",
@@ -14537,11 +16769,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0437@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919386202724",
         "attendance": 91,
-        "grade": 6.63
+        "grade": 6.63,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1118",
@@ -14550,11 +16784,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0438@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918585517193",
-        "attendance": 94,
-        "grade": 7.89
+        "attendance": 92,
+        "grade": 7.89,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1119",
@@ -14563,11 +16799,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0439@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919258680601",
         "attendance": 80,
-        "grade": 7.89
+        "grade": 7.89,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1120",
@@ -14576,11 +16814,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0440@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916931794512",
         "attendance": 87,
-        "grade": 6.83
+        "grade": 6.83,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1121",
@@ -14589,11 +16829,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0441@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918279612408",
         "attendance": 85,
-        "grade": 8.82
+        "grade": 8.82,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1122",
@@ -14602,11 +16844,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0442@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917335695012",
         "attendance": 90,
-        "grade": 8.1
+        "grade": 8.1,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1123",
@@ -14615,11 +16859,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0443@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917145434968",
         "attendance": 78,
-        "grade": 7.72
+        "grade": 7.72,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1124",
@@ -14628,11 +16874,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0444@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917486326101",
-        "attendance": 96,
-        "grade": 9.03
+        "attendance": 92,
+        "grade": 9.03,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-1125",
@@ -14641,11 +16889,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0445@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916655462333",
         "attendance": 88,
-        "grade": 9.74
+        "grade": 9.74,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-1126",
@@ -14654,11 +16904,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0446@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917940185437",
-        "attendance": 98,
-        "grade": 7.07
+        "attendance": 92,
+        "grade": 7.07,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1127",
@@ -14667,11 +16919,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0447@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918625195184",
         "attendance": 76,
-        "grade": 9.57
+        "grade": 9.57,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1128",
@@ -14680,11 +16934,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0448@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917905105276",
         "attendance": 84,
-        "grade": 8.33
+        "grade": 8.33,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1129",
@@ -14693,11 +16949,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0449@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917995332530",
         "attendance": 75,
-        "grade": 9.46
+        "grade": 9.46,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-1130",
@@ -14706,11 +16964,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0450@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919869403948",
         "attendance": 87,
-        "grade": 8.2
+        "grade": 8.2,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1131",
@@ -14719,11 +16979,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0451@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917003732817",
         "attendance": 78,
-        "grade": 8.62
+        "grade": 8.62,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1132",
@@ -14732,11 +16994,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0452@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+916215335636",
         "attendance": 91,
-        "grade": 9
+        "grade": 9,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1133",
@@ -14745,11 +17009,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0453@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918530380711",
         "attendance": 82,
-        "grade": 7.48
+        "grade": 7.48,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1134",
@@ -14758,11 +17024,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0454@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918572760765",
-        "attendance": 98,
-        "grade": 7.63
+        "attendance": 92,
+        "grade": 7.63,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1135",
@@ -14771,11 +17039,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0455@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+918421640899",
         "attendance": 91,
-        "grade": 6.67
+        "grade": 6.67,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1136",
@@ -14784,11 +17054,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0456@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917436510312",
         "attendance": 85,
-        "grade": 8.88
+        "grade": 8.88,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1137",
@@ -14797,11 +17069,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0457@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917020503977",
         "attendance": 88,
-        "grade": 9.02
+        "grade": 9.02,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1138",
@@ -14810,11 +17084,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0458@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919638300189",
         "attendance": 82,
-        "grade": 6.53
+        "grade": 6.53,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1139",
@@ -14823,11 +17099,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0459@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+917307774885",
-        "attendance": 96,
-        "grade": 9.92
+        "attendance": 92,
+        "grade": 9.92,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1140",
@@ -14836,11 +17114,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0460@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "B",
         "phone": "+919161488957",
         "attendance": 84,
-        "grade": 9.97
+        "grade": 9.97,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1141",
@@ -14849,11 +17129,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0461@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918198484439",
         "attendance": 78,
-        "grade": 7.36
+        "grade": 7.36,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1142",
@@ -14862,11 +17144,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0462@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919675759157",
-        "attendance": 94,
-        "grade": 9.62
+        "attendance": 92,
+        "grade": 9.62,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1143",
@@ -14875,11 +17159,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0463@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918440933401",
-        "attendance": 96,
-        "grade": 7.27
+        "attendance": 92,
+        "grade": 7.27,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-1144",
@@ -14888,11 +17174,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0464@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916347940325",
         "attendance": 76,
-        "grade": 8.23
+        "grade": 8.23,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1145",
@@ -14901,11 +17189,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0465@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918326691652",
         "attendance": 89,
-        "grade": 8.57
+        "grade": 8.57,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1146",
@@ -14914,11 +17204,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0466@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918626963708",
         "attendance": 86,
-        "grade": 9.45
+        "grade": 9.45,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-1147",
@@ -14927,11 +17219,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0467@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916945063584",
         "attendance": 76,
-        "grade": 8.12
+        "grade": 8.12,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-1148",
@@ -14940,11 +17234,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0468@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918448286745",
         "attendance": 84,
-        "grade": 6.87
+        "grade": 6.87,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1149",
@@ -14953,11 +17249,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0469@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919236362963",
-        "attendance": 96,
-        "grade": 9.12
+        "attendance": 92,
+        "grade": 9.12,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1150",
@@ -14966,11 +17264,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0470@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916099248486",
         "attendance": 76,
-        "grade": 6.55
+        "grade": 6.55,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1151",
@@ -14979,11 +17279,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0471@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919601733776",
         "attendance": 84,
-        "grade": 6.58
+        "grade": 6.58,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1152",
@@ -14992,11 +17294,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0472@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916203844502",
         "attendance": 75,
-        "grade": 9.84
+        "grade": 9.84,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1153",
@@ -15005,11 +17309,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0473@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917881510467",
-        "attendance": 99,
-        "grade": 6.93
+        "attendance": 92,
+        "grade": 6.93,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1154",
@@ -15018,11 +17324,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0474@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916291015279",
         "attendance": 75,
-        "grade": 7.64
+        "grade": 7.64,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1155",
@@ -15031,11 +17339,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0475@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918520542595",
         "attendance": 92,
-        "grade": 6.53
+        "grade": 6.53,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1156",
@@ -15044,11 +17354,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0476@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916625824131",
-        "attendance": 95,
-        "grade": 6.68
+        "attendance": 92,
+        "grade": 6.68,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1157",
@@ -15057,11 +17369,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0477@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919067065574",
         "attendance": 76,
-        "grade": 9.42
+        "grade": 9.42,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1158",
@@ -15070,11 +17384,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0478@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918399871749",
         "attendance": 79,
-        "grade": 9.49
+        "grade": 9.49,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-1159",
@@ -15083,11 +17399,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0479@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916882130226",
         "attendance": 92,
-        "grade": 7.99
+        "grade": 7.99,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1160",
@@ -15096,11 +17414,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0480@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916157036641",
-        "attendance": 97,
-        "grade": 7
+        "attendance": 92,
+        "grade": 7,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1161",
@@ -15109,11 +17429,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0481@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919501536238",
         "attendance": 83,
-        "grade": 6.79
+        "grade": 6.79,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1162",
@@ -15122,11 +17444,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0482@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918249892226",
-        "attendance": 98,
-        "grade": 6.8
+        "attendance": 92,
+        "grade": 6.8,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1163",
@@ -15135,11 +17459,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0483@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917787733034",
         "attendance": 88,
-        "grade": 6.66
+        "grade": 6.66,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1164",
@@ -15148,11 +17474,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0484@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917611496527",
         "attendance": 82,
-        "grade": 9.56
+        "grade": 9.56,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1165",
@@ -15161,11 +17489,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0485@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+916806753485",
         "attendance": 77,
-        "grade": 8.01
+        "grade": 8.01,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1166",
@@ -15174,11 +17504,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0486@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919946827563",
-        "attendance": 97,
-        "grade": 9.58
+        "attendance": 92,
+        "grade": 9.58,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1167",
@@ -15187,11 +17519,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0487@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917651613092",
-        "attendance": 96,
-        "grade": 9.16
+        "attendance": 92,
+        "grade": 9.16,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1168",
@@ -15200,11 +17534,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0488@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+917810182811",
         "attendance": 75,
-        "grade": 9.2
+        "grade": 9.2,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1169",
@@ -15213,11 +17549,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0489@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+918118909362",
         "attendance": 82,
-        "grade": 6.87
+        "grade": 6.87,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1170",
@@ -15226,11 +17564,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "22k91a0490@smartcampus.com",
         "branch": "ECE",
         "year": 4,
-        "semester": 7,
+        "semester": 8,
         "section": "C",
         "phone": "+919968737191",
-        "attendance": 95,
-        "grade": 8.78
+        "attendance": 92,
+        "grade": 8.78,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1171",
@@ -15239,11 +17579,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0401@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918359108343",
         "attendance": 92,
-        "grade": 7.93
+        "grade": 7.93,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1172",
@@ -15252,11 +17594,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0402@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917918570325",
-        "attendance": 97,
-        "grade": 8.78
+        "attendance": 92,
+        "grade": 8.78,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1173",
@@ -15265,11 +17609,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0403@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916919722719",
         "attendance": 78,
-        "grade": 9.16
+        "grade": 9.16,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1174",
@@ -15278,11 +17624,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0404@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917826984675",
         "attendance": 76,
-        "grade": 6.61
+        "grade": 6.61,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1175",
@@ -15291,11 +17639,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0405@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919112061780",
-        "attendance": 94,
-        "grade": 7.86
+        "attendance": 92,
+        "grade": 7.86,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1176",
@@ -15304,11 +17654,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0406@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918558723958",
         "attendance": 84,
-        "grade": 8.45
+        "grade": 8.45,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1177",
@@ -15317,11 +17669,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0407@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918810956389",
-        "attendance": 98,
-        "grade": 9.86
+        "attendance": 92,
+        "grade": 9.86,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1178",
@@ -15330,11 +17684,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0408@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918885779161",
-        "attendance": 96,
-        "grade": 6.73
+        "attendance": 92,
+        "grade": 6.73,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1179",
@@ -15343,11 +17699,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0409@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918717235427",
-        "attendance": 95,
-        "grade": 8.37
+        "attendance": 92,
+        "grade": 8.37,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1180",
@@ -15356,11 +17714,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0410@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918214844518",
-        "attendance": 97,
-        "grade": 9.92
+        "attendance": 92,
+        "grade": 9.92,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1181",
@@ -15369,11 +17729,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0411@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917244910104",
-        "attendance": 94,
-        "grade": 8.98
+        "attendance": 92,
+        "grade": 8.98,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-1182",
@@ -15382,11 +17744,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0412@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916209425131",
-        "attendance": 94,
-        "grade": 7.38
+        "attendance": 92,
+        "grade": 7.38,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-1183",
@@ -15395,11 +17759,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0413@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917439698277",
-        "attendance": 97,
-        "grade": 7.18
+        "attendance": 92,
+        "grade": 7.18,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1184",
@@ -15408,11 +17774,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0414@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918288233314",
         "attendance": 84,
-        "grade": 9.08
+        "grade": 9.08,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-1185",
@@ -15421,11 +17789,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0415@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916086215783",
         "attendance": 88,
-        "grade": 7.62
+        "grade": 7.62,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1186",
@@ -15434,11 +17804,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0416@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918285811581",
-        "attendance": 94,
-        "grade": 7.44
+        "attendance": 92,
+        "grade": 7.44,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1187",
@@ -15447,11 +17819,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0417@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917076541731",
         "attendance": 79,
-        "grade": 8.34
+        "grade": 8.34,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-1188",
@@ -15460,11 +17834,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0418@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918703884861",
         "attendance": 85,
-        "grade": 8.65
+        "grade": 8.65,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1189",
@@ -15473,11 +17849,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0419@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916171903088",
         "attendance": 92,
-        "grade": 7.19
+        "grade": 7.19,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1190",
@@ -15486,11 +17864,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0420@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918492114953",
         "attendance": 84,
-        "grade": 7.69
+        "grade": 7.69,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1191",
@@ -15499,11 +17879,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0421@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917022672929",
         "attendance": 80,
-        "grade": 9.23
+        "grade": 9.23,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1192",
@@ -15512,11 +17894,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0422@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917619438625",
         "attendance": 78,
-        "grade": 7.29
+        "grade": 7.29,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1193",
@@ -15525,11 +17909,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0423@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+916094168654",
         "attendance": 76,
-        "grade": 6.95
+        "grade": 6.95,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-1194",
@@ -15538,11 +17924,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0424@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918312067100",
         "attendance": 88,
-        "grade": 8.56
+        "grade": 8.56,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1195",
@@ -15551,11 +17939,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0425@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918729999683",
         "attendance": 82,
-        "grade": 9.5
+        "grade": 9.5,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1196",
@@ -15564,11 +17954,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0426@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917302752221",
-        "attendance": 94,
-        "grade": 9.27
+        "attendance": 92,
+        "grade": 9.27,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1197",
@@ -15577,11 +17969,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0427@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+917118081874",
         "attendance": 77,
-        "grade": 7.77
+        "grade": 7.77,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1198",
@@ -15590,11 +17984,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0428@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918599832413",
         "attendance": 76,
-        "grade": 9.63
+        "grade": 9.63,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-1199",
@@ -15603,11 +17999,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0429@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+918497443396",
-        "attendance": 98,
-        "grade": 9.53
+        "attendance": 92,
+        "grade": 9.53,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1200",
@@ -15616,11 +18014,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0430@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "A",
         "phone": "+919135951626",
         "attendance": 83,
-        "grade": 7.43
+        "grade": 7.43,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1201",
@@ -15629,11 +18029,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0431@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917066294082",
         "attendance": 84,
-        "grade": 6.63
+        "grade": 6.63,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1202",
@@ -15642,11 +18044,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0432@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917949505089",
         "attendance": 77,
-        "grade": 7.95
+        "grade": 7.95,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1203",
@@ -15655,11 +18059,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0433@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917483482231",
         "attendance": 83,
-        "grade": 6.54
+        "grade": 6.54,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1204",
@@ -15668,11 +18074,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0434@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916130890393",
         "attendance": 80,
-        "grade": 7.66
+        "grade": 7.66,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1205",
@@ -15681,11 +18089,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0435@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919160163844",
         "attendance": 91,
-        "grade": 9.96
+        "grade": 9.96,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1206",
@@ -15694,11 +18104,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0436@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919815411357",
         "attendance": 76,
-        "grade": 7.35
+        "grade": 7.35,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1207",
@@ -15707,11 +18119,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0437@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918055647268",
         "attendance": 82,
-        "grade": 8.07
+        "grade": 8.07,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1208",
@@ -15720,11 +18134,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0438@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919977131565",
         "attendance": 78,
-        "grade": 7.25
+        "grade": 7.25,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-1209",
@@ -15733,11 +18149,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0439@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919860787812",
         "attendance": 80,
-        "grade": 8.79
+        "grade": 8.79,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1210",
@@ -15746,11 +18164,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0440@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917682162489",
-        "attendance": 93,
-        "grade": 8.49
+        "attendance": 92,
+        "grade": 8.49,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1211",
@@ -15759,11 +18179,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0441@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917544225909",
         "attendance": 92,
-        "grade": 8.07
+        "grade": 8.07,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1212",
@@ -15772,11 +18194,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0442@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916186088519",
         "attendance": 89,
-        "grade": 8.87
+        "grade": 8.87,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1213",
@@ -15785,11 +18209,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0443@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917679614135",
         "attendance": 82,
-        "grade": 9.95
+        "grade": 9.95,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1214",
@@ -15798,11 +18224,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0444@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919447313416",
         "attendance": 88,
-        "grade": 8.24
+        "grade": 8.24,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1215",
@@ -15811,11 +18239,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0445@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917391455163",
-        "attendance": 93,
-        "grade": 9.52
+        "attendance": 92,
+        "grade": 9.52,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1216",
@@ -15824,11 +18254,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0446@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918113086073",
-        "attendance": 99,
-        "grade": 7.11
+        "attendance": 92,
+        "grade": 7.11,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1217",
@@ -15837,11 +18269,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0447@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917885123962",
         "attendance": 88,
-        "grade": 8.03
+        "grade": 8.03,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1218",
@@ -15850,11 +18284,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0448@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917808385438",
         "attendance": 77,
-        "grade": 8.05
+        "grade": 8.05,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1219",
@@ -15863,11 +18299,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0449@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916234326655",
         "attendance": 76,
-        "grade": 8.16
+        "grade": 8.16,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-1220",
@@ -15876,11 +18314,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0450@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918457682448",
         "attendance": 89,
-        "grade": 8.64
+        "grade": 8.64,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1221",
@@ -15889,11 +18329,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0451@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918127845436",
         "attendance": 90,
-        "grade": 9.16
+        "grade": 9.16,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1222",
@@ -15902,11 +18344,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0452@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917988642607",
         "attendance": 87,
-        "grade": 9.17
+        "grade": 9.17,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1223",
@@ -15915,11 +18359,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0453@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916547758766",
-        "attendance": 95,
-        "grade": 9.08
+        "attendance": 92,
+        "grade": 9.08,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1224",
@@ -15928,11 +18374,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0454@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918275026401",
         "attendance": 89,
-        "grade": 7.13
+        "grade": 7.13,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1225",
@@ -15941,11 +18389,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0455@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917930062672",
-        "attendance": 95,
-        "grade": 6.81
+        "attendance": 92,
+        "grade": 6.81,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-1226",
@@ -15954,11 +18404,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0456@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+917140203379",
-        "attendance": 98,
-        "grade": 7.97
+        "attendance": 92,
+        "grade": 7.97,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1227",
@@ -15967,11 +18419,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0457@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+918286751030",
         "attendance": 78,
-        "grade": 8.5
+        "grade": 8.5,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1228",
@@ -15980,11 +18434,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0458@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919750311710",
         "attendance": 85,
-        "grade": 7.86
+        "grade": 7.86,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1229",
@@ -15993,11 +18449,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0459@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+919328617510",
         "attendance": 76,
-        "grade": 9.51
+        "grade": 9.51,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1230",
@@ -16006,11 +18464,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0460@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "B",
         "phone": "+916343214751",
         "attendance": 81,
-        "grade": 8.95
+        "grade": 8.95,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1231",
@@ -16019,11 +18479,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0461@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916604190216",
-        "attendance": 97,
-        "grade": 9.69
+        "attendance": 92,
+        "grade": 9.69,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1232",
@@ -16032,11 +18494,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0462@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917197911369",
         "attendance": 81,
-        "grade": 6.73
+        "grade": 6.73,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1233",
@@ -16045,11 +18509,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0463@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917234423840",
         "attendance": 88,
-        "grade": 7.23
+        "grade": 7.23,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1234",
@@ -16058,11 +18524,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0464@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919986851820",
         "attendance": 76,
-        "grade": 7.97
+        "grade": 7.97,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1235",
@@ -16071,11 +18539,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0465@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918160195398",
         "attendance": 88,
-        "grade": 9.62
+        "grade": 9.62,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1236",
@@ -16084,11 +18554,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0466@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916595025880",
-        "attendance": 95,
-        "grade": 8.47
+        "attendance": 92,
+        "grade": 8.47,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1237",
@@ -16097,11 +18569,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0467@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917749548551",
         "attendance": 80,
-        "grade": 9.17
+        "grade": 9.17,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1238",
@@ -16110,11 +18584,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0468@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917502953401",
-        "attendance": 98,
-        "grade": 9.19
+        "attendance": 92,
+        "grade": 9.19,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-1239",
@@ -16123,11 +18599,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0469@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916096201152",
-        "attendance": 95,
-        "grade": 8.2
+        "attendance": 92,
+        "grade": 8.2,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1240",
@@ -16136,11 +18614,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0470@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918870763419",
         "attendance": 84,
-        "grade": 9.15
+        "grade": 9.15,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1241",
@@ -16149,11 +18629,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0471@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919403108193",
         "attendance": 77,
-        "grade": 6.57
+        "grade": 6.57,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1242",
@@ -16162,11 +18644,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0472@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919286828341",
-        "attendance": 97,
-        "grade": 7.37
+        "attendance": 92,
+        "grade": 7.37,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1243",
@@ -16175,11 +18659,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0473@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919021151010",
         "attendance": 87,
-        "grade": 8.42
+        "grade": 8.42,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-1244",
@@ -16188,11 +18674,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0474@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916932732814",
-        "attendance": 99,
-        "grade": 8.96
+        "attendance": 92,
+        "grade": 8.96,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-1245",
@@ -16201,11 +18689,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0475@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918240619749",
         "attendance": 78,
-        "grade": 9.74
+        "grade": 9.74,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1246",
@@ -16214,11 +18704,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0476@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919079918412",
         "attendance": 80,
-        "grade": 7.06
+        "grade": 7.06,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-1247",
@@ -16227,11 +18719,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0477@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916140735208",
         "attendance": 91,
-        "grade": 6.9
+        "grade": 6.9,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1248",
@@ -16240,11 +18734,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0478@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919015989553",
         "attendance": 88,
-        "grade": 9.61
+        "grade": 9.61,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1249",
@@ -16253,11 +18749,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0479@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916300786984",
         "attendance": 79,
-        "grade": 9.71
+        "grade": 9.71,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1250",
@@ -16266,11 +18764,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0480@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918506053148",
         "attendance": 76,
-        "grade": 8.39
+        "grade": 8.39,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1251",
@@ -16279,11 +18779,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0481@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918057628769",
-        "attendance": 98,
-        "grade": 9.62
+        "attendance": 92,
+        "grade": 9.62,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1252",
@@ -16292,11 +18794,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0482@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916007246556",
         "attendance": 90,
-        "grade": 9.31
+        "grade": 9.31,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1253",
@@ -16305,11 +18809,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0483@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919184058046",
         "attendance": 80,
-        "grade": 9.54
+        "grade": 9.54,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1254",
@@ -16318,11 +18824,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0484@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916273821257",
         "attendance": 78,
-        "grade": 7.34
+        "grade": 7.34,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1255",
@@ -16331,11 +18839,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0485@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+918821774027",
         "attendance": 88,
-        "grade": 9.98
+        "grade": 9.98,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1256",
@@ -16344,11 +18854,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0486@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+916571499585",
         "attendance": 92,
-        "grade": 8.95
+        "grade": 8.95,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1257",
@@ -16357,11 +18869,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0487@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917706752375",
         "attendance": 79,
-        "grade": 7.66
+        "grade": 7.66,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1258",
@@ -16370,11 +18884,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0488@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+919501544896",
-        "attendance": 96,
-        "grade": 7.75
+        "attendance": 92,
+        "grade": 7.75,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1259",
@@ -16383,11 +18899,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0489@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917589255459",
         "attendance": 89,
-        "grade": 7.61
+        "grade": 7.61,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1260",
@@ -16396,11 +18914,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "23k91a0490@smartcampus.com",
         "branch": "ECE",
         "year": 3,
-        "semester": 5,
+        "semester": 6,
         "section": "C",
         "phone": "+917159977307",
         "attendance": 75,
-        "grade": 7.91
+        "grade": 7.91,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1261",
@@ -16409,11 +18929,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0401@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918895333370",
         "attendance": 75,
-        "grade": 8.49
+        "grade": 8.49,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1262",
@@ -16422,11 +18944,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0402@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919908612018",
         "attendance": 92,
-        "grade": 9.55
+        "grade": 9.55,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1263",
@@ -16435,11 +18959,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0403@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917598877862",
         "attendance": 84,
-        "grade": 7.38
+        "grade": 7.38,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1264",
@@ -16448,11 +18974,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0404@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916986919995",
         "attendance": 82,
-        "grade": 8.21
+        "grade": 8.21,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1265",
@@ -16461,11 +18989,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0405@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919767566524",
         "attendance": 76,
-        "grade": 7.65
+        "grade": 7.65,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1266",
@@ -16474,11 +19004,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0406@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917829325110",
         "attendance": 83,
-        "grade": 9.94
+        "grade": 9.94,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1267",
@@ -16487,11 +19019,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0407@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916319922470",
         "attendance": 91,
-        "grade": 9.09
+        "grade": 9.09,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1268",
@@ -16500,11 +19034,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0408@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916554598135",
         "attendance": 92,
-        "grade": 6.83
+        "grade": 6.83,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1269",
@@ -16513,11 +19049,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0409@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919874558853",
         "attendance": 82,
-        "grade": 7.21
+        "grade": 7.21,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1270",
@@ -16526,11 +19064,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0410@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916040958018",
-        "attendance": 97,
-        "grade": 9.89
+        "attendance": 92,
+        "grade": 9.89,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-1271",
@@ -16539,11 +19079,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0411@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916888609060",
         "attendance": 90,
-        "grade": 9.98
+        "grade": 9.98,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1272",
@@ -16552,11 +19094,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0412@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916057114901",
-        "attendance": 96,
-        "grade": 8.18
+        "attendance": 92,
+        "grade": 8.18,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1273",
@@ -16565,11 +19109,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0413@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917925279527",
         "attendance": 89,
-        "grade": 7.76
+        "grade": 7.76,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1274",
@@ -16578,11 +19124,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0414@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917886391773",
         "attendance": 92,
-        "grade": 8.48
+        "grade": 8.48,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1275",
@@ -16591,11 +19139,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0415@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916514744348",
         "attendance": 88,
-        "grade": 9.79
+        "grade": 9.79,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1276",
@@ -16604,11 +19154,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0416@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917736797484",
         "attendance": 76,
-        "grade": 6.88
+        "grade": 6.88,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1277",
@@ -16617,11 +19169,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0417@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919455179517",
         "attendance": 80,
-        "grade": 9.98
+        "grade": 9.98,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1278",
@@ -16630,11 +19184,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0418@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919030768745",
         "attendance": 82,
-        "grade": 9.94
+        "grade": 9.94,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1279",
@@ -16643,11 +19199,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0419@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917462644496",
-        "attendance": 94,
-        "grade": 9.99
+        "attendance": 92,
+        "grade": 9.99,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1280",
@@ -16656,11 +19214,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0420@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918334855698",
-        "attendance": 94,
-        "grade": 8.25
+        "attendance": 92,
+        "grade": 8.25,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1281",
@@ -16669,11 +19229,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0421@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918895299456",
         "attendance": 79,
-        "grade": 8.58
+        "grade": 8.58,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1282",
@@ -16682,11 +19244,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0422@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917297028204",
         "attendance": 91,
-        "grade": 8.86
+        "grade": 8.86,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1283",
@@ -16695,11 +19259,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0423@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916633130005",
         "attendance": 75,
-        "grade": 8.16
+        "grade": 8.16,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1284",
@@ -16708,11 +19274,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0424@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919196545009",
-        "attendance": 96,
-        "grade": 7.85
+        "attendance": 92,
+        "grade": 7.85,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1285",
@@ -16721,11 +19289,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0425@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918336421823",
-        "attendance": 98,
-        "grade": 8.53
+        "attendance": 92,
+        "grade": 8.53,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-1286",
@@ -16734,11 +19304,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0426@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+917069233703",
         "attendance": 91,
-        "grade": 9.14
+        "grade": 9.14,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1287",
@@ -16747,11 +19319,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0427@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919572875049",
-        "attendance": 95,
-        "grade": 7.17
+        "attendance": 92,
+        "grade": 7.17,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1288",
@@ -16760,11 +19334,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0428@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+916652658536",
         "attendance": 76,
-        "grade": 6.86
+        "grade": 6.86,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1289",
@@ -16773,11 +19349,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0429@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+918745660892",
-        "attendance": 98,
-        "grade": 9.37
+        "attendance": 92,
+        "grade": 9.37,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1290",
@@ -16786,11 +19364,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0430@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "A",
         "phone": "+919894478341",
-        "attendance": 97,
-        "grade": 8.23
+        "attendance": 92,
+        "grade": 8.23,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-1291",
@@ -16799,11 +19379,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0431@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919116821608",
-        "attendance": 94,
-        "grade": 8.13
+        "attendance": 92,
+        "grade": 8.13,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1292",
@@ -16812,11 +19394,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0432@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916756335224",
         "attendance": 83,
-        "grade": 7.94
+        "grade": 7.94,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1293",
@@ -16825,11 +19409,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0433@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917881732471",
         "attendance": 75,
-        "grade": 7.89
+        "grade": 7.89,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-1294",
@@ -16838,11 +19424,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0434@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919546509685",
         "attendance": 77,
-        "grade": 8.8
+        "grade": 8.8,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1295",
@@ -16851,11 +19439,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0435@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919141416410",
         "attendance": 81,
-        "grade": 8.18
+        "grade": 8.18,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1296",
@@ -16864,11 +19454,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0436@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917669038734",
         "attendance": 83,
-        "grade": 8.74
+        "grade": 8.74,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1297",
@@ -16877,11 +19469,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0437@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916610359764",
         "attendance": 86,
-        "grade": 7.2
+        "grade": 7.2,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1298",
@@ -16890,11 +19484,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0438@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916842081529",
-        "attendance": 96,
-        "grade": 9.23
+        "attendance": 92,
+        "grade": 9.23,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1299",
@@ -16903,11 +19499,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0439@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917874026209",
         "attendance": 88,
-        "grade": 6.98
+        "grade": 6.98,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1300",
@@ -16916,11 +19514,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0440@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917867770721",
-        "attendance": 96,
-        "grade": 9.93
+        "attendance": 92,
+        "grade": 9.93,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1301",
@@ -16929,11 +19529,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0441@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918400450283",
         "attendance": 91,
-        "grade": 8.42
+        "grade": 8.42,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1302",
@@ -16942,11 +19544,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0442@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916506679426",
         "attendance": 87,
-        "grade": 7
+        "grade": 7,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1303",
@@ -16955,11 +19559,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0443@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918182466319",
-        "attendance": 93,
-        "grade": 9.39
+        "attendance": 92,
+        "grade": 9.39,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1304",
@@ -16968,11 +19574,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0444@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919004160305",
         "attendance": 76,
-        "grade": 6.57
+        "grade": 6.57,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1305",
@@ -16981,11 +19589,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0445@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916851981163",
-        "attendance": 97,
-        "grade": 9.46
+        "attendance": 92,
+        "grade": 9.46,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1306",
@@ -16994,11 +19604,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0446@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916844945959",
         "attendance": 80,
-        "grade": 8.24
+        "grade": 8.24,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1307",
@@ -17007,11 +19619,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0447@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919761888400",
         "attendance": 82,
-        "grade": 9.48
+        "grade": 9.48,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1308",
@@ -17020,11 +19634,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0448@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917742405059",
         "attendance": 76,
-        "grade": 8.29
+        "grade": 8.29,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-1309",
@@ -17033,11 +19649,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0449@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917307609464",
         "attendance": 80,
-        "grade": 8.26
+        "grade": 8.26,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1310",
@@ -17046,11 +19664,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0450@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916642255798",
-        "attendance": 97,
-        "grade": 6.58
+        "attendance": 92,
+        "grade": 6.58,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1311",
@@ -17059,11 +19679,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0451@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918482000160",
         "attendance": 76,
-        "grade": 6.61
+        "grade": 6.61,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1312",
@@ -17072,11 +19694,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0452@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916695505611",
         "attendance": 89,
-        "grade": 9.39
+        "grade": 9.39,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-1313",
@@ -17085,11 +19709,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0453@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+916251754730",
-        "attendance": 93,
-        "grade": 9.11
+        "attendance": 92,
+        "grade": 9.11,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1314",
@@ -17098,11 +19724,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0454@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918054510656",
         "attendance": 80,
-        "grade": 7.96
+        "grade": 7.96,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-1315",
@@ -17111,11 +19739,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0455@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918215110611",
-        "attendance": 93,
-        "grade": 8.76
+        "attendance": 92,
+        "grade": 8.76,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1316",
@@ -17124,11 +19754,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0456@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917652773561",
         "attendance": 77,
-        "grade": 9.95
+        "grade": 9.95,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1317",
@@ -17137,11 +19769,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0457@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917893670973",
-        "attendance": 94,
-        "grade": 9.73
+        "attendance": 92,
+        "grade": 9.73,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1318",
@@ -17150,11 +19784,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0458@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+917689480050",
         "attendance": 87,
-        "grade": 8.38
+        "grade": 8.38,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1319",
@@ -17163,11 +19799,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0459@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+918926503804",
         "attendance": 77,
-        "grade": 6.66
+        "grade": 6.66,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-1320",
@@ -17176,11 +19814,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0460@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "B",
         "phone": "+919565476052",
-        "attendance": 99,
-        "grade": 6.78
+        "attendance": 92,
+        "grade": 6.78,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1321",
@@ -17189,11 +19829,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0461@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918750291332",
         "attendance": 89,
-        "grade": 7.9
+        "grade": 7.9,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1322",
@@ -17202,11 +19844,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0462@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919760408735",
         "attendance": 88,
-        "grade": 9.8
+        "grade": 9.8,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1323",
@@ -17215,11 +19859,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0463@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919008225904",
         "attendance": 84,
-        "grade": 8.45
+        "grade": 8.45,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1324",
@@ -17228,11 +19874,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0464@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919075973755",
         "attendance": 78,
-        "grade": 9.72
+        "grade": 9.72,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1325",
@@ -17241,11 +19889,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0465@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919906848099",
         "attendance": 89,
-        "grade": 7.6
+        "grade": 7.6,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1326",
@@ -17254,11 +19904,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0466@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919408450435",
         "attendance": 90,
-        "grade": 6.65
+        "grade": 6.65,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1327",
@@ -17267,11 +19919,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0467@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917068110010",
-        "attendance": 94,
-        "grade": 6.99
+        "attendance": 92,
+        "grade": 6.99,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1328",
@@ -17280,11 +19934,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0468@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917844246158",
         "attendance": 90,
-        "grade": 6.62
+        "grade": 6.62,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1329",
@@ -17293,11 +19949,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0469@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917924230533",
         "attendance": 77,
-        "grade": 6.74
+        "grade": 6.74,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1330",
@@ -17306,11 +19964,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0470@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916640423543",
         "attendance": 77,
-        "grade": 6.77
+        "grade": 6.77,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1331",
@@ -17319,11 +19979,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0471@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916824736663",
         "attendance": 83,
-        "grade": 6.71
+        "grade": 6.71,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1332",
@@ -17332,11 +19994,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0472@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917543727410",
-        "attendance": 94,
-        "grade": 7.96
+        "attendance": 92,
+        "grade": 7.96,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-1333",
@@ -17345,11 +20009,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0473@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916624130985",
-        "attendance": 97,
-        "grade": 8.98
+        "attendance": 92,
+        "grade": 8.98,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-1334",
@@ -17358,11 +20024,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0474@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917043867326",
         "attendance": 85,
-        "grade": 9.29
+        "grade": 9.29,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1335",
@@ -17371,11 +20039,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0475@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919957057018",
-        "attendance": 95,
-        "grade": 9.34
+        "attendance": 92,
+        "grade": 9.34,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1336",
@@ -17384,11 +20054,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0476@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916783046592",
         "attendance": 89,
-        "grade": 8.46
+        "grade": 8.46,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1337",
@@ -17397,11 +20069,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0477@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918174668968",
         "attendance": 77,
-        "grade": 8.3
+        "grade": 8.3,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1338",
@@ -17410,11 +20084,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0478@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919721882162",
         "attendance": 92,
-        "grade": 6.61
+        "grade": 6.61,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1339",
@@ -17423,11 +20099,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0479@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916761862605",
         "attendance": 88,
-        "grade": 7.69
+        "grade": 7.69,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1340",
@@ -17436,11 +20114,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0480@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919881920097",
-        "attendance": 99,
-        "grade": 9.85
+        "attendance": 92,
+        "grade": 9.85,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1341",
@@ -17449,11 +20129,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0481@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919283082031",
-        "attendance": 98,
-        "grade": 9.32
+        "attendance": 92,
+        "grade": 9.32,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1342",
@@ -17462,11 +20144,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0482@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916086269365",
         "attendance": 79,
-        "grade": 6.54
+        "grade": 6.54,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1343",
@@ -17475,11 +20159,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0483@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918542433748",
         "attendance": 78,
-        "grade": 7.19
+        "grade": 7.19,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1344",
@@ -17488,11 +20174,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0484@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+916132199204",
-        "attendance": 96,
-        "grade": 7.08
+        "attendance": 92,
+        "grade": 7.08,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1345",
@@ -17501,11 +20189,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0485@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917236207468",
         "attendance": 90,
-        "grade": 7.72
+        "grade": 7.72,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1346",
@@ -17514,11 +20204,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0486@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917744333086",
         "attendance": 75,
-        "grade": 7.53
+        "grade": 7.53,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1347",
@@ -17527,11 +20219,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0487@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+919873024030",
         "attendance": 82,
-        "grade": 6.9
+        "grade": 6.9,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1348",
@@ -17540,11 +20234,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0488@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918171361332",
-        "attendance": 97,
-        "grade": 7.03
+        "attendance": 92,
+        "grade": 7.03,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1349",
@@ -17553,11 +20249,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0489@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+918286241049",
         "attendance": 84,
-        "grade": 8.44
+        "grade": 8.44,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1350",
@@ -17566,11 +20264,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "24k91a0490@smartcampus.com",
         "branch": "ECE",
         "year": 2,
-        "semester": 3,
+        "semester": 4,
         "section": "C",
         "phone": "+917757479059",
         "attendance": 77,
-        "grade": 7.15
+        "grade": 7.15,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1351",
@@ -17579,11 +20279,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0401@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918425562059",
         "attendance": 83,
-        "grade": 7.82
+        "grade": 7.82,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1352",
@@ -17592,11 +20294,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0402@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917523768633",
         "attendance": 79,
-        "grade": 8.28
+        "grade": 8.28,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1353",
@@ -17605,11 +20309,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0403@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919682419740",
         "attendance": 85,
-        "grade": 9.28
+        "grade": 9.28,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1354",
@@ -17618,11 +20324,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0404@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917909493228",
         "attendance": 83,
-        "grade": 8.37
+        "grade": 8.37,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1355",
@@ -17631,11 +20339,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0405@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916163511639",
         "attendance": 88,
-        "grade": 8.25
+        "grade": 8.25,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1356",
@@ -17644,11 +20354,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0406@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919369168940",
-        "attendance": 98,
-        "grade": 6.76
+        "attendance": 92,
+        "grade": 6.76,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-1357",
@@ -17657,11 +20369,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0407@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919156310050",
         "attendance": 80,
-        "grade": 7.71
+        "grade": 7.71,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1358",
@@ -17670,11 +20384,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0408@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919835337041",
         "attendance": 88,
-        "grade": 6.55
+        "grade": 6.55,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1359",
@@ -17683,11 +20399,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0409@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919708143224",
         "attendance": 83,
-        "grade": 6.91
+        "grade": 6.91,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1360",
@@ -17696,11 +20414,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0410@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919552235676",
-        "attendance": 96,
-        "grade": 8.22
+        "attendance": 92,
+        "grade": 8.22,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1361",
@@ -17709,11 +20429,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0411@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916135877519",
         "attendance": 77,
-        "grade": 9.43
+        "grade": 9.43,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1362",
@@ -17722,11 +20444,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0412@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917228891284",
         "attendance": 89,
-        "grade": 7.27
+        "grade": 7.27,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1363",
@@ -17735,11 +20459,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0413@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917168635179",
-        "attendance": 97,
-        "grade": 6.84
+        "attendance": 92,
+        "grade": 6.84,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1364",
@@ -17748,11 +20474,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0414@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918721367923",
         "attendance": 78,
-        "grade": 9.57
+        "grade": 9.57,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1365",
@@ -17761,11 +20489,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0415@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916023145468",
-        "attendance": 94,
-        "grade": 7.09
+        "attendance": 92,
+        "grade": 7.09,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1366",
@@ -17774,11 +20504,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0416@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918236565459",
-        "attendance": 94,
-        "grade": 7.34
+        "attendance": 92,
+        "grade": 7.34,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1367",
@@ -17787,11 +20519,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0417@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918813495382",
-        "attendance": 98,
-        "grade": 7.97
+        "attendance": 92,
+        "grade": 7.97,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1368",
@@ -17800,11 +20534,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0418@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919437320589",
         "attendance": 85,
-        "grade": 8.06
+        "grade": 8.06,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1369",
@@ -17813,11 +20549,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0419@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917572949134",
         "attendance": 80,
-        "grade": 9.51
+        "grade": 9.51,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1370",
@@ -17826,11 +20564,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0420@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916685957703",
         "attendance": 90,
-        "grade": 9.44
+        "grade": 9.44,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1371",
@@ -17839,11 +20579,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0421@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918651871134",
-        "attendance": 99,
-        "grade": 7.66
+        "attendance": 92,
+        "grade": 7.66,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1372",
@@ -17852,11 +20594,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0422@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+918678668822",
         "attendance": 91,
-        "grade": 9.53
+        "grade": 9.53,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1373",
@@ -17865,11 +20609,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0423@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917162070616",
         "attendance": 88,
-        "grade": 7.47
+        "grade": 7.47,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1374",
@@ -17878,11 +20624,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0424@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916514944343",
         "attendance": 80,
-        "grade": 7.13
+        "grade": 7.13,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1375",
@@ -17891,11 +20639,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0425@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917195253162",
-        "attendance": 94,
-        "grade": 7.63
+        "attendance": 92,
+        "grade": 7.63,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1376",
@@ -17904,11 +20654,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0426@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916140050628",
         "attendance": 80,
-        "grade": 7.88
+        "grade": 7.88,
+        "assignment1": 7,
+        "mid1": 17
     },
     {
         "id": "stud-1377",
@@ -17917,11 +20669,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0427@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919351351610",
-        "attendance": 96,
-        "grade": 7.51
+        "attendance": 92,
+        "grade": 7.51,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1378",
@@ -17930,11 +20684,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0428@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+916810864777",
         "attendance": 91,
-        "grade": 9.54
+        "grade": 9.54,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1379",
@@ -17943,11 +20699,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0429@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+919669483592",
-        "attendance": 99,
-        "grade": 6.79
+        "attendance": 92,
+        "grade": 6.79,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1380",
@@ -17956,11 +20714,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0430@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "A",
         "phone": "+917734531821",
-        "attendance": 93,
-        "grade": 8.17
+        "attendance": 92,
+        "grade": 8.17,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1381",
@@ -17969,11 +20729,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0431@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917825639319",
         "attendance": 83,
-        "grade": 7.99
+        "grade": 7.99,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1382",
@@ -17982,11 +20744,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0432@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916672571854",
         "attendance": 77,
-        "grade": 6.9
+        "grade": 6.9,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1383",
@@ -17995,11 +20759,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0433@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918970454905",
         "attendance": 81,
-        "grade": 7.71
+        "grade": 7.71,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1384",
@@ -18008,11 +20774,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0434@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916255553362",
         "attendance": 75,
-        "grade": 8.23
+        "grade": 8.23,
+        "assignment1": 7,
+        "mid1": 24
     },
     {
         "id": "stud-1385",
@@ -18021,11 +20789,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0435@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919979592063",
         "attendance": 80,
-        "grade": 9.1
+        "grade": 9.1,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1386",
@@ -18034,11 +20804,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0436@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917134287969",
         "attendance": 91,
-        "grade": 8.68
+        "grade": 8.68,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1387",
@@ -18047,11 +20819,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0437@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919979151155",
         "attendance": 79,
-        "grade": 8.3
+        "grade": 8.3,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-1388",
@@ -18060,11 +20834,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0438@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917460582212",
         "attendance": 88,
-        "grade": 7.55
+        "grade": 7.55,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1389",
@@ -18073,11 +20849,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0439@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917773768077",
         "attendance": 86,
-        "grade": 8.1
+        "grade": 8.1,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1390",
@@ -18086,11 +20864,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0440@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916767460688",
         "attendance": 92,
-        "grade": 9.6
+        "grade": 9.6,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1391",
@@ -18099,11 +20879,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0441@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917157204544",
         "attendance": 79,
-        "grade": 8.37
+        "grade": 8.37,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1392",
@@ -18112,11 +20894,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0442@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919125242137",
         "attendance": 88,
-        "grade": 9.93
+        "grade": 9.93,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1393",
@@ -18125,11 +20909,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0443@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916031440576",
-        "attendance": 94,
-        "grade": 7.7
+        "attendance": 92,
+        "grade": 7.7,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1394",
@@ -18138,11 +20924,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0444@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918540313771",
         "attendance": 77,
-        "grade": 9.93
+        "grade": 9.93,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1395",
@@ -18151,11 +20939,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0445@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919373483531",
         "attendance": 83,
-        "grade": 6.57
+        "grade": 6.57,
+        "assignment1": 8,
+        "mid1": 21
     },
     {
         "id": "stud-1396",
@@ -18164,11 +20954,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0446@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918441878878",
         "attendance": 87,
-        "grade": 8.3
+        "grade": 8.3,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1397",
@@ -18177,11 +20969,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0447@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917281563616",
         "attendance": 75,
-        "grade": 7.99
+        "grade": 7.99,
+        "assignment1": 9,
+        "mid1": 21
     },
     {
         "id": "stud-1398",
@@ -18190,11 +20984,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0448@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919244339414",
-        "attendance": 93,
-        "grade": 8.18
+        "attendance": 92,
+        "grade": 8.18,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1399",
@@ -18203,11 +20999,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0449@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916884811802",
         "attendance": 80,
-        "grade": 8.32
+        "grade": 8.32,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-1400",
@@ -18216,11 +21014,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0450@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916509529860",
-        "attendance": 95,
-        "grade": 8.42
+        "attendance": 92,
+        "grade": 8.42,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-1401",
@@ -18229,11 +21029,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0451@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916955915604",
         "attendance": 76,
-        "grade": 7.42
+        "grade": 7.42,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1402",
@@ -18242,11 +21044,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0452@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917532047490",
         "attendance": 86,
-        "grade": 7.61
+        "grade": 7.61,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1403",
@@ -18255,11 +21059,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0453@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918110417894",
-        "attendance": 98,
-        "grade": 8.18
+        "attendance": 92,
+        "grade": 8.18,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-1404",
@@ -18268,11 +21074,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0454@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+919376404120",
         "attendance": 88,
-        "grade": 6.58
+        "grade": 6.58,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1405",
@@ -18281,11 +21089,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0455@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917401793253",
-        "attendance": 95,
-        "grade": 6.86
+        "attendance": 92,
+        "grade": 6.86,
+        "assignment1": 9,
+        "mid1": 22
     },
     {
         "id": "stud-1406",
@@ -18294,11 +21104,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0456@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918816608232",
         "attendance": 89,
-        "grade": 6.66
+        "grade": 6.66,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1407",
@@ -18307,11 +21119,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0457@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918487632273",
         "attendance": 87,
-        "grade": 9.79
+        "grade": 9.79,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1408",
@@ -18320,11 +21134,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0458@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+917740938043",
-        "attendance": 93,
-        "grade": 8.05
+        "attendance": 92,
+        "grade": 8.05,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1409",
@@ -18333,11 +21149,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0459@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+918179885045",
         "attendance": 85,
-        "grade": 9.4
+        "grade": 9.4,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1410",
@@ -18346,11 +21164,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0460@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "B",
         "phone": "+916385870774",
-        "attendance": 93,
-        "grade": 8.13
+        "attendance": 92,
+        "grade": 8.13,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1411",
@@ -18359,11 +21179,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0461@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917430658757",
-        "attendance": 94,
-        "grade": 7.78
+        "attendance": 92,
+        "grade": 7.78,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1412",
@@ -18372,11 +21194,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0462@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918102759386",
         "attendance": 88,
-        "grade": 7.5
+        "grade": 7.5,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1413",
@@ -18385,11 +21209,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0463@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916828371144",
         "attendance": 76,
-        "grade": 8.92
+        "grade": 8.92,
+        "assignment1": 7,
+        "mid1": 21
     },
     {
         "id": "stud-1414",
@@ -18398,11 +21224,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0464@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919174781017",
-        "attendance": 97,
-        "grade": 7.64
+        "attendance": 92,
+        "grade": 7.64,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1415",
@@ -18411,11 +21239,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0465@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918639412889",
         "attendance": 87,
-        "grade": 7.12
+        "grade": 7.12,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1416",
@@ -18424,11 +21254,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0466@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916852498761",
         "attendance": 92,
-        "grade": 8.03
+        "grade": 8.03,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1417",
@@ -18437,11 +21269,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0467@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918238979077",
-        "attendance": 99,
-        "grade": 6.92
+        "attendance": 92,
+        "grade": 6.92,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1418",
@@ -18450,11 +21284,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0468@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919891349281",
         "attendance": 92,
-        "grade": 8.42
+        "grade": 8.42,
+        "assignment1": 9,
+        "mid1": 18
     },
     {
         "id": "stud-1419",
@@ -18463,11 +21299,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0469@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917624558532",
-        "attendance": 96,
-        "grade": 7.43
+        "attendance": 92,
+        "grade": 7.43,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1420",
@@ -18476,11 +21314,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0470@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917300490130",
-        "attendance": 93,
-        "grade": 9.45
+        "attendance": 92,
+        "grade": 9.45,
+        "assignment1": 8,
+        "mid1": 23
     },
     {
         "id": "stud-1421",
@@ -18489,11 +21329,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0471@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917521394295",
         "attendance": 82,
-        "grade": 9.03
+        "grade": 9.03,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1422",
@@ -18502,11 +21344,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0472@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916321464403",
         "attendance": 84,
-        "grade": 8.25
+        "grade": 8.25,
+        "assignment1": 7,
+        "mid1": 18
     },
     {
         "id": "stud-1423",
@@ -18515,11 +21359,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0473@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918348709476",
         "attendance": 89,
-        "grade": 8.78
+        "grade": 8.78,
+        "assignment1": 9,
+        "mid1": 23
     },
     {
         "id": "stud-1424",
@@ -18528,11 +21374,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0474@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919281218367",
         "attendance": 78,
-        "grade": 7.81
+        "grade": 7.81,
+        "assignment1": 7,
+        "mid1": 23
     },
     {
         "id": "stud-1425",
@@ -18541,11 +21389,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0475@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919210636824",
-        "attendance": 94,
-        "grade": 9.75
+        "attendance": 92,
+        "grade": 9.75,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1426",
@@ -18554,11 +21404,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0476@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919253974116",
         "attendance": 80,
-        "grade": 7.47
+        "grade": 7.47,
+        "assignment1": 7,
+        "mid1": 19
     },
     {
         "id": "stud-1427",
@@ -18567,11 +21419,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0477@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918874310124",
         "attendance": 79,
-        "grade": 6.52
+        "grade": 6.52,
+        "assignment1": 7,
+        "mid1": 22
     },
     {
         "id": "stud-1428",
@@ -18580,11 +21434,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0478@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+919072552966",
         "attendance": 81,
-        "grade": 8.23
+        "grade": 8.23,
+        "assignment1": 8,
+        "mid1": 19
     },
     {
         "id": "stud-1429",
@@ -18593,11 +21449,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0479@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916801903091",
         "attendance": 92,
-        "grade": 8.07
+        "grade": 8.07,
+        "assignment1": 9,
+        "mid1": 17
     },
     {
         "id": "stud-1430",
@@ -18606,11 +21464,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0480@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917898280100",
         "attendance": 90,
-        "grade": 9.41
+        "grade": 9.41,
+        "assignment1": 8,
+        "mid1": 20
     },
     {
         "id": "stud-1431",
@@ -18619,11 +21479,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0481@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917347553377",
         "attendance": 82,
-        "grade": 8.98
+        "grade": 8.98,
+        "assignment1": 9,
+        "mid1": 19
     },
     {
         "id": "stud-1432",
@@ -18632,11 +21494,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0482@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916520766623",
         "attendance": 81,
-        "grade": 8.37
+        "grade": 8.37,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1433",
@@ -18645,11 +21509,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0483@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916024044154",
         "attendance": 80,
-        "grade": 8.74
+        "grade": 8.74,
+        "assignment1": 8,
+        "mid1": 24
     },
     {
         "id": "stud-1434",
@@ -18658,11 +21524,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0484@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916578280135",
         "attendance": 83,
-        "grade": 8.92
+        "grade": 8.92,
+        "assignment1": 8,
+        "mid1": 17
     },
     {
         "id": "stud-1435",
@@ -18671,11 +21539,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0485@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916987255000",
-        "attendance": 96,
-        "grade": 8.03
+        "attendance": 92,
+        "grade": 8.03,
+        "assignment1": 8,
+        "mid1": 22
     },
     {
         "id": "stud-1436",
@@ -18684,11 +21554,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0486@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+916373854847",
-        "attendance": 94,
-        "grade": 9.66
+        "attendance": 92,
+        "grade": 9.66,
+        "assignment1": 9,
+        "mid1": 24
     },
     {
         "id": "stud-1437",
@@ -18697,11 +21569,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0487@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918970475773",
         "attendance": 79,
-        "grade": 7.24
+        "grade": 7.24,
+        "assignment1": 7,
+        "mid1": 20
     },
     {
         "id": "stud-1438",
@@ -18710,11 +21584,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0488@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918003226446",
         "attendance": 79,
-        "grade": 8.67
+        "grade": 8.67,
+        "assignment1": 8,
+        "mid1": 18
     },
     {
         "id": "stud-1439",
@@ -18723,11 +21599,13 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0489@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+918763916275",
         "attendance": 80,
-        "grade": 7.53
+        "grade": 7.53,
+        "assignment1": 9,
+        "mid1": 20
     },
     {
         "id": "stud-1440",
@@ -18736,10 +21614,12 @@ export const MOCK_STUDENTS: Student[] = [
         "email": "25k91a0490@smartcampus.com",
         "branch": "ECE",
         "year": 1,
-        "semester": 1,
+        "semester": 2,
         "section": "C",
         "phone": "+917704547247",
         "attendance": 91,
-        "grade": 6.6
+        "grade": 6.6,
+        "assignment1": 9,
+        "mid1": 18
     }
 ];

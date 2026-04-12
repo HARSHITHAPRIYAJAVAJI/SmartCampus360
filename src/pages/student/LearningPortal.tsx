@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Layout from "@/components/common/Layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -32,10 +31,10 @@ const LearningPortal = () => {
     }, []);
 
     return (
-        <Layout>
-            <div className="container mx-auto px-4 py-8 mt-16">
+        <div className="animate-in fade-in-50 duration-700">
+            <div className="py-8">
                 <div className="mb-8">
-                    <h1 className="text-4xl font-bold mb-2">My Learning Portal</h1>
+                    <h1 className="text-4xl font-black tracking-tight text-slate-900 dark:text-white mb-2">My Learning Portal</h1>
                     <p className="text-muted-foreground">AI-Driven Personalized Skill Development</p>
                     <div className="flex items-center gap-2 mt-4 text-xs font-semibold text-green-600 bg-green-50 w-fit px-3 py-1 rounded-full">
                         <WifiOff className="h-3 w-3" /> Offline Mode Available
@@ -70,7 +69,7 @@ const LearningPortal = () => {
                     </div>
                 </section>
             </div>
-        </Layout>
+        </div>
     );
 };
 

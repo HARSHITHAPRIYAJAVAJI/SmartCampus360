@@ -33,6 +33,7 @@ def get_all_timetables(db: Session = Depends(deps.get_db)) -> Any:
 def save_timetable(
     request: TimetableSaveRequest,
     db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_active_admin),
 ) -> Any:
     """Save a generated timetable schedule."""
     from app.models.academic import TimetableSlot, Course, Room, TimeSlot, WeekDay
@@ -101,6 +102,7 @@ def save_timetable(
 def publish_timetable(
     request: TimetablePublishRequest,
     db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_active_admin),
 ) -> Any:
     """Mark all timetables for a semester/department as published."""
     from app.models.academic import TimetableSlot
@@ -120,6 +122,7 @@ class TimetableGenerateRequest(BaseModel):
 def generate_timetable(
     request: TimetableGenerateRequest,
     db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_active_admin),
 ) -> Any:
     """
     Generate optimal timetable using AI (Constraint Satisfaction Problem).
@@ -258,7 +261,7 @@ def reallocate_resource(
 def generate_compliance_report(
     section_data: Dict[str, Any],
     db: Session = Depends(deps.get_db),
-    current_user: models.User = Depends(deps.get_current_active_user),
+    current_user: models.User = Depends(deps.get_current_active_admin),
 ):
     """
     Generate NBA/NAAC/UGC Compliance Summary.

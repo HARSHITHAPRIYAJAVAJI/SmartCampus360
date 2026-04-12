@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,59 +11,10 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Clock } from "lucide-react";
 
-interface Room {
-    id: string;
-    name: string;
-    capacity: number;
-    type: 'Classroom' | 'Lab' | 'Auditorium';
-    building: string;
-    dept?: 'IT' | 'ECE' | 'AIML' | 'GEN' | 'ALL';
-}
+import { MOCK_ROOMS, Room } from '@/data/mockRooms';
 
-const MOCK_ROOMS: Room[] = [
-    // T-Block (1st Year)
-    // T-Block (1st to 5th Floor, 4 rooms each)
-    ...[1, 2, 3, 4, 5].flatMap(floor => 
-        Array.from({ length: 4 }, (_, i) => ({
-            id: `t${floor}0${i+1}`, 
-            name: `T-${floor}0${i+1}`, 
-            capacity: 60, 
-            type: "Classroom" as const, 
-            building: `T Block (Floor ${floor})`, 
-            dept: "GEN" as const
-        }))
-    ),
-
-    // South Block (IT Dept)
-    ...Array.from({ length: 12 }, (_, i) => ({
-        id: `s4${(i+1).toString().padStart(2, '0')}`, 
-        name: `S-4${(i+1).toString().padStart(2, '0')}`, 
-        capacity: 60, 
-        type: i % 3 === 0 ? "Lab" as const : "Classroom" as const, 
-        building: "South Block", dept: "IT" as const
-    })),
-    // Additional IT (S301-312)
-    ...Array.from({ length: 6 }, (_, i) => ({
-        id: `s3${(i+1).toString().padStart(2, '0')}`, 
-        name: `S-3${(i+1).toString().padStart(2, '0')}`, 
-        capacity: 70, type: "Classroom" as const, building: "South Block (Overflow)", dept: "IT" as const
-    })),
-
-    // Central Block (ECE Dept)
-    ...Array.from({ length: 12 }, (_, i) => ({
-        id: `c4${(i+1).toString().padStart(2, '0')}`, 
-        name: `C-4${(i+1).toString().padStart(2, '0')}`, 
-        capacity: 65, type: "Classroom" as const, building: "Central Block", dept: "ECE" as const
-    })),
-
-    // North Block (AIML Dept)
-    ...Array.from({ length: 12 }, (_, i) => ({
-        id: `n4${(i+1).toString().padStart(2, '0')}`, 
-        name: `N-4${(i+1).toString().padStart(2, '0')}`, 
-        capacity: 60, type: "Classroom" as const, building: "North Block", dept: "AIML" as const
-    })),
-];
 
 const RoomManagement = () => {
     const { toast } = useToast();
@@ -74,6 +25,7 @@ const RoomManagement = () => {
     const [currentRoom, setCurrentRoom] = useState<Room | null>(null);
     const [formData, setFormData] = useState<Partial<Room>>({});
     const [activeTab, setActiveTab] = useState("all");
+    const [statusFilter, setStatusFilter] = useState<"all" | "available" | "inuse">("all");
 
     const handleAdd = () => {
         if (!formData.name) {
@@ -107,19 +59,105 @@ const RoomManagement = () => {
         toast({ title: "Room Deleted", variant: "destructive" });
     };
 
+    const [refreshKey, setRefreshKey] = useState(0);
+
+    // Refresh occupancy every minute or on storage changes
+    useEffect(() => {
+        const interval = setInterval(() => setRefreshKey(prev => prev + 1), 30000);
+        const handleStorage = (e: StorageEvent) => {
+            if (e.key === 'published_timetables' || e.key === 'draft_timetables') {
+                setRefreshKey(prev => prev + 1);
+            }
+        };
+        window.addEventListener('storage', handleStorage);
+        return () => {
+            clearInterval(interval);
+            window.removeEventListener('storage', handleStorage);
+        };
+    }, []);
+
+    // NEW: Real-Time Slot-Based Occupancy Logic (Synced with Scheduler Drafts)
+    const currentOccupancy = useMemo(() => {
+        const now = new Date();
+        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const dayName = days[now.getDay()];
+        if (dayName === 'Sunday') return {};
+
+        const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+
+        // Institutional Time Slots matching TimetableEngine.slots in timetableGenerator.ts
+        const slots = [
+            { id: "09:40", start: "09:40", end: "10:40" },
+            { id: "10:40", start: "10:40", end: "11:40" },
+            { id: "11:40", start: "11:40", end: "12:40" },
+            { id: "01:20", start: "13:20", end: "14:20" },
+            { id: "02:20", start: "14:20", end: "15:20" },
+            { id: "03:20", start: "15:20", end: "16:20" }
+        ];
+
+        const activeSlot = slots.find(s => timeStr >= s.start && timeStr < s.end);
+        
+        const publishedStoreStr = localStorage.getItem('published_timetables');
+        const draftStoreStr = localStorage.getItem('draft_timetables');
+        
+        const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
+        const draftTimetables = draftStoreStr ? JSON.parse(draftStoreStr) : {};
+
+        const status: Record<string, { info: string; isDraft: boolean; subject: string; faculty: string }> = {};
+        
+        if (activeSlot) {
+            const slotKey = `${dayName}-${activeSlot.id}`;
+            
+            const allSources = [
+                { data: publishedTimetables, isDraft: false },
+                { data: draftTimetables, isDraft: true }
+            ];
+
+            allSources.forEach(({ data, isDraft }) => {
+                Object.entries(data).forEach(([sectionId, entry]: [string, any]) => {
+                    const grid = entry.grid || entry;
+                    const sess = grid[slotKey];
+                    if (sess && sess.room) {
+                        // Match by direct name (e.g. "T-101", "101", "S-401")
+                        const roomKey = sess.room;
+                        if (!status[roomKey] || (status[roomKey].isDraft && !isDraft)) {
+                            status[roomKey] = {
+                                info: sectionId,
+                                isDraft,
+                                subject: sess.courseName || sess.courseCode || sess.subject,
+                                faculty: sess.faculty || "Faculty"
+                            };
+                        }
+                    }
+                });
+            });
+        }
+        return status;
+    }, [refreshKey]);
+
     const filteredRooms = useMemo(() => {
         return rooms.filter(r => {
-            const matchesSearch = r.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                                 r.building.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesTab = activeTab === 'all' || r.dept === activeTab.toUpperCase();
-            return matchesSearch && matchesTab;
+            const matchesSearch = r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                r.building.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                (r.subjects && r.subjects.some(s => s.toLowerCase().includes(searchQuery.toLowerCase())));
+
+            const isOccupied = !!currentOccupancy[r.name];
+            const matchesStatus = statusFilter === 'all' ? true :
+                statusFilter === 'available' ? !isOccupied : isOccupied;
+
+            if (!matchesStatus) return false;
+
+            if (activeTab === 'all') return matchesSearch;
+            if (activeTab === 'labs') return matchesSearch && r.type === 'Lab';
+            return matchesSearch && r.dept === activeTab.toUpperCase();
         });
-    }, [rooms, searchQuery, activeTab]);
+    }, [rooms, searchQuery, activeTab, statusFilter, currentOccupancy]);
 
     const getDeptBadgeColor = (dept?: string) => {
-        switch(dept) {
+        switch (dept) {
             case 'IT': return 'bg-blue-100 text-blue-700 border-blue-200';
             case 'ECE': return 'bg-amber-100 text-amber-700 border-amber-200';
+            case 'CSE': return 'bg-cyan-100 text-cyan-700 border-cyan-200';
             case 'AIML': return 'bg-purple-100 text-purple-700 border-purple-200';
             case 'GEN': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
             default: return 'bg-slate-100 text-slate-700';
@@ -161,6 +199,7 @@ const RoomManagement = () => {
                                         <SelectTrigger className="col-span-3"><SelectValue placeholder="Select Branch" /></SelectTrigger>
                                         <SelectContent>
                                             <SelectItem value="IT">IT Branch (South)</SelectItem>
+                                            <SelectItem value="CSE">CSE Branch (Central)</SelectItem>
                                             <SelectItem value="ECE">ECE Branch (Central)</SelectItem>
                                             <SelectItem value="AIML">AIML Branch (North)</SelectItem>
                                             <SelectItem value="GEN">1st Year (T-Block)</SelectItem>
@@ -183,8 +222,13 @@ const RoomManagement = () => {
                                             <SelectItem value="Classroom">Classroom</SelectItem>
                                             <SelectItem value="Lab">Lab</SelectItem>
                                             <SelectItem value="Auditorium">Auditorium</SelectItem>
+                                            <SelectItem value="Seminar Hall">Seminar Hall</SelectItem>
                                         </SelectContent>
                                     </Select>
+                                </div>
+                                <div className="grid grid-cols-4 items-center gap-4">
+                                    <Label className="text-right font-bold text-xs">Mapped Subjects</Label>
+                                    <Input placeholder="Comma separated subjects" onChange={e => setFormData(prev => ({ ...prev, subjects: e.target.value.split(',') }))} className="col-span-3" />
                                 </div>
                             </div>
                             <DialogFooter><Button onClick={handleAdd}>Confirm Add</Button></DialogFooter>
@@ -193,58 +237,93 @@ const RoomManagement = () => {
                 </div>
             </div>
 
+            <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2 bg-slate-100/50 p-1 rounded-lg border border-slate-200/50">
+                    <Button
+                        variant={statusFilter === 'all' ? 'secondary' : 'ghost'}
+                        size="sm"
+                        className={`h-8 rounded-md text-[11px] font-black uppercase tracking-wider ${statusFilter === 'all' ? 'bg-white shadow-sm' : ''}`}
+                        onClick={() => setStatusFilter('all')}
+                    >All Rooms</Button>
+                    <Button
+                        variant={statusFilter === 'available' ? 'secondary' : 'ghost'}
+                        size="sm"
+                        className={`h-8 rounded-md text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5 ${statusFilter === 'available' ? 'bg-white shadow-sm text-emerald-600' : ''}`}
+                        onClick={() => setStatusFilter('available')}
+                    >
+                        <div className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)] animate-pulse" /> Available
+                    </Button>
+                    <Button
+                        variant={statusFilter === 'inuse' ? 'secondary' : 'ghost'}
+                        size="sm"
+                        className={`h-8 rounded-md text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5 ${statusFilter === 'inuse' ? 'bg-white shadow-sm text-rose-600' : ''}`}
+                        onClick={() => setStatusFilter('inuse')}
+                    >
+                        <div className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.5)]" /> In Use
+                    </Button>
+                </div>
+                <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                    Real-Time Occupancy Tracking
+                </div>
+            </div>
+
             <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="bg-slate-100/50 p-1 mb-6">
-                    <TabsTrigger value="all" className="px-6">All Blocks</TabsTrigger>
-                    <TabsTrigger value="it" className="px-6 bg-blue-50 data-[state=active]:bg-blue-600 data-[state=active]:text-white">IT (South)</TabsTrigger>
-                    <TabsTrigger value="ece" className="px-6 bg-amber-50 data-[state=active]:bg-amber-600 data-[state=active]:text-white">ECE (Central)</TabsTrigger>
-                    <TabsTrigger value="aiml" className="px-6 bg-purple-50 data-[state=active]:bg-purple-600 data-[state=active]:text-white">AIML (North)</TabsTrigger>
-                    <TabsTrigger value="gen" className="px-6">1st Year</TabsTrigger>
+                <TabsList className="bg-slate-100/50 p-1 mb-6 overflow-x-auto justify-start border-b-none h-12 shadow-inner">
+                    <TabsTrigger value="all" className="px-6 font-black uppercase text-[10px] tracking-widest">All Infrastructure</TabsTrigger>
+                    <TabsTrigger value="labs" className="px-6 uppercase text-[10px] font-black tracking-widest bg-purple-100/50 data-[state=active]:bg-purple-600 data-[state=active]:text-white">Laboratories</TabsTrigger>
+                    <TabsTrigger value="it" className="px-6 uppercase text-[10px] font-black tracking-widest">IT (South)</TabsTrigger>
+                    <TabsTrigger value="cse" className="px-6 uppercase text-[10px] font-black tracking-widest">CSE (Central)</TabsTrigger>
+                    <TabsTrigger value="ece" className="px-6 uppercase text-[10px] font-black tracking-widest">ECE (Central)</TabsTrigger>
+                    <TabsTrigger value="aiml" className="px-6 uppercase text-[10px] font-black tracking-widest">AIML (North)</TabsTrigger>
+                    <TabsTrigger value="gen" className="px-6 uppercase text-[10px] font-black tracking-widest">1st Year</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value={activeTab} className="mt-0">
+                <TabsContent value="all" className="mt-0 animate-in fade-in-50 duration-500">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                         {filteredRooms.map(room => (
-                            <Card key={room.id} className="group hover:border-primary/50 transition-all shadow-sm">
-                                <CardContent className="p-4">
-                                    <div className="flex justify-between items-start mb-3">
-                                        <Badge className={`px-2 py-0.5 rounded text-[10px] uppercase font-black tracking-widest border ${getDeptBadgeColor(room.dept)}`}>
-                                            {room.dept}
-                                        </Badge>
-                                        <MenuActions 
-                                            onEdit={() => { setCurrentRoom(room); setFormData(room); setIsEditOpen(true); }} 
-                                            onDelete={() => handleDelete(room.id)} 
-                                        />
-                                    </div>
-                                    
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <div className={`p-2 rounded-lg ${room.type === 'Lab' ? 'bg-purple-100 text-purple-600' : 'bg-slate-100 text-slate-600'}`}>
-                                            <DoorClosed className="h-5 w-5" />
-                                        </div>
-                                        <div>
-                                            <h3 className="font-bold text-lg leading-tight">{room.name}</h3>
-                                            <p className="text-[11px] text-muted-foreground flex items-center gap-1">
-                                                <LayoutGrid className="h-3 w-3" /> {room.building}
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    <div className="mt-4 pt-3 border-t flex items-center justify-between">
-                                        <div className="flex gap-2">
-                                            <Badge variant="secondary" className="h-5 text-[10px] gap-1 px-1.5 font-bold">
-                                                <Users className="h-2.5 w-2.5" /> {room.capacity}
-                                            </Badge>
-                                            <Badge variant="outline" className="h-5 text-[10px] px-1.5 font-medium border-slate-200">
-                                                {room.type}
-                                            </Badge>
-                                        </div>
-                                        <span className="text-[11px] font-bold text-emerald-600 uppercase tracking-tighter">Available</span>
-                                    </div>
-                                </CardContent>
-                            </Card>
+                            <RoomCard 
+                                key={room.id} 
+                                room={room} 
+                                currentOccupancy={currentOccupancy} 
+                                onEdit={() => { setCurrentRoom(room); setFormData(room); setIsEditOpen(true); }} 
+                                onDelete={() => handleDelete(room.id)} 
+                                getBadgeColor={getDeptBadgeColor}
+                            />
                         ))}
                     </div>
                 </TabsContent>
+
+                <TabsContent value="labs" className="mt-0 animate-in slide-in-from-right-4 duration-500">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        {filteredRooms.map(room => (
+                            <RoomCard 
+                                key={room.id} 
+                                room={room} 
+                                currentOccupancy={currentOccupancy} 
+                                onEdit={() => { setCurrentRoom(room); setFormData(room); setIsEditOpen(true); }} 
+                                onDelete={() => handleDelete(room.id)} 
+                                getBadgeColor={getDeptBadgeColor}
+                            />
+                        ))}
+                    </div>
+                </TabsContent>
+
+                {['it', 'cse', 'ece', 'aiml', 'gen'].map(dept => (
+                    <TabsContent key={dept} value={dept} className="mt-0 animate-in fade-in-50">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            {filteredRooms.map(room => (
+                                <RoomCard 
+                                    key={room.id} 
+                                    room={room} 
+                                    currentOccupancy={currentOccupancy} 
+                                    onEdit={() => { setCurrentRoom(room); setFormData(room); setIsEditOpen(true); }} 
+                                    onDelete={() => handleDelete(room.id)} 
+                                    getBadgeColor={getDeptBadgeColor}
+                                />
+                            ))}
+                        </div>
+                    </TabsContent>
+                ))}
             </Tabs>
 
             {/* Edit Dialog */}
@@ -267,6 +346,79 @@ const RoomManagement = () => {
         </div>
     );
 };
+
+// Sub-components for better organization
+const RoomCard = ({ room, currentOccupancy, onEdit, onDelete, getBadgeColor }: { 
+    room: Room, 
+    currentOccupancy: Record<string, { info: string; isDraft: boolean; subject: string; faculty: string }>, 
+    onEdit: () => void, 
+    onDelete: () => void,
+    getBadgeColor: (dept?: string) => string
+}) => (
+    <Card className="group hover:border-primary/50 transition-all shadow-sm">
+        <CardContent className="p-4">
+            <div className="flex justify-between items-start mb-3">
+                <Badge className={`px-2 py-0.5 rounded text-[10px] uppercase font-black tracking-widest border ${getBadgeColor(room.dept)}`}>
+                    {room.dept}
+                </Badge>
+                <MenuActions onEdit={onEdit} onDelete={onDelete} />
+            </div>
+            
+            <div className="flex items-center gap-3 mb-2">
+                <div className={`p-2 rounded-lg ${room.type === 'Lab' ? 'bg-purple-100 text-purple-600' : 'bg-slate-100 text-slate-600'}`}>
+                    <DoorClosed className="h-5 w-5" />
+                </div>
+                <div>
+                    <h3 className="font-bold text-lg leading-tight">{room.name}</h3>
+                    <p className="text-[11px] text-muted-foreground flex items-center gap-1">
+                        <LayoutGrid className="h-3 w-3" /> {room.building}
+                    </p>
+                </div>
+            </div>
+
+            {room.subjects && room.subjects.length > 0 && (
+                <div className="flex flex-wrap gap-1 mb-2">
+                    {room.subjects.map((sub, idx) => (
+                        <Badge key={idx} variant="outline" className="text-[9px] py-0 h-4 bg-primary/5 border-primary/10">
+                            {sub}
+                        </Badge>
+                    ))}
+                </div>
+            )}
+
+            <div className="mt-4 pt-3 border-t flex items-center justify-between">
+                <div className="flex gap-2">
+                    <Badge variant="secondary" className="h-5 text-[10px] gap-1 px-1.5 font-bold">
+                        <Users className="h-2.5 w-2.5" /> {room.capacity}
+                    </Badge>
+                    <Badge variant="outline" className="h-5 text-[10px] px-1.5 font-medium border-slate-200">
+                        {room.type}
+                    </Badge>
+                </div>
+                {currentOccupancy[room.name] ? (
+                    <div className="flex flex-col items-end w-full overflow-hidden ml-4">
+                        <span className="text-[10px] font-black text-rose-600 uppercase tracking-tighter flex items-center gap-1.5 whitespace-nowrap">
+                            <div className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" /> In Use
+                        </span>
+                        <div className="flex flex-col items-end max-w-full">
+                            <span className="text-[10px] font-extrabold text-slate-900 truncate w-full text-right leading-none mb-0.5">
+                                {currentOccupancy[room.name].subject}
+                            </span>
+                            <span className="text-[9px] font-medium text-slate-500 truncate w-full text-right leading-none">
+                                {currentOccupancy[room.name].info} • {currentOccupancy[room.name].faculty}
+                            </span>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="flex flex-col items-end">
+                        <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-tighter">Available</span>
+                        <span className="text-[8px] font-medium text-muted-foreground">Ready for use</span>
+                    </div>
+                )}
+            </div>
+        </CardContent>
+    </Card>
+);
 
 const MenuActions = ({ onEdit, onDelete }: { onEdit: () => void, onDelete: () => void }) => (
     <div className="flex gap-1">

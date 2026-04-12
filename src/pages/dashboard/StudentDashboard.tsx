@@ -1,6 +1,8 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useOutletContext, useNavigate } from "react-router-dom";
+// Force re-build to sync imports
 import { MOCK_STUDENTS } from "@/data/mockStudents";
+import { MOCK_COURSES, Course } from "@/data/mockCourses";
 import { 
     Card, CardContent, CardHeader, CardTitle, CardDescription 
 } from "@/components/ui/card";
@@ -16,29 +18,55 @@ import {
     ChevronRight, CheckCircle2, CalendarDays, UploadCloud, 
     MonitorPlay, LineChart, Star, Github, Linkedin, 
     Zap, Calculator, UserPlus, AlertCircle, Download, CreditCard, ShieldCheck,
-    MessageSquare, X, Send, Bot, User, Minimize2, Maximize2, Sparkles, BrainCircuit
+    MessageSquare, X, Send, Bot, User, Minimize2, Maximize2, Sparkles, BrainCircuit, Building2
 } from "lucide-react";
+import { formatSubjectName } from "@/data/subjectMapping";
 import { motion, AnimatePresence } from "framer-motion";
-import { format } from "date-fns";
-import { getTimetable } from "@/data/aimlTimetable";
+import notificationService from "@/services/notificationService";
+import { YEAR_IN_CHARGES, CLASS_TEACHERS, getSectionCR } from "@/data/mockHierarchy";
+import { MOCK_FACULTY } from "@/data/mockFaculty";
 import { AttendanceHistory } from "@/components/dashboard/AttendanceHistory";
 import { toast } from "sonner";
-import notificationService from "@/services/notificationService";
 import {
     Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger
 } from "@/components/ui/dialog";
+import { calculateAcademicMetrics } from "@/utils/academicCalculations";
+import { format } from "date-fns";
+import { getTimetable } from "@/data/aimlTimetable";
 
-export default function StudentDashboard() {
-    const { user } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
+export default function StudentDashboard({ studentId: propStudentId }: { studentId?: string }) {
+    const { user: authUser } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
     const navigate = useNavigate();
     
-    const [gpaWhatIf, setGpaWhatIf] = useState<number | string>("");
-
-    const studentData = useMemo(() => {
+    // Resolve which student we are looking at
+    const impersonatedStudent = useMemo(() => {
+        if (!propStudentId) return null;
         const saved = localStorage.getItem('smartcampus_student_directory');
         const students = saved ? JSON.parse(saved) : MOCK_STUDENTS;
-        return students.find((s: any) => s.rollNumber.toUpperCase() === user.id.toUpperCase());
-    }, [user.id]);
+        return students.find((s: any) => s.id === propStudentId || s.rollNumber.toUpperCase() === propStudentId.toUpperCase());
+    }, [propStudentId]);
+
+    const user = impersonatedStudent ? {
+        name: impersonatedStudent.name,
+        id: impersonatedStudent.rollNumber,
+        role: 'student'
+    } : authUser;
+
+    const isImpersonating = !!impersonatedStudent;
+    
+    const [gpaWhatIf, setGpaWhatIf] = useState<number | string>("");
+    const [storageSyncStamp, setStorageSyncStamp] = useState(0);
+
+    const studentData = useMemo(() => {
+        if (impersonatedStudent) return impersonatedStudent;
+        const saved = localStorage.getItem('smartcampus_student_directory');
+        if (saved) {
+            const students = JSON.parse(saved);
+            const found = students.find((s: any) => s.rollNumber.toUpperCase() === user.id.toUpperCase());
+            if (found) return found;
+        }
+        return MOCK_STUDENTS.find((s: any) => s.rollNumber.toUpperCase() === user.id.toUpperCase());
+    }, [user.id, impersonatedStudent]);
 
     // Advanced Stats: Attendance Buffer & Predictive GPA
     const academicMetrics = useMemo(() => {
@@ -52,20 +80,127 @@ export default function StudentDashboard() {
 
         // Skill Radar Data
         const skillData = [
-            { subject: 'Python', A: 85, B: 110, fullMark: 150 },
-            { subject: 'DSA', A: 70, B: 130, fullMark: 150 },
-            { subject: 'Cloud', A: 90, B: 130, fullMark: 150 },
-            { subject: 'AI/ML', A: 75, B: 100, fullMark: 150 },
-            { subject: 'Database', A: 80, B: 90, fullMark: 150 },
+            { subject: formatSubjectName('Python'), A: 85, B: 110, fullMark: 150 },
+            { subject: formatSubjectName('DS'), A: 70, B: 130, fullMark: 150 },
+            { subject: formatSubjectName('CC'), A: 90, B: 130, fullMark: 150 },
+            { subject: formatSubjectName('AI/ML'), A: 75, B: 100, fullMark: 150 },
+            { subject: formatSubjectName('DBMS'), A: 80, B: 90, fullMark: 150 },
         ];
 
-        return { buffer, skillData };
+        const metrics = calculateAcademicMetrics(studentData.branch || 'CSM', studentData.semester || 7);
+
+        // Resolve which source of truth to use for Metadata
+        const semNum = studentData.semester % 2 === 0 ? 2 : 1;
+        const publishedStoreStr = localStorage.getItem('published_timetables');
+        const allTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : null;
+        const publishedKey = `${(studentData.branch || "").toUpperCase()}-${studentData.year}-${semNum}-${studentData.section}`;
+        const publishedEntry = allTimetables ? allTimetables[publishedKey] : null;
+        const liveMetadata = publishedEntry?.metadata || null;
+
+        // Hierarchy Data: Prioritize published metadata, fallback to static mapping
+        const cr = getSectionCR(studentData.branch, studentData.year, studentData.section);
+        
+        let ct = null;
+        if (liveMetadata?.classTeacher) {
+            ct = { name: liveMetadata.classTeacher, designation: "Class Teacher" };
+        } else {
+            const ctAssignment = CLASS_TEACHERS.find(ct => 
+                ct.branch === studentData.branch && 
+                ct.year === studentData.year && 
+                ct.section === studentData.section
+            );
+            ct = ctAssignment ? MOCK_FACULTY.find(f => f.id === ctAssignment.facultyId) : null;
+        }
+        
+        let yic = null;
+        if (liveMetadata?.yearInCharge) {
+            yic = { name: liveMetadata.yearInCharge, designation: "Year In-Charge" };
+        } else {
+            const yicAssignment = YEAR_IN_CHARGES.find(y => 
+                y.branch === studentData.branch && 
+                y.year === studentData.year
+            );
+            yic = yicAssignment ? MOCK_FACULTY.find(f => f.id === yicAssignment.facultyId) : null;
+        }
+
+        return { buffer, skillData, cr, ct, yic, ...metrics };
     }, [studentData]);
 
+    const today = useMemo(() => format(new Date(), "EEEE"), []);
+
+    useEffect(() => {
+        const handleStorage = (e: StorageEvent) => {
+            if (e.key === 'published_timetables') {
+                setStorageSyncStamp(s => s + 1);
+            }
+        };
+        window.addEventListener('storage', handleStorage);
+        // Fallback custom event for same-tab routing overrides
+        const handleCustomEvent = () => setStorageSyncStamp(s => s + 1);
+        window.addEventListener('timetable_published', handleCustomEvent);
+        
+        return () => {
+            window.removeEventListener('storage', handleStorage);
+            window.removeEventListener('timetable_published', handleCustomEvent);
+        };
+    }, []);
+
+    const todaySchedule = useMemo(() => {
+        if (!studentData) return [];
+        
+        const semNum = studentData.semester % 2 === 0 ? 2 : 1;
+        
+        // Resolve which source of truth to use
+        const publishedStoreStr = localStorage.getItem('published_timetables');
+        const allTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : null;
+        const strictPublishedKey = `${(studentData.branch || "").toUpperCase()}-${studentData.year}-${semNum}-${studentData.section}`;
+        
+        let publishedEntry = allTimetables ? allTimetables[strictPublishedKey] : null;
+
+        // If the institution generated the opposite semester parity but not the strict one, optimistically load it.
+        if (!publishedEntry && allTimetables) {
+            const altSemNum = semNum === 1 ? 2 : 1;
+            const altKey = `${(studentData.branch || "").toUpperCase()}-${studentData.year}-${altSemNum}-${studentData.section}`;
+            if (allTimetables[altKey]) {
+                publishedEntry = allTimetables[altKey];
+            }
+        }
+
+        // Logic: Support both {grid, metadata} format and direct grid format. Fallback to institutional default ONLY on initial boot before any publishing happens.
+        const useDemoData = publishedStoreStr === null;
+        const liveTable = publishedEntry?.grid || 
+                          (publishedEntry && !publishedEntry.metadata ? publishedEntry : 
+                          (useDemoData ? getTimetable(studentData.year, semNum, studentData.section, studentData.branch) : {}));
+        
+        const schedule: any[] = [];
+        Object.entries(liveTable).forEach(([dayTime, session]: [string, any]) => {
+            if (!session) return;
+            let [day, time] = dayTime.split('-');
+            const timeMap: Record<string, string> = { "09:30": "09:40", "10:30": "10:40", "11:40": "11:40", "01:30": "01:20", "02:30": "02:20", "03:30": "03:20" };
+            time = timeMap[time] || time;
+            if (day !== today) return;
+
+            const hour = parseInt(time.split(':')[0]);
+            const period = (hour >= 9 && hour < 12) ? "AM" : "PM";
+
+            schedule.push({
+                time: `${time} ${period}`,
+                rawTime: time,
+                title: formatSubjectName(session.courseName || session.courseCode),
+                room: session.room || "TBD",
+                faculty: session.faculty || "Staff",
+                type: (session.courseName || session.courseCode || "").toLowerCase().includes('lab') ? 'lab' : 'lecture'
+            });
+        });
+
+        return schedule.sort((a, b) => a.rawTime.localeCompare(b.rawTime));
+    }, [studentData, today]);
+
+
     const stats = [
-        { title: "Attendance", value: `${studentData?.attendance || 0}%`, icon: CheckCircle2, color: "text-emerald-500", detail: "Safe to bunk: " + academicMetrics.buffer + " slots" },
+        { title: "Attendance", value: `${studentData?.attendance || 0}%`, icon: CheckCircle2, color: "text-emerald-500", detail: "Safe to bunk: " + (academicMetrics as any).buffer + " slots" },
         { title: "Current GPA", value: studentData?.grade?.toFixed(2) || "0.0", icon: TrendingUp, color: "text-violet-500", detail: "Top 5% in Branch" },
-        { title: "Credits Earned", value: "112/160", icon: Award, color: "text-blue-500", detail: "32 more for Graduation" },
+        { title: "Credits Earned", value: `${(academicMetrics as any).earnedCredits}/${(academicMetrics as any).totalCredits}`, icon: Award, color: "text-blue-500", detail: `${(academicMetrics as any).totalCredits - (academicMetrics as any).earnedCredits} more for Graduation` },
         { title: "Assignments", value: "4 Due", icon: Clock, color: "text-amber-500", detail: "Next: OS Lab - 2 days" },
     ];
 
@@ -93,6 +228,11 @@ export default function StudentDashboard() {
                         <Star className="w-64 h-64" />
                     </div>
                     <div>
+                        {isImpersonating && (
+                            <div className="bg-amber-400 text-black text-[10px] font-black uppercase tracking-[0.2em] mb-4 py-1 px-3 rounded-full border border-white/20 w-fit flex items-center gap-2">
+                                <ShieldCheck className="w-3 h-3" /> Admin Viewing Mode
+                            </div>
+                        )}
                         <div className="flex items-center gap-3 mb-6">
                             <div className="h-14 w-14 rounded-full border-2 border-white/30 p-1 backdrop-blur-md">
                                 <div className="h-full w-full rounded-full bg-white/20 flex items-center justify-center font-bold text-xl">
@@ -100,12 +240,19 @@ export default function StudentDashboard() {
                                 </div>
                             </div>
                             <div>
-                                <h1 className="text-3xl font-black tracking-tight leading-tight">Welcome back, {user.name.split(' ')[0]}!</h1>
+                                <h1 className="text-3xl font-black tracking-tight leading-tight">
+                                    {isImpersonating ? `Profile: ${user.name}` : `Welcome back, ${user.name.split(' ')[0]}!`}
+                                </h1>
                                 <p className="text-indigo-100/80 font-medium">Roll No: <span className="text-white">{studentData?.rollNumber}</span></p>
                             </div>
                         </div>
                         <div className="flex flex-wrap gap-2">
-                            {['B.Tech IV Year', 'Semester 7', studentData?.branch || 'CSE', 'Section A'].map((tag) => (
+                            {[
+                                `B.Tech ${studentData?.year ? (studentData.year === 1 ? 'I' : studentData.year === 2 ? 'II' : studentData.year === 3 ? 'III' : 'IV') : 'IV'} Year`,
+                                `Semester ${studentData?.semester || (studentData?.year === 1 ? 2 : 7)}`,
+                                studentData?.branch || 'CSE',
+                                `Section ${studentData?.section || 'A'}`
+                            ].map((tag) => (
                                 <Badge key={tag} className="bg-white/10 hover:bg-white/20 text-white border-white/10 backdrop-blur-xl px-4 py-1.5 rounded-full font-bold uppercase tracking-widest text-[10px]">
                                     {tag}
                                 </Badge>
@@ -135,7 +282,7 @@ export default function StudentDashboard() {
                     </div>
                     <div className="space-y-4">
                         <h3 className="text-xl font-black text-foreground/90 leading-tight">AI Study Planner</h3>
-                        <p className="text-sm text-muted-foreground">Next 48h: Focus on <strong>Network Security</strong>. You have a mid-term in 6 days.</p>
+                        <p className="text-sm text-muted-foreground">Next 48h: Focus on <strong>{formatSubjectName('CNS')}</strong>. You have a mid-term in 6 days.</p>
                         <div className="space-y-2">
                             <div className="flex justify-between text-xs font-bold text-muted-foreground uppercase tracking-wider">
                                 <span>Prep Progress</span>
@@ -195,46 +342,62 @@ export default function StudentDashboard() {
                 
                 {/* Left Side: Academic Monitoring */}
                 <div className="lg:col-span-8 space-y-8">
-                    {/* Grade Matrix Card */}
+                    {/* Today's Schedule (NEW) */}
                     <Card className="border-none shadow-xl rounded-[2rem] overflow-hidden">
-                        <CardHeader className="bg-muted/30 pb-4">
+                        <CardHeader className="bg-slate-50 dark:bg-slate-900/50">
                             <div className="flex justify-between items-center">
-                                <CardTitle className="text-xl font-black flex items-center gap-2">
-                                    <Award className="w-6 h-6 text-primary" /> Grade Matrix (Sem 7)
-                                </CardTitle>
-                                <Button variant="outline" size="sm" className="rounded-full font-bold" onClick={() => handleAction('Grades')}>View All</Button>
+                                <div>
+                                    <CardTitle className="text-xl font-black flex items-center gap-2">
+                                        <CalendarDays className="w-5 h-5 text-primary" /> Today's Schedule
+                                    </CardTitle>
+                                    <CardDescription className="text-xs font-bold uppercase tracking-widest">{today}, {format(new Date(), "do MMMM")}</CardDescription>
+                                </div>
+                                <Button variant="ghost" size="sm" className="text-primary font-bold gap-1" onClick={() => navigate('/dashboard/timetable')}>
+                                    Full Timetable <ChevronRight className="w-4 h-4" />
+                                </Button>
                             </div>
                         </CardHeader>
-                        <CardContent className="p-0">
-                            <table className="w-full">
-                                <thead className="bg-muted/10 text-[10px] font-black uppercase tracking-widest text-muted-foreground">
-                                    <tr>
-                                        <th className="px-6 py-4 text-left">Subject</th>
-                                        <th className="px-6 py-4 text-center">Internal</th>
-                                        <th className="px-6 py-4 text-center">External</th>
-                                        <th className="px-6 py-4 text-right">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-border/50">
-                                    {[
-                                        { name: 'Machine Learning', int: '28/30', ext: '-', status: 'Ongoing', color: 'bg-emerald-500' },
-                                        { name: 'Cloud Computing', int: '25/30', ext: '62/70', status: 'Cleared', color: 'bg-blue-500' },
-                                        { name: 'Cyber Security', int: '29/30', ext: '-', status: 'Ongoing', color: 'bg-purple-500' },
-                                        { name: 'Professional Ethics', int: '30/30', ext: '68/70', status: 'Gold Medal', color: 'bg-amber-500' },
-                                    ].map((sub) => (
-                                        <tr key={sub.name} className="hover:bg-muted/5 transition-colors">
-                                            <td className="px-6 py-4 text-sm font-bold text-foreground/90">{sub.name}</td>
-                                            <td className="px-6 py-4 text-center text-sm font-medium">{sub.int}</td>
-                                            <td className="px-6 py-4 text-center text-sm font-medium">{sub.ext}</td>
-                                            <td className="px-6 py-4 text-right">
-                                                <Badge className={`${sub.color} text-white border-none text-[10px] font-black px-3`}>{sub.status}</Badge>
-                                            </td>
-                                        </tr>
+                        <CardContent className="p-6">
+                            {todaySchedule.length > 0 ? (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {todaySchedule.map((item, idx) => (
+                                        <div key={idx} className="flex items-center gap-4 p-4 rounded-2xl bg-muted/20 border border-border/50 hover:border-primary/20 transition-all group">
+                                            <div className="flex flex-col items-center justify-center min-w-[70px] py-2 bg-background rounded-xl border border-border/50 shadow-sm">
+                                                <span className="text-[10px] font-black text-muted-foreground uppercase">{item.time.split(' ')[1]}</span>
+                                                <span className="text-base font-black text-primary leading-none mt-1">{item.time.split(' ')[0]}</span>
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-center gap-2 mb-1">
+                                                    <h5 className="font-black text-sm truncate group-hover:text-primary transition-colors">{item.title}</h5>
+                                                    <Badge variant="outline" className={`text-[8px] font-black uppercase px-1.5 h-4 ${item.type === 'lab' ? 'bg-green-50 text-green-600 border-green-200' : 'bg-primary/5 text-primary border-primary/20'}`}>
+                                                        {item.type}
+                                                    </Badge>
+                                                </div>
+                                                <div className="flex items-center gap-4 text-[11px] font-bold text-muted-foreground">
+                                                    <div className="flex items-center gap-1">
+                                                        <User className="w-3 h-3 opacity-50" />
+                                                        <span className="truncate max-w-[100px]">{item.faculty}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-1">
+                                                        <Building2 className="w-3 h-3 opacity-50" />
+                                                        <span>{item.room}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     ))}
-                                </tbody>
-                            </table>
+                                </div>
+                            ) : (
+                                <div className="flex flex-col items-center justify-center py-12 text-center space-y-3 opacity-50">
+                                    <Calendar className="w-12 h-12 text-muted-foreground" />
+                                    <p className="font-bold text-sm">No classes scheduled for today.</p>
+                                    <p className="text-[10px] uppercase tracking-widest">Enjoy your holiday or self-study time!</p>
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
+
+                    {/* Grade Matrix Card */}
 
                     {/* Operational Tasks Hub */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -275,6 +438,60 @@ export default function StudentDashboard() {
                                         <Download className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
                                     </div>
                                 ))}
+                            </CardContent>
+                        </Card>
+                    </div>
+
+                    {/* Section Leadership & Hierarchy (New Requirement) */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <Card className="border-none shadow-lg rounded-3xl bg-card/60 backdrop-blur-md border border-border/20 overflow-hidden">
+                            <CardHeader className="p-4 pb-2">
+                                <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                    <User className="w-3 h-3" /> Class Representative
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-4 pt-0">
+                                <div className="flex items-center gap-3">
+                                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">CR</div>
+                                    <div>
+                                        <p className="text-sm font-bold leading-none">{(academicMetrics as any).cr?.name || "Unassigned"}</p>
+                                        <p className="text-[10px] text-muted-foreground mt-1">{(academicMetrics as any).cr?.rollNumber}</p>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        <Card className="border-none shadow-lg rounded-3xl bg-card/60 backdrop-blur-md border border-border/20 overflow-hidden">
+                            <CardHeader className="p-4 pb-2">
+                                <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                    <CheckCircle2 className="w-3 h-3 text-emerald-500" /> Class Teacher
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-4 pt-0">
+                                <div className="flex items-center gap-3">
+                                    <div className="h-8 w-8 rounded-full bg-emerald-500/10 flex items-center justify-center text-xs font-bold text-emerald-600">CT</div>
+                                    <div>
+                                        <p className="text-sm font-bold leading-none">{(academicMetrics as any).ct?.name || "Unassigned"}</p>
+                                        <p className="text-[10px] text-muted-foreground mt-1">{(academicMetrics as any).ct?.designation || "Faculty"}</p>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        <Card className="border-none shadow-lg rounded-3xl bg-card/60 backdrop-blur-md border border-border/20 overflow-hidden">
+                            <CardHeader className="p-4 pb-2">
+                                <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground flex items-center gap-2">
+                                    <ShieldCheck className="w-3 h-3 text-violet-500" /> Year In-Charge
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="p-4 pt-0">
+                                <div className="flex items-center gap-3">
+                                    <div className="h-8 w-8 rounded-full bg-violet-500/10 flex items-center justify-center text-xs font-bold text-violet-600">YI</div>
+                                    <div>
+                                        <p className="text-sm font-bold leading-none">{(academicMetrics as any).yic?.name || "Unassigned"}</p>
+                                        <p className="text-[10px] text-muted-foreground mt-1">Year Head</p>
+                                    </div>
+                                </div>
                             </CardContent>
                         </Card>
                     </div>
@@ -448,47 +665,6 @@ export default function StudentDashboard() {
 
             </div>
 
-            {/* 4. Scheduling Section */}
-            <Card className="border-none shadow-xl rounded-[3rem] overflow-hidden">
-                <CardHeader className="bg-muted/30 p-8 border-b border-border/50">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                        <div>
-                            <CardTitle className="text-2xl font-black">Daily Schedule Matrix</CardTitle>
-                            <CardDescription className="text-sm font-bold uppercase tracking-widest mt-1">Current Day: {format(new Date(), "EEEE, MMM do")}</CardDescription>
-                        </div>
-                        <div className="flex gap-2 bg-muted/50 p-1 rounded-xl border border-border/50">
-                            <Button size="sm" variant="ghost" className="rounded-lg font-bold" onClick={() => handleAction('Timeline')}>Daily</Button>
-                            <Button size="sm" variant="outline" className="rounded-lg font-bold bg-background shadow-sm border-border/50" onClick={() => handleAction('Weekly')}>Weekly</Button>
-                            <Button size="sm" variant="ghost" className="rounded-lg font-bold text-rose-500 hover:text-rose-600 hover:bg-rose-50" onClick={() => handleAction('Seating')}>Exam Seating</Button>
-                        </div>
-                    </div>
-                </CardHeader>
-                <CardContent className="p-8">
-                    <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                        {[
-                            { time: '09:40', name: 'Machine Learning', room: 'R301', status: 'done', color: 'bg-emerald-500/10 text-emerald-600' },
-                            { time: '10:40', name: 'Cyber Security', room: 'R301', status: 'done', color: 'bg-emerald-500/10 text-emerald-600' },
-                            { time: '11:40', name: 'Professional Ethics', room: 'R211', status: 'current', color: 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/30' },
-                            { time: '01:30', name: 'Lunch Break', room: 'Cafeteria', status: 'next', color: 'bg-muted/50 text-muted-foreground' },
-                            { time: '02:30', name: 'ML Lab (A1)', room: 'L402', status: 'next', color: 'bg-amber-500/10 text-amber-600' },
-                        ].map((item, idx) => (
-                            <motion.div 
-                                key={idx}
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.5 + idx * 0.1 }}
-                                className={`rounded-[2rem] p-6 flex flex-col justify-between min-h-[140px] group ${item.color} border border-transparent transition-all hover:scale-105`}
-                            >
-                                <div className="text-lg font-black tracking-tight">{item.time}</div>
-                                <div>
-                                    <div className="font-black text-sm uppercase leading-tight mb-1">{item.name}</div>
-                                    <div className="text-[10px] font-bold uppercase tracking-widest opacity-70">{item.room}</div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
         </div>
     );
 }
