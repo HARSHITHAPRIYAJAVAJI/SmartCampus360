@@ -22,8 +22,9 @@ interface TimetableProps {
 export default function Timetable({ userRole: propRole }: TimetableProps) {
   const { user } = useOutletContext<{ user: { id: string, name: string, role: string } }>();
   const [activeTab, setActiveTab] = useState('academic');
-  const [selectedSemester, setSelectedSemester] = useState<number>(1);
   const userRole = propRole || user?.role || "student";
+  const student = useMemo(() => MOCK_STUDENTS.find(s => s.rollNumber.toUpperCase() === user.id.toUpperCase()), [user.id]);
+  const [selectedSemester, setSelectedSemester] = useState<number>(student?.semester || 1);
 
   const [storageSyncStamp, setStorageSyncStamp] = useState(0);
   useEffect(() => {
@@ -47,8 +48,6 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const timeSlots = ["09:40", "10:40", "11:40", "12:40", "01:20", "02:20", "03:20"];
 
-  const student = useMemo(() => MOCK_STUDENTS.find(s => s.rollNumber.toUpperCase() === user.id.toUpperCase()), [user.id]);
-
   const processedData = useMemo(() => {
     if (userRole === "student") {
       if (!student) return {};
@@ -62,14 +61,18 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
       
       let publishedEntry = allTimetables ? allTimetables[strictPublishedKey] : null;
 
-      // Logic: Prioritize the specific published entry, fallback to institutional defaults ONLY on initial boot before any publishing happens.
-      const useDemoData = publishedStoreStr === null;
+      // Logic: Prioritize the specific published entry, fallback to institutional defaults if the specific section is not yet published.
       const liveTable = publishedEntry?.grid || 
-                        (publishedEntry && !publishedEntry.metadata ? publishedEntry : {});
+                        (publishedEntry && !publishedEntry.metadata ? publishedEntry : null);
       const liveMetadata = publishedEntry?.metadata || null;
 
-      const result: any = { slots: {}, metadata: liveMetadata };
-      Object.entries(liveTable).forEach(([dayTime, session]: [string, any]) => {
+      // FALLBACK: If no live table exists for this specific key, use the institutional template
+      const useDemoData = !liveTable;
+      const demoGrid = useDemoData ? (AIML_TIMETABLES[`${student.year}-${semNum}`] || {}) : {};
+      const sourceTable = useDemoData ? demoGrid : liveTable;
+
+      const result: any = { slots: {}, metadata: liveMetadata, isDemo: useDemoData };
+      Object.entries(sourceTable).forEach(([dayTime, session]: [string, any]) => {
         if (!session) return;
         let [day, time] = dayTime.split('-');
         const timeMap: Record<string, string> = { "09:30": "09:40", "10:30": "10:40", "11:40": "11:40", "01:30": "01:20", "02:30": "02:20", "03:30": "03:20" };
