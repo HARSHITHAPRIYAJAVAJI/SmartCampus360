@@ -174,7 +174,7 @@ export function LoginForm({
       }
 
       onLogin({
-        id: role === 'admin' ? cleanId : (role === 'student' ? (MOCK_STUDENTS.find(s => s.rollNumber.toUpperCase() === cleanId)?.id || cleanId) : (MOCK_FACULTY.find(f => f.rollNumber.toUpperCase() === cleanId)?.id || cleanId)),
+        id: role === 'admin' ? cleanId : (role === 'student' ? cleanId : (MOCK_FACULTY.find(f => f.rollNumber.toUpperCase() === cleanId)?.id || cleanId)),
         role,
         name: userName
       });

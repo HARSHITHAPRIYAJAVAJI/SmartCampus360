@@ -219,6 +219,8 @@ export function executeSwap(
                         ...session,
                         facultyId: req.targetId,
                         faculty: target?.name || req.targetId,
+                        originalFacultyId: session.facultyId || req.senderId,
+                        originalFacultyName: session.faculty || sender?.name || req.senderId,
                         isSwap: true
                     };
                     entryModified = true;
@@ -259,17 +261,22 @@ export function revertLeavePeriods(facultyId: string, publishedTimetables: Recor
         Object.entries(grid).forEach(([dayTime, session]: [string, any]) => {
             if (!session) return;
             
-            if (session.originalFacultyId === facultyId) {
-                grid[dayTime] = {
-                    ...session,
-                    facultyId: session.originalFacultyId,
-                    faculty: session.originalFacultyName || session.faculty, // Fallback to current if original name missing
-                    isReplacement: false
-                };
-                delete grid[dayTime].originalFacultyId;
-                delete grid[dayTime].originalFacultyName;
-                entryModified = true;
-                totalRestored++;
+            if (session.originalFacultyId) {
+                // If this session was modified for THIS faculty (either they were replaced OR they were the substitute)
+                // But specifically for Leave, we revert things where originalFacultyId is the one returning
+                if (session.originalFacultyId === facultyId) {
+                    grid[dayTime] = {
+                        ...session,
+                        facultyId: session.originalFacultyId,
+                        faculty: session.originalFacultyName || session.faculty,
+                        isReplacement: false,
+                        isSwap: false
+                    };
+                    delete grid[dayTime].originalFacultyId;
+                    delete grid[dayTime].originalFacultyName;
+                    entryModified = true;
+                    totalRestored++;
+                }
             }
         });
 
@@ -283,6 +290,63 @@ export function revertLeavePeriods(facultyId: string, publishedTimetables: Recor
     });
 
     return { updatedTimetables, totalRestored };
+}
+
+/**
+ * Specifically revert a single swap/replacement request.
+ */
+export function revertSpecificRequest(req: any, publishedTimetables: Record<string, any>) {
+    const updatedTimetables = { ...publishedTimetables };
+    const [startTime] = (req.period || "").split('-');
+    
+    const timeMap: Record<string, string> = { 
+        "09:30": "09:30", "09:40": "09:30",
+        "10:30": "10:30", "10:40": "10:30", 
+        "11:40": "11:40",
+        "13:30": "01:30", "01:30": "01:30", "01:20": "01:30",
+        "14:30": "02:30", "02:30": "02:30", "02:20": "02:30",
+        "15:30": "03:30", "03:30": "03:30", "03:20": "03:30"
+    };
+    const targetTime = timeMap[startTime] || startTime;
+    const dObj = new Date(req.date);
+    const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const targetDay = dayNames[dObj.getDay()];
+
+    Object.entries(updatedTimetables).forEach(([sectionKey, entry]: [string, any]) => {
+        const grid = { ...(entry.grid || entry) };
+        let entryModified = false;
+
+        Object.entries(grid).forEach(([dayTime, session]: [string, any]) => {
+            if (!session) return;
+            const [day, time] = dayTime.split('-');
+            
+            if (day === targetDay && time === targetTime) {
+                // If this session is currently held by the targetId AND was originally held by senderId
+                if (session.facultyId === req.targetId && session.originalFacultyId === req.senderId) {
+                    grid[dayTime] = {
+                        ...session,
+                        facultyId: session.originalFacultyId,
+                        faculty: session.originalFacultyName || session.faculty,
+                        isSwap: false,
+                        isReplacement: false
+                    };
+                    delete grid[dayTime].originalFacultyId;
+                    delete grid[dayTime].originalFacultyName;
+                    entryModified = true;
+                }
+            }
+        });
+
+        if (entryModified) {
+            if (entry.grid) {
+                updatedTimetables[sectionKey] = { ...entry, grid };
+            } else {
+                updatedTimetables[sectionKey] = grid;
+            }
+        }
+    });
+
+    return updatedTimetables;
 }
 
 

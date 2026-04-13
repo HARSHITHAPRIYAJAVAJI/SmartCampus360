@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
-import { reallocateLeavePeriods, revertLeavePeriods } from "@/utils/timetableAdjuster";
+import { reallocateLeavePeriods, revertLeavePeriods, revertSpecificRequest } from "@/utils/timetableAdjuster";
 import { pushStudentAlert } from "@/utils/studentNotifications";
 
 interface FacultyRequest {
@@ -166,9 +166,34 @@ const RequestsManagement = () => {
         saveRequests(updated);
         toast({
             title: "Record Deleted",
-            description: "The request and all associated timetable changes have been removed. Original state restored.",
+            description: "The request record has been removed.",
         });
         window.dispatchEvent(new Event('faculty_request_updated'));
+    };
+
+    const handleDeleteAcademicRequest = (requestId: string) => {
+        const request = allRequests.find(r => r.id === requestId);
+        if (!request) return;
+
+        // If approved, REVERT the timetable changes
+        if (request.status === 'approved') {
+            const publishedStoreStr = localStorage.getItem('published_timetables');
+            if (publishedStoreStr) {
+                const updated = revertSpecificRequest(request, JSON.parse(publishedStoreStr));
+                localStorage.setItem('published_timetables', JSON.stringify(updated));
+                window.dispatchEvent(new Event('timetable_published'));
+            }
+        }
+
+        // Remove from global requests
+        const updatedRequests = allRequests.filter(r => r.id !== requestId);
+        saveRequests(updatedRequests);
+        window.dispatchEvent(new Event('faculty_request_updated'));
+
+        toast({
+            title: "Adjustment Reverted",
+            description: `The ${request.type} request has been deleted and original duties restored.`
+        });
     };
 
     return (
@@ -373,14 +398,25 @@ const RequestsManagement = () => {
                                                     <p className="text-[10px] text-indigo-600 font-black">Slot: {req.period}</p>
                                                 </div>
                                             </TableCell>
-                                            <TableCell className="text-right pr-8">
-                                                <Badge className={
-                                                    req.status === 'approved' ? 'bg-emerald-500 text-white' :
-                                                    req.status === 'rejected' ? 'bg-rose-500 text-white' :
-                                                    'bg-amber-100 text-amber-700'
-                                                }>
-                                                    {req.status.toUpperCase()}
-                                                </Badge>
+                                            <TableCell className="text-right pr-6">
+                                                <div className="flex items-center justify-end gap-3">
+                                                    <Badge className={
+                                                        req.status === 'approved' ? 'bg-emerald-500 text-white' :
+                                                        req.status === 'rejected' ? 'bg-rose-500 text-white' :
+                                                        'bg-amber-100 text-amber-700 border-none'
+                                                    }>
+                                                        {req.status.toUpperCase()}
+                                                    </Badge>
+                                                    <Button 
+                                                        variant="ghost" 
+                                                        size="sm" 
+                                                        onClick={() => handleDeleteAcademicRequest(req.id)}
+                                                        className="h-8 w-8 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-100 transition-all"
+                                                        title="Delete & Revert Swap"
+                                                    >
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </Button>
+                                                </div>
                                             </TableCell>
                                         </TableRow>
                                     ))
