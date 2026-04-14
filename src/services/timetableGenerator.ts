@@ -228,7 +228,10 @@ export class TimetableEngine {
         const inferredSem = calcSem2 % 2 === 0 ? 2 : 1;
         this.preallocateSectionFaculty([...labs, ...theories], section, year, inferredSem, department);
 
-        // 5. PRIORITY 1: LABS (3 Continuous Slots)
+        // 5. NEW: Institutional CRT Sessions (3rd & 4th Years)
+        this.applyCRTSessions(year, semester, department, section, grid);
+
+        // 6. PRIORITY 1: LABS (3 Continuous Slots)
         this.assignLabs(labs, labRooms, section, year, department, grid);
 
         // 6. POLICY: Non-Final Years (Sports, Library)
@@ -604,6 +607,90 @@ export class TimetableEngine {
                 facultyAllocator.recordAssignment(id, courseCode, "CurrentSession", isLab);
             });
         }
+    }
+
+    /**
+     * POLICY: CRT (Campus Recruitment Training) Sessions
+     * Requirements:
+     * - 3rd Year (Sem 6): 1 session/week (3 continuous hours)
+     * - 4th Year (Sem 7): 2 sessions/week (3 continuous hours each)
+     * - Venue: Auditorium
+     * - Grouping: 2 entire branches together (all sections)
+     * - Faculty: Technical Trainer
+     */
+    private applyCRTSessions(year: number, semester: number, dept: string, section: string, grid: TimetableGrid) {
+        // Sem 1 is usually Odd (1,3,5,7), Sem 2 is usually Even (2,4,6,8)
+        // 3rd Year - 6th Sem: year=3, semester=2 (Even)
+        // 4th Year - 7th Sem: year=4, semester=1 (Odd)
+        if (!((year === 3 && semester === 2) || (year === 4 && semester === 1))) return;
+
+        const d = dept.toUpperCase();
+        
+        // Grouping: Pairing branches to fill Auditorium capacity (approx 6-8 sections together)
+        const groups: Record<string, string[]> = {
+            'GROUP_A': ['CSE', 'CSM', 'AIML'],
+            'GROUP_B': ['IT', 'ECE']
+        };
+        const activeGroup = Object.keys(groups).find(gn => groups[gn].includes(d)) || 'GROUP_A';
+
+        const venue = "Main Auditorium";
+        const faculty = "Technical Trainer";
+        const trainerId = "trainer-tech";
+
+        // Deterministic Schedule to prevent resource clashes across branches/years
+        const crtBlocks: any = {
+            3: { // 3rd Year
+                2: { // Sem 6
+                    'GROUP_A': [{ day: 'Saturday', isMorning: true }],
+                    'GROUP_B': [{ day: 'Saturday', isMorning: false }]
+                }
+            },
+            4: { // 4th Year
+                1: { // Sem 7
+                    'GROUP_A': [
+                        { day: 'Friday', isMorning: true },
+                        { day: 'Friday', isMorning: false }
+                    ],
+                    'GROUP_B': [
+                        { day: 'Thursday', isMorning: true },
+                        { day: 'Thursday', isMorning: false }
+                    ]
+                }
+            }
+        };
+
+        const sessions = crtBlocks[year]?.[semester]?.[activeGroup] || [];
+
+        sessions.forEach((session: any) => {
+            const blockSlots = session.isMorning ? this.slots.slice(0, 3) : this.slots.slice(3, 6);
+            
+            // Check if block is actually free in the Auditorium (shared resource check)
+            const isAuditoriumFree = blockSlots.every(slot => 
+                !this.roomSchedule[`${session.day}-${slot}`].has(venue)
+            );
+
+            // We apply it if free OR if it's already assigned to OUR branches (joint session)
+            // But since this method is called sequentially for each section, 
+            // the first section will find it free, the next will find it "occupied" but it's the SAME CRT session.
+            
+            blockSlots.forEach(slot => {
+                const key = `${session.day}-${slot}`;
+                
+                // Add to resource schedules (only once per slot/room combo is needed but reserve() is safe)
+                this.reserve(session.day, slot, [faculty], venue);
+                
+                // Assign to section grid
+                grid[key] = {
+                    id: `crt-${key}-${dept}-${section}`,
+                    courseCode: "CRT",
+                    courseName: "Campus Recruitment Training",
+                    faculty: faculty,
+                    facultyId: trainerId,
+                    room: venue,
+                    type: 'Theory'
+                };
+            });
+        });
     }
 
     private applyProjectBlocks(year: number, semester: number, section: string, grid: TimetableGrid) {

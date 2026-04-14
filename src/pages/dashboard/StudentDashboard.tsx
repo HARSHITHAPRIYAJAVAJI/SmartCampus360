@@ -18,11 +18,13 @@ import {
     ChevronRight, CheckCircle2, CalendarDays, UploadCloud, 
     MonitorPlay, LineChart, Star, Github, Linkedin, 
     Zap, Calculator, UserPlus, AlertCircle, Download, CreditCard, ShieldCheck,
-    MessageSquare, X, Send, Bot, User, Minimize2, Maximize2, Sparkles, BrainCircuit, Building2
+    MessageSquare, X, Send, Bot, User, Minimize2, Maximize2, Sparkles, BrainCircuit, Building2,
+    Mail, Smartphone, MapPin, Globe, Briefcase, FileText, UserCircle, GraduationCap, Users
 } from "lucide-react";
 import { formatSubjectName } from "@/data/subjectMapping";
 import { motion, AnimatePresence } from "framer-motion";
 import notificationService from "@/services/notificationService";
+import { attendanceService } from "@/services/attendanceService";
 import { YEAR_IN_CHARGES, CLASS_TEACHERS, getSectionCR } from "@/data/mockHierarchy";
 import { MOCK_FACULTY } from "@/data/mockFaculty";
 import { AttendanceHistory } from "@/components/dashboard/AttendanceHistory";
@@ -56,6 +58,7 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
     
     const [gpaWhatIf, setGpaWhatIf] = useState<number | string>("");
     const [storageSyncStamp, setStorageSyncStamp] = useState(0);
+    const [liveAttendancePct, setLiveAttendancePct] = useState<number | null>(null);
     const [liveAlerts, setLiveAlerts] = useState<any[]>([]);
 
     useEffect(() => {
@@ -87,11 +90,11 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
             if (found) return found;
         }
         return MOCK_STUDENTS.find((s: any) => s.rollNumber.toUpperCase() === user.id.toUpperCase());
-    }, [user.id, impersonatedStudent]);
+    }, [user.id, impersonatedStudent, storageSyncStamp]);
 
     // Advanced Stats: Attendance Buffer & Predictive GPA
     const academicMetrics = useMemo(() => {
-        if (!studentData) return { buffer: 0, predictedGpa: 0, skillData: [] };
+        if (!studentData) return { buffer: 0, predictedGpa: 0, skillData: [], cr: null, ct: null, yic: null };
         
         // Attendance Buffer (Minimum 75% rule)
         const totalClasses = 100; // Simulated
@@ -151,7 +154,7 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
 
     useEffect(() => {
         const handleStorage = (e: StorageEvent) => {
-            if (e.key === 'published_timetables') {
+            if (e.key === 'published_timetables' || e.key === 'smartcampus_student_directory') {
                 setStorageSyncStamp(s => s + 1);
             }
         };
@@ -159,12 +162,50 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
         // Fallback custom event for same-tab routing overrides
         const handleCustomEvent = () => setStorageSyncStamp(s => s + 1);
         window.addEventListener('timetable_published', handleCustomEvent);
+        window.addEventListener('attendance_updated', handleCustomEvent);
         
+        // --- REAL-TIME DB POLLING SYNC ---
+        const syncWithBackend = async () => {
+            if (!studentData) return;
+            try {
+                // Use the ORIGINAL mock attendance as the fixed historical baseline
+                // to avoid double-counting sessions updated in the current reactive window
+                const originalStudent = MOCK_STUDENTS.find(s => s.rollNumber === user.id);
+                const basePct = originalStudent?.attendance || studentData.attendance || 0;
+                
+                const numericId = parseInt(studentData.id.replace(/\D/g, '')) || 0;
+                const records = await attendanceService.getAttendance({ student_id: numericId });
+                
+                if (records && Array.isArray(records)) {
+                    // Calculate real-time percentage
+                    // Baseline is 240 classes for the semester historically
+                    const baselineTotal = 240;
+                    const baselineAttended = Math.round((basePct / 100) * baselineTotal);
+                    
+                    const dbTotal = records.length;
+                    const dbAttended = records.filter((r: any) => r.status === 'Present').length;
+                    
+                    const total = baselineTotal + dbTotal;
+                    const attended = baselineAttended + dbAttended;
+                    const finalPct = Math.min(91, Math.round((attended / total) * 100));
+                    
+                    setLiveAttendancePct(finalPct);
+                }
+            } catch (err) {
+                console.error("Dashboard DB Sync Error:", err);
+            }
+        };
+
+        syncWithBackend();
+        const pollInterval = setInterval(syncWithBackend, 10000); // 10s for better real-time feel
+
         return () => {
             window.removeEventListener('storage', handleStorage);
             window.removeEventListener('timetable_published', handleCustomEvent);
+            window.removeEventListener('attendance_updated', handleCustomEvent);
+            clearInterval(pollInterval);
         };
-    }, [studentData]);
+    }, [studentData, storageSyncStamp]);
 
     const todaySchedule = useMemo(() => {
         if (!studentData) return [];
@@ -276,7 +317,15 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
 
 
     const stats = [
-        { title: "Attendance", value: `${studentData?.attendance || 0}%`, icon: CheckCircle2, color: "text-emerald-500", detail: "Safe to bunk: " + (academicMetrics as any).buffer + " slots" },
+        { 
+            title: "Attendance", 
+            value: `${liveAttendancePct !== null ? liveAttendancePct : (Math.min(studentData?.attendance || 0, 91))}%`, 
+            icon: CheckCircle2, 
+            color: "text-emerald-500", 
+            detail: "Safe to bunk: " + (academicMetrics as any).buffer + " slots",
+            isLive: liveAttendancePct !== null,
+            link: "/dashboard/attendance"
+        },
         { title: "Current GPA", value: studentData?.grade?.toFixed(2) || "0.0", icon: TrendingUp, color: "text-violet-500", detail: "Top 5% in Branch" },
         { title: "Credits Earned", value: `${(academicMetrics as any).earnedCredits}/${(academicMetrics as any).totalCredits}`, icon: Award, color: "text-blue-500", detail: `${(academicMetrics as any).totalCredits - (academicMetrics as any).earnedCredits} more for Graduation` },
         { title: "Assignments", value: "4 Due", icon: Clock, color: "text-amber-500", detail: "Next: OS Lab - 2 days" },
@@ -327,7 +376,7 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                         <div className="flex flex-wrap gap-2">
                             {[
                                 `B.Tech ${studentData?.year ? (studentData.year === 1 ? 'I' : studentData.year === 2 ? 'II' : studentData.year === 3 ? 'III' : 'IV') : 'IV'} Year`,
-                                `Semester ${studentData?.semester || (studentData?.year === 1 ? 2 : 7)}`,
+                                `Semester ${(studentData?.year || 4) * 2 - 1}`,
                                 studentData?.branch || 'CSE',
                                 `Section ${studentData?.section || 'A'}`
                             ].map((tag) => (
@@ -338,9 +387,6 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                         </div>
                     </div>
                     <div className="mt-8 flex gap-4">
-                        <Button className="bg-white text-indigo-700 hover:bg-indigo-50 font-bold rounded-xl px-6" onClick={() => navigate('/dashboard/profile')}>
-                            Detailed Profile
-                        </Button>
                         <Button variant="ghost" className="bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/20 text-white rounded-xl px-6 font-bold transition-all hover:scale-105 active:scale-95 shadow-none">
                             <Linkedin className="w-4 h-4 mr-2" /> Share Success
                         </Button>
@@ -395,20 +441,36 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                             hidden: { opacity: 0, y: 20 },
                             visible: { opacity: 1, y: 0 }
                         }}
+                        onClick={() => (stat as any).link && navigate((stat as any).link)}
+                        className={(stat as any).link ? "cursor-pointer" : ""}
                     >
-                        <Card className="border-none shadow-premium hover:shadow-2xl transition-all duration-300 rounded-3xl overflow-hidden group relative">
+                        <Card className={`border-none shadow-premium hover:shadow-2xl transition-all duration-300 rounded-3xl overflow-hidden group relative ${(stat as any).link ? 'hover:scale-[1.02] hover:ring-2 ring-primary/20' : ''}`}>
                             <CardContent className="p-6">
                                 <div className="flex justify-between items-start mb-4">
                                     <div className="space-y-1">
-                                        <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">{stat.title}</p>
-                                        <h4 className="text-3xl font-black tracking-tighter">{stat.value}</h4>
+                                        <div className="flex items-center gap-2">
+                                            <p className="text-xs font-black uppercase tracking-widest text-muted-foreground">{stat.title}</p>
+                                            {(stat as any).isLive && (
+                                                <Badge className="bg-emerald-500/10 text-emerald-600 text-[8px] font-black h-4 px-1 border-none flex gap-1 items-center">
+                                                    <span className="h-1 w-1 rounded-full bg-emerald-600 animate-pulse" /> LIVE
+                                                </Badge>
+                                            )}
+                                        </div>
+                                        <h4 className={`text-3xl font-black tracking-tighter transition-all duration-500 ${(stat as any).isLive ? 'text-emerald-600 animate-in zoom-in-95' : ''}`}>
+                                            {stat.value}
+                                        </h4>
                                     </div>
                                     <div className={`p-3 rounded-2xl ${stat.color} bg-current opacity-10 group-hover:opacity-20 transition-opacity`} />
                                     <stat.icon className={`w-6 h-6 ${stat.color} absolute top-6 right-6`} />
                                 </div>
-                                <p className="text-xs font-medium text-muted-foreground/80 flex items-center gap-1">
-                                    <CheckCircle2 className="w-3 h-3 text-emerald-500" /> {stat.detail}
-                                </p>
+                                <div className="flex items-center justify-between">
+                                    <p className="text-xs font-medium text-muted-foreground/80 flex items-center gap-1">
+                                        <CheckCircle2 className="w-3 h-3 text-emerald-500" /> {stat.detail}
+                                    </p>
+                                    {(stat as any).link && (
+                                        <ChevronRight className="w-4 h-4 text-primary opacity-0 group-hover:opacity-100 transition-all translate-x-1 group-hover:translate-x-0" />
+                                    )}
+                                </div>
                             </CardContent>
                         </Card>
                     </motion.div>
@@ -625,6 +687,33 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
 
                 {/* Right Side: Advanced Professional Suite */}
                 <div className="lg:col-span-4 space-y-8">
+                    {/* Contact Details Section (Moved from Profile) */}
+                    <Card className="border-none shadow-xl rounded-[2rem] overflow-hidden">
+                        <CardHeader className="bg-muted/30 border-b py-5">
+                            <CardTitle className="text-lg flex items-center gap-2">
+                                <User className="w-5 h-5 text-primary" />
+                                Contact Details
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="p-6 space-y-5">
+                            {[
+                                { label: "Institutional Email", value: studentData?.email || `${studentData?.rollNumber.toLowerCase()}@smartcampus.edu`, icon: Mail },
+                                { label: "Emergency Phone", value: studentData?.phone || "+91 88888 88888", icon: Smartphone },
+                                { label: "Reporting To", value: "HOD (AIML)", icon: Users },
+                            ].map((info, i) => (
+                                <div key={i} className="flex items-center gap-4 group/item">
+                                    <div className="p-2.5 rounded-xl bg-muted text-muted-foreground group-hover/item:bg-primary/10 group-hover/item:text-primary transition-colors">
+                                        <info.icon className="w-4 h-4" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">{info.label}</span>
+                                        <span className="text-sm font-semibold break-all leading-tight">{info.value}</span>
+                                    </div>
+                                </div>
+                            ))}
+                        </CardContent>
+                    </Card>
+
                     {/* Predictive Tools */}
                     <Card className="border-none shadow-xl rounded-[2rem]">
                         <CardHeader>
@@ -685,14 +774,23 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                         </CardHeader>
                         <CardContent className="space-y-6">
                             <div className="flex gap-3">
-                                <div className="p-3 bg-white/10 rounded-2xl flex-1 flex items-center justify-center group-hover:bg-white/20 cursor-pointer transition-all border border-white/5" onClick={() => handleAction('GitHub')}>
+                                <div 
+                                    className="p-3 bg-white/10 rounded-2xl flex-1 flex items-center justify-center hover:bg-white/20 cursor-pointer transition-all border border-white/5" 
+                                    onClick={() => window.open(`https://github.com`, '_blank')}
+                                >
                                     <Github className="w-5 h-5" />
                                 </div>
-                                <div className="p-3 bg-[#0a66c2]/10 rounded-2xl flex-1 flex items-center justify-center group-hover:bg-[#0a66c2]/20 cursor-pointer transition-all border border-[#0a66c2]/20" onClick={() => handleAction('LinkedIn')}>
+                                <div 
+                                    className="p-3 bg-[#0a66c2]/10 rounded-2xl flex-1 flex items-center justify-center hover:bg-[#0a66c2]/20 cursor-pointer transition-all border border-[#0a66c2]/20" 
+                                    onClick={() => window.open(`https://linkedin.com`, '_blank')}
+                                >
                                     <Linkedin className="w-5 h-5 text-[#0a66c2]" />
                                 </div>
                             </div>
-                            <div className="bg-white p-4 rounded-2xl flex justify-between items-center group/btn cursor-pointer" onClick={() => handleAction('Portfolio')}>
+                            <div 
+                                className="bg-white p-4 rounded-2xl flex justify-between items-center group/btn cursor-pointer hover:bg-slate-100 transition-colors" 
+                                onClick={() => window.open(`https://smartcampus.edu/portfolio/${studentData?.rollNumber.toLowerCase() || 'student'}`, '_blank')}
+                            >
                                 <span className="text-black font-black uppercase text-xs tracking-tighter">View Public Profile</span>
                                 <ChevronRight className="w-4 h-4 text-black group-hover/btn:translate-x-1 transition-transform" />
                             </div>

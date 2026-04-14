@@ -92,7 +92,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916248737267",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 9.77,
         "assignment1": 8,
         "mid1": 23
@@ -122,7 +122,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916356070800",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 7.85,
         "assignment1": 9,
         "mid1": 22
@@ -152,7 +152,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+918247025527",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 9.78,
         "assignment1": 8,
         "mid1": 18
@@ -212,7 +212,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+919419646839",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 9.51,
         "assignment1": 9,
         "mid1": 19
@@ -227,7 +227,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+917344658217",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 9.94,
         "assignment1": 9,
         "mid1": 19
@@ -257,7 +257,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+917970729612",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 8.01,
         "assignment1": 7,
         "mid1": 17
@@ -272,7 +272,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+919977561657",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 7.41,
         "assignment1": 8,
         "mid1": 19
@@ -407,7 +407,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+917192714281",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 9.88,
         "assignment1": 9,
         "mid1": 22
@@ -452,7 +452,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+918525317121",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 6.93,
         "assignment1": 9,
         "mid1": 24
@@ -467,7 +467,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916866781059",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 7.17,
         "assignment1": 9,
         "mid1": 20
@@ -482,7 +482,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+919133996791",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 7.09,
         "assignment1": 7,
         "mid1": 18
@@ -512,7 +512,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+916271657138",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 9.87,
         "assignment1": 7,
         "mid1": 24
@@ -527,7 +527,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+919408651432",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 8.72,
         "assignment1": 8,
         "mid1": 23
@@ -542,7 +542,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917319624735",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 7.47,
         "assignment1": 8,
         "mid1": 19
@@ -557,7 +557,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+919858121217",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 7.22,
         "assignment1": 7,
         "mid1": 24
@@ -587,7 +587,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+916667923816",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 7.43,
         "assignment1": 9,
         "mid1": 19
@@ -617,7 +617,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917620043715",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 7.13,
         "assignment1": 7,
         "mid1": 19
@@ -647,7 +647,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+916213765325",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 7.67,
         "assignment1": 9,
         "mid1": 24
@@ -677,7 +677,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+918123513879",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 9.96,
         "assignment1": 8,
         "mid1": 19
@@ -692,7 +692,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+916201257745",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 8.9,
         "assignment1": 8,
         "mid1": 24
@@ -782,7 +782,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+919760690816",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 9.39,
         "assignment1": 9,
         "mid1": 23
@@ -812,7 +812,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+918130195881",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 7.77,
         "assignment1": 7,
         "mid1": 17
@@ -857,7 +857,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+919217386179",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 6.87,
         "assignment1": 8,
         "mid1": 17
@@ -872,7 +872,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917594492537",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 9.96,
         "assignment1": 8,
         "mid1": 22
@@ -1052,7 +1052,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+919952786501",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 6.57,
         "assignment1": 9,
         "mid1": 18
@@ -1067,7 +1067,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+916445766072",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 7.65,
         "assignment1": 9,
         "mid1": 20
@@ -1127,7 +1127,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+916342162383",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 8.72,
         "assignment1": 9,
         "mid1": 23
@@ -1157,7 +1157,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+919890229484",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 8.82,
         "assignment1": 7,
         "mid1": 18
@@ -1232,7 +1232,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+919377784989",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 8.72,
         "assignment1": 9,
         "mid1": 20
@@ -1262,7 +1262,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+917177113609",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 8.12,
         "assignment1": 9,
         "mid1": 21
@@ -1457,7 +1457,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+919745274519",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 9,
         "assignment1": 7,
         "mid1": 22
@@ -1532,7 +1532,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+916663061777",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 7.94,
         "assignment1": 7,
         "mid1": 22
@@ -1547,7 +1547,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918348247119",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 6.51,
         "assignment1": 8,
         "mid1": 23
@@ -1577,7 +1577,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+916975822999",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 7.19,
         "assignment1": 9,
         "mid1": 21
@@ -1607,7 +1607,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+919758684450",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 7.37,
         "assignment1": 7,
         "mid1": 17
@@ -1637,7 +1637,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918421326079",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 6.81,
         "assignment1": 9,
         "mid1": 20
@@ -1667,7 +1667,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918558582094",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 9.65,
         "assignment1": 9,
         "mid1": 23
@@ -1697,7 +1697,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+916522152767",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.91,
         "assignment1": 9,
         "mid1": 22
@@ -1712,7 +1712,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918131135126",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 9.02,
         "assignment1": 7,
         "mid1": 18
@@ -1757,7 +1757,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918646209794",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 8.8,
         "assignment1": 9,
         "mid1": 19
@@ -1772,7 +1772,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918801839977",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 7.56,
         "assignment1": 7,
         "mid1": 23
@@ -1787,7 +1787,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+917436158868",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 8.3,
         "assignment1": 7,
         "mid1": 24
@@ -1877,7 +1877,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+919602870441",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 8.11,
         "assignment1": 8,
         "mid1": 22
@@ -1907,7 +1907,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+919796473021",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 7.64,
         "assignment1": 7,
         "mid1": 22
@@ -2012,7 +2012,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+918143254309",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 7.17,
         "assignment1": 7,
         "mid1": 24
@@ -2027,7 +2027,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+918144930697",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 7.1,
         "assignment1": 8,
         "mid1": 18
@@ -2087,7 +2087,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917973126011",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 9.17,
         "assignment1": 8,
         "mid1": 22
@@ -2117,7 +2117,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917405294492",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 7.62,
         "assignment1": 9,
         "mid1": 17
@@ -2147,7 +2147,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917053608200",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 6.56,
         "assignment1": 8,
         "mid1": 24
@@ -2177,7 +2177,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917143712528",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 6.79,
         "assignment1": 8,
         "mid1": 19
@@ -2207,7 +2207,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+918869532950",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 7.12,
         "assignment1": 9,
         "mid1": 18
@@ -2222,7 +2222,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917438890479",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 6.57,
         "assignment1": 8,
         "mid1": 22
@@ -2282,7 +2282,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+917544059431",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 7.26,
         "assignment1": 9,
         "mid1": 20
@@ -2312,7 +2312,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+919415887470",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 9.93,
         "assignment1": 8,
         "mid1": 21
@@ -2342,7 +2342,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+916975927727",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 7.73,
         "assignment1": 8,
         "mid1": 18
@@ -2402,7 +2402,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+918896961437",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 8.58,
         "assignment1": 8,
         "mid1": 18
@@ -2417,7 +2417,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+918684337703",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 6.78,
         "assignment1": 9,
         "mid1": 23
@@ -2447,7 +2447,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+918227849961",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 8.48,
         "assignment1": 7,
         "mid1": 17
@@ -2462,7 +2462,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+916405766976",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 9.9,
         "assignment1": 9,
         "mid1": 18
@@ -2522,7 +2522,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+917446115773",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 8.36,
         "assignment1": 7,
         "mid1": 18
@@ -2537,7 +2537,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+918531380274",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 8.41,
         "assignment1": 7,
         "mid1": 18
@@ -2582,7 +2582,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+917441766664",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 7.09,
         "assignment1": 9,
         "mid1": 20
@@ -2762,7 +2762,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918873264803",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 9.49,
         "assignment1": 8,
         "mid1": 22
@@ -2777,7 +2777,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+919403738296",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 8.5,
         "assignment1": 7,
         "mid1": 24
@@ -2792,7 +2792,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918733117078",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 9.9,
         "assignment1": 7,
         "mid1": 22
@@ -2837,7 +2837,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918409511605",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 8.42,
         "assignment1": 9,
         "mid1": 24
@@ -2852,7 +2852,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918254619894",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 9.57,
         "assignment1": 8,
         "mid1": 21
@@ -2942,7 +2942,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918713940243",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 8.8,
         "assignment1": 9,
         "mid1": 18
@@ -2987,7 +2987,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+917335544603",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 8.87,
         "assignment1": 7,
         "mid1": 19
@@ -3032,7 +3032,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+919435500782",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 6.97,
         "assignment1": 7,
         "mid1": 22
@@ -3077,7 +3077,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+917478357168",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 6.99,
         "assignment1": 8,
         "mid1": 21
@@ -3107,7 +3107,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+919613987660",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 8.47,
         "assignment1": 7,
         "mid1": 17
@@ -3122,7 +3122,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+916568538556",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 7.64,
         "assignment1": 9,
         "mid1": 22
@@ -3227,7 +3227,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+919996771908",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 7.68,
         "assignment1": 7,
         "mid1": 17
@@ -3242,7 +3242,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+917926842909",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 9.19,
         "assignment1": 8,
         "mid1": 21
@@ -3302,7 +3302,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+918957582704",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 6.82,
         "assignment1": 7,
         "mid1": 17
@@ -3317,7 +3317,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+916913817544",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 7.28,
         "assignment1": 7,
         "mid1": 18
@@ -3332,7 +3332,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+917901038693",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 7.64,
         "assignment1": 7,
         "mid1": 23
@@ -3392,7 +3392,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+919406382138",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 7.53,
         "assignment1": 8,
         "mid1": 17
@@ -3467,7 +3467,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+918211027875",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 6.55,
         "assignment1": 7,
         "mid1": 24
@@ -3512,7 +3512,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+918441620448",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 9.6,
         "assignment1": 7,
         "mid1": 23
@@ -3572,7 +3572,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+919717583819",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 6.77,
         "assignment1": 8,
         "mid1": 21
@@ -3677,7 +3677,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+919367439192",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 7.55,
         "assignment1": 8,
         "mid1": 22
@@ -3797,7 +3797,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+917040695354",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 8.69,
         "assignment1": 7,
         "mid1": 18
@@ -3827,7 +3827,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+918299397903",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 8.25,
         "assignment1": 8,
         "mid1": 24
@@ -3887,7 +3887,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+918605778736",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 8.99,
         "assignment1": 8,
         "mid1": 24
@@ -3932,7 +3932,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+918697394210",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 9.15,
         "assignment1": 9,
         "mid1": 20
@@ -3947,7 +3947,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+917690054324",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 6.87,
         "assignment1": 7,
         "mid1": 18
@@ -4007,7 +4007,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+919161368212",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 9.93,
         "assignment1": 8,
         "mid1": 21
@@ -4037,7 +4037,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+916567648640",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 8.36,
         "assignment1": 9,
         "mid1": 21
@@ -4067,7 +4067,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+917160903330",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 8,
         "assignment1": 9,
         "mid1": 17
@@ -4082,7 +4082,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+916810108272",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 9.09,
         "assignment1": 8,
         "mid1": 17
@@ -4112,7 +4112,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+919041688488",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 6.87,
         "assignment1": 8,
         "mid1": 23
@@ -4127,7 +4127,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+917775663648",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 8.18,
         "assignment1": 8,
         "mid1": 22
@@ -4172,7 +4172,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+917177580094",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 8.54,
         "assignment1": 8,
         "mid1": 17
@@ -4217,7 +4217,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+918600408525",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 8.3,
         "assignment1": 7,
         "mid1": 19
@@ -4232,7 +4232,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+917093376364",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 8.39,
         "assignment1": 9,
         "mid1": 23
@@ -4262,7 +4262,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+918897381178",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 9.5,
         "assignment1": 8,
         "mid1": 20
@@ -4277,7 +4277,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+917183308182",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 8.18,
         "assignment1": 9,
         "mid1": 22
@@ -4352,7 +4352,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+917497146746",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 7.58,
         "assignment1": 8,
         "mid1": 17
@@ -4367,7 +4367,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+919610739741",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 8.06,
         "assignment1": 9,
         "mid1": 20
@@ -4487,7 +4487,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+918394654490",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 7.23,
         "assignment1": 8,
         "mid1": 22
@@ -4502,7 +4502,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+917611995824",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 7.74,
         "assignment1": 8,
         "mid1": 17
@@ -4517,7 +4517,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+918541057803",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 7.76,
         "assignment1": 8,
         "mid1": 24
@@ -4577,7 +4577,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+916485047742",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 9.11,
         "assignment1": 8,
         "mid1": 17
@@ -4607,7 +4607,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+919399593275",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 7.34,
         "assignment1": 8,
         "mid1": 17
@@ -4637,7 +4637,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+917524149880",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 6.79,
         "assignment1": 8,
         "mid1": 21
@@ -4652,7 +4652,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+917995189709",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 9.24,
         "assignment1": 7,
         "mid1": 23
@@ -4712,7 +4712,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+916649517829",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 6.79,
         "assignment1": 8,
         "mid1": 22
@@ -4742,7 +4742,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+919137230854",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 9.7,
         "assignment1": 8,
         "mid1": 19
@@ -4757,7 +4757,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+919250117166",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 6.64,
         "assignment1": 8,
         "mid1": 24
@@ -4787,7 +4787,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+916578601422",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 7.73,
         "assignment1": 8,
         "mid1": 23
@@ -4802,7 +4802,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+919921781096",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 8.04,
         "assignment1": 8,
         "mid1": 20
@@ -4817,7 +4817,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+918294119267",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 9.83,
         "assignment1": 9,
         "mid1": 19
@@ -4847,7 +4847,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+919123347350",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 7.38,
         "assignment1": 8,
         "mid1": 23
@@ -4877,7 +4877,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+917979239396",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 8.28,
         "assignment1": 9,
         "mid1": 24
@@ -4982,7 +4982,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+919062688195",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 9.8,
         "assignment1": 7,
         "mid1": 19
@@ -4997,7 +4997,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+919856977171",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 6.77,
         "assignment1": 9,
         "mid1": 18
@@ -5072,7 +5072,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+919075093937",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 7.29,
         "assignment1": 9,
         "mid1": 19
@@ -5252,7 +5252,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+917963462075",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 6.95,
         "assignment1": 8,
         "mid1": 24
@@ -5297,7 +5297,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+917684260666",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 9.65,
         "assignment1": 8,
         "mid1": 24
@@ -5372,7 +5372,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+918321040806",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 8.24,
         "assignment1": 7,
         "mid1": 23
@@ -5447,7 +5447,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+917694276092",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 6.87,
         "assignment1": 8,
         "mid1": 21
@@ -5477,7 +5477,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+918241240266",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.35,
         "assignment1": 7,
         "mid1": 19
@@ -5507,7 +5507,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916637700588",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 7,
         "assignment1": 8,
         "mid1": 18
@@ -5522,7 +5522,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+918211341679",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 7.05,
         "assignment1": 9,
         "mid1": 17
@@ -5702,7 +5702,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+918971098579",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.58,
         "assignment1": 8,
         "mid1": 21
@@ -5732,7 +5732,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916196740533",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 9.39,
         "assignment1": 9,
         "mid1": 17
@@ -5822,7 +5822,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+917350473872",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 8.93,
         "assignment1": 9,
         "mid1": 19
@@ -5837,7 +5837,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+919907945744",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.01,
         "assignment1": 7,
         "mid1": 20
@@ -5867,7 +5867,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+918977484933",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 7.71,
         "assignment1": 7,
         "mid1": 19
@@ -5897,7 +5897,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+918293619271",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 8.4,
         "assignment1": 7,
         "mid1": 24
@@ -5942,7 +5942,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917059378901",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.24,
         "assignment1": 9,
         "mid1": 19
@@ -6002,7 +6002,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+919024744625",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 10,
         "assignment1": 8,
         "mid1": 23
@@ -6032,7 +6032,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+919075320107",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 6.64,
         "assignment1": 7,
         "mid1": 22
@@ -6062,7 +6062,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917407473326",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 8.73,
         "assignment1": 8,
         "mid1": 17
@@ -6077,7 +6077,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+918344390241",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 7.23,
         "assignment1": 9,
         "mid1": 20
@@ -6137,7 +6137,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917785748797",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 7.3,
         "assignment1": 7,
         "mid1": 19
@@ -6182,7 +6182,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917843227966",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 8.99,
         "assignment1": 8,
         "mid1": 24
@@ -6272,7 +6272,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+918313630210",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 8.55,
         "assignment1": 9,
         "mid1": 19
@@ -6347,7 +6347,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+917981771149",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 8.68,
         "assignment1": 7,
         "mid1": 24
@@ -6377,7 +6377,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+916374217215",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 8.21,
         "assignment1": 8,
         "mid1": 23
@@ -6422,7 +6422,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+918628529031",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 8.81,
         "assignment1": 8,
         "mid1": 18
@@ -6437,7 +6437,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+919889760951",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 8.26,
         "assignment1": 9,
         "mid1": 20
@@ -6452,7 +6452,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+917801698242",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 7.51,
         "assignment1": 8,
         "mid1": 20
@@ -6482,7 +6482,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+918197287557",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 8.28,
         "assignment1": 7,
         "mid1": 20
@@ -6497,7 +6497,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+919436366061",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.63,
         "assignment1": 8,
         "mid1": 18
@@ -6527,7 +6527,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+919087561953",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 8.1,
         "assignment1": 9,
         "mid1": 21
@@ -6662,7 +6662,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+919476293621",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 7.01,
         "assignment1": 9,
         "mid1": 21
@@ -6677,7 +6677,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+918174005553",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 9.21,
         "assignment1": 9,
         "mid1": 19
@@ -6722,7 +6722,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+919095504857",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 7.59,
         "assignment1": 9,
         "mid1": 20
@@ -6767,7 +6767,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+916096008128",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 7.03,
         "assignment1": 7,
         "mid1": 22
@@ -6782,7 +6782,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+919052001060",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 9.2,
         "assignment1": 7,
         "mid1": 23
@@ -6872,7 +6872,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918577464448",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 8.31,
         "assignment1": 8,
         "mid1": 17
@@ -6887,7 +6887,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+916523259632",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 7.43,
         "assignment1": 9,
         "mid1": 23
@@ -6962,7 +6962,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+917042409588",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.4,
         "assignment1": 8,
         "mid1": 17
@@ -6992,7 +6992,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+916604233538",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 7.35,
         "assignment1": 9,
         "mid1": 17
@@ -7007,7 +7007,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+917760010503",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 8.54,
         "assignment1": 7,
         "mid1": 20
@@ -7067,7 +7067,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+917796112195",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 9.13,
         "assignment1": 8,
         "mid1": 22
@@ -7097,7 +7097,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+919496777405",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 8.64,
         "assignment1": 8,
         "mid1": 22
@@ -7202,7 +7202,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+917261728169",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 7.68,
         "assignment1": 7,
         "mid1": 18
@@ -7262,7 +7262,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917064409176",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 7.27,
         "assignment1": 7,
         "mid1": 20
@@ -7337,7 +7337,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+919047706521",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 8.43,
         "assignment1": 7,
         "mid1": 18
@@ -7397,7 +7397,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+916016765956",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 9.41,
         "assignment1": 9,
         "mid1": 17
@@ -7412,7 +7412,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917380923018",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 8.67,
         "assignment1": 8,
         "mid1": 19
@@ -7427,7 +7427,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+918529631014",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 7.73,
         "assignment1": 7,
         "mid1": 23
@@ -7457,7 +7457,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+916895556605",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 9.2,
         "assignment1": 7,
         "mid1": 24
@@ -7532,7 +7532,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+918906498885",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 8.32,
         "assignment1": 9,
         "mid1": 24
@@ -7592,7 +7592,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+919687884267",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 6.97,
         "assignment1": 7,
         "mid1": 18
@@ -7652,7 +7652,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+919070195665",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 9.66,
         "assignment1": 8,
         "mid1": 23
@@ -7682,7 +7682,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+919555073214",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 8.78,
         "assignment1": 8,
         "mid1": 21
@@ -7757,7 +7757,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+916461534104",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 7.62,
         "assignment1": 8,
         "mid1": 23
@@ -7832,7 +7832,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+917005042710",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 6.55,
         "assignment1": 8,
         "mid1": 19
@@ -7847,7 +7847,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+916683702028",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 6.51,
         "assignment1": 8,
         "mid1": 17
@@ -7862,7 +7862,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+917151207383",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 8.95,
         "assignment1": 9,
         "mid1": 21
@@ -7952,7 +7952,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+919694101586",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 7.09,
         "assignment1": 8,
         "mid1": 23
@@ -7967,7 +7967,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+918609484050",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 9.57,
         "assignment1": 9,
         "mid1": 22
@@ -7982,7 +7982,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+916842152945",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 7.28,
         "assignment1": 8,
         "mid1": 23
@@ -7997,7 +7997,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+919012300719",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 8.95,
         "assignment1": 9,
         "mid1": 24
@@ -8012,7 +8012,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+917034028117",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 8.2,
         "assignment1": 8,
         "mid1": 18
@@ -8027,7 +8027,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+919154190373",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 8.58,
         "assignment1": 9,
         "mid1": 22
@@ -8087,7 +8087,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+919711272856",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 8.78,
         "assignment1": 7,
         "mid1": 24
@@ -8147,7 +8147,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+919023668350",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 9.83,
         "assignment1": 9,
         "mid1": 21
@@ -8192,7 +8192,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+916213421992",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 8.32,
         "assignment1": 7,
         "mid1": 23
@@ -8222,7 +8222,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+919802743236",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 6.61,
         "assignment1": 7,
         "mid1": 20
@@ -8267,7 +8267,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918873459143",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 6.72,
         "assignment1": 8,
         "mid1": 19
@@ -8342,7 +8342,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+917228793972",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 6.79,
         "assignment1": 7,
         "mid1": 18
@@ -8357,7 +8357,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+919718018596",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 9.09,
         "assignment1": 8,
         "mid1": 19
@@ -8387,7 +8387,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+919043525708",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 9.82,
         "assignment1": 7,
         "mid1": 24
@@ -8417,7 +8417,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918035832691",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 6.6,
         "assignment1": 7,
         "mid1": 23
@@ -8432,7 +8432,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918480172251",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 6.6,
         "assignment1": 8,
         "mid1": 17
@@ -8672,7 +8672,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+919992144893",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 8.59,
         "assignment1": 8,
         "mid1": 18
@@ -8792,7 +8792,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+917777272079",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 9.23,
         "assignment1": 8,
         "mid1": 21
@@ -8807,7 +8807,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+918746286949",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 9.17,
         "assignment1": 8,
         "mid1": 19
@@ -8897,7 +8897,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+916355006913",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 7.18,
         "assignment1": 7,
         "mid1": 22
@@ -8942,7 +8942,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+917913921233",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 6.57,
         "assignment1": 9,
         "mid1": 20
@@ -8972,7 +8972,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+917900341445",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 8.37,
         "assignment1": 8,
         "mid1": 24
@@ -9032,7 +9032,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+917249292053",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 8.21,
         "assignment1": 9,
         "mid1": 21
@@ -9047,7 +9047,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+917978040918",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 7.43,
         "assignment1": 7,
         "mid1": 17
@@ -9107,7 +9107,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+916216508324",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 6.94,
         "assignment1": 9,
         "mid1": 20
@@ -9137,7 +9137,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+919912332274",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 7.71,
         "assignment1": 7,
         "mid1": 20
@@ -9167,7 +9167,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+919126304324",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 7.83,
         "assignment1": 7,
         "mid1": 23
@@ -9272,7 +9272,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+916385885124",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 9.36,
         "assignment1": 7,
         "mid1": 17
@@ -9302,7 +9302,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+916378510574",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 9.2,
         "assignment1": 9,
         "mid1": 17
@@ -9347,7 +9347,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+916973409642",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 9.74,
         "assignment1": 7,
         "mid1": 23
@@ -9377,7 +9377,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+918202167838",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 8.13,
         "assignment1": 8,
         "mid1": 17
@@ -9392,7 +9392,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+918603567283",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 9.36,
         "assignment1": 8,
         "mid1": 18
@@ -9527,7 +9527,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+919965466156",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 6.74,
         "assignment1": 9,
         "mid1": 23
@@ -9602,7 +9602,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+919122333503",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 8.52,
         "assignment1": 8,
         "mid1": 19
@@ -9632,7 +9632,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+919939616500",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 7.66,
         "assignment1": 8,
         "mid1": 24
@@ -9662,7 +9662,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+918394048210",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 7.34,
         "assignment1": 8,
         "mid1": 24
@@ -9677,7 +9677,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+916247841500",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 7.58,
         "assignment1": 8,
         "mid1": 22
@@ -9752,7 +9752,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+916647010471",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 7.24,
         "assignment1": 8,
         "mid1": 19
@@ -9827,7 +9827,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+917711685355",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 9.61,
         "assignment1": 9,
         "mid1": 24
@@ -9842,7 +9842,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+916694872501",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 8.54,
         "assignment1": 7,
         "mid1": 22
@@ -9872,7 +9872,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+918129509740",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 8.28,
         "assignment1": 7,
         "mid1": 23
@@ -9902,7 +9902,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+918979611692",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 9.52,
         "assignment1": 8,
         "mid1": 21
@@ -9962,7 +9962,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+917026707352",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 9.65,
         "assignment1": 7,
         "mid1": 18
@@ -10022,7 +10022,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+919277935301",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 9.61,
         "assignment1": 8,
         "mid1": 21
@@ -10157,7 +10157,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+918459417469",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 7.47,
         "assignment1": 9,
         "mid1": 23
@@ -10232,7 +10232,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+918376866324",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.56,
         "assignment1": 9,
         "mid1": 17
@@ -10277,7 +10277,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+916379151235",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 8.86,
         "assignment1": 9,
         "mid1": 23
@@ -10337,7 +10337,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+918834414437",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 7.03,
         "assignment1": 8,
         "mid1": 20
@@ -10367,7 +10367,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+918614207953",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 7.85,
         "assignment1": 8,
         "mid1": 23
@@ -10397,7 +10397,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916477754900",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.81,
         "assignment1": 8,
         "mid1": 21
@@ -10412,7 +10412,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916086602051",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 9.84,
         "assignment1": 8,
         "mid1": 20
@@ -10457,7 +10457,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+919196113913",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 7.45,
         "assignment1": 8,
         "mid1": 24
@@ -10472,7 +10472,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+917794695326",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 8.63,
         "assignment1": 9,
         "mid1": 20
@@ -10547,7 +10547,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916353431068",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 8.94,
         "assignment1": 7,
         "mid1": 18
@@ -10577,7 +10577,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+917647661277",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 9.18,
         "assignment1": 9,
         "mid1": 17
@@ -10592,7 +10592,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916362632399",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 8.45,
         "assignment1": 8,
         "mid1": 20
@@ -10622,7 +10622,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916187153523",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 9.53,
         "assignment1": 7,
         "mid1": 17
@@ -10652,7 +10652,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916446875626",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 6.7,
         "assignment1": 8,
         "mid1": 18
@@ -10682,7 +10682,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+917119201405",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 6.69,
         "assignment1": 7,
         "mid1": 17
@@ -10697,7 +10697,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+917879418410",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 7.76,
         "assignment1": 8,
         "mid1": 21
@@ -10757,7 +10757,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+917732897256",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 6.83,
         "assignment1": 9,
         "mid1": 18
@@ -10772,7 +10772,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+917505024069",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 9.39,
         "assignment1": 8,
         "mid1": 24
@@ -10787,7 +10787,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+919155094606",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 6.68,
         "assignment1": 8,
         "mid1": 20
@@ -10877,7 +10877,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916524395986",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 7.84,
         "assignment1": 9,
         "mid1": 18
@@ -10952,7 +10952,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+918441810872",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.71,
         "assignment1": 9,
         "mid1": 18
@@ -10967,7 +10967,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916662710933",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 7.07,
         "assignment1": 7,
         "mid1": 19
@@ -10997,7 +10997,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916545296805",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 7.5,
         "assignment1": 8,
         "mid1": 22
@@ -11012,7 +11012,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+917634696929",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 6.54,
         "assignment1": 7,
         "mid1": 18
@@ -11027,7 +11027,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+918038444366",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 8.32,
         "assignment1": 8,
         "mid1": 17
@@ -11072,7 +11072,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+919832535962",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 9.34,
         "assignment1": 8,
         "mid1": 17
@@ -11087,7 +11087,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+917034794527",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 9.16,
         "assignment1": 8,
         "mid1": 24
@@ -11117,7 +11117,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+917957074204",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 8.62,
         "assignment1": 9,
         "mid1": 20
@@ -11132,7 +11132,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+919672564628",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 6.69,
         "assignment1": 9,
         "mid1": 21
@@ -11147,7 +11147,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916698986004",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 9.69,
         "assignment1": 7,
         "mid1": 22
@@ -11162,7 +11162,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+918638012936",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 7.1,
         "assignment1": 7,
         "mid1": 20
@@ -11237,7 +11237,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916428688192",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 9.25,
         "assignment1": 7,
         "mid1": 19
@@ -11252,7 +11252,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916144178724",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 8.61,
         "assignment1": 9,
         "mid1": 22
@@ -11327,7 +11327,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+919062821882",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 9.21,
         "assignment1": 8,
         "mid1": 21
@@ -11372,7 +11372,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917499549290",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 9.27,
         "assignment1": 7,
         "mid1": 21
@@ -11462,7 +11462,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+918609425924",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 9.78,
         "assignment1": 8,
         "mid1": 20
@@ -11507,7 +11507,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+919471807638",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 8.88,
         "assignment1": 8,
         "mid1": 22
@@ -11537,7 +11537,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917580055734",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 7.78,
         "assignment1": 8,
         "mid1": 23
@@ -11612,7 +11612,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917954122305",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 8.38,
         "assignment1": 8,
         "mid1": 17
@@ -11642,7 +11642,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+918978377545",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 8.88,
         "assignment1": 7,
         "mid1": 18
@@ -11672,7 +11672,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+919574536206",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 8.43,
         "assignment1": 9,
         "mid1": 21
@@ -11702,7 +11702,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917670007535",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 8.33,
         "assignment1": 9,
         "mid1": 19
@@ -11717,7 +11717,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+918102688178",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 8.12,
         "assignment1": 8,
         "mid1": 17
@@ -11732,7 +11732,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+918217498918",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 8.93,
         "assignment1": 9,
         "mid1": 21
@@ -11792,7 +11792,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+919957537119",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 6.91,
         "assignment1": 8,
         "mid1": 22
@@ -11852,7 +11852,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+919700435850",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 7.29,
         "assignment1": 8,
         "mid1": 21
@@ -11882,7 +11882,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+916652010505",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 8.79,
         "assignment1": 7,
         "mid1": 22
@@ -11942,7 +11942,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+916652214196",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 7.93,
         "assignment1": 9,
         "mid1": 17
@@ -11957,7 +11957,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+918096236091",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 8.08,
         "assignment1": 7,
         "mid1": 23
@@ -12092,7 +12092,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+918629797897",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 6.55,
         "assignment1": 9,
         "mid1": 17
@@ -12107,7 +12107,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+916660067249",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 9.6,
         "assignment1": 7,
         "mid1": 20
@@ -12152,7 +12152,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+918049595870",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 9.39,
         "assignment1": 9,
         "mid1": 23
@@ -12167,7 +12167,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+918413226245",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 7.87,
         "assignment1": 9,
         "mid1": 20
@@ -12182,7 +12182,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918240378237",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 9.36,
         "assignment1": 7,
         "mid1": 24
@@ -12197,7 +12197,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+916809176142",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 8.56,
         "assignment1": 7,
         "mid1": 21
@@ -12227,7 +12227,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+916624412625",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 8.64,
         "assignment1": 7,
         "mid1": 19
@@ -12332,7 +12332,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+916433065303",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 7.05,
         "assignment1": 9,
         "mid1": 22
@@ -12347,7 +12347,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+917328724510",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 9.03,
         "assignment1": 9,
         "mid1": 23
@@ -12362,7 +12362,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+919050751324",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 8.37,
         "assignment1": 9,
         "mid1": 21
@@ -12407,7 +12407,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+916964335420",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 7.44,
         "assignment1": 8,
         "mid1": 20
@@ -12617,7 +12617,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+917036812451",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 8.81,
         "assignment1": 8,
         "mid1": 20
@@ -12662,7 +12662,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+918092904752",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 7.75,
         "assignment1": 7,
         "mid1": 20
@@ -12692,7 +12692,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+918357571762",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 9.13,
         "assignment1": 7,
         "mid1": 22
@@ -12707,7 +12707,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+918488956153",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 8.43,
         "assignment1": 7,
         "mid1": 23
@@ -12752,7 +12752,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917926610854",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 9.64,
         "assignment1": 7,
         "mid1": 19
@@ -12767,7 +12767,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+919466592774",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 8.14,
         "assignment1": 7,
         "mid1": 20
@@ -12782,7 +12782,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+918547284319",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 6.61,
         "assignment1": 8,
         "mid1": 20
@@ -12842,7 +12842,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917441787415",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 7.52,
         "assignment1": 9,
         "mid1": 19
@@ -12872,7 +12872,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+919462744043",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 6.83,
         "assignment1": 7,
         "mid1": 17
@@ -12887,7 +12887,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+919672811073",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 7.52,
         "assignment1": 9,
         "mid1": 23
@@ -12902,7 +12902,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+918920901488",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 9.39,
         "assignment1": 7,
         "mid1": 20
@@ -12932,7 +12932,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+919066200292",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 8.74,
         "assignment1": 8,
         "mid1": 20
@@ -12962,7 +12962,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+918976626314",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 6.51,
         "assignment1": 7,
         "mid1": 24
@@ -12977,7 +12977,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917327631566",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 8.29,
         "assignment1": 8,
         "mid1": 18
@@ -13007,7 +13007,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+916422851693",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 8.15,
         "assignment1": 9,
         "mid1": 20
@@ -13157,7 +13157,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+918392401037",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 9.14,
         "assignment1": 9,
         "mid1": 20
@@ -13172,7 +13172,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+918988006161",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 9.15,
         "assignment1": 8,
         "mid1": 17
@@ -13202,7 +13202,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+918933842224",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 7.67,
         "assignment1": 7,
         "mid1": 18
@@ -13262,7 +13262,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+916975021720",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 9.1,
         "assignment1": 9,
         "mid1": 23
@@ -13322,7 +13322,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+916175453850",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 8.13,
         "assignment1": 9,
         "mid1": 19
@@ -13352,7 +13352,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+916530607139",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 6.7,
         "assignment1": 9,
         "mid1": 20
@@ -13367,7 +13367,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+919714336839",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 8.87,
         "assignment1": 9,
         "mid1": 22
@@ -13382,7 +13382,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+919117723561",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 9.35,
         "assignment1": 9,
         "mid1": 17
@@ -13442,7 +13442,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+916574509891",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 9.71,
         "assignment1": 8,
         "mid1": 18
@@ -13502,7 +13502,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+919485185989",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 6.95,
         "assignment1": 9,
         "mid1": 17
@@ -13517,7 +13517,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+917712570005",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 9.3,
         "assignment1": 9,
         "mid1": 21
@@ -13637,7 +13637,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918523376324",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 9.7,
         "assignment1": 8,
         "mid1": 24
@@ -13682,7 +13682,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918090574827",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 7.89,
         "assignment1": 7,
         "mid1": 23
@@ -13727,7 +13727,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+916835261914",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 9.95,
         "assignment1": 9,
         "mid1": 20
@@ -13787,7 +13787,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+919007341295",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 7.85,
         "assignment1": 9,
         "mid1": 24
@@ -13802,7 +13802,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918417307353",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 9.27,
         "assignment1": 9,
         "mid1": 20
@@ -13907,7 +13907,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+919106128940",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 8.39,
         "assignment1": 9,
         "mid1": 17
@@ -13952,7 +13952,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+916734114417",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 7.1,
         "assignment1": 8,
         "mid1": 21
@@ -13967,7 +13967,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918510327622",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 8.99,
         "assignment1": 9,
         "mid1": 17
@@ -13982,7 +13982,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+917055268141",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 8.69,
         "assignment1": 7,
         "mid1": 23
@@ -13997,7 +13997,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+916407724453",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 9.39,
         "assignment1": 9,
         "mid1": 17
@@ -14072,7 +14072,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+919388205153",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 9.29,
         "assignment1": 9,
         "mid1": 19
@@ -14102,7 +14102,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+918080546911",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 8.28,
         "assignment1": 9,
         "mid1": 18
@@ -14192,7 +14192,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+917681947342",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 8.76,
         "assignment1": 9,
         "mid1": 20
@@ -14222,7 +14222,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+919276448393",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 9.25,
         "assignment1": 9,
         "mid1": 17
@@ -14342,7 +14342,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+916079067486",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 6.75,
         "assignment1": 7,
         "mid1": 23
@@ -14477,7 +14477,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+917427071262",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 9.71,
         "assignment1": 8,
         "mid1": 22
@@ -14537,7 +14537,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+919348663794",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 9.5,
         "assignment1": 7,
         "mid1": 18
@@ -14597,7 +14597,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+918717747405",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 7.68,
         "assignment1": 9,
         "mid1": 18
@@ -14642,7 +14642,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+916232846590",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 8.9,
         "assignment1": 7,
         "mid1": 20
@@ -14672,7 +14672,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+917468405892",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 9.45,
         "assignment1": 9,
         "mid1": 17
@@ -14687,7 +14687,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+919649438576",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 8.87,
         "assignment1": 7,
         "mid1": 19
@@ -14762,7 +14762,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+916937176874",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.79,
         "assignment1": 9,
         "mid1": 21
@@ -14822,7 +14822,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+916469150700",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 8.18,
         "assignment1": 8,
         "mid1": 20
@@ -14867,7 +14867,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+916235295319",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 9.68,
         "assignment1": 8,
         "mid1": 23
@@ -14882,7 +14882,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+917778728431",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 7.86,
         "assignment1": 8,
         "mid1": 18
@@ -14897,7 +14897,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+919205144262",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 6.84,
         "assignment1": 8,
         "mid1": 20
@@ -15032,7 +15032,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+918963708833",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 7.2,
         "assignment1": 9,
         "mid1": 18
@@ -15062,7 +15062,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+917369231530",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 7.64,
         "assignment1": 9,
         "mid1": 20
@@ -15257,7 +15257,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+918655508048",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 8.8,
         "assignment1": 9,
         "mid1": 21
@@ -15272,7 +15272,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+919974939885",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 7.34,
         "assignment1": 7,
         "mid1": 18
@@ -15317,7 +15317,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+918236200369",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 8.45,
         "assignment1": 9,
         "mid1": 20
@@ -15347,7 +15347,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+918827013502",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 8.69,
         "assignment1": 8,
         "mid1": 24
@@ -15377,7 +15377,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+916920016254",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 9.57,
         "assignment1": 8,
         "mid1": 22
@@ -15407,7 +15407,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+917928008509",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 8.29,
         "assignment1": 8,
         "mid1": 18
@@ -15422,7 +15422,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+916055551624",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 6.51,
         "assignment1": 8,
         "mid1": 18
@@ -15452,7 +15452,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+918703562969",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 9.2,
         "assignment1": 9,
         "mid1": 19
@@ -15497,7 +15497,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+917826589521",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 7.99,
         "assignment1": 9,
         "mid1": 18
@@ -15542,7 +15542,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+918599445277",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 9.99,
         "assignment1": 8,
         "mid1": 18
@@ -15557,7 +15557,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+917491798211",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 7.4,
         "assignment1": 9,
         "mid1": 22
@@ -15587,7 +15587,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+919881980542",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 7.31,
         "assignment1": 8,
         "mid1": 22
@@ -15632,7 +15632,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+919780287004",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 8.4,
         "assignment1": 9,
         "mid1": 20
@@ -15662,7 +15662,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+919482586035",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 6.53,
         "assignment1": 8,
         "mid1": 20
@@ -15722,7 +15722,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+916743559987",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 7.43,
         "assignment1": 7,
         "mid1": 24
@@ -15737,7 +15737,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+917943309659",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 9.71,
         "assignment1": 9,
         "mid1": 18
@@ -15767,7 +15767,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+919620360238",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 7.32,
         "assignment1": 8,
         "mid1": 24
@@ -15782,7 +15782,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+917052776871",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 9.79,
         "assignment1": 8,
         "mid1": 19
@@ -15797,7 +15797,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+918783279886",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 7.7,
         "assignment1": 8,
         "mid1": 20
@@ -15812,7 +15812,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+918714032506",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 9.47,
         "assignment1": 9,
         "mid1": 23
@@ -15842,7 +15842,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916621391941",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 9.37,
         "assignment1": 7,
         "mid1": 19
@@ -15932,7 +15932,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+917327579559",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 9.89,
         "assignment1": 9,
         "mid1": 22
@@ -15977,7 +15977,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+919883492140",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 6.63,
         "assignment1": 8,
         "mid1": 21
@@ -15992,7 +15992,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+919864405630",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 7.9,
         "assignment1": 8,
         "mid1": 21
@@ -16007,7 +16007,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916398532712",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 8.84,
         "assignment1": 7,
         "mid1": 24
@@ -16037,7 +16037,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+918758723509",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 7.58,
         "assignment1": 9,
         "mid1": 24
@@ -16052,7 +16052,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916174812548",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 6.84,
         "assignment1": 7,
         "mid1": 24
@@ -16067,7 +16067,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+918367277581",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 7.01,
         "assignment1": 7,
         "mid1": 24
@@ -16082,7 +16082,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916394144313",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 7.15,
         "assignment1": 9,
         "mid1": 21
@@ -16112,7 +16112,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916306574519",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 8.45,
         "assignment1": 8,
         "mid1": 22
@@ -16157,7 +16157,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+918071218267",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 8.18,
         "assignment1": 8,
         "mid1": 21
@@ -16172,7 +16172,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+917420761375",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 9.29,
         "assignment1": 7,
         "mid1": 19
@@ -16217,7 +16217,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+919127570650",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.39,
         "assignment1": 9,
         "mid1": 22
@@ -16307,7 +16307,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916752837444",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 8.47,
         "assignment1": 9,
         "mid1": 20
@@ -16337,7 +16337,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916394510956",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 7.97,
         "assignment1": 8,
         "mid1": 17
@@ -16412,7 +16412,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916140286881",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 9.18,
         "assignment1": 8,
         "mid1": 17
@@ -16427,7 +16427,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916900608939",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 7.32,
         "assignment1": 9,
         "mid1": 18
@@ -16442,7 +16442,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+917564988015",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 8.04,
         "assignment1": 8,
         "mid1": 20
@@ -16457,7 +16457,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+917222475561",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 9.58,
         "assignment1": 8,
         "mid1": 22
@@ -16487,7 +16487,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+916444320114",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 8.25,
         "assignment1": 7,
         "mid1": 17
@@ -16517,7 +16517,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+918841446074",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 7.56,
         "assignment1": 7,
         "mid1": 19
@@ -16622,7 +16622,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+919865192431",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 9.67,
         "assignment1": 9,
         "mid1": 22
@@ -16652,7 +16652,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "A",
         "phone": "+919149417239",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 6.84,
         "assignment1": 8,
         "mid1": 20
@@ -16697,7 +16697,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917213766433",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 9.29,
         "assignment1": 7,
         "mid1": 17
@@ -16787,7 +16787,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+918585517193",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 7.89,
         "assignment1": 9,
         "mid1": 19
@@ -16877,7 +16877,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917486326101",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 9.03,
         "assignment1": 7,
         "mid1": 20
@@ -16907,7 +16907,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917940185437",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 7.07,
         "assignment1": 9,
         "mid1": 20
@@ -17027,7 +17027,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+918572760765",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 7.63,
         "assignment1": 7,
         "mid1": 19
@@ -17102,7 +17102,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "B",
         "phone": "+917307774885",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 9.92,
         "assignment1": 9,
         "mid1": 19
@@ -17147,7 +17147,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+919675759157",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 9.62,
         "assignment1": 9,
         "mid1": 17
@@ -17162,7 +17162,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+918440933401",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 7.27,
         "assignment1": 8,
         "mid1": 17
@@ -17252,7 +17252,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+919236362963",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 9.12,
         "assignment1": 8,
         "mid1": 21
@@ -17312,7 +17312,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+917881510467",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 6.93,
         "assignment1": 8,
         "mid1": 20
@@ -17342,7 +17342,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+918520542595",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 6.53,
         "assignment1": 8,
         "mid1": 22
@@ -17357,7 +17357,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+916625824131",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 6.68,
         "assignment1": 8,
         "mid1": 21
@@ -17402,7 +17402,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+916882130226",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 7.99,
         "assignment1": 8,
         "mid1": 19
@@ -17417,7 +17417,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+916157036641",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 7,
         "assignment1": 7,
         "mid1": 23
@@ -17447,7 +17447,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+918249892226",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 6.8,
         "assignment1": 7,
         "mid1": 19
@@ -17507,7 +17507,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+919946827563",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 9.58,
         "assignment1": 7,
         "mid1": 18
@@ -17522,7 +17522,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+917651613092",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 9.16,
         "assignment1": 7,
         "mid1": 24
@@ -17567,7 +17567,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 8,
         "section": "C",
         "phone": "+919968737191",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 8.78,
         "assignment1": 7,
         "mid1": 24
@@ -17582,7 +17582,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918359108343",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 7.93,
         "assignment1": 7,
         "mid1": 18
@@ -17597,7 +17597,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+917918570325",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 8.78,
         "assignment1": 8,
         "mid1": 21
@@ -17642,7 +17642,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+919112061780",
-        "attendance": 92,
+        "attendance": 79,
         "grade": 7.86,
         "assignment1": 9,
         "mid1": 23
@@ -17672,7 +17672,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918810956389",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.86,
         "assignment1": 7,
         "mid1": 21
@@ -17687,7 +17687,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918885779161",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 6.73,
         "assignment1": 9,
         "mid1": 24
@@ -17702,7 +17702,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918717235427",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 8.37,
         "assignment1": 8,
         "mid1": 21
@@ -17717,7 +17717,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918214844518",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 9.92,
         "assignment1": 7,
         "mid1": 23
@@ -17732,7 +17732,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+917244910104",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 8.98,
         "assignment1": 7,
         "mid1": 17
@@ -17747,7 +17747,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+916209425131",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 7.38,
         "assignment1": 7,
         "mid1": 22
@@ -17762,7 +17762,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+917439698277",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 7.18,
         "assignment1": 9,
         "mid1": 17
@@ -17807,7 +17807,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918285811581",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 7.44,
         "assignment1": 9,
         "mid1": 20
@@ -17852,7 +17852,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+916171903088",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 7.19,
         "assignment1": 7,
         "mid1": 18
@@ -17957,7 +17957,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+917302752221",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.27,
         "assignment1": 9,
         "mid1": 17
@@ -18002,7 +18002,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "A",
         "phone": "+918497443396",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 9.53,
         "assignment1": 8,
         "mid1": 22
@@ -18167,7 +18167,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917682162489",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 8.49,
         "assignment1": 9,
         "mid1": 18
@@ -18182,7 +18182,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917544225909",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 8.07,
         "assignment1": 8,
         "mid1": 22
@@ -18242,7 +18242,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917391455163",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 9.52,
         "assignment1": 8,
         "mid1": 20
@@ -18257,7 +18257,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+918113086073",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 7.11,
         "assignment1": 7,
         "mid1": 24
@@ -18362,7 +18362,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+916547758766",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 9.08,
         "assignment1": 9,
         "mid1": 19
@@ -18392,7 +18392,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917930062672",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 6.81,
         "assignment1": 7,
         "mid1": 17
@@ -18407,7 +18407,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "B",
         "phone": "+917140203379",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 7.97,
         "assignment1": 7,
         "mid1": 18
@@ -18482,7 +18482,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+916604190216",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 9.69,
         "assignment1": 9,
         "mid1": 23
@@ -18557,7 +18557,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+916595025880",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 8.47,
         "assignment1": 8,
         "mid1": 23
@@ -18587,7 +18587,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+917502953401",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 9.19,
         "assignment1": 8,
         "mid1": 17
@@ -18602,7 +18602,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+916096201152",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 8.2,
         "assignment1": 9,
         "mid1": 19
@@ -18647,7 +18647,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+919286828341",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 7.37,
         "assignment1": 7,
         "mid1": 18
@@ -18677,7 +18677,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+916932732814",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 8.96,
         "assignment1": 7,
         "mid1": 17
@@ -18782,7 +18782,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+918057628769",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 9.62,
         "assignment1": 8,
         "mid1": 20
@@ -18857,7 +18857,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+916571499585",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 8.95,
         "assignment1": 7,
         "mid1": 21
@@ -18887,7 +18887,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 6,
         "section": "C",
         "phone": "+919501544896",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 7.75,
         "assignment1": 8,
         "mid1": 21
@@ -18947,7 +18947,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+919908612018",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 9.55,
         "assignment1": 9,
         "mid1": 20
@@ -19037,7 +19037,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+916554598135",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 6.83,
         "assignment1": 7,
         "mid1": 23
@@ -19067,7 +19067,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+916040958018",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 9.89,
         "assignment1": 7,
         "mid1": 22
@@ -19097,7 +19097,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+916057114901",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 8.18,
         "assignment1": 9,
         "mid1": 17
@@ -19127,7 +19127,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+917886391773",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 8.48,
         "assignment1": 7,
         "mid1": 21
@@ -19202,7 +19202,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+917462644496",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 9.99,
         "assignment1": 7,
         "mid1": 23
@@ -19217,7 +19217,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918334855698",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 8.25,
         "assignment1": 9,
         "mid1": 24
@@ -19277,7 +19277,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+919196545009",
-        "attendance": 92,
+        "attendance": 80,
         "grade": 7.85,
         "assignment1": 9,
         "mid1": 23
@@ -19292,7 +19292,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918336421823",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 8.53,
         "assignment1": 8,
         "mid1": 17
@@ -19322,7 +19322,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+919572875049",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 7.17,
         "assignment1": 9,
         "mid1": 21
@@ -19352,7 +19352,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+918745660892",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 9.37,
         "assignment1": 9,
         "mid1": 23
@@ -19367,7 +19367,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "A",
         "phone": "+919894478341",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 8.23,
         "assignment1": 8,
         "mid1": 17
@@ -19382,7 +19382,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+919116821608",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 8.13,
         "assignment1": 8,
         "mid1": 18
@@ -19487,7 +19487,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+916842081529",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 9.23,
         "assignment1": 8,
         "mid1": 21
@@ -19517,7 +19517,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+917867770721",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 9.93,
         "assignment1": 9,
         "mid1": 19
@@ -19562,7 +19562,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+918182466319",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 9.39,
         "assignment1": 8,
         "mid1": 23
@@ -19592,7 +19592,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+916851981163",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 9.46,
         "assignment1": 8,
         "mid1": 23
@@ -19667,7 +19667,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+916642255798",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 6.58,
         "assignment1": 8,
         "mid1": 18
@@ -19712,7 +19712,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+916251754730",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.11,
         "assignment1": 8,
         "mid1": 23
@@ -19742,7 +19742,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+918215110611",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 8.76,
         "assignment1": 8,
         "mid1": 18
@@ -19772,7 +19772,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+917893670973",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 9.73,
         "assignment1": 9,
         "mid1": 23
@@ -19817,7 +19817,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "B",
         "phone": "+919565476052",
-        "attendance": 92,
+        "attendance": 78,
         "grade": 6.78,
         "assignment1": 9,
         "mid1": 21
@@ -19922,7 +19922,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+917068110010",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 6.99,
         "assignment1": 8,
         "mid1": 21
@@ -19997,7 +19997,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+917543727410",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 7.96,
         "assignment1": 8,
         "mid1": 17
@@ -20012,7 +20012,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+916624130985",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 8.98,
         "assignment1": 8,
         "mid1": 17
@@ -20042,7 +20042,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+919957057018",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 9.34,
         "assignment1": 9,
         "mid1": 18
@@ -20087,7 +20087,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+919721882162",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 6.61,
         "assignment1": 9,
         "mid1": 19
@@ -20117,7 +20117,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+919881920097",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 9.85,
         "assignment1": 8,
         "mid1": 19
@@ -20132,7 +20132,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+919283082031",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 9.32,
         "assignment1": 9,
         "mid1": 22
@@ -20177,7 +20177,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+916132199204",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 7.08,
         "assignment1": 7,
         "mid1": 24
@@ -20237,7 +20237,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 4,
         "section": "C",
         "phone": "+918171361332",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 7.03,
         "assignment1": 9,
         "mid1": 24
@@ -20357,7 +20357,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+919369168940",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 6.76,
         "assignment1": 7,
         "mid1": 17
@@ -20417,7 +20417,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+919552235676",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 8.22,
         "assignment1": 8,
         "mid1": 21
@@ -20462,7 +20462,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+917168635179",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 6.84,
         "assignment1": 7,
         "mid1": 23
@@ -20492,7 +20492,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+916023145468",
-        "attendance": 92,
+        "attendance": 84,
         "grade": 7.09,
         "assignment1": 8,
         "mid1": 20
@@ -20507,7 +20507,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+918236565459",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 7.34,
         "assignment1": 8,
         "mid1": 20
@@ -20522,7 +20522,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+918813495382",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 7.97,
         "assignment1": 8,
         "mid1": 19
@@ -20582,7 +20582,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+918651871134",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 7.66,
         "assignment1": 8,
         "mid1": 20
@@ -20642,7 +20642,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+917195253162",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 7.63,
         "assignment1": 7,
         "mid1": 19
@@ -20672,7 +20672,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+919351351610",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 7.51,
         "assignment1": 8,
         "mid1": 20
@@ -20702,7 +20702,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+919669483592",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 6.79,
         "assignment1": 8,
         "mid1": 24
@@ -20717,7 +20717,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "A",
         "phone": "+917734531821",
-        "attendance": 92,
+        "attendance": 76,
         "grade": 8.17,
         "assignment1": 7,
         "mid1": 23
@@ -20867,7 +20867,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+916767460688",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 9.6,
         "assignment1": 9,
         "mid1": 19
@@ -20912,7 +20912,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+916031440576",
-        "attendance": 92,
+        "attendance": 82,
         "grade": 7.7,
         "assignment1": 9,
         "mid1": 19
@@ -20987,7 +20987,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+919244339414",
-        "attendance": 92,
+        "attendance": 89,
         "grade": 8.18,
         "assignment1": 8,
         "mid1": 22
@@ -21017,7 +21017,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+916509529860",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 8.42,
         "assignment1": 7,
         "mid1": 22
@@ -21062,7 +21062,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+918110417894",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 8.18,
         "assignment1": 7,
         "mid1": 22
@@ -21092,7 +21092,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+917401793253",
-        "attendance": 92,
+        "attendance": 85,
         "grade": 6.86,
         "assignment1": 9,
         "mid1": 22
@@ -21137,7 +21137,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+917740938043",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 8.05,
         "assignment1": 9,
         "mid1": 17
@@ -21167,7 +21167,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "B",
         "phone": "+916385870774",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 8.13,
         "assignment1": 9,
         "mid1": 20
@@ -21182,7 +21182,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+917430658757",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 7.78,
         "assignment1": 9,
         "mid1": 17
@@ -21227,7 +21227,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+919174781017",
-        "attendance": 92,
+        "attendance": 83,
         "grade": 7.64,
         "assignment1": 7,
         "mid1": 23
@@ -21257,7 +21257,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916852498761",
-        "attendance": 92,
+        "attendance": 75,
         "grade": 8.03,
         "assignment1": 9,
         "mid1": 20
@@ -21272,7 +21272,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+918238979077",
-        "attendance": 92,
+        "attendance": 86,
         "grade": 6.92,
         "assignment1": 8,
         "mid1": 22
@@ -21287,7 +21287,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+919891349281",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 8.42,
         "assignment1": 9,
         "mid1": 18
@@ -21302,7 +21302,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+917624558532",
-        "attendance": 92,
+        "attendance": 87,
         "grade": 7.43,
         "assignment1": 8,
         "mid1": 19
@@ -21317,7 +21317,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+917300490130",
-        "attendance": 92,
+        "attendance": 90,
         "grade": 9.45,
         "assignment1": 8,
         "mid1": 23
@@ -21392,7 +21392,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+919210636824",
-        "attendance": 92,
+        "attendance": 81,
         "grade": 9.75,
         "assignment1": 9,
         "mid1": 17
@@ -21452,7 +21452,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916801903091",
-        "attendance": 92,
+        "attendance": 91,
         "grade": 8.07,
         "assignment1": 9,
         "mid1": 17
@@ -21542,7 +21542,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916987255000",
-        "attendance": 92,
+        "attendance": 77,
         "grade": 8.03,
         "assignment1": 8,
         "mid1": 22
@@ -21557,7 +21557,7 @@ export const MOCK_STUDENTS: Student[] = [
         "semester": 2,
         "section": "C",
         "phone": "+916373854847",
-        "attendance": 92,
+        "attendance": 88,
         "grade": 9.66,
         "assignment1": 9,
         "mid1": 24

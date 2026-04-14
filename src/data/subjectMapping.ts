@@ -78,7 +78,8 @@ export const SUBJECT_MAPPING: Record<string, string> = {
   "IOT": "Internet of Things",
   "PES Lab": "Professional English for Skill Enhancement Lab",
   "DM": "Disaster Management",
-  "DWDM": "Data Warehousing & Data Mining"
+  "DWDM": "Data Warehousing & Data Mining",
+  "CRT": "Campus Recruitment Training"
 };
 
 export const formatSubject = (subject: string): string[] => {

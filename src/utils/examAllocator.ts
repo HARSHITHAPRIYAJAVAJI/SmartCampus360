@@ -15,111 +15,159 @@ export function allocateAdvancedExamSeating(exam: Exam): { seating: SeatingAssig
     const seating: SeatingAssignment[] = [];
     const invigilators: InvigilationDuty[] = [];
 
-    // 1. Data Preparation & Validation
+    // 1. Data Preparation
     const selectedYears = exam.years || [];
-    const eligibleStudents = MOCK_STUDENTS.filter(s => selectedYears.includes(s.year));
+    const eligibleStudents = MOCK_STUDENTS
+        .filter(s => selectedYears.includes(s.year))
+        .sort((a, b) => a.rollNumber.localeCompare(b.rollNumber));
 
     if (eligibleStudents.length === 0) return { seating, invigilators };
 
-    // Group students by branch for balanced distribution
-    const branchGroups: Record<string, Student[]> = {};
-    eligibleStudents.forEach(s => {
-        if (!branchGroups[s.branch]) branchGroups[s.branch] = [];
-        branchGroups[s.branch].push(s);
+    // Group students by branch
+    const branches = [...new Set(eligibleStudents.map(s => s.branch))];
+    const studentsByBranch: Record<string, Student[]> = {};
+    branches.forEach(b => {
+        studentsByBranch[b] = eligibleStudents.filter(s => s.branch === b);
     });
 
-    const branchNames = Object.keys(branchGroups);
-    const branchPointers: Record<string, number> = {};
-    branchNames.forEach(b => branchPointers[b] = 0);
+    // 2. Filter & Prepare Faculty (Strict Exclusions)
+    const eligibleFaculty = MOCK_FACULTY.filter(f => {
+        const desig = f.designation.toLowerCase();
+        return !desig.includes("hod") && 
+               !desig.includes("head") && 
+               !desig.includes("technical trainer") &&
+               !f.isNonTeaching;
+    });
 
-    // Filter usable rooms
-    const availableRooms = MOCK_ROOMS.filter(r => r.type === "Classroom" || r.type === "Auditorium");
-    
+    // Get session index for rotation starting point
+    const idParts = exam.id.split('-');
+    const ttIdPart = idParts.length > 2 ? idParts[1] : "";
+    const sessionIdx = idParts.length > 2 ? parseInt(idParts[2]) : 0;
+    const ttHash = ttIdPart.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+    // Stable shuffle for faculty rotation
+    const sortedFaculty = [...eligibleFaculty].sort((a, b) => {
+        const hash = (str: string) => str.split("").reduce((a, b) => { a = ((a << 5) - a) + b.charCodeAt(0); return a & a; }, 0);
+        return hash(a.id + ttHash) - hash(b.id + ttHash);
+    });
+
+    // CRITICAL: Rotate the faculty list based on session index to ensure 
+    // different people are picked on different days of the cycle.
+    const dayOffset = (sessionIdx * 30) % sortedFaculty.length;
+    const rotatedFaculty = [...sortedFaculty.slice(dayOffset), ...sortedFaculty.slice(0, dayOffset)];
+
+    // 3. Room Selection & Distribution
+    const classrooms = MOCK_ROOMS.filter(r => r.type === "Classroom");
+    const prioritizedRooms = classrooms.sort((a, b) => {
+        const aIsTBlock = a.building.includes("T Block");
+        const bIsTBlock = b.building.includes("T Block");
+        const yr1 = selectedYears.includes(1);
+        if (yr1) return aIsTBlock ? -1 : 1;
+        return aIsTBlock ? 1 : -1;
+    });
+
     let currentRoomIdx = 0;
-    let totalAllocated = 0;
-    const totalToAllocate = eligibleStudents.length;
+    const MAX_CAPACITY = 30;
+    const branchPointers: Record<string, number> = {};
+    branches.forEach(b => branchPointers[b] = 0);
 
-    // 2. Allocation Loop
-    while (totalAllocated < totalToAllocate && currentRoomIdx < availableRooms.length) {
-        const room = availableRooms[currentRoomIdx];
-        const roomCapacity = room.capacity;
+    // Track used faculty in this slot to prevent overlapping duties
+    const usedFacultyIds = new Set<string>();
 
-        // Identify branches that still have students left
-        let activeBranches = branchNames.filter(b => branchPointers[b] < branchGroups[b].length);
+    // 4. Allocation Loop (Strict Branch Mixing & Faculty Mapping)
+    while (true) {
+        // Find branches that still have students
+        const activeBranches = branches.filter(b => branchPointers[b] < studentsByBranch[b].length);
         if (activeBranches.length === 0) break;
+        if (currentRoomIdx >= prioritizedRooms.length) break;
 
-        // 3. Improved Branch Selection (Rotation)
-        // Offset starting branch per room to ensure variety
-        const rotatedBranches = [...activeBranches];
-        const offset = currentRoomIdx % activeBranches.length;
-        for (let i = 0; i < offset; i++) {
-            const b = rotatedBranches.shift();
-            if (b) rotatedBranches.push(b);
-        }
-
-        // Target up to 4 branches per room for optimal distancing
-        const selectedBranches = rotatedBranches.slice(0, 4);
-        
-        // 4. Balanced Student Distribution
-        // Calculate max students per branch in this specific room
-        const studentsPerBranch = Math.floor(roomCapacity / selectedBranches.length);
+        const room = prioritizedRooms[currentRoomIdx];
         let roomSeatingCount = 0;
+        const currentRoomBranches: string[] = [];
 
-        // Fill room capacity or branch limits
-        // We use a round-robin filling approach until room/branch capacity is reached
-        for (let i = 0; i < roomCapacity; i++) {
-            const branchToPick = selectedBranches[i % selectedBranches.length];
-            
-            // Check if we can still pick from this branch and we haven't hit room capacity
-            if (branchPointers[branchToPick] < branchGroups[branchToPick].length && roomSeatingCount < roomCapacity) {
-                const student = branchGroups[branchToPick][branchPointers[branchToPick]];
-                
-                seating.push({
-                    examId: exam.id,
-                    studentId: student.id,
-                    rollNumber: student.rollNumber,
-                    studentName: student.name,
-                    branch: student.branch,
-                    year: student.year,
-                    room: room.name,
-                    block: room.building,
-                    seatNumber: `${String.fromCharCode(65 + Math.floor(roomSeatingCount / 10))}${(roomSeatingCount % 10) + 1}`
-                });
+        // STRICT MIXING RULE: Each room must have at least 2 branches (if possible)
+        // We pick top 2 active branches and split capacity 15-15
+        const roomBranchPair = activeBranches.slice(0, 2);
+        if (roomBranchPair.length < 2 && activeBranches.length >= 1) {
+            // If only one branch left in entire system, we have to use it, 
+            // but the rule says "minimum 2 branches". 
+            // In a real scenario, we'd mix with another year, but here we only have the selected students.
+            roomBranchPair.push(roomBranchPair[0]); // Fallback if absolutely no other branch exists
+        }
 
-                branchPointers[branchToPick]++;
-                roomSeatingCount++;
-                totalAllocated++;
+        // Allocate students from the pair
+        roomBranchPair.forEach((branch, bIdx) => {
+            const limit = bIdx === 0 ? Math.ceil(MAX_CAPACITY / 2) : Math.floor(MAX_CAPACITY / 2);
+            for (let i = 0; i < limit; i++) {
+                if (branchPointers[branch] < studentsByBranch[branch].length && roomSeatingCount < MAX_CAPACITY) {
+                    const student = studentsByBranch[branch][branchPointers[branch]];
+                    seating.push({
+                        examId: exam.id,
+                        studentId: student.id,
+                        rollNumber: student.rollNumber,
+                        studentName: student.name,
+                        branch: student.branch,
+                        year: student.year,
+                        room: room.name,
+                        block: room.building,
+                        seatNumber: `${String.fromCharCode(65 + Math.floor(roomSeatingCount / 10))}${(roomSeatingCount % 10) + 1}`
+                    });
+                    branchPointers[branch]++;
+                    roomSeatingCount++;
+                    if (!currentRoomBranches.includes(branch)) currentRoomBranches.push(branch);
+                }
             }
-        }
-
-        // 5. Robust Invigilator Assignment (2 per room)
-        const examDepts = (exam.courseCodes || []).map(code => code.substring(2, 5).toUpperCase());
-        let eligibleInvigilators = MOCK_FACULTY.filter(f => 
-            !examDepts.includes(f.department.toUpperCase())
-        );
-
-        // Fallback to general list if specific department faculty are insufficient
-        if (eligibleInvigilators.length < 2) {
-            eligibleInvigilators = MOCK_FACULTY;
-        }
-
-        // Assign two unique invigilators using rotating index
-        const inv1 = eligibleInvigilators[(currentRoomIdx * 2) % eligibleInvigilators.length];
-        const inv2 = eligibleInvigilators[(currentRoomIdx * 2 + 1) % eligibleInvigilators.length];
-
-        [inv1, inv2].forEach(inv => {
-            invigilators.push({
-                examId: exam.id,
-                facultyId: inv.id,
-                facultyName: inv.name,
-                room: room.name,
-                date: exam.date,
-                time: `${exam.startTime} - ${exam.endTime}`
-            });
         });
+
+        // 5. Invigilator Mapping (1 per branch group)
+        // Room has [Branch A, Branch B] -> Assign [Faculty A, Faculty B]
+        currentRoomBranches.forEach((branch, idx) => {
+            if (idx >= 2) return; // Exactly 2 proctors
+
+            // Find faculty from this department who isn't already used
+            // If the branch is 'CSM', we look for department 'CSM'
+            let faculty = rotatedFaculty.find(f => 
+                f.department.toUpperCase() === branch.toUpperCase() && !usedFacultyIds.has(f.id)
+            );
+
+            // Fallback if no specific department faculty available
+            if (!faculty) {
+                faculty = rotatedFaculty.find(f => !usedFacultyIds.has(f.id));
+            }
+
+            if (faculty) {
+                invigilators.push({
+                    examId: exam.id,
+                    facultyId: faculty.id,
+                    facultyName: faculty.name,
+                    room: room.name,
+                    date: exam.date,
+                    time: `${exam.startTime} - ${exam.endTime}`
+                });
+                usedFacultyIds.add(faculty.id);
+            }
+        });
+
+        // Ensure exactly 2 invigilators per room
+        while (invigilators.filter(i => i.room === room.name && i.examId === exam.id).length < 2) {
+            const fallback = rotatedFaculty.find(f => !usedFacultyIds.has(f.id));
+            if (fallback) {
+                invigilators.push({
+                    examId: exam.id,
+                    facultyId: fallback.id,
+                    facultyName: fallback.name,
+                    room: room.name,
+                    date: exam.date,
+                    time: `${exam.startTime} - ${exam.endTime}`
+                });
+                usedFacultyIds.add(fallback.id);
+            } else break;
+        }
 
         currentRoomIdx++;
     }
 
     return { seating, invigilators };
 }
+
+

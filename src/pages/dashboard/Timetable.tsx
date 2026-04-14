@@ -28,13 +28,15 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
   const [storageSyncStamp, setStorageSyncStamp] = useState(0);
   useEffect(() => {
       const handleStorage = (e: StorageEvent) => {
-          if (e.key === 'published_timetables') {
+          const keys = ['published_timetables', 'EXAM_TIMETABLES', 'EXAM_SEATING_PLAN', 'INVIGILATION_LIST', 'EXAM_SCHEDULE'];
+          if (keys.includes(e.key || '')) {
               setStorageSyncStamp(s => s + 1);
           }
       };
       window.addEventListener('storage', handleStorage);
       const handleCustomEvent = () => setStorageSyncStamp(s => s + 1);
       window.addEventListener('timetable_published', handleCustomEvent);
+      window.addEventListener('exams_updated', handleCustomEvent);
       window.addEventListener('faculty_request_updated', handleCustomEvent);
       
       return () => {
@@ -104,6 +106,8 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
 
         const displayFaculty = currentSubstitution ? currentSubstitution.targetName : (session.faculty || loadInfo?.faculty || "Staff");
 
+        const isCRT = (session.courseName || session.courseCode || "").toLowerCase().includes('crt');
+
         result.slots[day][time] = {
           subject: abbrev,
           fullName: fullName,
@@ -111,7 +115,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
           room: session.room || loadInfo?.room || "TBD",
           faculty: displayFaculty,
           isSubstituted: !!currentSubstitution,
-          type: (session.courseName || session.courseCode || "").toLowerCase().includes('lab') ? 'lab' : 'lecture',
+          type: isCRT ? 'crt' : (session.courseName || session.courseCode || "").toLowerCase().includes('lab') ? 'lab' : 'lecture',
           duration: 1,
           isLive: !!publishedEntry
         };
@@ -228,6 +232,8 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
             const fullName = courseNameMap[cleanCode] || cleanCode;
             const abbrev = getSubjectAbbreviation(fullName);
 
+            const isCRT = (fullName || "").toLowerCase().includes('crt');
+
             facultyResult.slots[d][t] = {
               subject: abbrev,
               fullName: `${fullName} (${dept}-${year}${section})`,
@@ -235,7 +241,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
               branch: `${dept} | Y${year} S${sem} - Sec ${section}`,
               faculty: displayFaculty,
               isSubstituted: isSubstituted,
-              type: (fullName || "").toLowerCase().includes('lab') ? 'lab' : 'lecture',
+              type: isCRT ? 'crt' : (fullName || "").toLowerCase().includes('lab') ? 'lab' : 'lecture',
               duration: 1,
               isLive: true
             };
@@ -267,13 +273,27 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
 
   const studentSeating = useMemo(() => {
     if (userRole !== "student") return [];
-    const saved = localStorage.getItem('EXAM_SEATING_PLAN');
-    if (!saved) return [];
-    const all = JSON.parse(saved) as SeatingAssignment[];
-    const mySeat = all.find(s => s.rollNumber.toUpperCase() === user.id.toUpperCase());
-    if (!mySeat) return [];
-    // Get all students in the same room
-    return all.filter(s => s.room === mySeat.room && s.examId === mySeat.examId);
+    const savedPlans = localStorage.getItem('EXAM_SEATING_PLAN');
+    const savedExams = localStorage.getItem('EXAM_SCHEDULE');
+    if (!savedPlans || !savedExams) return [];
+    
+    const allPlans = JSON.parse(savedPlans) as SeatingAssignment[];
+    const allExams = JSON.parse(savedExams) as any[];
+    
+    const mySeats = allPlans.filter(s => s.rollNumber.toUpperCase() === user.id.toUpperCase());
+    if (mySeats.length === 0) return [];
+
+    // CRITICAL: Filter for TODAY only per institutional requirement
+    const today = new Date().toISOString().split('T')[0];
+    const todaysExamIds = allExams
+        .filter(e => e.date === today)
+        .map(e => e.id);
+        
+    const activeSeat = mySeats.find(s => todaysExamIds.includes(s.examId));
+    if (!activeSeat) return [];
+
+    // Filter all students in that specific room for the current active exam session
+    return allPlans.filter(s => s.room === activeSeat.room && s.examId === activeSeat.examId);
   }, [userRole, user.id, storageSyncStamp]);
 
   const facultyDuties = useMemo(() => {
@@ -339,6 +359,8 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
         return "bg-yellow-500 text-black";
       case "project":
         return "bg-pink-500 text-white";
+      case "crt":
+        return "bg-indigo-600 text-white";
       default:
         return "bg-secondary text-secondary-foreground";
     }
@@ -368,6 +390,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
 
     const isLab = session.type === 'lab' || session.subject?.toLowerCase().includes('lab');
     const isProject = session.subject?.toLowerCase().includes('project');
+    const isCRT = session.type === 'crt' || session.subject?.toLowerCase().includes('crt');
 
     // Merged / spanned cell (3 consecutive identical sessions)
     if (span > 1) {
@@ -376,6 +399,8 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
           className={`relative h-[84px] border border-border/30 flex flex-col items-center justify-center gap-1 overflow-hidden group transition-all duration-200 border-l-4 ${
             isProject
               ? 'bg-violet-50/80 dark:bg-violet-950/20 border-l-violet-500'
+              : isCRT
+              ? 'bg-indigo-50/80 dark:bg-indigo-950/20 border-l-indigo-500'
               : isLab
               ? 'bg-green-50/80 dark:bg-green-950/20 border-l-green-500'
               : 'bg-primary/5 dark:bg-primary/10 border-l-primary'
@@ -394,7 +419,9 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
           </div>
           {(isLab || session.room) && session.room !== "TBD" && (
             <div className={`text-[11px] font-mono px-3 py-1 rounded-md font-black uppercase tracking-tighter border ${
-              isProject ? 'bg-violet-100 border-violet-200 text-violet-600 dark:bg-violet-900/40 dark:text-violet-300' : 'bg-primary/10 border-primary/10 text-primary dark:bg-primary/20'
+              isProject ? 'bg-violet-100 border-violet-200 text-violet-600 dark:bg-violet-900/40 dark:text-violet-300' : 
+              isCRT ? 'bg-indigo-100 border-indigo-200 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-300' :
+              'bg-primary/10 border-primary/10 text-primary dark:bg-primary/20'
             }`}>
               {session.room}
             </div>
@@ -406,8 +433,10 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
     return (
       <div
         className={`relative h-[84px] border border-border/30 ${
+          isCRT ? 'bg-indigo-50/80 dark:bg-indigo-950/20' :
           isLab ? 'bg-green-50/80 dark:bg-green-950/20' : 'bg-primary/5 dark:bg-primary/10'
         } p-2 flex flex-col justify-between overflow-hidden group transition-all duration-200 border-l-4 ${
+          isCRT ? 'border-l-indigo-500' :
           isLab ? 'border-l-green-500' : 'border-l-primary'
         }`}
       >
@@ -731,7 +760,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
                         <Badge className="bg-primary/10 text-primary border-none text-[8px] font-black uppercase tracking-widest">{tt.type}</Badge>
-                        <Badge variant="outline" className="text-[8px] font-black uppercase tracking-widest border-primary/20">Sem {tt.semester}</Badge>
+                        <Badge variant="outline" className="text-[8px] font-black uppercase tracking-widest border-primary/20">{tt.semesterGroup === 1 ? 'Odd' : 'Even'} Semesters</Badge>
                       </div>
                       <h3 className="text-2xl font-black tracking-tighter text-foreground">{tt.title}</h3>
                       <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-70">

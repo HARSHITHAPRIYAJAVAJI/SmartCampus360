@@ -8,6 +8,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TrendingUp, Award, BookOpen } from "lucide-react";
 import { calculateAcademicMetrics } from "@/utils/academicCalculations";
+import { academicService, CourseMarks } from "@/services/academicService";
+import { useEffect, useState } from "react";
 
 // Helper to generate realistic dummy marks
 const getMarks = (course: Course) => {
@@ -17,6 +19,14 @@ const getMarks = (course: Course) => {
         const val = ((seed * 9301 + 49297) % 233280) / 233280;
         return Math.floor(min + val * (max - min));
     };
+
+    if (course.credits === 0) {
+        return {
+            mid1: null, assgn1: null, mid2: null, assgn2: null,
+            labInternal: null, labExternal: null,
+            exam: null, total: 0, status: "Non-Credit", isNonCredit: true
+        };
+    }
 
     if (isLab) {
         const labInt = pseudoRandom(34, 39); // Out of 40
@@ -43,12 +53,21 @@ const getMarks = (course: Course) => {
 const Grades = () => {
     const { user } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
     
+    const [storageSyncStamp, setStorageSyncStamp] = useState(0);
+    useEffect(() => {
+        const handleUpdate = () => setStorageSyncStamp(s => s + 1);
+        window.addEventListener('academic_records_updated', handleUpdate);
+        return () => window.removeEventListener('academic_records_updated', handleUpdate);
+    }, []);
+
     const studentData = useMemo(() => {
-        return MOCK_STUDENTS.find((s: any) => 
+        const saved = localStorage.getItem('smartcampus_student_directory');
+        const students = saved ? JSON.parse(saved) : MOCK_STUDENTS;
+        return students.find((s: any) => 
             s.rollNumber.toUpperCase() === user.id.toUpperCase() ||
             s.email.toLowerCase() === user.name.toLowerCase()
         );
-    }, [user.id, user.name]);
+    }, [user.id, user.name, storageSyncStamp]);
 
     const branch = studentData?.branch || 'CSE';
 
@@ -57,24 +76,52 @@ const Grades = () => {
     
     // Group by semester - only show up to current year (2 semesters per year)
     const currentYear = studentData?.year || 4;
+    const currentSemester = (currentYear * 2) - 1;
     const maxSemToShow = currentYear * 2;
     const semesters = Array.from({ length: maxSemToShow }, (_, i) => i + 1);
-    
+
+    const storedMarks = useMemo(() => {
+        if (!studentData) return {};
+        return academicService.getAllForStudent(studentData.id);
+    }, [studentData, storageSyncStamp]);
+
     const resultsBySem = semesters.reduce((acc, sem) => {
         const semCourses = branchCourses.filter(c => c.semester === sem);
+        const visibility = academicService.getVisibility(currentYear, sem);
+
         if (semCourses.length > 0) {
-            acc[sem] = semCourses.map(c => ({
-                code: c.code,
-                subject: c.name,
-                ...getMarks(c)
-            }));
+            acc[sem] = semCourses.map(c => {
+                const realMarks = storedMarks[c.code];
+                const dummy = getMarks(c);
+                
+                // Merge real marks into dummy if they exist
+                const finalMarks = {
+                    ...dummy,
+                    ...(realMarks ? {
+                        mid1: realMarks.mid1 ?? dummy.mid1,
+                        mid2: realMarks.mid2 ?? dummy.mid2,
+                        assgn1: realMarks.assignment1 ?? dummy.assgn1,
+                        assgn2: realMarks.assignment2 ?? dummy.assgn2,
+                        labInternal: realMarks.labInternal ?? dummy.labInternal,
+                        labExternal: realMarks.labExternal ?? dummy.labExternal,
+                        exam: realMarks.examMark ?? dummy.exam
+                    } : {})
+                };
+
+                return {
+                    code: c.code,
+                    subject: c.name,
+                    ...finalMarks,
+                    visibility
+                };
+            });
         }
         return acc;
     }, {} as Record<number, any[]>);
 
     const academicMetrics = useMemo(() => {
         if (!studentData) return { earnedCredits: 0, totalCredits: 160 };
-        return calculateAcademicMetrics(branch, studentData.semester || 7);
+        return calculateAcademicMetrics(branch, currentSemester);
     }, [studentData, branch]);
 
     return (
@@ -85,7 +132,7 @@ const Grades = () => {
                         Branch: {branch}
                     </Badge>
                     <Badge variant="outline" className="bg-blue-50 text-blue-600 border-blue-100 px-3 py-1 font-black tracking-widest uppercase text-[10px]">
-                        Semester: {studentData?.semester || '7'}
+                        Semester: {currentSemester}
                     </Badge>
                     <Badge variant="outline" className="bg-purple-50 text-purple-600 border-purple-100 px-3 py-1 font-black tracking-widest uppercase text-[10px]">
                         Section: {studentData?.section || 'A'}
@@ -139,7 +186,7 @@ const Grades = () => {
                     <CardDescription>Comprehensive breakdown of internal and external assessments.</CardDescription>
                 </CardHeader>
                 <CardContent className="pt-6">
-                    <Tabs defaultValue={String(studentData?.semester || '7')} className="w-full">
+                    <Tabs defaultValue={String(currentSemester)} className="w-full">
                         <TabsList className="grid grid-cols-4 md:grid-cols-8 mb-8 bg-muted/50 p-1 h-auto">
                             {semesters.map(s => (
                                 <TabsTrigger key={s} value={s.toString()} className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground py-2 font-bold">
@@ -178,24 +225,51 @@ const Grades = () => {
                                                     {resultsBySem[semNum].map((sub) => {
                                                         const internalTotal = sub.mid1 !== null ? (Math.max(sub.mid1 || 0, sub.mid2 || 0) + (sub.assgn1 || 0) + (sub.assgn2 || 0)) : 0;
                                                         const labTotal = (sub.labInternal || 0) + (sub.labExternal || 0);
-                                                        const semesterExam = sub.exam || 0;
-                                                        const grandTotal = internalTotal + labTotal + semesterExam;
+                                                        const grandTotal = internalTotal + labTotal + (sub.exam || 0);
 
                                                         return (
-                                                            <TableRow key={sub.code} className="hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors border-b last:border-0">
+                                                            <TableRow key={sub.code} className={`hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors border-b last:border-0 ${sub.isNonCredit ? 'bg-slate-50/50' : ''}`}>
                                                                 <TableCell className="font-bold border-r font-mono text-xs text-muted-foreground">{sub.code}</TableCell>
-                                                                <TableCell className="border-r font-bold text-slate-900 dark:text-slate-100">{sub.subject}</TableCell>
-                                                                <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.mid1 !== null ? `${sub.mid1}/${sub.mid2}` : '-'}</TableCell>
-                                                                <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.assgn1 !== null ? `${sub.assgn1}/${sub.assgn2}` : '-'}</TableCell>
-                                                                <TableCell className="text-center border-r font-black bg-blue-50/30 dark:bg-blue-900/10 text-blue-700 text-sm">{sub.mid1 !== null ? internalTotal : '-'}</TableCell>
-                                                                <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.labInternal || '-'}</TableCell>
-                                                                <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.labExternal || '-'}</TableCell>
-                                                                <TableCell className="text-center border-r font-black bg-green-50/30 dark:bg-green-900/10 text-green-700 text-sm">{labTotal > 0 ? labTotal : '-'}</TableCell>
-                                                                <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.exam || '-'}</TableCell>
-                                                                <TableCell className="text-center border-r font-black text-slate-900 dark:text-white text-base">{grandTotal}</TableCell>
-                                                                <TableCell className="text-center bg-amber-50/30 dark:bg-amber-900/10 font-black text-amber-700 text-base">
-                                                                    {grandTotal}%
+                                                                <TableCell className="border-r font-bold text-slate-900 dark:text-slate-100">
+                                                                    {sub.subject}
+                                                                    {sub.isNonCredit && <Badge variant="outline" className="ml-2 text-[8px] font-black uppercase text-muted-foreground border-slate-200 bg-white">Non-Credit</Badge>}
                                                                 </TableCell>
+                                                                {sub.isNonCredit ? (
+                                                                    <TableCell colSpan={9} className="text-center italic text-xs font-bold text-muted-foreground bg-muted/5 py-4">
+                                                                        <div className="flex items-center justify-center gap-2">
+                                                                            <BookOpen className="w-3 h-3" />
+                                                                            Subject completed satisfactorily without quantitative assessment as per academic policy.
+                                                                        </div>
+                                                                    </TableCell>
+                                                                ) : (
+                                                                    <>
+                                                                        <TableCell className="text-center border-r font-bold text-sm text-slate-700">
+                                                                            {sub.visibility.showMid1 ? (sub.mid1 !== null ? sub.mid1 : '-') : '—'}
+                                                                            /
+                                                                            {sub.visibility.showMid2 ? (sub.mid2 !== null ? sub.mid2 : '-') : '—'}
+                                                                        </TableCell>
+                                                                        <TableCell className="text-center border-r font-bold text-sm text-slate-700">
+                                                                            {sub.visibility.showAssgn1 ? (sub.assgn1 !== null ? sub.assgn1 : '-') : '—'}
+                                                                            /
+                                                                            {sub.visibility.showAssgn2 ? (sub.assgn2 !== null ? sub.assgn2 : '-') : '—'}
+                                                                        </TableCell>
+                                                                        <TableCell className="text-center border-r font-black bg-blue-50/30 dark:bg-blue-900/10 text-blue-700 text-sm">
+                                                                            {sub.visibility.showMid1 ? internalTotal : 'Hidd.'}
+                                                                        </TableCell>
+                                                                        <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.visibility.showMid1 ? (sub.labInternal || '-') : '—'}</TableCell>
+                                                                        <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.visibility.isHistorical ? (sub.labExternal || '-') : '—'}</TableCell>
+                                                                        <TableCell className="text-center border-r font-black bg-green-50/30 dark:bg-green-900/10 text-green-700 text-sm">
+                                                                            {sub.visibility.isHistorical ? (labTotal > 0 ? labTotal : '-') : 'Hidd.'}
+                                                                        </TableCell>
+                                                                        <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.visibility.showExam ? (sub.exam || '-') : '—'}</TableCell>
+                                                                        <TableCell className="text-center border-r font-black text-slate-900 dark:text-white text-base">
+                                                                            {sub.visibility.isHistorical ? grandTotal : 'In Prog.'}
+                                                                        </TableCell>
+                                                                        <TableCell className="text-center bg-amber-50/30 dark:bg-amber-900/10 font-black text-amber-700 text-base">
+                                                                            {sub.visibility.isHistorical ? `${grandTotal}%` : '—'}
+                                                                        </TableCell>
+                                                                    </>
+                                                                )}
                                                             </TableRow>
                                                         );
                                                     })}

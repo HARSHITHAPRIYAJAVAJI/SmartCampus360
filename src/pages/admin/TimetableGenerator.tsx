@@ -694,6 +694,7 @@ const TimetableGenerator = () => {
                                                 const isCAEG = session?.courseCode === '4E1DD' || session?.courseName?.includes('CAEG');
                                                 const isSports = session?.courseCode === 'SPORTS' || session?.courseName?.toLowerCase().includes('sports');
                                                 const isLibrarySession = session?.courseCode === 'LIBRARY' || session?.courseName?.toLowerCase().includes('library');
+                                                const isCRT = session?.courseCode === 'CRT' || session?.courseName?.includes('CRT');
 
                                                 return (
                                                     <div key={slot.id} className={`border p-2 h-20 flex flex-col justify-between overflow-hidden transition-colors ${isCAEG ? 'bg-orange-100/90 dark:bg-orange-900/40 border-orange-300/50' :
@@ -701,8 +702,9 @@ const TimetableGenerator = () => {
                                                                 isProjectV2 ? 'bg-rose-100/90 dark:bg-rose-900/40 border-rose-300/50' :
                                                                     isSports ? 'bg-lime-100/90 dark:bg-lime-900/40 border-lime-300/50' :
                                                                         isLibrarySession ? 'bg-violet-100/90 dark:bg-violet-900/40 border-violet-300/50' :
-                                                                            isLabSession ? 'bg-fuchsia-100/90 dark:bg-fuchsia-900/40 border-fuchsia-300/50' :
-                                                                                'bg-sky-50/50 dark:bg-sky-950/10 border-border/30'
+                                                                            isCRT ? 'bg-indigo-100/90 dark:bg-indigo-900/40 border-indigo-300/50' :
+                                                                                isLabSession ? 'bg-fuchsia-100/90 dark:bg-fuchsia-900/40 border-fuchsia-300/50' :
+                                                                                    'bg-sky-50/50 dark:bg-sky-950/10 border-border/30'
                                                         }`}>
                                                         {session ? (
                                                             <>

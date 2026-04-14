@@ -12,6 +12,7 @@ export interface ExamSlot {
     subjects: {
         branch: string;
         year: number;
+        semester: number;
         courseCode: string;
         courseName: string;
     }[];
@@ -22,7 +23,7 @@ export interface ExamTimetable {
     title: string;
     type: "Mid-1" | "Mid-2" | "Semester";
     years: number[];
-    semester: number;
+    semesterGroup: 1 | 2; // 1 for Odd, 2 for Even
     startDate: string;
     endDate: string;
     slots: ExamSlot[];
@@ -31,9 +32,10 @@ export interface ExamTimetable {
 
 export interface ExamConfig {
     years: number[];
-    semester: number;
+    semesterGroup: 1 | 2;  // 1 for Odd, 2 for Even
     startDate: string;
     type: "Mid-1" | "Mid-2" | "Semester";
+    slotSelection: "Morning Only" | "Afternoon Only" | "Both";
     fnStart: string;
     fnEnd: string;
     anStart: string;
@@ -41,38 +43,51 @@ export interface ExamConfig {
 }
 
 export const generateExamTimetable = (config: ExamConfig): ExamTimetable => {
-    const { years, semester, startDate, type, fnStart, fnEnd, anStart, anEnd } = config;
+    const { years, semesterGroup, startDate, type, slotSelection, fnStart, fnEnd, anStart, anEnd } = config;
     const slots: ExamSlot[] = [];
     
     // 1. Group subjects by branch and year (Theory only)
     const yearSubjects: Record<number, Record<string, any[]>> = {};
+    let globalMaxSubjects = 0;
+    
     years.forEach(year => {
         yearSubjects[year] = {};
+        // Map 1st Year -> Sem 1/2, 2nd Year -> Sem 3/4
+        const targetSemester = (year - 1) * 2 + semesterGroup;
+        
         EXAM_BRANCHES.forEach(branch => {
             const subjects = MOCK_COURSES.filter(c => 
-                c.semester === semester && 
+                c.semester === targetSemester && 
                 c.department === branch &&
-                c.type === "Theory"
+                c.type === "Theory" &&
+                !c.name.toLowerCase().includes("project work") &&
+                !c.name.toLowerCase().includes("phase 1") &&
+                !c.name.toLowerCase().includes("phase 2") &&
+                !c.name.toLowerCase().includes("stage 1") &&
+                !c.name.toLowerCase().includes("stage 2")
             ).slice(0, 6);
             yearSubjects[year][branch] = subjects;
+            globalMaxSubjects = Math.max(globalMaxSubjects, subjects.length);
         });
     });
 
     const isSemester = type === "Semester";
-    const sessionsPerDay: ("FN" | "AN")[] = isSemester ? ["FN"] : ["FN", "AN"];
+    let sessionsPerDay: ("FN" | "AN")[] = ["FN"];
+    if (slotSelection === "Morning Only") sessionsPerDay = ["FN"];
+    else if (slotSelection === "Afternoon Only") sessionsPerDay = ["AN"];
+    else if (slotSelection === "Both") sessionsPerDay = ["FN", "AN"];
     
     let currentDate = parseISO(startDate);
     let subjectIndex = 0;
-    const maxSubjects = 6;
 
-    while (subjectIndex < maxSubjects) {
+    while (subjectIndex < globalMaxSubjects) {
         if (isSunday(currentDate)) {
             currentDate = addDays(currentDate, 1);
             continue;
         }
 
         for (const session of sessionsPerDay) {
-            if (subjectIndex >= maxSubjects) break;
+            if (subjectIndex >= globalMaxSubjects) break;
 
             const slot: ExamSlot = {
                 date: format(currentDate, "yyyy-MM-dd"),
@@ -90,6 +105,7 @@ export const generateExamTimetable = (config: ExamConfig): ExamTimetable => {
                         slot.subjects.push({
                             branch,
                             year,
+                            semester: (year - 1) * 2 + semesterGroup,
                             courseCode: subject.code,
                             courseName: subject.name
                         });
@@ -97,24 +113,13 @@ export const generateExamTimetable = (config: ExamConfig): ExamTimetable => {
                 });
             });
 
-            slots.push(slot);
-            if (isSemester) {
-                // For semester, each day is one subject index
-                // but we loop sessions (only 1 session for semester)
-            } else {
-                // For Mid, if we are in FN, we don't increment subjectIndex yet until AN?
-                // Actually, Mid layout usually is: Day 1 FN (Sub 1), Day 1 AN (Sub 2).
-                // So subjectIndex should increment per session in Mid.
-                subjectIndex++;
+            if (slot.subjects.length > 0) {
+                slots.push(slot);
             }
+            subjectIndex++;
         }
 
-        if (isSemester) {
-            subjectIndex++;
-            currentDate = addDays(currentDate, 2); // 1-day gap (alternate days)
-        } else {
-            currentDate = addDays(currentDate, 1); // Continuous for Mid
-        }
+        currentDate = addDays(currentDate, isSemester ? 2 : 1);
     }
 
     return {
@@ -122,7 +127,7 @@ export const generateExamTimetable = (config: ExamConfig): ExamTimetable => {
         title: `${type} Examination Schedule`,
         type,
         years,
-        semester,
+        semesterGroup,
         startDate,
         endDate: format(addDays(currentDate, -1), "yyyy-MM-dd"),
         slots,

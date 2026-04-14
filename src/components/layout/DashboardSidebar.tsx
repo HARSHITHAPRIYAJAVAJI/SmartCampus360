@@ -77,6 +77,7 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
         { title: "Student Management", url: "/dashboard/students", icon: GraduationCap },
         { title: "Course Management", url: "/dashboard/manage-courses", icon: BookOpen },
         { title: "Room Management", url: "/dashboard/manage-rooms", icon: Home },
+        { title: "Detailed Attendance", url: "/dashboard/attendance", icon: FileText },
         { title: "Analytics & Accreditation", url: "/dashboard/analytics-accreditation", icon: BarChart3 },
       ],
       faculty: [
@@ -86,6 +87,7 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
       ],
       student: [
         { title: "Exam Time Tables", url: "/dashboard/timetable", icon: Calendar },
+        { title: "Detailed Attendance", url: "/dashboard/attendance", icon: FileText },
         {
           title: "Online Fee Payments",
           icon: Award,
@@ -115,8 +117,8 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
       ...commonItems.slice(3),
     ];
 
-    // For faculty, redirect "My Profile" to dashboard since they are merged
-    if (userRole === 'faculty') {
+    // For students and faculty, redirect "My Profile" to dashboard since they are merged
+    if (userRole === 'faculty' || userRole === 'student') {
       return navigationItems.map(item => 
         item.title === 'My Profile' ? { ...item, url: '/dashboard' } : item
       );

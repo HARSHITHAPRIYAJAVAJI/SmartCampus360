@@ -17,6 +17,7 @@ import { MOCK_COURSES } from "@/data/mockCourses";
 import { MOCK_FACULTY } from "@/data/mockFaculty";
 import { MOCK_STUDENTS } from "@/data/mockStudents";
 import { Link, useNavigate } from "react-router-dom";
+import notificationService, { Notification as ApiNotification } from "@/services/notificationService";
 
 interface DashboardHeaderProps {
   user: {
@@ -130,6 +131,7 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
 
   const [liveRequests, setLiveRequests] = useState<any[]>([]);
   const [studentAlerts, setStudentAlerts] = useState<any[]>([]);
+  const [apiNotifications, setApiNotifications] = useState<ApiNotification[]>([]);
 
   useEffect(() => {
     const loadNotifications = () => {
@@ -169,6 +171,11 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
           ));
         }
       }
+
+      // 3. Load Global API Notifications
+      notificationService.getNotifications().then(data => {
+        setApiNotifications(data || []);
+      }).catch(err => console.error("Notifications API Error:", err));
     };
 
     loadNotifications();
@@ -183,8 +190,21 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
   }, [user.id, user.role]);
 
   const notifications = useMemo(() => {
-    const list = [...liveRequests.map(r => {
+    const list: { 
+      id: string, 
+      title: string, 
+      message: string, 
+      type: "destructive" | "success" | "warning" | "info", 
+      read: boolean, 
+      isRequest: boolean, 
+      senderName: string, 
+      url: string 
+    }[] = [...liveRequests.map(r => {
       const isStatusUpdate = r.senderId === user.id && r.status !== 'pending';
+      const type: "destructive" | "success" | "warning" | "info" = 
+        r.status === 'rejected' ? "destructive" : 
+        r.status === 'approved' ? "success" : "warning";
+
       return {
         id: r.id,
         title: isStatusUpdate ? `Request ${r.status.charAt(0).toUpperCase() + r.status.slice(1)}` :
@@ -194,8 +214,7 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
         message: isStatusUpdate ? `Your ${r.type} request for ${r.date} has been ${r.status}.` :
                  r.type === 'leave' ? `${r.category || 'Duty'} for ${r.duration || 1} days` :
                  `${r.date} | Period: ${r.period}`,
-        type: r.status === 'rejected' ? "destructive" as const : 
-              r.status === 'approved' ? "success" as const : "warning" as const,
+        type,
         read: false,
         isRequest: !isStatusUpdate,
         senderName: isStatusUpdate ? "System" : r.senderName,
@@ -217,6 +236,26 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
         });
       });
     }
+
+    // Merge API Notifications based on target audience
+    apiNotifications.forEach(n => {
+       const isTargeted = n.target_audience === 'all' || 
+                         (n.target_audience === 'students' && user.role === 'student') ||
+                         (n.target_audience === 'faculty' && user.role === 'faculty');
+       
+       if (isTargeted) {
+         list.push({
+           id: String(n.id),
+           title: n.title,
+           message: n.message,
+           type: n.type as any,
+           read: false,
+           isRequest: false,
+           senderName: "Campus Notice",
+           url: "/dashboard"
+         });
+       }
+    });
 
     return list;
   }, [liveRequests, studentAlerts, user.role]);
@@ -383,6 +422,7 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
                     <div className={`mt-1 h-10 w-10 shrink-0 rounded-xl flex items-center justify-center transition-colors shadow-sm ${
                       notification.type === 'warning' ? 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400' :
                       notification.type === 'success' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' :
+                      notification.type === 'destructive' ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' :
                       'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400'
                     }`}>
                       {notification.isRequest ? <Users className="h-5 w-5" /> : 
@@ -460,7 +500,7 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link to={user.role === 'student' ? "/dashboard/profile" : "#"} className="cursor-pointer w-full flex items-center">
+              <Link to={user.role === 'student' ? "/dashboard" : "/dashboard/profile"} className="cursor-pointer w-full flex items-center">
                 <User className="mr-2 h-4 w-4" />
                 Profile
               </Link>

@@ -16,6 +16,7 @@ const FacultyDashboard = lazy(() => import("./pages/dashboard/FacultyDashboard")
 const StudentDashboard = lazy(() => import("./pages/dashboard/StudentDashboard"));
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 const Timetable = lazy(() => import("./pages/dashboard/Timetable"));
+const AttendanceDetails = lazy(() => import("./pages/dashboard/AttendanceDetails"));
 const NotificationsPage = lazy(() => import("./pages/admin/NotificationsPage"));
 const Placements = lazy(() => import("./pages/Placements"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -220,6 +221,7 @@ const App = () => {
                 <Route path="student/fees/regular" element={<RoleGuard allowedRoles={['student', 'admin']} userRole={user?.role || ''}><RegularFeePayment /></RoleGuard>} />
                 <Route path="student/fees/*" element={<RoleGuard allowedRoles={['student', 'admin']} userRole={user?.role || ''}><StudentFees /></RoleGuard>} />
                 <Route path="student/downloads" element={<RoleGuard allowedRoles={['student', 'admin']} userRole={user?.role || ''}><Downloads /></RoleGuard>} />
+                <Route path="attendance" element={<RoleGuard allowedRoles={['student', 'admin']} userRole={user?.role || ''}><AttendanceDetails /></RoleGuard>} />
                 <Route path="requests" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><RequestsManagement /></RoleGuard>} />
                 <Route path="communications" element={<CommunicationHub />} />
               </Route>

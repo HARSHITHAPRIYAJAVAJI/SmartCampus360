@@ -39,8 +39,15 @@ def get_application():
     # Include API router
     app.include_router(api_router, prefix=settings.API_V1_STR)
 
-    # Mount static files
-    app.mount("/static", StaticFiles(directory="static"), name="static")
+    # Mount static files with robust path
+    import os
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    static_dir = os.path.join(os.path.dirname(base_dir), "static")
+    
+    if not os.path.exists(static_dir):
+        os.makedirs(static_dir, exist_ok=True)
+        
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
     return app
 

@@ -75,17 +75,7 @@ export default function Profile() {
     const classTeacherSection = isFaculty && facultyData ? CLASS_TEACHERS.filter(ct => ct.facultyId === facultyData.id) : [];
     const yearInChargeInfo = isFaculty && facultyData ? YEAR_IN_CHARGES.filter(yic => yic.facultyId === facultyData.id) : [];
 
-    const infoCards = isStudent ? [
-        { label: "Roll Number", value: profileData.id, icon: UserCircle, color: "text-blue-500", bg: "bg-blue-50" },
-        { label: "Branch", value: profileData.dept, icon: Briefcase, color: "text-purple-500", bg: "bg-purple-50" },
-        { label: "Level", value: `${studentData?.year || 1}th Year`, icon: GraduationCap, color: "text-emerald-500", bg: "bg-emerald-50" },
-        { label: "Semester", value: studentData?.semester || 1, icon: BookOpen, color: "text-amber-500", bg: "bg-amber-50" },
-    ] : [
-        { label: "Staff ID", value: profileData.id, icon: ShieldCheck, color: "text-blue-600", bg: "bg-blue-50" },
-        { label: "Department", value: profileData.dept, icon: Building2, color: "text-indigo-600", bg: "bg-indigo-50" },
-        { label: "Experience", value: "8+ Years", icon: History, color: "text-emerald-600", bg: "bg-emerald-50" },
-        { label: "Join Date", value: "Aug 2018", icon: CalendarDays, color: "text-amber-600", bg: "bg-amber-50" },
-    ];
+
 
     return (
         <div className="space-y-8 animate-in fade-in-50 slide-in-from-bottom-4 duration-700">
@@ -191,7 +181,9 @@ export default function Profile() {
                                     </div>
                                     <span className="font-bold text-sm">{isStudent ? 'Attendance' : 'Punctuality'}</span>
                                 </div>
-                                <span className={`font-black ${isStudent ? 'text-green-600' : 'text-blue-600'}`}>{isStudent ? `${studentData?.attendance}%` : '98.4%'}</span>
+                                <span className={`font-black ${isStudent ? 'text-green-600' : 'text-blue-600'}`}>
+                                    {isStudent ? (Math.min(studentData?.attendance || 0, 91)) + '%' : '91%'}
+                                </span>
                             </div>
                             {isStudent ? (
                                 <div className="flex justify-between items-center bg-background/50 p-4 rounded-2xl border border-primary/5">
@@ -220,30 +212,7 @@ export default function Profile() {
 
                 {/* Right Column */}
                 <div className="lg:col-span-2 space-y-6">
-                    <Card className="border-none shadow-md overflow-hidden">
-                        <CardHeader className="flex flex-row items-center justify-between border-b bg-muted/30">
-                            <CardTitle className="text-lg flex items-center gap-2">
-                                <FileText className="w-5 h-5 text-primary" />
-                                Institutional Records
-                            </CardTitle>
-                            <Badge variant="outline" className={`font-bold ${isStudent ? 'text-primary' : 'text-teal-600'}`}>
-                                Active Profile
-                            </Badge>
-                        </CardHeader>
-                        <CardContent className="p-8">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                {infoCards.map((card, i) => (
-                                    <div key={i} className={`p-6 rounded-2xl ${card.bg} border border-transparent hover:border-border transition-all group`}>
-                                        <div className={`p-3 rounded-xl bg-white dark:bg-black/20 ${card.color} shadow-sm w-fit mb-4 group-hover:scale-110 transition-transform`}>
-                                            <card.icon className="w-6 h-6" />
-                                        </div>
-                                        <div className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest mb-1">{card.label}</div>
-                                        <div className="text-xl font-black text-slate-800 dark:text-slate-100">{card.value}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
+
 
                     {isFaculty && (
                         <Card className="border-none shadow-md">

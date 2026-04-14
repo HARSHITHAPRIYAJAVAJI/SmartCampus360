@@ -42,6 +42,7 @@ export default function ExamManagement() {
     const [fnEnd, setFnEnd] = useState("12:00");
     const [anStart, setAnStart] = useState("14:00");
     const [anEnd, setAnEnd] = useState("16:00");
+    const [slotSelection, setSlotSelection] = useState<"Morning Only" | "Afternoon Only" | "Both">("Morning Only");
 
     const [timetables, setTimetables] = useState<ExamTimetable[]>(() => {
         const saved = localStorage.getItem('EXAM_TIMETABLES');
@@ -79,6 +80,9 @@ export default function ExamManagement() {
         localStorage.setItem('EXAM_SEATING_PLAN', JSON.stringify(seatingPlans));
         localStorage.setItem('INVIGILATION_LIST', JSON.stringify(invigilationList));
         localStorage.setItem('EXAM_TIMETABLES', JSON.stringify(timetables));
+        
+        // Notify other components (like Timetable.tsx) to refresh
+        window.dispatchEvent(new Event('exams_updated'));
     }, [exams, seatingPlans, invigilationList, timetables]);
 
     const filteredExams = exams.filter(exam => 
@@ -138,10 +142,36 @@ export default function ExamManagement() {
     };
 
     const handleDeleteRoster = (examId: string) => {
-        setExams(prev => prev.filter(e => e.id !== examId));
-        setSeatingPlans(prev => prev.filter(s => s.examId !== examId));
-        setInvigilationList(prev => prev.filter(i => i.examId !== examId));
-        toast({ title: "Roster Deleted", variant: "destructive" });
+        // Extract ttId to delete the whole cycle
+        const ttId = examId.startsWith('EXT-') ? examId.split('-')[1] : examId;
+        
+        setExams(prev => prev.filter(e => {
+            const currentTtId = e.id.startsWith('EXT-') ? e.id.split('-')[1] : e.id;
+            return currentTtId !== ttId;
+        }));
+        setSeatingPlans(prev => prev.filter(s => {
+            const currentTtId = s.examId.startsWith('EXT-') ? s.examId.split('-')[1] : s.examId;
+            return currentTtId !== ttId;
+        }));
+        setInvigilationList(prev => prev.filter(i => {
+            const currentTtId = i.examId.startsWith('EXT-') ? i.examId.split('-')[1] : i.examId;
+            return currentTtId !== ttId;
+        }));
+        
+        toast({ title: "Roster Group Deleted", variant: "destructive" });
+    };
+
+    const handleDeleteTimetable = (id: string) => {
+        // Scrub ID prefix if it exists to match exams
+        const ttId = id.startsWith('TT-') ? id.split('-')[1] : id;
+        
+        setTimetables(prev => prev.filter(t => t.id !== id));
+        // Also delete associated execution rosters
+        setExams(prev => prev.filter(e => !e.id.includes(ttId)));
+        setSeatingPlans(prev => prev.filter(s => !s.examId.includes(ttId)));
+        setInvigilationList(prev => prev.filter(i => !i.examId.includes(ttId)));
+        
+        toast({ title: "Timetable Deleted", description: "Associated rosters have also been cleared.", variant: "destructive" });
     };
 
     const handleGlobalReset = () => {
@@ -169,11 +199,12 @@ export default function ExamManagement() {
             toast({ title: "Error", description: "Select year(s), date and semester.", variant: "destructive" });
             return;
         }
-        const config = {
+        const config: any = {
             years: selectedYears,
-            semester: parseInt(semester),
+            semesterGroup: parseInt(semester) as 1 | 2,
             startDate: date,
             type: examType,
+            slotSelection: slotSelection,
             fnStart: fnStart + (parseInt(fnStart.split(':')[0]) >= 12 ? ' PM' : ' AM'),
             fnEnd: fnEnd + (parseInt(fnEnd.split(':')[0]) >= 12 ? ' PM' : ' AM'),
             anStart: anStart + (parseInt(anStart.split(':')[0]) >= 12 ? ' PM' : ' AM'),
@@ -206,10 +237,7 @@ export default function ExamManagement() {
         });
     };
 
-    const handleDeleteTimetable = (id: string) => {
-        setTimetables(prev => prev.filter(t => t.id !== id));
-        toast({ title: "Timetable Deleted", variant: "destructive" });
-    };
+
 
     const handlePublishTimetable = (id: string) => {
         setTimetables(prev => prev.map(t => 
@@ -284,10 +312,15 @@ export default function ExamManagement() {
                                         })}
                                     </div>
                                 </div>
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                                     <div className="space-y-2">
                                         <Label className="text-[11px] font-black uppercase text-muted-foreground tracking-widest">Type</Label>
-                                        <Select value={examType} onValueChange={(v: any) => setExamType(v)}>
+                                        <Select value={examType} onValueChange={(v: any) => {
+                                            setExamType(v);
+                                            if (v === "Semester" && slotSelection === "Both") {
+                                                setSlotSelection("Morning Only");
+                                            }
+                                        }}>
                                             <SelectTrigger><SelectValue /></SelectTrigger>
                                             <SelectContent>
                                                 <SelectItem value="Mid-1">Mid Term 1</SelectItem>
@@ -297,13 +330,23 @@ export default function ExamManagement() {
                                         </Select>
                                     </div>
                                     <div className="space-y-2">
-                                        <Label className="text-[11px] font-black uppercase text-muted-foreground tracking-widest">Semester</Label>
+                                        <Label className="text-[11px] font-black uppercase text-muted-foreground tracking-widest">Time Slot</Label>
+                                        <Select value={slotSelection} onValueChange={(v: any) => setSlotSelection(v)}>
+                                            <SelectTrigger><SelectValue /></SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="Morning Only">Morning Only</SelectItem>
+                                                <SelectItem value="Afternoon Only">Afternoon Only</SelectItem>
+                                                {examType !== "Semester" && <SelectItem value="Both">Both Slots</SelectItem>}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label className="text-[11px] font-black uppercase text-muted-foreground tracking-widest">Semester Group</Label>
                                         <Select value={semester} onValueChange={setSemester}>
                                             <SelectTrigger><SelectValue /></SelectTrigger>
                                             <SelectContent>
-                                                {Array.from({ length: 8 }, (_, i) => (
-                                                    <SelectItem key={i+1} value={(i+1).toString()}>Sem {i+1}</SelectItem>
-                                                ))}
+                                                <SelectItem value="1">Odd Semester (1, 3, 5, 7)</SelectItem>
+                                                <SelectItem value="2">Even Semester (2, 4, 6, 8)</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </div>
@@ -468,7 +511,7 @@ export default function ExamManagement() {
                                         <div className="space-y-1">
                                             <div className="flex items-center gap-2">
                                                 <Badge className="bg-primary/10 text-primary border-none text-[8px] font-black uppercase tracking-widest">{tt.type}</Badge>
-                                                <Badge variant="outline" className="text-[8px] font-black uppercase tracking-widest border-primary/20">Sem {tt.semester}</Badge>
+                                                <Badge variant="outline" className="text-[8px] font-black uppercase tracking-widest border-primary/20">{tt.semesterGroup === 1 ? 'Odd Semester' : 'Even Semester'}</Badge>
                                                 <Badge variant="outline" className="text-[8px] font-black uppercase tracking-widest">Yrs: {tt.years.join(",")}</Badge>
                                                 {tt.isPublished && (
                                                     <Badge className="bg-emerald-500/10 text-emerald-600 border-none text-[8px] font-black uppercase tracking-widest animate-pulse">
@@ -498,67 +541,90 @@ export default function ExamManagement() {
                                             </Button>
                                         </div>
                                     </div>
-                                    <div className="overflow-x-auto p-4 lg:p-8">
-                                        <table className="w-full border-collapse rounded-3xl overflow-hidden shadow-2xl border border-border/20">
-                                            <thead>
-                                                <tr className="bg-muted/40 backdrop-blur-sm border-b border-border/50">
-                                                    <th className="p-5 text-left text-[13px] font-black uppercase tracking-[0.2em] text-muted-foreground whitespace-nowrap bg-muted/20 sticky left-0 z-20">Academic Branch</th>
-                                                    {tt.slots.map((slot, sIdx) => (
-                                                        <th key={sIdx} className="p-5 text-left border-l border-border/30 min-w-[220px]">
-                                                            <div className="flex flex-col gap-1.5">
-                                                                <div className="flex items-center justify-between">
-                                                                    <span className="font-black text-[15px] text-foreground">
-                                                                        {slot.date.split('-').reverse().join('-')}
-                                                                    </span>
-                                                                    <Badge className={`${slot.session === 'FN' ? 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20' : 'bg-orange-500/10 text-orange-600 border-orange-500/20'} text-[9px] font-black tracking-widest h-5`}>
-                                                                        {slot.session}
-                                                                    </Badge>
-                                                                </div>
-                                                                <span className="text-[11px] font-black text-primary/70 uppercase tracking-widest">{slot.day}</span>
-                                                            </div>
-                                                        </th>
-                                                    ))}
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-border/20 bg-card/40">
-                                                {EXAM_BRANCHES.map((branch) => (
-                                                    <tr key={branch} className="hover:bg-primary/[0.02] transition-colors group">
-                                                        <td className="p-5 whitespace-nowrap bg-muted/30 sticky left-0 z-10 backdrop-blur-md border-r border-border/20">
-                                                            <span className="font-black text-sm uppercase tracking-[0.1em] text-foreground/80">{branch}</span>
-                                                        </td>
-                                                        {tt.slots.map((slot, sIdx) => {
-                                                            const subjectsInSlot = slot.subjects.filter(s => s.branch === branch);
-                                                            return (
-                                                                <td key={sIdx} className="p-5 border-l border-border/20 align-top">
-                                                                    {subjectsInSlot.length > 0 ? (
-                                                                        <div className="space-y-3">
-                                                                            {subjectsInSlot.map((sub, subIdx) => (
-                                                                                <div key={subIdx} className="relative p-5 rounded-2xl bg-white/50 dark:bg-zinc-900/50 border border-border/40 shadow-sm group-hover:border-primary/30 transition-all hover:scale-[1.02] active:scale-95 duration-200">
-                                                                                    <div className="flex justify-between items-start mb-2">
-                                                                                        <div className="h-4 w-4 rounded-full bg-primary/5 flex items-center justify-center">
-                                                                                            <ShieldCheck className="h-3 w-3 text-primary opacity-30" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div className="font-black text-[14px] text-foreground leading-tight mb-2 line-clamp-2">{sub.courseName}</div>
-                                                                                    <div className="font-mono text-[12px] font-black text-muted-foreground bg-muted/60 w-fit px-2 py-0.5 rounded-md uppercase tracking-tighter">
-                                                                                        {sub.courseCode}
-                                                                                    </div>
+                                    <div className="p-8 space-y-12">
+                                        {tt.years.sort().map((year) => {
+                                            const targetSemester = (year - 1) * 2 + tt.semesterGroup;
+                                            // Only show slots that have subjects for this specific year
+                                            const yearSlots = tt.slots.filter(slot => 
+                                                slot.subjects.some(s => s.year === year)
+                                            );
+
+                                            return (
+                                                <div key={year} className="space-y-6">
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary font-black text-lg">
+                                                            {year}
+                                                        </div>
+                                                        <div>
+                                                            <h4 className="text-xl font-bold text-foreground">
+                                                                {year === 1 ? '1st' : year === 2 ? '2nd' : year === 3 ? '3rd' : '4th'} Year — Semester {targetSemester}
+                                                            </h4>
+                                                            <p className="text-xs text-muted-foreground font-black uppercase tracking-widest opacity-60">
+                                                                Branch-wise Assessment Schedule
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="overflow-x-auto rounded-3xl border border-border/20 shadow-xl">
+                                                        <table className="w-full border-collapse">
+                                                            <thead>
+                                                                <tr className="bg-muted/40 backdrop-blur-sm border-b border-border/50">
+                                                                    <th className="p-5 text-left text-[11px] font-black uppercase tracking-[0.2em] text-muted-foreground whitespace-nowrap bg-muted/20 sticky left-0 z-20 w-48">Academic Branch</th>
+                                                                    {yearSlots.map((slot, sIdx) => (
+                                                                        <th key={sIdx} className="p-5 text-left border-l border-border/30 min-w-[200px]">
+                                                                            <div className="flex flex-col gap-1">
+                                                                                <div className="flex items-center justify-between">
+                                                                                    <span className="font-black text-sm text-foreground">
+                                                                                        {slot.date.split('-').reverse().join('-')}
+                                                                                    </span>
+                                                                                    <Badge className={`${slot.session === 'FN' ? 'bg-indigo-500/10 text-indigo-600 border-indigo-500/20' : 'bg-orange-500/10 text-orange-600 border-orange-500/20'} text-[8px] font-black tracking-widest h-4 px-1.5`}>
+                                                                                        {slot.session}
+                                                                                    </Badge>
                                                                                 </div>
-                                                                            ))}
-                                                                        </div>
-                                                                    ) : (
-                                                                        <div className="p-6 border border-dashed border-border/10 rounded-2xl flex flex-col items-center justify-center opacity-20">
-                                                                            <Clock className="h-4 w-4 mb-2" />
-                                                                            <span className="text-[9px] font-black uppercase tracking-widest whitespace-nowrap">No Exam</span>
-                                                                        </div>
-                                                                    )}
-                                                                </td>
-                                                            );
-                                                        })}
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
+                                                                                <span className="text-[10px] font-black text-primary/70 uppercase tracking-widest">{slot.day}</span>
+                                                                            </div>
+                                                                        </th>
+                                                                    ))}
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody className="divide-y divide-border/20 bg-card/40">
+                                                                {EXAM_BRANCHES.map((branch) => (
+                                                                    <tr key={branch} className="hover:bg-primary/[0.01] transition-colors group">
+                                                                        <td className="p-5 whitespace-nowrap bg-muted/30 sticky left-0 z-10 backdrop-blur-md border-r border-border/20">
+                                                                            <span className="font-black text-xs uppercase tracking-[0.1em] text-foreground/80">{branch}</span>
+                                                                        </td>
+                                                                        {yearSlots.map((slot, sIdx) => {
+                                                                            const subjectsInSlot = slot.subjects.filter(s => s.branch === branch && s.year === year);
+                                                                            return (
+                                                                                <td key={sIdx} className="p-5 border-l border-border/20 align-top">
+                                                                                    {subjectsInSlot.length > 0 ? (
+                                                                                        <div className="space-y-3">
+                                                                                            {subjectsInSlot.map((sub, subIdx) => (
+                                                                                                <div key={subIdx} className="relative p-4 rounded-xl bg-white/60 dark:bg-zinc-900/60 border border-border/40 shadow-sm transition-all hover:scale-[1.02] duration-200">
+                                                                                                    <div className="font-black text-[13px] text-foreground leading-tight mb-2 line-clamp-2">{sub.courseName}</div>
+                                                                                                    <div className="font-mono text-[10px] font-black text-muted-foreground bg-muted/60 w-fit px-2 py-0.5 rounded-md uppercase tracking-tighter">
+                                                                                                        {sub.courseCode}
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            ))}
+                                                                                        </div>
+                                                                                    ) : (
+                                                                                        <div className="p-4 border border-dashed border-border/10 rounded-xl flex flex-col items-center justify-center opacity-20">
+                                                                                            <Clock className="h-3 w-3 mb-1" />
+                                                                                            <span className="text-[8px] font-black uppercase tracking-widest">No Exam</span>
+                                                                                        </div>
+                                                                                    )}
+                                                                                </td>
+                                                                            );
+                                                                        })}
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
                                     </div>
                                 </Card>
                             ))}
@@ -595,54 +661,89 @@ export default function ExamManagement() {
                                 </Button>
                             </div>
                         </CardHeader>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5">
-                            {Array.from(new Set(seatingPlans.filter(s => selectedRosterId === "all" || s.examId === selectedRosterId).map(s => s.room))).map((room) => {
-                                const roomSeats = seatingPlans.filter(s => (selectedRosterId === "all" || s.examId === selectedRosterId) && s.room === room);
-                                const invigs = invigilationList.filter(i => (selectedRosterId === "all" || i.examId === selectedRosterId) && i.room === room);
+                        <div className="p-5 space-y-12">
+                            {Array.from(new Set(seatingPlans
+                                .filter(s => selectedRosterId === "all" || s.examId === selectedRosterId)
+                                .map(s => {
+                                    const exam = exams.find(e => e.id === s.examId);
+                                    return exam ? `${exam.date}|${exam.startTime}` : "Unknown|Unknown";
+                                })
+                            )).sort().map((dateTime) => {
+                                const [date, time] = dateTime.split('|');
+                                const sessionSeats = seatingPlans.filter(s => {
+                                    const exam = exams.find(e => e.id === s.examId);
+                                    return exam && exam.date === date && exam.startTime === time && (selectedRosterId === "all" || s.examId === selectedRosterId);
+                                });
+                                
+                                const uniqueRooms = Array.from(new Set(sessionSeats.map(s => s.room))).sort();
                                 
                                 return (
-                                    <Card key={room} className="border-border/60 shadow-md rounded-[1.5rem] overflow-hidden hover:border-primary/40 transition-all duration-300">
-                                        <CardHeader className="p-4 border-b border-border/40 bg-muted/20">
-                                            <div className="flex justify-between items-center">
-                                                <div className="space-y-1">
-                                                    <h4 className="text-[10px] font-black uppercase text-primary tracking-[0.2em]">{roomSeats[0].block}</h4>
-                                                    <div className="text-xl font-black tracking-tighter flex items-center gap-2">
-                                                        <MapPin className="h-4 w-4" /> Hall {room}
-                                                    </div>
-                                                </div>
-                                                <Badge variant="outline" className="h-6 font-bold">{roomSeats.length} Students</Badge>
+                                    <div key={dateTime} className="space-y-6">
+                                        <div className="flex items-center gap-4 bg-primary/5 p-4 rounded-3xl border border-primary/10">
+                                            <div className="h-12 w-12 rounded-2xl bg-primary flex items-center justify-center text-white shadow-lg shadow-primary/20">
+                                                <Calendar className="h-6 w-6" />
                                             </div>
-                                        </CardHeader>
-                                        <div className="p-4 space-y-4">
-                                            <div className="space-y-2">
-                                                <h5 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-60 flex items-center gap-1.5"><UserCheck className="h-3 w-3" /> Assigned Invigilators</h5>
-                                                {invigs.length > 0 ? (
-                                                    <div className="flex flex-col gap-1.5">
-                                                        {invigs.map((inv, idx) => (
-                                                            <span key={idx} className="text-xs font-bold bg-primary/5 text-primary px-2 py-1 rounded w-fit">{inv.facultyName}</span>
-                                                        ))}
-                                                    </div>
-                                                ) : <span className="text-xs text-amber-600 font-bold">Unassigned</span>}
-                                            </div>
-                                            <div className="space-y-2 border-t pt-3">
-                                                <h5 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-60">Candidate Roll Numbers (Strict Format)</h5>
-                                                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto custom-scrollbar pr-1">
-                                                    {roomSeats.map((seat, idx) => (
-                                                        <Badge key={idx} variant="outline" className="text-[10px] font-mono font-bold bg-white text-foreground">{seat.rollNumber}</Badge>
-                                                    ))}
-                                                </div>
+                                            <div>
+                                                <h3 className="text-xl font-black tracking-tighter text-foreground">{date.split('-').reverse().join('/')}</h3>
+                                                <p className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">{time} Session</p>
                                             </div>
                                         </div>
-                                    </Card>
+                                        
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                            {uniqueRooms.map((room) => {
+                                                const roomSeats = sessionSeats.filter(s => s.room === room);
+                                                const rawInvigs = invigilationList.filter(i => {
+                                                    const exam = exams.find(e => e.id === i.examId);
+                                                    return exam && exam.date === date && exam.startTime === time && i.room === room;
+                                                });
+                                                const invigs = rawInvigs.filter((v, i, a) => a.findIndex(t => t.facultyId === v.facultyId) === i);
+                                                
+                                                const uniqueBranches = [...new Set(roomSeats.map(s => s.branch))];
+                                                const uniqueYears = [...new Set(roomSeats.map(s => s.year))].sort();
+                                                
+                                                return (
+                                                    <Card key={room} className="border-border/60 shadow-md rounded-[1.5rem] overflow-hidden hover:border-primary/40 transition-all duration-300 bg-white">
+                                                        <CardHeader className="p-4 border-b border-border/40 bg-muted/20">
+                                                            <div className="flex justify-between items-center">
+                                                                <div className="space-y-0.5">
+                                                                    <div className="flex items-center gap-2">
+                                                                        <h4 className="text-[9px] font-black uppercase text-primary tracking-widest">{roomSeats[0].block}</h4>
+                                                                        <Badge className="bg-primary/5 text-primary border-none text-[8px] font-black h-4 px-1.5">{uniqueYears.map(y => `Y${y}`).join("/")} | {uniqueBranches.join("-")}</Badge>
+                                                                    </div>
+                                                                    <div className="text-lg font-black tracking-tighter flex items-center gap-2 text-foreground">
+                                                                        <MapPin className="h-4 w-4" /> Hall {room}
+                                                                    </div>
+                                                                </div>
+                                                                <Badge variant="outline" className="h-6 font-bold">{roomSeats.length} Students</Badge>
+                                                            </div>
+                                                        </CardHeader>
+                                                        <div className="p-4 space-y-4">
+                                                            <div className="space-y-2">
+                                                                <h5 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-60 flex items-center gap-1.5"><UserCheck className="h-3 w-3" /> Assigned Invigilators</h5>
+                                                                {invigs.length > 0 ? (
+                                                                    <div className="flex flex-col gap-1.5">
+                                                                        {invigs.map((inv, idx) => (
+                                                                            <span key={idx} className="text-xs font-bold bg-primary/5 text-primary px-2 py-1 rounded w-fit">{inv.facultyName}</span>
+                                                                        ))}
+                                                                    </div>
+                                                                ) : <span className="text-xs text-amber-600 font-bold">Unassigned</span>}
+                                                            </div>
+                                                            <div className="space-y-2 border-t pt-3">
+                                                                <h5 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-60">Roll Numbers</h5>
+                                                                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto custom-scrollbar pr-1">
+                                                                    {roomSeats.map((seat, idx) => (
+                                                                        <Badge key={idx} variant="outline" className="text-[10px] font-mono font-bold bg-white text-foreground">{seat.rollNumber}</Badge>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </Card>
+                                                );
+                                            })}
+                                        </div>
+                                    </div>
                                 );
                             })}
-                            
-                            {seatingPlans.length === 0 && (
-                                <div className="col-span-full py-12 text-center text-muted-foreground">
-                                    <Users className="h-10 w-10 mx-auto mb-3 opacity-20" />
-                                    <p className="font-bold">No generated seating arrangements available.</p>
-                                </div>
-                            )}
                         </div>
                     </Card>
                 </TabsContent>
@@ -672,8 +773,21 @@ export default function ExamManagement() {
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         {Array.from(new Set(invigilationList.filter(i => selectedRosterId === "all" || i.examId === selectedRosterId).map(i => i.room))).map((roomName) => {
-                            const roomDuties = invigilationList.filter(i => (selectedRosterId === "all" || i.examId === selectedRosterId) && i.room === roomName);
+                            const rawRoomDuties = invigilationList.filter(i => (selectedRosterId === "all" || i.examId === selectedRosterId) && i.room === roomName);
+                            // Unique faculty proctoring this room
+                            const roomDuties = rawRoomDuties.filter((v, i, a) => 
+                                a.findIndex(t => t.facultyId === v.facultyId) === i
+                            );
                             const firstDuty = roomDuties[0];
+                            const isAll = selectedRosterId === "all";
+                            
+                            // For "All Duties" view, find the date range
+                            const dates = rawRoomDuties.map(d => new Date(d.date).getTime()).sort();
+                            const dateRange = dates.length > 0 ? {
+                                start: new Date(dates[0]).toLocaleDateString('en-GB').replace(/\//g, '-'),
+                                end: new Date(dates[dates.length - 1]).toLocaleDateString('en-GB').replace(/\//g, '-')
+                            } : null;
+                            
                             return (
                                 <Card key={roomName} className="border-border/60 shadow-md rounded-[1.5rem] overflow-hidden bg-white hover:border-primary/40 transition-all duration-300">
                                     <CardHeader className="p-6 border-b border-border/40 bg-muted/20">
@@ -688,26 +802,46 @@ export default function ExamManagement() {
                                         </div>
                                         <div className="flex items-center gap-2 text-[10px] font-bold text-muted-foreground bg-white/50 w-fit px-3 py-1 rounded-full border border-border/20">
                                             <Clock className="h-3 w-3" />
-                                            {firstDuty.date.split('-').reverse().join('-')} | {firstDuty.time}
+                                            {isAll ? (
+                                                <span>{dateRange?.start} to {dateRange?.end} | Multi-Session</span>
+                                            ) : (
+                                                <span>{firstDuty.date.split('-').reverse().join('-')} | {firstDuty.time}</span>
+                                            )}
                                         </div>
                                     </CardHeader>
                                     <div className="p-6 space-y-4">
                                         <h5 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-60">Assigned Invigilators</h5>
                                         <div className="space-y-2">
-                                            {roomDuties.map((duty, dIdx) => (
-                                                <div key={dIdx} className="flex items-center gap-4 p-3 rounded-xl bg-muted/5 border border-border/10 transition-colors hover:bg-muted/10">
-                                                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center font-black text-[10px] text-primary">
-                                                        P{dIdx + 1}
-                                                    </div>
-                                                    <div className="text-sm font-bold text-foreground">
-                                                        {duty.facultyName}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                            {roomDuties.length < 2 && (
+                                            {roomDuties
+                                                .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+                                                .map((duty, dIdx) => {
+                                                    const isAll = selectedRosterId === "all";
+                                                    return (
+                                                        <div key={dIdx} className="flex items-center justify-between p-3 rounded-xl bg-muted/5 border border-border/10 transition-colors hover:bg-muted/10 group/duty">
+                                                            <div className="flex items-center gap-4">
+                                                                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center font-black text-[10px] text-primary group-hover/duty:bg-primary group-hover/duty:text-white transition-all">
+                                                                    {dIdx + 1}
+                                                                </div>
+                                                                <div className="space-y-0.5">
+                                                                    <div className="text-sm font-bold text-foreground">
+                                                                        {duty.facultyName}
+                                                                    </div>
+                                                                    {isAll ? null : (
+                                                                        <div className="text-[9px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5">
+                                                                            <Calendar className="h-2.5 w-2.5" />
+                                                                            {duty.date.split('-').reverse().join('/')} | {duty.time}
+                                                                        </div>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                            {isAll && <Badge variant="outline" className="h-5 text-[8px] font-black border-primary/20 text-primary uppercase">Assigned</Badge>}
+                                                        </div>
+                                                    );
+                                                })}
+                                            {roomDuties.length === 0 && (
                                                 <div className="flex items-center gap-3 p-3 rounded-xl bg-amber-500/5 border border-amber-500/20 text-amber-600">
                                                     <AlertCircle className="h-4 w-4" />
-                                                    <span className="text-[10px] font-bold">Awaiting Second Proctor</span>
+                                                    <span className="text-[10px] font-bold">No proctors assigned to this hall.</span>
                                                 </div>
                                             )}
                                         </div>

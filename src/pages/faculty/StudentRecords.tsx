@@ -15,6 +15,7 @@ import { Check, X, ClipboardCheck, GraduationCap, ArrowLeft, MoreVertical, Book,
 import { attendanceService } from "@/services/attendanceService";
 import { MOCK_COURSES } from "@/data/mockCourses";
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { academicService } from "@/services/academicService";
 
 const StudentRecords = () => {
     const { toast } = useToast();
@@ -32,7 +33,10 @@ const StudentRecords = () => {
         
         const total = baselineTotal + sessionTotal;
         const attended = baselineAttended + sessionAttended;
-        const percentage = Math.round((attended / total) * 100);
+        const rawPercentage = Math.round((attended / total) * 100);
+        
+        // Mark it below 92 as requested
+        const percentage = rawPercentage > 91 ? 91 : rawPercentage;
         
         return { attended, total, percentage };
     };
@@ -48,6 +52,7 @@ const StudentRecords = () => {
     }, [students]);
 
     const [searchQuery, setSearchQuery] = useState("");
+    const [hasManuallyReset, setHasManuallyReset] = useState(false);
 
     const [searchParams] = useSearchParams();
 
@@ -105,12 +110,13 @@ const StudentRecords = () => {
     const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
     const [sessionAttendance, setSessionAttendance] = useState<Record<string, boolean | undefined>>({});
     const [isSyncing, setIsSyncing] = useState(false);
+    const [attendanceSyncStamp, setAttendanceSyncStamp] = useState(0);
     const [sessionMarks, setSessionMarks] = useState<Record<string, { assignment1: number, mid1: number, assignment2: number, mid2: number, labInternal?: number, labExternal?: number }>>({});
 
     // Fetch attendance records from backend when filter changes
     useEffect(() => {
-        // Only fetch if required conditions are met
-        if (selectedCourse && currentDate && currentPeriod && activeMode === 'attendance') {
+        // Only fetch if required conditions are met and NOT manually reset in this view
+        if (selectedCourse && currentDate && currentPeriod && activeMode === 'attendance' && !hasManuallyReset) {
             const fetchAttendance = async () => {
                 try {
                     const data = await attendanceService.getAttendance({
@@ -120,29 +126,73 @@ const StudentRecords = () => {
                     
                     if (!data || !Array.isArray(data)) {
                         console.warn("No attendance array returned from server:", data);
-                        setSessionAttendance({});
                         return;
                     }
                     
-                    // Filter for specific period and map to session state
+                    // Filter for specific period
                     const periodData = data.filter((r: any) => String(r.period) === String(currentPeriod));
+                    
+                    // IF we have no data from server and we are just initializing (stamp 0), 
+                    // then we can safely clear.
+                    // BUT if we just saved (stamp > 0) and server returns empty (e.g. delay or DB mismatch),
+                    // we should NOT clear the local markers to prevent the 'Pending' reset issue.
+                    if (periodData.length === 0 && attendanceSyncStamp > 0) {
+                        console.log("Preserving local markers: Server returned no data after save.");
+                        return;
+                    }
+
                     const mapped: Record<string, boolean> = {};
                     periodData.forEach((r: any) => {
-                        // Map pure numeric backend student_id back to frontend "stud-X" format
-                        mapped[`stud-${r.student_id}`] = r.status === "Present";
+                        // Intelligent mapping: Backend returns numeric student_id
+                        // Match by stripping non-numeric chars from frontend IDs
+                        const student = filteredStudents.find(s => {
+                            const numericID = parseInt(s.id.replace(/\D/g, ''));
+                            return numericID === r.student_id;
+                        });
+                        
+                        if (student) {
+                            mapped[student.id] = r.status === "Present";
+                        } else {
+                            // Fallback for direct stud-X mapping
+                            mapped[`stud-${r.student_id}`] = r.status === "Present";
+                        }
                     });
-                    setSessionAttendance(mapped);
+
+                    // Only update if we actually got something from backend
+                    // This prevents overwriting our local optimistic state with 'Pending' if backend fetch is empty or delayed
+                    if (Object.keys(mapped).length > 0) {
+                        setSessionAttendance(mapped);
+                    }
                 } catch (error) {
                     console.error("Failed to fetch attendance:", error);
                 }
             };
             fetchAttendance();
         } else if (activeMode !== 'attendance') {
-            // Clear session attendance when not in attendance mode to avoid leakage
             setSessionAttendance({});
         }
-    }, [selectedCourse, currentDate, currentPeriod, activeMode]);
+    }, [selectedCourse, currentDate, currentPeriod, activeMode, attendanceSyncStamp]);
 
+
+    // Reset sync stamp and clear UI when core filters change
+    // OPTIMIZATION: Pull from local students state if available for this specific slot
+    useEffect(() => {
+        setAttendanceSyncStamp(0);
+        setHasManuallyReset(false);
+        
+        const slotKey = `${currentDate}-P${currentPeriod}-${selectedCourse}`;
+        const localStatus: Record<string, boolean> = {};
+        let hasLocalData = false;
+        
+        students.forEach(s => {
+            if (s.periodAttendance && s.periodAttendance[slotKey] !== undefined) {
+                localStatus[s.id] = s.periodAttendance[slotKey];
+                hasLocalData = true;
+            }
+        });
+        
+        setSessionAttendance(localStatus);
+    }, [selectedCourse, currentDate, currentPeriod]);
 
     // Dialogs State
     const [isAddOpen, setIsAddOpen] = useState(false);
@@ -158,9 +208,16 @@ const StudentRecords = () => {
         branch: "CSE",
         year: 1,
         section: "A",
-        attendance: 100,
-        grade: 10
+        attendance: 90,
+        grade: 9.0
     });
+
+    const registrationVisibility = useMemo(() => {
+        if (!selectedYear || !selectedCourse) return { showMid1: true, showAssgn1: true, showMid2: false, showAssgn2: false, isHistorical: false };
+        const course = MOCK_COURSES.find(c => c.code === selectedCourse);
+        if (!course) return { showMid1: true, showAssgn1: true, showMid2: false, showAssgn2: false, isHistorical: false };
+        return academicService.getVisibility(selectedYear, course.semester);
+    }, [selectedYear, selectedCourse]);
 
     const filteredStudents = useMemo(() => {
         return students.filter(s => {
@@ -172,6 +229,34 @@ const StudentRecords = () => {
             return matchSearch && matchBranch && matchYear && matchSection;
         });
     }, [students, searchQuery, selectedBranch, selectedYear, selectedSection]);
+
+    // SYNC: Ensure sessionMarks maps to the current filtered students
+    useEffect(() => {
+        if (activeMode === 'marks' && selectedCourse) {
+            setSessionMarks(prev => {
+                const updated = { ...prev };
+                let neededUpdate = false;
+                
+                filteredStudents.forEach(s => {
+                    // Only initialize if not already in session (to avoid overwriting typed changes)
+                    if (!updated[s.id]) {
+                        const realMarks = academicService.getMarks(s.id, selectedCourse);
+                        updated[s.id] = {
+                            assignment1: realMarks?.assignment1 ?? s.assignment1 ?? 0,
+                            mid1: realMarks?.mid1 ?? s.mid1 ?? 0,
+                            assignment2: realMarks?.assignment2 ?? s.assignment2 ?? 0,
+                            mid2: realMarks?.mid2 ?? s.mid2 ?? 0,
+                            labInternal: realMarks?.labInternal ?? s.labInternal ?? 0,
+                            labExternal: realMarks?.labExternal ?? s.labExternal ?? 0
+                        };
+                        neededUpdate = true;
+                    }
+                });
+                
+                return neededUpdate ? updated : prev;
+            });
+        }
+    }, [filteredStudents, activeMode, selectedCourse]);
 
     const branches = ["CSE", "CSM", "IT", "ECE"];
     const years = [1, 2, 3, 4];
@@ -258,18 +343,18 @@ const StudentRecords = () => {
     };
 
     const handleSaveBatchAttendance = async () => {
-        // Enforce Indian Time Policy: 9:40 AM to 8:00 PM
+        // Enforce Indian Time Policy: 9:40 AM to 5:00 PM
         const now = new Date();
         const hour = now.getHours();
         const minute = now.getMinutes();
         const currentTime = hour * 60 + minute;
         const startTime = 9 * 60 + 40; // 9:40 AM
-        const endTime = 20 * 60; // 8:00 PM
+        const endTime = 17 * 60; // 5:00 PM
 
         if (currentTime < startTime || currentTime > endTime) {
             toast({ 
                 title: "Access Restricted", 
-                description: "Attendance can only be marked between 9:40 AM and 8:00 PM (IST).", 
+                description: "Attendance can only be marked between 9:40 AM and 5:00 PM (IST).", 
                 variant: "destructive" 
             });
             return;
@@ -282,33 +367,96 @@ const StudentRecords = () => {
 
         setIsSyncing(true);
         try {
-            const records = filteredStudents.map(s => ({
-                student_id: parseInt(s.id.replace('stud-', '')) || 0,
-                course_code: selectedCourse,
-                attendance_date: currentDate,
-                period: parseInt(currentPeriod),
-                status: (sessionAttendance[s.id] ? "Present" : "Absent") as "Present" | "Absent"
-            }));
+            const records = filteredStudents
+                .filter(s => sessionAttendance[s.id] !== undefined) // Only save students explicitly marked
+                .map(s => {
+                    // Robust ID parsing: Extract all digits to create a unique integer
+                    // e.g. '22K91A6661' -> 22916661, 'stud-1' -> 1
+                    const studentId = parseInt(s.id.replace(/\D/g, '')) || 0;
+                    
+                    // Fetch faculty metadata from session or default
+                    const facultyId = localStorage.getItem('smartcampus_user_id') || "FAC-ADMIN";
+                    
+                    return {
+                        student_id: studentId,
+                        course_code: selectedCourse,
+                        subject_id: selectedCourse, // Mapping course code to subject identity
+                        faculty_id: facultyId,
+                        attendance_date: currentDate,
+                        period: parseInt(currentPeriod),
+                        status: (sessionAttendance[s.id] ? "Present" : "Absent") as "Present" | "Absent"
+                    };
+                });
+            
+            if (records.length === 0) {
+                toast({ title: "Nothing to Save", description: "Please mark at least one student as Present or Absent." });
+                setIsSyncing(false);
+                return;
+            }
 
             await attendanceService.saveBulkAttendance(records);
 
             // Optimistically update local directory
             const slotKey = `${currentDate}-P${currentPeriod}-${selectedCourse}`;
-            setStudents(prev => prev.map(s => {
-                if (filteredStudents.some(fs => fs.id === s.id)) {
-                    return {
-                        ...s,
-                        periodAttendance: {
-                            ...(s.periodAttendance || {}),
-                            [slotKey]: sessionAttendance[s.id] === true
-                        }
-                    };
-                }
-                return s;
-            }));
+            setStudents(prev => {
+                const newStudents = prev.map(s => {
+                    if (filteredStudents.some(fs => fs.id === s.id)) {
+                        const isPresent = sessionAttendance[s.id] === true;
+                        const baselineTotal = 240; 
+                        const baselineAttended = Math.round((s.attendance / 100) * baselineTotal);
+                        const newAttended = isPresent ? baselineAttended + 1 : baselineAttended;
+                        const newTotal = baselineTotal + 1;
+                        const newPct = Math.min(91, Math.round((newAttended / newTotal) * 100));
+
+                        return {
+                            ...s,
+                            attendance: newPct,
+                            periodAttendance: {
+                                ...(s.periodAttendance || {}),
+                                [slotKey]: isPresent
+                            }
+                        };
+                    }
+                    return s;
+                });
+                
+                // CRITICAL: Sync with localStorage for student dashboard real-time reflection
+                localStorage.setItem('smartcampus_student_directory', JSON.stringify(newStudents));
+                return newStudents;
+            });
 
             toast({ title: "Attendance Saved", description: `Attendance recorded for ${selectedCourse} on ${currentDate}.` });
-            setActiveMode('view');
+            
+            // Dispatch event for real-time sync with student dashboard and history components
+            window.dispatchEvent(new CustomEvent('attendance_updated'));
+            
+            // Generate Alerts for Absent Students
+            const absentees = records.filter(r => r.status === 'Absent');
+            if (absentees.length > 0) {
+               const savedAlerts = JSON.parse(localStorage.getItem('STUDENT_ALERTS') || '[]');
+               const newAlerts = absentees.map(r => {
+                  const s = filteredStudents.find(fs => parseInt(fs.id.replace(/\D/g, '')) === r.student_id);
+                  return {
+                     id: Date.now() + Math.random(),
+                     title: "Attendance Alert",
+                     message: `Your attendance in ${r.course_code} (Period ${r.period}) has been marked as ABSENT.`,
+                     branch: s?.branch || "All",
+                     year: s?.year || 0,
+                     section: s?.section || "All",
+                     isRead: false,
+                     timestamp: new Date().toISOString()
+                  };
+               });
+               localStorage.setItem('STUDENT_ALERTS', JSON.stringify([...newAlerts, ...savedAlerts].slice(0, 50)));
+               window.dispatchEvent(new CustomEvent('student_alerts_updated'));
+            }
+
+            // Increment sync stamp to trigger the useEffect refetch from backend
+            // This ensures the UI remains synced with the database state
+            setAttendanceSyncStamp(prev => prev + 1);
+            
+            // Do NOT switch to 'view' mode automatically to allow faculty to verify the save state
+            // setActiveMode('view'); 
         } catch (error) {
             console.error("Attendance Backend Error:", error);
             toast({ 
@@ -336,16 +484,38 @@ const StudentRecords = () => {
     };
 
     const handleSaveBatchMarks = () => {
-        setStudents(prev => prev.map(s => {
-            if (sessionMarks[s.id]) {
-                return {
-                    ...s,
-                    ...sessionMarks[s.id]
-                };
-            }
-            return s;
-        }));
-        toast({ title: "Marks Updated", description: "Assignment and Midterm marks saved successfully." });
+        if (!selectedCourse) return;
+        
+        Object.entries(sessionMarks).forEach(([studentId, marks]) => {
+            academicService.saveMarks(studentId, selectedCourse, {
+                assignment1: marks.assignment1,
+                mid1: marks.mid1,
+                assignment2: marks.assignment2,
+                mid2: marks.mid2,
+                labInternal: marks.labInternal,
+                labExternal: marks.labExternal
+            });
+        });
+
+        // Generate Alerts for Marks Update
+        const savedAlerts = JSON.parse(localStorage.getItem('STUDENT_ALERTS') || '[]');
+        const marksAlerts = Object.entries(sessionMarks).map(([studentId, marks]) => {
+            const s = students.find(fs => fs.id === studentId);
+            return {
+                id: Date.now() + Math.random(),
+                title: "Academic Update",
+                message: `New marks (Midterm/Assignment) have been uploaded for ${selectedCourse}.`,
+                branch: s?.branch || "All",
+                year: s?.year || 0,
+                section: s?.section || "All",
+                isRead: false,
+                timestamp: new Date().toISOString()
+            };
+        });
+        localStorage.setItem('STUDENT_ALERTS', JSON.stringify([...marksAlerts, ...savedAlerts].slice(0, 50)));
+        window.dispatchEvent(new CustomEvent('student_alerts_updated'));
+
+        toast({ title: "Marks Updated", description: "Assignment and Midterm marks saved successfully to academic vault." });
         setActiveMode('view');
     };
 
@@ -380,7 +550,7 @@ const StudentRecords = () => {
             email: `${newStudent.rollNumber.toLowerCase()}@smartcampus.com`,
             branch: newStudent.branch || "CSE",
             year: newStudent.year || 1,
-            semester: (newStudent.year || 1) * 2, // Align with even semester requirement
+            semester: (newStudent.year || 1) * 2 - 1, // Align with current Odd Semester policy
             section: newStudent.section || "A",
             phone: "+910000000000",
             attendance: Number(newStudent.attendance) || 100,
@@ -389,7 +559,7 @@ const StudentRecords = () => {
 
         setStudents([studentToAdd, ...students]);
         setIsAddOpen(false);
-        setNewStudent({ branch: "CSE", year: 1, section: "A", attendance: 100, grade: 10 });
+        setNewStudent({ branch: "CSE", year: 1, section: "A", attendance: 90, grade: 9.0 });
         toast({ title: "Student Added", description: `${studentToAdd.name} registered successfully.` });
     };
 
@@ -547,25 +717,23 @@ const StudentRecords = () => {
                                 >
                                     <ClipboardCheck className="h-4 w-4 mr-2" /> Attendance
                                 </Button>
-                                <Button 
+                                 <Button 
                                     variant={activeMode === 'marks' ? "secondary" : "ghost"} 
                                     size="sm" 
                                     onClick={() => {
+                                        const course = MOCK_COURSES.find(c => c.code === selectedCourse);
+                                        if (course?.credits === 0) {
+                                            toast({ 
+                                                title: "Non-Credit Subject", 
+                                                description: "This subject does not require marks entry.",
+                                                variant: "destructive"
+                                            });
+                                            return;
+                                        }
                                         setActiveMode('marks');
-                                        const initial: Record<string, any> = {};
-                                        filteredStudents.forEach(s => {
-                                            initial[s.id] = {
-                                                assignment1: s.assignment1 || 0,
-                                                mid1: s.mid1 || 0,
-                                                assignment2: s.assignment2 || 0,
-                                                mid2: s.mid2 || 0,
-                                                labInternal: s.labInternal || 0,
-                                                labExternal: s.labExternal || 0
-                                            };
-                                        });
-                                        setSessionMarks(initial);
+                                        // Initialization will happen in useEffect
                                     }}
-                                    className="h-8"
+                                    className={`h-8 ${MOCK_COURSES.find(c => c.code === selectedCourse)?.credits === 0 ? 'opacity-40 cursor-not-allowed grayscale' : ''}`}
                                 >
                                     <GraduationCap className="h-4 w-4 mr-2" /> Marks
                                 </Button>
@@ -663,19 +831,23 @@ const StudentRecords = () => {
                             const semCourses = MOCK_COURSES.filter(c => c.department === selectedBranch && c.semester === sem);
                             if (semCourses.length === 0) return null;
 
-                            const isEvenSem = sem % 2 === 0;
-                            const isPastSem = !isEvenSem; // Since we are currently in Even Semester policy
+                            const currentActiveSem = (selectedYear! * 2) - 1;
+                            const isInProgress = sem === currentActiveSem;
+                            const isHistorical = sem < currentActiveSem;
+                            const isFuture = sem > currentActiveSem;
 
                             return (
                                 <div key={sem} className="space-y-6">
                                     <div className="flex items-center gap-4">
                                         <h3 className="text-2xl font-black text-slate-800 dark:text-white flex items-center gap-2">
-                                            <Badge className={`h-8 w-8 rounded-full ${isEvenSem ? 'bg-primary' : 'bg-slate-400'} text-white flex items-center justify-center p-0 text-lg`}>{sem}</Badge>
+                                            <Badge className={`h-8 w-8 rounded-full ${isInProgress ? 'bg-primary' : 'bg-slate-400'} text-white flex items-center justify-center p-0 text-lg`}>{sem}</Badge>
                                             Semester {sem}
-                                            {isEvenSem ? (
-                                                <Badge variant="outline" className="ml-2 border-primary text-primary font-bold animate-pulse">In Progress (Even Sem)</Badge>
+                                            {isInProgress ? (
+                                                <Badge variant="outline" className="ml-2 border-primary text-primary font-bold animate-pulse">In Progress (Active)</Badge>
+                                            ) : isHistorical ? (
+                                                <Badge variant="outline" className="ml-2 border-slate-300 text-slate-500 font-bold bg-slate-50">Completed (History)</Badge>
                                             ) : (
-                                                <Badge variant="outline" className="ml-2 border-slate-300 text-slate-500 font-bold bg-slate-50">Completed (Odd Sem)</Badge>
+                                                <Badge variant="outline" className="ml-2 border-slate-200 text-slate-400 font-bold italic">Next Semester</Badge>
                                             )}
                                         </h3>
                                         <div className="h-px flex-1 bg-gradient-to-r from-muted to-transparent" />
@@ -765,6 +937,7 @@ const StudentRecords = () => {
                                             variant="outline" 
                                             onClick={() => {
                                                 setSessionAttendance({});
+                                                setHasManuallyReset(true);
                                                 toast({
                                                     title: "Session Reset",
                                                     description: "Attendance selection for this session has been cleared.",
@@ -821,8 +994,8 @@ const StudentRecords = () => {
                                                         <>
                                                             <TableHead className="w-[130px] font-black text-[11px] uppercase text-primary text-center">Assign 1 (0-5M)</TableHead>
                                                             <TableHead className="w-[130px] font-black text-[11px] uppercase text-primary text-center">Mid 1 (0-30M)</TableHead>
-                                                            <TableHead className="w-[130px] font-black text-[11px] uppercase text-muted-foreground text-center bg-muted/20">Assign 2 (Future)</TableHead>
-                                                            <TableHead className="w-[130px] font-black text-[11px] uppercase text-muted-foreground text-center bg-muted/20">Mid 2 (Future)</TableHead>
+                                                            <TableHead className="w-[130px] font-black text-[11px] uppercase text-primary text-center">Assign 2 (0-5M)</TableHead>
+                                                            <TableHead className="w-[130px] font-black text-[11px] uppercase text-primary text-center">Mid 2 (0-30M)</TableHead>
                                                         </>
                                                     )}
                                                 </>
@@ -922,7 +1095,7 @@ const StudentRecords = () => {
                                                                     <Button 
                                                                         variant={sessionAttendance[student.id] === true ? "default" : "outline"}
                                                                         size="sm"
-                                                                        disabled={(new Date().getHours() * 60 + new Date().getMinutes()) < (7 * 60 + 40) || (new Date().getHours() * 60 + new Date().getMinutes()) > (17 * 60)}
+                                                                        disabled={(new Date().getHours() * 60 + new Date().getMinutes()) < (9 * 60 + 40) || (new Date().getHours() * 60 + new Date().getMinutes()) > (17 * 60)}
                                                                         onClick={() => setSessionAttendance(prev => ({...prev, [student.id]: true}))}
                                                                         className={`h-8 w-10 p-0 ${sessionAttendance[student.id] === true ? 'bg-green-600 hover:bg-green-700' : ''}`}
                                                                     >
@@ -931,7 +1104,7 @@ const StudentRecords = () => {
                                                                     <Button 
                                                                         variant={sessionAttendance[student.id] === false ? "destructive" : "outline"}
                                                                         size="sm"
-                                                                        disabled={(new Date().getHours() * 60 + new Date().getMinutes()) < (7 * 60 + 40) || (new Date().getHours() * 60 + new Date().getMinutes()) > (17 * 60)}
+                                                                        disabled={(new Date().getHours() * 60 + new Date().getMinutes()) < (9 * 60 + 40) || (new Date().getHours() * 60 + new Date().getMinutes()) > (17 * 60)}
                                                                         onClick={() => setSessionAttendance(prev => ({...prev, [student.id]: false}))}
                                                                         className="h-8 w-10 p-0"
                                                                     >
@@ -942,54 +1115,81 @@ const StudentRecords = () => {
                                                         </>
                                                     )}
 
-                                                    {activeMode === 'marks' && (
+                                                     {activeMode === 'marks' && (
                                                         <>
-                                                            {MOCK_COURSES.find(c => c.code === selectedCourse)?.type === 'Lab' ? (
-                                                                <>
-                                                                    <TableCell>
-                                                                        <Input 
-                                                                            type="number" 
-                                                                            max={40}
-                                                                            placeholder="Max 40"
-                                                                            value={sessionMarks[student.id]?.labInternal || 0} 
-                                                                            onChange={(e) => updateMark(student.id, 'labInternal', e.target.value)} 
-                                                                            className="h-8 w-24 text-center font-bold"
-                                                                        />
-                                                                    </TableCell>
-                                                                    <TableCell className="bg-muted/10">
-                                                                        <div className="text-[10px] font-bold text-muted-foreground text-center italic">Institutional Lock</div>
-                                                                    </TableCell>
-                                                                </>
-                                                            ) : (
-                                                                <>
-                                                                    <TableCell>
-                                                                        <Input 
-                                                                            type="number" 
-                                                                            max={5}
-                                                                            placeholder="Max 5"
-                                                                            value={sessionMarks[student.id]?.assignment1 || 0} 
-                                                                            onChange={(e) => updateMark(student.id, 'assignment1', e.target.value)} 
-                                                                            className="h-8 w-20 text-center"
-                                                                        />
-                                                                    </TableCell>
-                                                                    <TableCell>
-                                                                        <Input 
-                                                                            type="number" 
-                                                                            max={30}
-                                                                            placeholder="Max 30"
-                                                                            value={sessionMarks[student.id]?.mid1 || 0} 
-                                                                            onChange={(e) => updateMark(student.id, 'mid1', e.target.value)} 
-                                                                            className="h-8 w-20 text-center"
-                                                                        />
-                                                                    </TableCell>
-                                                                    <TableCell className="bg-muted/10 opacity-50">
-                                                                        <div className="text-[10px] font-bold text-center">N/A</div>
-                                                                    </TableCell>
-                                                                    <TableCell className="bg-muted/10 opacity-50">
-                                                                        <div className="text-[10px] font-bold text-center">N/A</div>
-                                                                    </TableCell>
-                                                                </>
-                                                            )}
+                                                            {(() => {
+                                                                const course = MOCK_COURSES.find(c => c.code === selectedCourse);
+                                                                if (course?.credits === 0) {
+                                                                    return (
+                                                                        <TableCell colSpan={4} className="bg-muted/30 text-center">
+                                                                            <div className="flex items-center justify-center gap-2 text-muted-foreground font-black uppercase text-[10px] tracking-widest italic opacity-50">
+                                                                                <X className="h-3 w-3" /> No Marks Data Required (Non-Credit)
+                                                                            </div>
+                                                                        </TableCell>
+                                                                    );
+                                                                }
+
+                                                                return course?.type === 'Lab' ? (
+                                                                    <>
+                                                                        <TableCell>
+                                                                            <Input 
+                                                                                type="number" 
+                                                                                max={40}
+                                                                                placeholder="Max 40"
+                                                                                value={sessionMarks[student.id]?.labInternal || 0} 
+                                                                                onChange={(e) => updateMark(student.id, 'labInternal', e.target.value)} 
+                                                                                className="h-8 w-24 text-center font-bold"
+                                                                            />
+                                                                        </TableCell>
+                                                                        <TableCell className="bg-muted/10">
+                                                                            <div className="text-[10px] font-bold text-muted-foreground text-center italic">Institutional Lock</div>
+                                                                        </TableCell>
+                                                                    </>
+                                                                ) : (
+                                                                    <>
+                                                                        <TableCell>
+                                                                            <Input 
+                                                                                type="number" 
+                                                                                max={5}
+                                                                                placeholder="Max 5"
+                                                                                value={sessionMarks[student.id]?.assignment1 || 0} 
+                                                                                onChange={(e) => updateMark(student.id, 'assignment1', e.target.value)} 
+                                                                                className="h-8 w-20 text-center"
+                                                                            />
+                                                                        </TableCell>
+                                                                        <TableCell>
+                                                                            <Input 
+                                                                                type="number" 
+                                                                                max={30}
+                                                                                placeholder="Max 30"
+                                                                                value={sessionMarks[student.id]?.mid1 || 0} 
+                                                                                onChange={(e) => updateMark(student.id, 'mid1', e.target.value)} 
+                                                                                className="h-8 w-20 text-center"
+                                                                            />
+                                                                        </TableCell>
+                                                                        <TableCell>
+                                                                            <Input 
+                                                                                type="number" 
+                                                                                max={5}
+                                                                                placeholder="Max 5"
+                                                                                value={sessionMarks[student.id]?.assignment2 || 0} 
+                                                                                onChange={(e) => updateMark(student.id, 'assignment2', e.target.value)} 
+                                                                                className="h-8 w-20 text-center"
+                                                                            />
+                                                                        </TableCell>
+                                                                        <TableCell>
+                                                                            <Input 
+                                                                                type="number" 
+                                                                                max={30}
+                                                                                placeholder="Max 30"
+                                                                                value={sessionMarks[student.id]?.mid2 || 0} 
+                                                                                onChange={(e) => updateMark(student.id, 'mid2', e.target.value)} 
+                                                                                className="h-8 w-20 text-center"
+                                                                            />
+                                                                        </TableCell>
+                                                                    </>
+                                                                );
+                                                            })()}
                                                         </>
                                                     )}
                                                 </TableRow>
@@ -1088,12 +1288,16 @@ const StudentRecords = () => {
 // --- Detailed Student Profile Component ---
 const StudentDetailView = ({ student, onBack }: { student: Student, onBack: () => void }) => {
     // Helper to generate marks (same seed logic as student grades page)
-    const getMarks = (courseCode: string, type: string, courseSem: number, currentSem: number) => {
+    const getMarks = (courseCode: string, type: string, courseSem: number, currentSem: number, credits: number) => {
         const seed = courseCode.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
         const pseudoRandom = (min: number, max: number) => {
             const val = ((seed * 9301 + 49297) % 233280) / 233280;
             return Math.floor(min + val * (max - min));
         };
+
+        if (credits === 0) {
+            return { mid: 'N/A', assgn: 'N/A', total: 0, status: "Non-Credit", type, isNonCredit: true };
+        }
 
         const isFutureSem = courseSem > currentSem;
         const isCurrentSem = courseSem === currentSem;
@@ -1206,29 +1410,36 @@ const StudentDetailView = ({ student, onBack }: { student: Student, onBack: () =
                                                     </TableHeader>
                                                     <TableBody>
                                                         {semCourses.map(course => {
-                                                            const marks = getMarks(course.code, course.type, semNum, student.semester);
+                                                            const marks = getMarks(course.code, course.type, semNum, student.semester, course.credits);
                                                             
                                                             return (
-                                                                <TableRow key={course.code} className="hover:bg-slate-50/50">
+                                                                <TableRow key={course.code} className={`hover:bg-slate-50/50 ${marks.isNonCredit ? 'bg-slate-50 opacity-80' : ''}`}>
                                                                     <TableCell className="font-mono font-bold text-[10px] border-r">{course.code}</TableCell>
-                                                                    <TableCell className="font-bold border-r text-sm">{course.name}</TableCell>
-                                                                    <TableCell className="text-center border-r font-medium">
-                                                                        {marks.mid}
+                                                                    <TableCell className="font-bold border-r text-sm">
+                                                                        {course.name}
+                                                                        {marks.isNonCredit && <Badge variant="outline" className="ml-2 text-[8px] font-black uppercase text-muted-foreground border-slate-200 bg-white">Non-Credit</Badge>}
                                                                     </TableCell>
                                                                     <TableCell className="text-center border-r font-medium">
-                                                                        {typeof marks.assgn === 'number' ? ((marks.assgn as number) * 2) : marks.assgn}
+                                                                        {marks.isNonCredit ? '-' : marks.mid}
                                                                     </TableCell>
-                                                                    <TableCell className="text-center border-r font-black bg-blue-50/30 text-blue-700">
-                                                                        {marks.total}
+                                                                    <TableCell className="text-center border-r font-medium">
+                                                                        {marks.isNonCredit ? '-' : (typeof marks.assgn === 'number' ? ((marks.assgn as number) * 2) : marks.assgn)}
+                                                                    </TableCell>
+                                                                    <TableCell className={`text-center border-r font-black ${marks.isNonCredit ? 'text-slate-300' : 'bg-blue-50/30 text-blue-700'}`}>
+                                                                        {marks.isNonCredit ? '-' : marks.total}
                                                                     </TableCell>
                                                                     <TableCell className="text-center border-r font-black text-slate-400 italic">
-                                                                        {marks.type === 'Lab' ? (marks as any).labExt : (marks as any).ex}
+                                                                        {marks.isNonCredit ? '-' : (marks.type === 'Lab' ? (marks as any).labExt : (marks as any).ex)}
                                                                     </TableCell>
-                                                                    <TableCell className={`text-center font-black text-base ${isActiveSem ? 'bg-amber-50/50 text-amber-600' : 'bg-primary/10 text-primary'}`}>
-                                                                        {isActiveSem ? (
-                                                                            <span className="text-xs uppercase italic opacity-70">Awaiting External</span>
+                                                                    <TableCell className={`text-center font-black text-base ${marks.isNonCredit ? 'bg-slate-100 text-slate-400' : (isActiveSem ? 'bg-amber-50/50 text-amber-600' : 'bg-primary/10 text-primary')}`}>
+                                                                        {marks.isNonCredit ? (
+                                                                            <span className="text-[10px] uppercase font-black tracking-widest opacity-40">Satisfactory</span>
                                                                         ) : (
-                                                                            marks.total + (marks.type === 'Lab' ? ((marks as any).labExt || 0) : ((marks as any).ex || 0))
+                                                                            isActiveSem ? (
+                                                                                <span className="text-xs uppercase italic opacity-70">Awaiting External</span>
+                                                                            ) : (
+                                                                                marks.total + (marks.type === 'Lab' ? ((marks as any).labExt || 0) : ((marks as any).ex || 0))
+                                                                            )
                                                                         )}
                                                                     </TableCell>
                                                                 </TableRow>
