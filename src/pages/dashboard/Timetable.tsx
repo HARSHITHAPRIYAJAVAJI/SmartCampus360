@@ -101,7 +101,11 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
            const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
            const rStartTime = r.period?.split('-')[0];
            const revMap: any = { "09:40": "09:30", "10:40": "10:30", "11:40": "11:40", "01:20": "01:30", "02:20": "02:30", "03:20": "03:30" };
-           return rDayName === day && (r.period === time || rStartTime === (revMap[time] || time));
+           
+           const isSlotMatch = rDayName === day && (r.period === time || rStartTime === (revMap[time] || time));
+           const isSectionMatch = r.section === strictPublishedKey;
+           
+           return isSlotMatch && isSectionMatch;
         });
 
         const displayFaculty = currentSubstitution ? currentSubstitution.targetName : (session.faculty || loadInfo?.faculty || "Staff");
@@ -171,22 +175,32 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
           if (!session) return;
           const [day, time] = dayTime.split('-');
           
-          // Check for a substitution ONLY IF this session's faculty matches the leave-taker
-          const currentSubstitution = approvedRequests.find((r: any) => {
+          // Check for a substitution where SOMEONE ELSE is being replaced by ME
+          const amISubstituting = approvedRequests.find((r: any) => {
              const rDate = new Date(r.date);
              const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
              const isMatchingSlot = rDayName === day && r.period === time && r.section === key;
-             const isReplacingThisFaculty = r.senderId === session.facultyId || 
-                                           (session.faculty && r.senderName && session.faculty.toLowerCase().includes(r.senderName.toLowerCase()));
-             return isMatchingSlot && isReplacingThisFaculty;
+             const isMeTarget = r.targetId === facultyId || (r.targetName && r.targetName.toLowerCase() === facultyName.toLowerCase());
+             return isMatchingSlot && isMeTarget;
           });
 
-          let isAssigned = false;
-          let displayFaculty = session.faculty || "Staff";
-          let isSubstituted = !!currentSubstitution;
+          // Check for a substitution where I am being replaced by SOMEONE ELSE
+          const amIBeingReplaced = approvedRequests.find((r: any) => {
+             const rDate = new Date(r.date);
+             const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
+             const isMatchingSlot = rDayName === day && r.period === time && r.section === key;
+             const isMeSender = r.senderId === facultyId || (r.senderName && (session.faculty?.toLowerCase()?.includes(r.senderName.toLowerCase())));
+             return isMatchingSlot && isMeSender;
+          });
 
-          if (isSubstituted && currentSubstitution) {
-             displayFaculty = currentSubstitution.targetName;
+          let isAssigned = !!amISubstituting;
+          let displayFaculty = session.faculty || "Staff";
+          let isSubstituted = !!amIBeingReplaced || !!amISubstituting;
+
+          if (amISubstituting) {
+             displayFaculty = facultyName; // I am taking the class
+          } else if (amIBeingReplaced) {
+             displayFaculty = amIBeingReplaced.targetName; // Someone else is taking my class
           }
 
           // 1. ID-BASED MATCHING ONLY for the viewer (if they are the leave-taking faculty)
@@ -719,50 +733,81 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
             </Card>
           )}
 
-          {userRole === "faculty" && facultyDuties.length > 0 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {facultyDuties.map((duty, idx) => (
-                <Card key={idx} className="border-border/40 shadow-md rounded-2xl overflow-hidden hover:border-primary/40 transition-all border-l-4 border-l-amber-500">
-                  <div className="p-5 space-y-4">
-                    <div className="flex justify-between items-start">
-                      <div className="space-y-1">
-                        <Badge className="bg-amber-500/10 text-amber-600 border-none text-[8px] font-black uppercase tracking-widest">Invigilation Duty</Badge>
-                        <h4 className="text-xl font-black tracking-tighter">Hall {duty.room}</h4>
-                      </div>
-                      <div className="h-8 w-8 rounded-full bg-amber-500/10 flex items-center justify-center">
-                        <UserCheck className="h-4 w-4 text-amber-600" />
-                      </div>
-                    </div>
-                    <div className="space-y-2 bg-muted/20 p-3 rounded-xl border border-border/50">
-                      <div className="flex items-center gap-2 text-xs font-bold text-foreground">
-                        <Calendar className="h-3.5 w-3.5 text-muted-foreground" /> {duty.date.split('-').reverse().join('-')}
-                      </div>
-                      <div className="flex items-center gap-2 text-xs font-bold text-foreground">
-                        <Clock className="h-3.5 w-3.5 text-muted-foreground" /> {duty.time}
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              ))}
+          {userRole === "faculty" && (
+            <div className="space-y-6">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h3 className="text-2xl font-black tracking-tighter">Your Invigilation Schedule</h3>
+                  <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Personalized duty roster</p>
+                </div>
+                <div className="h-10 w-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-600">
+                  <ShieldCheck className="h-6 w-6" />
+                </div>
+              </div>
+
+              {facultyDuties.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {facultyDuties.map((duty, idx) => (
+                    <Card key={idx} className="border-none shadow-xl rounded-[2rem] overflow-hidden bg-white dark:bg-slate-950 border-t-4 border-t-amber-500 group hover:scale-[1.02] transition-all">
+                      <CardContent className="p-8 space-y-6">
+                        <div className="flex justify-between items-start">
+                          <div className="space-y-1">
+                            <span className="text-[10px] font-black text-amber-600 uppercase tracking-widest">Invigilation Assignment</span>
+                            <h4 className="text-3xl font-black tracking-tighter">Room {duty.room}</h4>
+                          </div>
+                   
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="p-4 rounded-2xl bg-muted/30 border border-border/50">
+                            <div className="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase tracking-tighter mb-1">
+                              <Calendar className="h-3 w-3" /> Date
+                            </div>
+                            <div className="text-sm font-black text-slate-900 dark:text-white">
+                              {duty.date.split('-').reverse().join('-')}
+                            </div>
+                          </div>
+                          
+                          <div className="p-4 rounded-2xl bg-muted/30 border border-border/50">
+                            <div className="flex items-center gap-2 text-[10px] font-black text-muted-foreground uppercase tracking-tighter mb-1">
+                              <Clock className="h-3 w-3" /> Time Slot
+                            </div>
+                            <div className="text-sm font-black text-slate-900 dark:text-white uppercase">
+                              {duty.time}
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center p-20 bg-muted/10 border-2 border-dashed rounded-[3rem] opacity-50 space-y-4">
+                  <UserCheck className="h-16 w-16 text-muted-foreground" />
+                  <p className="font-black text-center text-sm italic">You have no invigilation duties assigned for this exam cycle.</p>
+                </div>
+              )}
             </div>
           )}
 
-          {publishedExamTimetables.length === 0 ? (
-            <div className="flex flex-col items-center justify-center p-20 bg-muted/20 border-2 border-dashed rounded-[3rem] opacity-50 space-y-4">
-              <ShieldCheck className="h-16 w-16 text-primary/40" />
-              <p className="font-black text-center text-sm italic">No official exam timetables have been published for your cohort yet.<br/><span className="text-[10px] opacity-70 font-bold uppercase tracking-widest">Check back once the administration releases the schedule.</span></p>
-            </div>
-          ) : (
-            <div className="space-y-8">
-              {publishedExamTimetables.map((tt) => (
-                <Card key={tt.id} className="border-border/40 shadow-2xl rounded-[2.5rem] overflow-hidden bg-card/60 backdrop-blur-md">
-                  <div className="p-8 border-b border-border/50 bg-gradient-to-r from-primary/5 via-transparent to-transparent flex justify-between items-center">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <Badge className="bg-primary/10 text-primary border-none text-[8px] font-black uppercase tracking-widest">{tt.type}</Badge>
-                        <Badge variant="outline" className="text-[8px] font-black uppercase tracking-widest border-primary/20">{tt.semesterGroup === 1 ? 'Odd' : 'Even'} Semesters</Badge>
-                      </div>
-                      <h3 className="text-2xl font-black tracking-tighter text-foreground">{tt.title}</h3>
+          {userRole === "student" && (
+            <>
+              {publishedExamTimetables.length === 0 ? (
+                <div className="flex flex-col items-center justify-center p-20 bg-muted/20 border-2 border-dashed rounded-[3rem] opacity-50 space-y-4">
+                  <ShieldCheck className="h-16 w-16 text-primary/40" />
+                  <p className="font-black text-center text-sm italic">No official exam timetables have been published for your cohort yet.<br/><span className="text-[10px] opacity-70 font-bold uppercase tracking-widest">Check back once the administration releases the schedule.</span></p>
+                </div>
+              ) : (
+                <div className="space-y-8">
+                  {publishedExamTimetables.map((tt) => (
+                    <Card key={tt.id} className="border-border/40 shadow-2xl rounded-[2.5rem] overflow-hidden bg-card/60 backdrop-blur-md">
+                      <div className="p-8 border-b border-border/50 bg-gradient-to-r from-primary/5 via-transparent to-transparent flex justify-between items-center">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <Badge className="bg-primary/10 text-primary border-none text-[8px] font-black uppercase tracking-widest">{tt.type}</Badge>
+                            <Badge variant="outline" className="text-[8px] font-black uppercase tracking-widest border-primary/20">{tt.semesterGroup === 1 ? 'Odd' : 'Even'} Semesters</Badge>
+                          </div>
+                          <h3 className="text-2xl font-black tracking-tighter text-foreground">{tt.title}</h3>
                       <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-70">
                         Official Release | {tt.startDate} to {tt.endDate}
                       </p>
@@ -786,7 +831,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
                           // For student, filter subjects by their branch and year
                           const student = MOCK_STUDENTS.find(s => s.rollNumber.toUpperCase() === user.id.toUpperCase());
                           const relevantSubjects = slot.subjects.filter(s => 
-                            userRole === "faculty" || (s.branch === student?.branch && s.year === student?.year)
+                            (s.branch === student?.branch && s.year === student?.year)
                           );
 
                           return (
@@ -825,7 +870,9 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
                   </div>
                 </Card>
               ))}
-            </div>
+                </div>
+              )}
+            </>
           )}
         </TabsContent>
       </Tabs>

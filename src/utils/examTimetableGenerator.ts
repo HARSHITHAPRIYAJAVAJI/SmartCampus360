@@ -60,6 +60,7 @@ export const generateExamTimetable = (config: ExamConfig): ExamTimetable => {
                 c.semester === targetSemester && 
                 c.department === branch &&
                 c.type === "Theory" &&
+                c.credits > 0 &&
                 !c.name.toLowerCase().includes("project work") &&
                 !c.name.toLowerCase().includes("phase 1") &&
                 !c.name.toLowerCase().includes("phase 2") &&

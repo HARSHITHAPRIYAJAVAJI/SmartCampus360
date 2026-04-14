@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime
 
 from app.api import deps
-from app.models.notification import Notification, UserDevice, TargetAudience, NotificationStatus
+from app.models.notification import Notification, UserDevice, TargetAudience, NotificationStatus, NotificationReadReceipt
 from app.models.user import User, UserRole
 from app.schemas.notification import Notification as NotificationSchema, NotificationCreate, UserDevice as UserDeviceSchema, UserDeviceCreate
 
@@ -19,29 +19,86 @@ def read_notifications(
 ) -> Any:
     """
     Retrieve notifications for the current user based on audience rules.
+    Includes 'is_read' status based on read receipts.
     """
-    if current_user.role == UserRole.ADMIN:
-        return db.query(Notification).offset(skip).limit(limit).all()
-        
-    # Standard logic for students/faculty:
-    # 1. Target audience is 'all'
-    # 2. Target audience matches their role
-    # 3. Target audience is 'specific' AND contains their ID
-    
     role_map = {
         UserRole.STUDENT: TargetAudience.STUDENTS,
-        UserRole.FACULTY: TargetAudience.FACULTY
+        UserRole.FACULTY: TargetAudience.FACULTY,
+        UserRole.ADMIN: TargetAudience.STAFF
     }
     
-    query = db.query(Notification).filter(
-        Notification.status == NotificationStatus.SENT
-    ).filter(
+    # Base filter for global/role/specific target
+    audience_filter = (
         (Notification.target_audience == TargetAudience.ALL) |
-        (Notification.target_audience == role_map.get(current_user.role)) |
-        (Notification.target_uids.contains([current_user.id]))
-    ).order_by(Notification.created_at.desc())
+        (Notification.target_audience == role_map.get(current_user.role))
+    )
     
-    return query.offset(skip).limit(limit).all()
+    if current_user.role != UserRole.ADMIN:
+        # Check if user is in specific target list
+        audience_filter = audience_filter | (Notification.target_uids.contains([current_user.id]))
+
+    notifications = db.query(Notification).filter(
+        Notification.status == NotificationStatus.SENT
+    ).filter(audience_filter).order_by(Notification.created_at.desc()).offset(skip).limit(limit).all()
+    
+    # Get read receipt IDs for this user
+    read_notification_ids = [
+        r.notification_id for r in db.query(NotificationReadReceipt.notification_id).filter(
+            NotificationReadReceipt.user_id == current_user.id
+        ).all()
+    ]
+    
+    # Map to schema and set is_read
+    result = []
+    for n in notifications:
+        n_data = NotificationSchema.model_validate(n)
+        n_data.is_read = n.id in read_notification_ids
+        result.append(n_data)
+        
+    return result
+
+@router.post("/{id}/read")
+def mark_as_read(
+    *,
+    db: Session = Depends(deps.get_db),
+    id: int,
+    current_user: User = Depends(deps.get_current_active_user),
+) -> Any:
+    """
+    Mark a notification as read for the current user.
+    """
+    existing = db.query(NotificationReadReceipt).filter(
+        NotificationReadReceipt.notification_id == id,
+        NotificationReadReceipt.user_id == current_user.id
+    ).first()
+    
+    if not existing:
+        receipt = NotificationReadReceipt(notification_id=id, user_id=current_user.id)
+        db.add(receipt)
+        db.commit()
+    
+    return {"status": "success"}
+
+@router.post("/read-all")
+def mark_all_as_read(
+    *,
+    db: Session = Depends(deps.get_db),
+    current_user: User = Depends(deps.get_current_active_user),
+) -> Any:
+    """
+    Mark all applicable notifications as read for current user.
+    """
+    # Fetch all visible notifications that haven't been read yet
+    # Simplified: Get all currently unread ones and create receipts
+    current_notifications = read_notifications(db=db, current_user=current_user)
+    
+    for n in current_notifications:
+        if not n.is_read:
+            receipt = NotificationReadReceipt(notification_id=n.id, user_id=current_user.id)
+            db.add(receipt)
+            
+    db.commit()
+    return {"status": "success"}
 
 @router.post("/", response_model=NotificationSchema)
 def create_notification(

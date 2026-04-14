@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from "react";
-import { Bell, User, LogOut, Search, Menu, Book, Users, GraduationCap, X, AlertTriangle, CheckCircle2, Info, Inbox, Layout } from "lucide-react";
+import { Bell, User, LogOut, Search, Menu, Book, Users, GraduationCap, X, AlertTriangle, CheckCircle2, Info, Inbox, Layout, Clock, Calendar, CreditCard } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -18,6 +19,7 @@ import { MOCK_FACULTY } from "@/data/mockFaculty";
 import { MOCK_STUDENTS } from "@/data/mockStudents";
 import { Link, useNavigate } from "react-router-dom";
 import notificationService, { Notification as ApiNotification } from "@/services/notificationService";
+import { useNotifications } from "@/hooks/useNotifications";
 
 interface DashboardHeaderProps {
   user: {
@@ -129,138 +131,8 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
     return results.slice(0, 10); // Limit results for UI
   }, [searchQuery, user.role]);
 
-  const [liveRequests, setLiveRequests] = useState<any[]>([]);
-  const [studentAlerts, setStudentAlerts] = useState<any[]>([]);
-  const [apiNotifications, setApiNotifications] = useState<ApiNotification[]>([]);
-
-  useEffect(() => {
-    const loadNotifications = () => {
-      // 1. Load Faculty/Admin Requests
-      const savedRequests = localStorage.getItem('FACULTY_REQUESTS');
-      if (savedRequests) {
-        const parsed = JSON.parse(savedRequests);
-        if (user.role === 'admin') {
-          setLiveRequests(parsed.filter((r: any) => r.type === 'leave' && r.status === 'pending'));
-        } else if (user.role === 'faculty') {
-          // Identify the faculty record to handle multiple ID formats (slug vs roll number)
-          const facultyRec = MOCK_FACULTY.find(f => f.id === user.id || f.rollNumber === user.id);
-          const possibleIds = [user.id, facultyRec?.id, facultyRec?.rollNumber].filter(Boolean);
-
-          // Show pending requests sent TO me (Swaps)
-          const pendingForMe = parsed.filter((r: any) => 
-            possibleIds.includes(r.targetId) && r.status === 'pending'
-          );
-          // Show MY requests that have been approved or rejected (Leave/Swaps)
-          const myUpdates = parsed.filter((r: any) => 
-            possibleIds.includes(r.senderId) && (r.status === 'approved' || r.status === 'rejected')
-          );
-          setLiveRequests([...pendingForMe, ...myUpdates]);
-        }
-      }
-
-      // 2. Load Student Alerts
-      if (user.role === 'student') {
-        const student = MOCK_STUDENTS.find(s => s.id === user.id || s.rollNumber === user.id);
-        const savedAlerts = localStorage.getItem('STUDENT_ALERTS');
-        if (student && savedAlerts) {
-          const parsed = JSON.parse(savedAlerts);
-          setStudentAlerts(parsed.filter((a: any) => 
-            a.branch === student.branch && 
-            a.year === student.year && 
-            a.section === student.section
-          ));
-        }
-      }
-
-      // 3. Load Global API Notifications
-      notificationService.getNotifications().then(data => {
-        setApiNotifications(data || []);
-      }).catch(err => console.error("Notifications API Error:", err));
-    };
-
-    loadNotifications();
-    window.addEventListener('faculty_request_updated', loadNotifications);
-    window.addEventListener('student_alerts_updated', loadNotifications);
-    window.addEventListener('storage', loadNotifications);
-    return () => {
-      window.removeEventListener('faculty_request_updated', loadNotifications);
-      window.removeEventListener('student_alerts_updated', loadNotifications);
-      window.removeEventListener('storage', loadNotifications);
-    };
-  }, [user.id, user.role]);
-
-  const notifications = useMemo(() => {
-    const list: { 
-      id: string, 
-      title: string, 
-      message: string, 
-      type: "destructive" | "success" | "warning" | "info", 
-      read: boolean, 
-      isRequest: boolean, 
-      senderName: string, 
-      url: string 
-    }[] = [...liveRequests.map(r => {
-      const isStatusUpdate = r.senderId === user.id && r.status !== 'pending';
-      const type: "destructive" | "success" | "warning" | "info" = 
-        r.status === 'rejected' ? "destructive" : 
-        r.status === 'approved' ? "success" : "warning";
-
-      return {
-        id: r.id,
-        title: isStatusUpdate ? `Request ${r.status.charAt(0).toUpperCase() + r.status.slice(1)}` :
-               r.type === 'leave' ? `Leave Request: ${r.senderName}` : 
-               r.type === 'swap' ? `Swap Request: ${r.senderName}` : 
-               `Replacement: ${r.senderName}`,
-        message: isStatusUpdate ? `Your ${r.type} request for ${r.date} has been ${r.status}.` :
-                 r.type === 'leave' ? `${r.category || 'Duty'} for ${r.duration || 1} days` :
-                 `${r.date} | Period: ${r.period}`,
-        type,
-        read: false,
-        isRequest: !isStatusUpdate,
-        senderName: isStatusUpdate ? "System" : r.senderName,
-        url: user.role === 'admin' ? '/dashboard/requests' : '/dashboard/leave'
-      };
-    })];
-
-    if (user.role === 'student') {
-      studentAlerts.forEach(a => {
-        list.push({
-          id: a.id,
-          title: a.title,
-          message: a.message,
-          type: "info" as const,
-          read: a.isRead || false,
-          isRequest: false,
-          senderName: "System Alert",
-          url: "/dashboard/timetable"
-        });
-      });
-    }
-
-    // Merge API Notifications based on target audience
-    apiNotifications.forEach(n => {
-       const isTargeted = n.target_audience === 'all' || 
-                         (n.target_audience === 'students' && user.role === 'student') ||
-                         (n.target_audience === 'faculty' && user.role === 'faculty');
-       
-       if (isTargeted) {
-         list.push({
-           id: String(n.id),
-           title: n.title,
-           message: n.message,
-           type: n.type as any,
-           read: false,
-           isRequest: false,
-           senderName: "Campus Notice",
-           url: "/dashboard"
-         });
-       }
-    });
-
-    return list;
-  }, [liveRequests, studentAlerts, user.role]);
-
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const { toast } = useToast();
+  const { notifications, unreadCount, markAsRead, markAllAsRead } = useNotifications(user);
 
   const getInitials = (name: string) => {
     return name
@@ -396,7 +268,7 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
             <Button variant="ghost" size="icon" className="relative h-10 w-10 rounded-full hover:bg-muted/60 transition-all active:scale-95 group">
               <Bell className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
               {unreadCount > 0 && (
-                <span className="absolute top-1.5 right-1.5 h-4 w-4 rounded-full bg-red-500 flex items-center justify-center text-[9px] font-black text-white shadow-lg ring-2 ring-card animate-in zoom-in-50 duration-300">
+                <span className="absolute top-1.5 right-1.5 h-4 w-4 rounded-full bg-red-500 flex items-center justify-center text-[9px] font-black text-white shadow-lg ring-2 ring-card animate-pulse shadow-red-500/50">
                   {unreadCount}
                 </span>
               )}
@@ -410,7 +282,18 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
                 </div>
                 <h3 className="font-black text-sm tracking-tight">Notification Center</h3>
               </div>
-              <Button variant="ghost" size="sm" className="h-8 text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/10 rounded-lg">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                onClick={async () => {
+                  await markAllAsRead();
+                  toast({
+                    title: "Success",
+                    description: "All notifications marked as read."
+                  });
+                }}
+                className="h-8 text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/10 rounded-lg"
+              >
                 Mark all as read
               </Button>
             </div>
@@ -418,14 +301,26 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
             <div className="max-h-[420px] overflow-y-auto">
               {notifications.length > 0 ? (
                 notifications.map((notification) => (
-                  <DropdownMenuItem key={notification.id} className="flex gap-4 p-4 border-b border-border/10 last:border-0 hover:bg-muted/40 transition-colors cursor-pointer group focus:bg-muted/40 items-start">
+                  <DropdownMenuItem 
+                    key={notification.id} 
+                    onClick={async () => {
+                        await markAsRead(notification.id);
+                        navigate(notification.url);
+                    }}
+                    className="flex gap-4 p-4 border-b border-border/10 last:border-0 hover:bg-muted/40 transition-colors cursor-pointer group focus:bg-muted/40 items-start"
+                  >
                     <div className={`mt-1 h-10 w-10 shrink-0 rounded-xl flex items-center justify-center transition-colors shadow-sm ${
-                      notification.type === 'warning' ? 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400' :
+                      notification.type === 'warning' || notification.type === 'attendance' ? 'bg-amber-100 text-amber-600 dark:bg-amber-900/30 dark:text-amber-400' :
                       notification.type === 'success' ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' :
                       notification.type === 'destructive' ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' :
+                      notification.type === 'fee' ? 'bg-rose-100 text-rose-600' :
+                      notification.type === 'timetable' || notification.type === 'substitution' ? 'bg-blue-100 text-blue-600' :
                       'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400'
                     }`}>
                       {notification.isRequest ? <Users className="h-5 w-5" /> : 
+                       notification.type === 'attendance' ? <Clock className="h-5 w-5" /> :
+                       notification.type === 'timetable' ? <Calendar className="h-5 w-5" /> :
+                       notification.type === 'fee' ? <CreditCard className="h-5 w-5" /> :
                        notification.type === 'warning' ? <AlertTriangle className="h-5 w-5" /> :
                        notification.type === 'success' ? <CheckCircle2 className="h-5 w-5" /> :
                        <Info className="h-5 w-5" />}
@@ -435,20 +330,15 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
                         <span className={`text-sm font-bold leading-none ${!notification.read ? 'text-foreground' : 'text-muted-foreground'}`}>
                           {notification.title}
                         </span>
-                        {!notification.read && <div className="h-2 w-2 rounded-full bg-primary shrink-0" />}
+                        {!notification.read && <div className="h-2 w-2 rounded-full bg-primary shrink-0 animate-pulse" />}
                       </div>
                       <p className="text-[12px] text-muted-foreground font-medium leading-relaxed">
-                        {notification.message || "New update regarding your academic status."}
+                        {notification.message}
                       </p>
                       <div className="flex items-center justify-between pt-1">
                         <span className="text-[10px] font-bold text-muted-foreground opacity-60 uppercase tracking-tighter">
-                          Just now
+                          {notification.id.startsWith('api') ? 'Global' : 'System'} • Just now
                         </span>
-                        {notification.isRequest && (
-                          <Link to={notification.url} className="text-[10px] text-primary font-black uppercase tracking-tighter hover:underline">
-                            Review Request →
-                          </Link>
-                        )}
                       </div>
                     </div>
                   </DropdownMenuItem>

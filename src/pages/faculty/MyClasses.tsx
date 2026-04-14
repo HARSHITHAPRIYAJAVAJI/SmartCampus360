@@ -8,7 +8,7 @@ import {
     ArrowRight, Info, LayoutDashboard, GraduationCap
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { format } from "date-fns";
 import { AIML_TIMETABLES, FACULTY_LOAD } from "@/data/aimlTimetable";
 import { MOCK_COURSES } from "@/data/mockCourses";
@@ -17,53 +17,99 @@ export default function MyClasses() {
     const { user } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
     const navigate = useNavigate();
     const today = useMemo(() => format(new Date(), "EEEE"), []);
-    const currentTime = new Date();
+    const todayISO = useMemo(() => format(new Date(), "yyyy-MM-dd"), []);
+
+    const [storageSyncStamp, setStorageSyncStamp] = useState(0);
+    useEffect(() => {
+        const handleCustomEvent = () => setStorageSyncStamp(s => s + 1);
+        window.addEventListener('timetable_published', handleCustomEvent);
+        window.addEventListener('faculty_request_updated', handleCustomEvent);
+        return () => {
+            window.removeEventListener('timetable_published', handleCustomEvent);
+            window.removeEventListener('faculty_request_updated', handleCustomEvent);
+        };
+    }, []);
 
     // 1. Resolve Faculty Classes
     const facultyClasses = useMemo(() => {
         const results: any[] = [];
         const seenCourses = new Set();
+        const facultyId = user.id;
+        const facultyName = user.name;
 
         // Scan all timetables (published + static) for this faculty
         const publishedStoreStr = localStorage.getItem('published_timetables');
         const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
-        const allTimetables = { ...AIML_TIMETABLES, ...publishedTimetables };
+        
+        // Load Approved substitutions
+        const savedRequests = localStorage.getItem('FACULTY_REQUESTS');
+        const approvedRequests = savedRequests ? JSON.parse(savedRequests).filter((r: any) => 
+          r.status === 'approved' && 
+          (r.type === 'replacement' || r.type === 'swap')
+        ) : [];
 
-        Object.entries(allTimetables).forEach(([key, table]: [string, any]) => {
+        Object.entries(publishedTimetables).forEach(([key, tableEntry]: [string, any]) => {
+            const table = (tableEntry as any).grid || tableEntry;
             const parts = key.split('-');
-            let dept = "CSM", year, sem, section = "A";
-            
-            if (parts.length === 4) [dept, year, sem, section] = parts;
-            else if (parts.length === 3) [year, sem, section] = parts;
-            else [year, sem] = parts;
+            if (parts.length < 4) return;
+            const [dept, year, sem, section] = parts;
 
             Object.entries(table).forEach(([dayTime, session]: [string, any]) => {
                 if (!session) return;
+                const [day, time] = dayTime.split('-');
                 
-                // Match faculty name
-                const isAssigned = session.faculty === user.name || session.room === user.name;
+                // Substitution logic
+                const amISubstituting = approvedRequests.find((r: any) => {
+                   const rDate = new Date(r.date);
+                   const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
+                   const isMeTarget = r.targetId === facultyId || (r.targetName && r.targetName.toLowerCase() === facultyName.toLowerCase());
+                   return rDayName === day && r.period === time && r.section === key && isMeTarget;
+                });
+
+                const amIBeingReplaced = approvedRequests.find((r: any) => {
+                   const rDate = new Date(r.date);
+                   const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
+                   const isMeSender = r.senderId === facultyId || (r.senderName && (session.faculty?.toLowerCase()?.includes(r.senderName.toLowerCase())));
+                   return rDayName === day && r.period === time && r.section === key && isMeSender;
+                });
+
+                let isAssigned = !!amISubstituting;
                 
+                if (!isAssigned) {
+                   // ID-BASED MATCHING
+                   if (session.facultyId && facultyId) {
+                       isAssigned = session.facultyId === facultyId || session.originalFacultyId === facultyId;
+                   } 
+                   if (!isAssigned && session.facultyIds && session.facultyIds.includes(facultyId)) {
+                       isAssigned = true;
+                   }
+                   // NAME-BASED MATCHING
+                   if (!isAssigned) {
+                       const normalizedFaculty = (session.faculty || "").toLowerCase();
+                       const normalizedTarget = facultyName.toLowerCase();
+                       if (normalizedTarget && (normalizedFaculty.includes(normalizedTarget) || normalizedTarget.includes(normalizedFaculty))) {
+                           isAssigned = true;
+                       }
+                   }
+                }
+
                 if (isAssigned) {
-                    const [day, time] = dayTime.split('-');
-                    const courseCode = session.courseCode || session.name;
+                    const courseCode = session.courseCode || session.name || session.subject;
                     const compositeKey = `${courseCode}-${dept}-${year}-${section}`;
                     
                     if (!seenCourses.has(compositeKey)) {
                         const courseInfo = MOCK_COURSES.find(c => c.code === courseCode);
-                        const resolvedSem = courseInfo?.semester || parseInt(sem);
-                        const resolvedYear = Math.ceil(resolvedSem / 2);
-                        
                         results.push({
                             id: compositeKey,
                             code: courseCode,
                             name: courseInfo?.name || courseCode,
                             dept,
-                            year: resolvedYear || year,
-                            sem: resolvedSem || sem,
+                            year,
+                            sem,
                             section,
-                            room: session.room && session.room !== user.name ? session.room : "TBD",
-                            students: 60, // Mock student count
-                            type: (courseInfo?.type || 'Theory') as string,
+                            room: session.room || "TBD",
+                            students: 60,
+                            type: (courseInfo?.type || (courseCode.toLowerCase().includes('lab') ? 'Lab' : 'Theory')) as string,
                             schedule: []
                         });
                         seenCourses.add(compositeKey);
@@ -71,14 +117,22 @@ export default function MyClasses() {
                     
                     const courseIdx = results.findIndex(r => r.id === compositeKey);
                     if (courseIdx !== -1) {
-                        results[courseIdx].schedule.push({ day, time });
+                        const isToday = day === today;
+                        const isSubMatch = approvedRequests.find(r => r.date === todayISO && r.period === time && r.section === key);
+                        
+                        results[courseIdx].schedule.push({ 
+                            day, 
+                            time,
+                            isSubstituted: !!amIBeingReplaced || !!amISubstituting,
+                            displayFaculty: amISubstituting ? facultyName : (amIBeingReplaced ? amIBeingReplaced.targetName : (session.faculty || facultyName))
+                        });
                     }
                 }
             });
         });
 
         return results;
-    }, [user.name]);
+    }, [user.name, user.id, today, todayISO, storageSyncStamp]);
 
     // 2. Today's Schedule
     const todaySchedule = useMemo(() => {
@@ -89,13 +143,15 @@ export default function MyClasses() {
                     schedule.push({
                         ...cls,
                         time: s.time,
+                        displayFaculty: s.displayFaculty,
+                        isSubstituted: s.isSubstituted,
                         status: "upcoming"
                     });
                 }
             });
         });
         return schedule.sort((a, b) => a.time.localeCompare(b.time));
-    }, [facultyClasses, today]);
+    }, [facultyClasses, today, storageSyncStamp]);
 
     return (
         <div className="space-y-8 pb-10 animate-in fade-in-50 slide-in-from-bottom-4 duration-700">
@@ -165,9 +221,6 @@ export default function MyClasses() {
                                                     onClick={() => navigate(`/dashboard/students?dept=${session.dept}&year=${session.year}&section=${session.section}&course=${session.code}&mode=attendance`)}
                                                 >
                                                     Attendance
-                                                </Button>
-                                                <Button size="sm" variant="secondary" className="h-7 text-[10px] font-bold bg-white/10 hover:bg-white/20 border-none text-white">
-                                                    Quiz
                                                 </Button>
                                             </div>
                                         </div>
@@ -251,28 +304,7 @@ export default function MyClasses() {
                                             </div>
                                         </div>
 
-                                        <div className="pt-4 border-t border-border/50 flex flex-wrap gap-2">
-                                            <Badge variant="outline" className="text-[10px] bg-secondary/50 border-none font-bold">
-                                                {cls.type}
-                                            </Badge>
-                                            <Badge variant="outline" className="text-[10px] bg-secondary/50 border-none font-bold">
-                                                L-T-P: 3-0-0
-                                            </Badge>
-                                        </div>
                                     </CardContent>
-                                    <div className="p-4 bg-muted/30 mt-auto flex gap-2">
-                                        <Button variant="ghost" size="sm" className="flex-1 gap-2 text-xs font-bold hover:bg-primary hover:text-white transition-all">
-                                            <FileText className="w-3.5 h-3.5" />
-                                            Syllabus
-                                        </Button>
-                                        <Button variant="ghost" size="sm" className="flex-1 gap-2 text-xs font-bold hover:bg-primary hover:text-white transition-all">
-                                            <Video className="w-3.5 h-3.5" />
-                                            Digital Lab
-                                        </Button>
-                                        <Button size="sm" className="w-10 rounded-full bg-primary/10 hover:bg-primary text-primary hover:text-white transition-all p-0">
-                                            <ArrowRight className="w-4 h-4" />
-                                        </Button>
-                                    </div>
                                 </Card>
                             </motion.div>
                         ))}

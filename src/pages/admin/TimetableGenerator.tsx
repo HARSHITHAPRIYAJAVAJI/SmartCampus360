@@ -12,6 +12,7 @@ import { timetableGeneratorService, CourseData, RoomData } from "@/services/time
 import { MOCK_COURSES } from "@/data/mockCourses";
 import { MOCK_FACULTY } from "@/data/mockFaculty";
 import { AlertCircle, Terminal, CheckCircle2, Send, Edit3 } from "lucide-react";
+import { alertService } from "@/services/alertService";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import {
     DndContext,
@@ -257,6 +258,16 @@ const TimetableGenerator = () => {
             // Critical: Ensure the currently saved timetables are pushed to the live dashboard store
             localStorage.setItem('published_timetables', JSON.stringify(savedTimetables));
             window.dispatchEvent(new Event('timetable_published'));
+
+            // Push institutional notification
+            alertService.sendAlert({
+                title: "📅 New Timetable Published",
+                message: `The academic schedule for Semester ${batchSemester} has been published/updated. Please check your dashboard for the latest slots.`,
+                category: 'timetable',
+                type: 'priority',
+                targetAudience: 'both',
+                redirectUrl: '/dashboard/timetable'
+            });
 
             setLastBatchPublished(true);
             setPublishedInfo({ dept: "All Departments", sem: batchSemester });

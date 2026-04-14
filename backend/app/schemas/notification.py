@@ -8,6 +8,11 @@ class NotificationType(str, enum.Enum):
     SUCCESS = "success"
     WARNING = "warning"
     DESTRUCTIVE = "destructive"
+    ATTENDANCE = "attendance"
+    TIMETABLE = "timetable"
+    FEE = "fee"
+    MENTION = "mention"
+    SUBSTITUTION = "substitution"
 
 class TargetAudience(str, enum.Enum):
     ALL = "all"
@@ -30,6 +35,7 @@ class NotificationBase(BaseModel):
     target_uids: Optional[List[int]] = Field(None, description="List of User IDs if audience is specific")
     status: NotificationStatus = Field(NotificationStatus.SENT, description="Current message status")
     scheduled_for: Optional[datetime] = None
+    redirect_url: Optional[str] = Field(None, description="Optional URL to redirect to upon clicking")
 
 # Properties to receive on notification creation
 class NotificationCreate(NotificationBase):
@@ -46,7 +52,7 @@ class NotificationInDBBase(NotificationBase):
 
 # Properties to return to client
 class Notification(NotificationInDBBase):
-    pass
+    is_read: bool = False
 
 # User Device Registration
 class UserDeviceBase(BaseModel):

@@ -17,9 +17,9 @@ import {
     Calendar, BookOpen, TrendingUp, Clock, Bell, Award, 
     ChevronRight, CheckCircle2, CalendarDays, UploadCloud, 
     MonitorPlay, LineChart, Star, Github, Linkedin, 
-    Zap, Calculator, UserPlus, AlertCircle, Download, CreditCard, ShieldCheck,
+    Zap, Calculator, UserPlus, AlertCircle, Download, CreditCard, ShieldCheck, Info,
     MessageSquare, X, Send, Bot, User, Minimize2, Maximize2, Sparkles, BrainCircuit, Building2,
-    Mail, Smartphone, MapPin, Globe, Briefcase, FileText, UserCircle, GraduationCap, Users
+    Inbox, Mail, Smartphone, MapPin, Globe, Briefcase, FileText, UserCircle, GraduationCap, Users
 } from "lucide-react";
 import { formatSubjectName } from "@/data/subjectMapping";
 import { motion, AnimatePresence } from "framer-motion";
@@ -35,6 +35,7 @@ import {
 import { calculateAcademicMetrics } from "@/utils/academicCalculations";
 import { format } from "date-fns";
 import { getTimetable } from "@/data/aimlTimetable";
+import { useNotifications } from "@/hooks/useNotifications";
 
 export default function StudentDashboard({ studentId: propStudentId }: { studentId?: string }) {
     const { user: authUser } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
@@ -59,27 +60,8 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
     const [gpaWhatIf, setGpaWhatIf] = useState<number | string>("");
     const [storageSyncStamp, setStorageSyncStamp] = useState(0);
     const [liveAttendancePct, setLiveAttendancePct] = useState<number | null>(null);
-    const [liveAlerts, setLiveAlerts] = useState<any[]>([]);
 
-    useEffect(() => {
-        const loadAlerts = () => {
-            const student = MOCK_STUDENTS.find(s => s.rollNumber === user.id);
-            if (!student) return;
-            const saved = localStorage.getItem('STUDENT_ALERTS');
-            if (saved) {
-                const parsed = JSON.parse(saved);
-                setLiveAlerts(parsed.filter((a: any) => 
-                    a.branch === student.branch && 
-                    a.year === student.year && 
-                    a.section === student.section
-                ).slice(0, 3));
-            }
-        };
-
-        loadAlerts();
-        window.addEventListener('student_alerts_updated', loadAlerts);
-        return () => window.removeEventListener('student_alerts_updated', loadAlerts);
-    }, [user.id]);
+    const { notifications, unreadCount, markAsRead } = useNotifications(user);
 
     const studentData = useMemo(() => {
         if (impersonatedStudent) return impersonatedStudent;
@@ -292,11 +274,20 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
         const allTT = JSON.parse(examTimetablesStr) as any[];
         const todayStr = format(new Date(), "yyyy-MM-dd");
         
-        // Find if any published exam is for today and for this student's year
+        // Find if any published exam is for today and for this student's year and contains credit-bearing subjects
         const todayExamTT = allTT.find(tt => 
             tt.isPublished && 
             tt.years.includes(studentData.year) &&
-            tt.slots.some((s: any) => s.date === todayStr)
+            tt.slots.some((s: any) => {
+                if (s.date !== todayStr) return false;
+                const relevantSubjects = s.subjects.filter((sub: any) => 
+                    (sub.branch === studentData.branch && sub.year === studentData.year)
+                );
+                return relevantSubjects.some((sub: any) => {
+                    const course = MOCK_COURSES.find(c => c.code === sub.courseCode);
+                    return course ? course.credits > 0 : true;
+                });
+            })
         );
 
         if (!todayExamTT) return null;
@@ -349,7 +340,7 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                 <motion.div 
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="lg:col-span-2 relative overflow-hidden bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-700 rounded-[2rem] p-8 text-white shadow-2xl flex flex-col justify-between min-h-[280px]"
+                    className="lg:col-span-3 relative overflow-hidden bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-700 rounded-[2rem] p-8 text-white shadow-2xl flex flex-col justify-between min-h-[280px]"
                 >
                     <div className="absolute top-0 right-0 p-8 opacity-10 rotate-12 pointer-events-none">
                         <Star className="w-64 h-64" />
@@ -393,32 +384,6 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                     </div>
                 </motion.div>
 
-                <motion.div 
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    className="bg-card/40 backdrop-blur-sm border border-border/50 rounded-[2rem] p-8 shadow-xl flex flex-col justify-between"
-                >
-                    <div className="flex justify-between items-start">
-                        <div className="bg-amber-500/10 p-3 rounded-2xl">
-                            <Zap className="w-6 h-6 text-amber-600" />
-                        </div>
-                        <Badge variant="outline" className="bg-emerald-500/5 text-emerald-600 border-emerald-500/20">Active Session</Badge>
-                    </div>
-                    <div className="space-y-4">
-                        <h3 className="text-xl font-black text-foreground/90 leading-tight">AI Study Planner</h3>
-                        <p className="text-sm text-muted-foreground">Next 48h: Focus on <strong>{formatSubjectName('CNS')}</strong>. You have a mid-term in 6 days.</p>
-                        <div className="space-y-2">
-                            <div className="flex justify-between text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                                <span>Prep Progress</span>
-                                <span>65%</span>
-                            </div>
-                            <Progress value={65} className="h-1.5" />
-                        </div>
-                    </div>
-                    <Button variant="ghost" className="w-full mt-6 justify-between group hover:bg-primary/5">
-                        Start Focus Session <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                </motion.div>
             </div>
 
             {/* 2. Professional Stats Feed */}
@@ -743,27 +708,6 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                         </CardContent>
                     </Card>
 
-                    {/* Skill Progress Radar Graph */}
-                    <Card className="border-none shadow-xl rounded-[2rem] overflow-hidden">
-                        <CardHeader>
-                            <CardTitle className="text-lg font-black flex items-center gap-2">
-                                <LineChart className="w-5 h-5 text-emerald-500" /> Real-World Skills
-                            </CardTitle>
-                            <CardDescription>Curriculum alignment to job-market skills.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="p-0">
-                            <div className="h-[250px] w-full">
-                                <ResponsiveContainer width="100%" height="100%">
-                                    <RadarChart cx="50%" cy="50%" outerRadius="80%" data={academicMetrics.skillData}>
-                                        <PolarGrid stroke="#e2e8f0" />
-                                        <PolarAngleAxis dataKey="subject" tick={{ fontSize: 10, fontWeight: 700 }} />
-                                        <PolarRadiusAxis angle={30} domain={[0, 150]} tick={false} axisLine={false} />
-                                        <Radar name="Skills" dataKey="A" stroke="#6366f1" fill="#6366f1" fillOpacity={0.6} />
-                                    </RadarChart>
-                                </ResponsiveContainer>
-                            </div>
-                        </CardContent>
-                    </Card>
 
                     {/* Personal Portfolio Card */}
                     <Card className="border-none shadow-xl rounded-[2rem] bg-gradient-to-br from-gray-900 to-black text-white overflow-hidden group">
@@ -800,11 +744,15 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                     {/* Exam Seating Alert (Real-time integration) */}
                     {(() => {
                         const seatingStr = localStorage.getItem('EXAM_SEATING_PLAN');
-                        if (seatingStr) {
-                            const seating = JSON.parse(seatingStr);
-                            const mySeat = seating.find((s: any) => s.rollNumber.toUpperCase() === studentData?.rollNumber.toUpperCase());
-                            if (mySeat) {
-                                return (
+                        const seating = seatingStr ? JSON.parse(seatingStr) : [];
+                        const mySeat = seating.find((s: any) => s.rollNumber.toUpperCase() === studentData?.rollNumber.toUpperCase());
+                        
+                        // Use top 3 relevant notifications
+                        const displayAlerts = notifications.slice(0, 3);
+
+                        return (
+                            <div className="space-y-6">
+                                {mySeat && (
                                     <Card className="border-2 border-primary/20 shadow-xl rounded-[2rem] bg-primary/5 overflow-hidden animate-in zoom-in-95 duration-500">
                                         <CardHeader className="pb-2">
                                             <CardTitle className="text-lg font-black flex items-center gap-2 text-primary">
@@ -849,34 +797,66 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                                             </Dialog>
                                         </CardContent>
                                     </Card>
-                                );
-                            }
-                        }
-                        return (
-                            <Card className="border-none shadow-xl rounded-[2rem]">
-                                <CardHeader className="pb-2">
-                                    <CardTitle className="text-lg font-black flex items-center gap-2">
-                                        <Bell className="w-5 h-5 text-rose-500" /> Smart Alerts
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent className="space-y-4">
-                                    {[
-                                        { title: 'Exam Registration', time: '2h ago', detail: 'Regular fee portal is closing in 48h.', type: 'urgent' },
-                                        { title: 'New Lab Suggestion', time: '5h ago', detail: 'Prof. Anitha uploaded ML project code.', type: 'info' },
-                                    ].map((note) => (
-                                        <div key={note.title} className="flex gap-4 p-4 rounded-2xl bg-muted/20 hover:bg-muted/40 transition-colors">
-                                            <div className={`h-2 w-2 rounded-full mt-1.5 flex-shrink-0 ${note.type === 'urgent' ? 'bg-rose-500 animate-pulse' : 'bg-blue-500'}`} />
-                                            <div className="space-y-1">
-                                                <div className="flex justify-between items-center gap-4">
-                                                    <h5 className="text-sm font-black text-foreground/90">{note.title}</h5>
-                                                    <span className="text-[10px] font-bold text-muted-foreground">{note.time}</span>
-                                                </div>
-                                                <p className="text-xs text-muted-foreground leading-relaxed">{note.detail}</p>
-                                            </div>
+                                )}
+
+                                <Card className="border-none shadow-xl rounded-[2rem]">
+                                    <CardHeader className="pb-2">
+                                        <div className="flex justify-between items-center">
+                                            <CardTitle className="text-lg font-black flex items-center gap-2">
+                                                <Bell className="w-5 h-5 text-rose-500" /> Smart Alerts
+                                            </CardTitle>
+                                            {unreadCount > 0 && <Badge className="bg-rose-500 text-white animate-pulse">{unreadCount} New</Badge>}
                                         </div>
-                                    ))}
-                                </CardContent>
-                            </Card>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
+                                        {displayAlerts.length > 0 ? displayAlerts.map((note) => (
+                                            <div 
+                                                key={note.id} 
+                                                onClick={async () => {
+                                                    await markAsRead(note.id);
+                                                    navigate(note.url);
+                                                }}
+                                                className={`flex gap-4 p-4 rounded-2xl transition-all cursor-pointer border ${!note.read ? 'bg-primary/5 border-primary/10 shadow-sm' : 'bg-muted/20 border-transparent opacity-70 hover:opacity-100 hover:bg-muted/40'}`}
+                                            >
+                                                <div className={`mt-1 h-8 w-8 rounded-xl flex items-center justify-center shrink-0 ${
+                                                    note.type === 'attendance' ? 'bg-amber-100 text-amber-600' :
+                                                    note.type === 'fee' ? 'bg-rose-100 text-rose-600' :
+                                                    note.type === 'timetable' ? 'bg-blue-100 text-blue-600' :
+                                                    'bg-indigo-100 text-indigo-600'
+                                                }`}>
+                                                    {note.type === 'attendance' ? <Clock className="w-4 h-4" /> :
+                                                     note.type === 'fee' ? <CreditCard className="w-4 h-4" /> :
+                                                     note.type === 'timetable' ? <Calendar className="w-4 h-4" /> :
+                                                     <Info className="w-4 h-4" />}
+                                                </div>
+                                                <div className="space-y-1 flex-1">
+                                                    <div className="flex justify-between items-center gap-4">
+                                                        <h5 className="text-sm font-black text-foreground/90">{note.title}</h5>
+                                                        {!note.read && <div className="h-1.5 w-1.5 rounded-full bg-primary" />}
+                                                    </div>
+                                                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{note.message}</p>
+                                                    <div className="pt-1 flex justify-between items-center">
+                                                        <span className="text-[9px] font-black uppercase text-muted-foreground opacity-60">
+                                                            {note.senderName}
+                                                        </span>
+                                                        <ChevronRight className="w-3 h-3 text-primary opacity-0 group-hover:opacity-100" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )) : (
+                                            <div className="text-center py-8 opacity-40">
+                                                <Inbox className="w-8 h-8 mx-auto mb-2" />
+                                                <p className="text-xs font-bold uppercase tracking-widest">No Active Alerts</p>
+                                            </div>
+                                        )}
+                                        {notifications.length > 3 && (
+                                            <Button variant="ghost" className="w-full text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/5" onClick={() => navigate('/dashboard/communications')}>
+                                                View All Notifications
+                                            </Button>
+                                        )}
+                                    </CardContent>
+                                </Card>
+                            </div>
                         );
                     })()}
                 </div>

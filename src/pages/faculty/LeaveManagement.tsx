@@ -17,7 +17,7 @@ import { useOutletContext } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MOCK_FACULTY } from "@/data/mockFaculty";
 import { executeSwap } from "@/utils/timetableAdjuster";
-import { pushStudentAlert } from "@/utils/studentNotifications";
+import { alertService } from "@/services/alertService";
 
 interface FacultyRequest {
     id: string;
@@ -323,13 +323,16 @@ const LeaveManagement = () => {
         if (totalAdjustments > 0) {
             adjustments.forEach((adj: any) => {
                 const [branch, year, sem, section] = adj.section.split('-');
-                pushStudentAlert({
+                alertService.sendAlert({
                     title: "Schedule Change: Period Swap",
                     message: `Your class ${adj.subject} on ${request.date} at ${adj.time} will now be taken by ${request.targetName} due to a periodic adjustment.`,
                     branch,
                     year: parseInt(year),
                     section,
-                    type: 'swap'
+                    category: 'timetable',
+                    type: 'normal',
+                    targetAudience: 'students',
+                    redirectUrl: '/dashboard/student'
                 });
             });
 

@@ -13,6 +13,7 @@ export interface Message {
     isEdited?: boolean;
     readBy?: string[]; // Names of people who read this
     attachments?: { name: string; url: string; type: 'pdf' | 'note' | 'assignment' | 'image'; size?: string }[];
+    reactions?: Record<string, string[]>; // { "👍": ["User A", "User B"] }
 }
 
 export interface Conversation {
@@ -57,16 +58,6 @@ export interface InstitutionalNotification {
  */
 
 export const MOCK_CONVERSATIONS: Conversation[] = [
-    // 1. Admin Broadcast (One-Way)
-    { 
-        id: 'admin-broadcast', 
-        name: 'Admin Announcements', 
-        type: 'admin_broadcast', 
-        participants: ['admin', 'faculty', 'student'], 
-        allowedSenders: ['Admin'],
-        updatedAt: '2024-03-24T14:00:00Z',
-        lastMessage: 'Fee payment deadline extended.'
-    },
 
     // 2. Admin <-> YI (Strict Hierarchy)
     { 
@@ -109,16 +100,6 @@ export const MOCK_CONVERSATIONS: Conversation[] = [
         updatedAt: '2024-03-24T10:00:00Z' 
     },
 
-    // 5. Subject Specific (Faculty <-> Students)
-    { 
-        id: 'subject-ml', 
-        name: 'Machine Learning (ML) Hub', 
-        type: 'subject_specific', 
-        subject: 'ML',
-        participants: ['faculty', 'student'], 
-        allowedSenders: ['Faculty'],
-        updatedAt: '2024-03-24T09:30:00Z' 
-    },
 
     // 6. Placement Hub
     { 
@@ -130,24 +111,57 @@ export const MOCK_CONVERSATIONS: Conversation[] = [
         updatedAt: '2024-03-24T13:00:00Z' 
     },
 
-    // 7. CR Group
+    // 7. CR Group (Global)
     { 
         id: 'all-crs-chain', 
         name: 'CR Coordination Chain', 
         type: 'cr_coordination', 
         participants: ['admin', 'faculty', 'cr'], 
         allowedSenders: ['Admin', 'Faculty', 'CR'],
-        updatedAt: '2024-03-24T08:00:00Z' 
+        updatedAt: '2024-03-24T08:00:00Z',
+        lastMessage: 'All CRs meeting scheduled for tomorrow.'
     },
-
-    // 8. Faculty Only
+    
+    // 8. Branch-Specific Faculty Groups
     { 
-        id: 'faculty-internal', 
-        name: 'Faculty Private Group', 
+        id: 'faculty-cse', 
+        name: 'CSE Faculty Hub', 
         type: 'faculty_only', 
+        branch: 'CSE',
         participants: ['admin', 'faculty'], 
-        allowedSenders: ['Admin', 'Faculty'],
-        updatedAt: '2024-03-24T07:00:00Z' 
+        allowedSenders: ['Admin', 'Faculty', 'Year In-Charge'],
+        updatedAt: '2024-03-24T07:10:00Z',
+        lastMessage: 'Internal CSE departmental updates.'
+    },
+    { 
+        id: 'faculty-csm', 
+        name: 'CSM Faculty Hub', 
+        type: 'faculty_only', 
+        branch: 'CSM',
+        participants: ['admin', 'faculty'], 
+        allowedSenders: ['Admin', 'Faculty', 'Year In-Charge'],
+        updatedAt: '2024-03-24T07:15:00Z',
+        lastMessage: 'CSM project review discussion.'
+    },
+    { 
+        id: 'faculty-ece', 
+        name: 'ECE Faculty Hub', 
+        type: 'faculty_only', 
+        branch: 'ECE',
+        participants: ['admin', 'faculty'], 
+        allowedSenders: ['Admin', 'Faculty', 'Year In-Charge'],
+        updatedAt: '2024-03-24T07:20:00Z',
+        lastMessage: 'ECE lab equipment status update.'
+    },
+    { 
+        id: 'faculty-it', 
+        name: 'IT Faculty Hub', 
+        type: 'faculty_only', 
+        branch: 'IT',
+        participants: ['admin', 'faculty'], 
+        allowedSenders: ['Admin', 'Faculty', 'Year In-Charge'],
+        updatedAt: '2024-03-24T07:25:00Z',
+        lastMessage: 'IT departmental meeting scheduled.'
     }
 ];
 
@@ -162,9 +176,6 @@ export const MOCK_MESSAGES: Record<string, Message[]> = {
     'csm-y4-sec-a': [
         { id: 'sa1', senderId: 'prof-ali', senderName: 'Dr. Ali', senderRole: 'Faculty', content: 'Students, find the lab manual for DBMS in the files section. Please complete experiment 7.', timestamp: '2024-03-24T11:00:00Z', type: 'text', category: 'academic' }
     ],
-    'subject-ml': [
-        { id: 'ml1', senderId: 'prof-ram', senderName: 'Dr. Ram', senderRole: 'Faculty', content: 'Discussion on Regression models tomorrow. Go through the pre-read papers.', timestamp: '2024-03-24T09:30:00Z', type: 'text', category: 'academic' }
-    ]
 };
 
 export const MOCK_NOTIFICATIONS: InstitutionalNotification[] = [

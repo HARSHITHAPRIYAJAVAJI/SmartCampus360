@@ -21,6 +21,7 @@ import { useToast } from "@/hooks/use-toast";
 import { INITIAL_EXAMS, Exam, SeatingAssignment, InvigilationDuty, saveExams } from "../../data/examData";
 import { allocateAdvancedExamSeating } from "../../utils/examAllocator";
 import { MOCK_COURSES } from "../../data/mockCourses";
+import { alertService } from "@/services/alertService";
 import { generateExamTimetable, ExamTimetable, EXAM_BRANCHES } from "../../utils/examTimetableGenerator";
 
 export default function ExamManagement() {
@@ -109,7 +110,11 @@ export default function ExamManagement() {
         let allInvigs: any[] = [];
         
         sessions.forEach(session => {
-            const { seating, invigilators } = allocateAdvancedExamSeating(session);
+            // Pass both saved duties and newly generated ones in this cycle for 100% accurate rotation
+            const { seating, invigilators } = allocateAdvancedExamSeating(
+                session, 
+                [...invigilationList, ...allInvigs]
+            );
             allSeating = [...allSeating, ...seating];
             allInvigs = [...allInvigs, ...invigilators];
         });
@@ -119,6 +124,16 @@ export default function ExamManagement() {
         setInvigilationList(prev => [...prev.filter(i => !sessionIds.includes(i.examId)), ...allInvigs]);
         setExams(prev => prev.map(e => sessionIds.includes(e.id) ? { ...e, status: "Allocated" } : e));
         
+        // Push notification for seating and duties
+        alertService.sendAlert({
+            title: "🪑 Seating & Duties Finalized",
+            message: `Examination seating arrangements and invigilation duties have been generated for ${sessions.length} sessions. Please check your personal portal for halls/rooms.`,
+            category: 'exam',
+            type: 'urgent',
+            targetAudience: 'both',
+            redirectUrl: '/dashboard/student'
+        });
+
         toast({ 
             title: "Cycle Allocation Complete", 
             description: `Generated seating and duties for ${sessions.length} sessions.`
@@ -214,16 +229,18 @@ export default function ExamManagement() {
         setTimetables([...timetables, tt]);
         
         if (autoCreateRosters) {
-            const newExams: Exam[] = tt.slots.map((slot, idx) => ({
-                id: `EXT-${tt.id}-${idx}`,
-                type: tt.type,
-                years: tt.years,
-                courseCodes: [...new Set(slot.subjects.map(s => s.courseCode))],
-                date: slot.date,
-                startTime: slot.startTime,
-                endTime: slot.endTime,
-                status: "Pending"
-            }));
+            const newExams: Exam[] = tt.slots
+                .map((slot, idx) => ({
+                    id: `EXT-${tt.id}-${idx}`,
+                    type: tt.type,
+                    years: tt.years,
+                    courseCodes: [...new Set(slot.subjects.map(s => s.courseCode))],
+                    date: slot.date,
+                    startTime: slot.startTime,
+                    endTime: slot.endTime,
+                    status: "Pending" as const
+                }))
+                .filter(e => e.courseCodes.length > 0);
             setExams([...exams, ...newExams]);
             setActiveTab("schedule"); // Keep on schedule but show rosters
         }
@@ -244,9 +261,23 @@ export default function ExamManagement() {
             t.id === id ? { ...t, isPublished: !t.isPublished } : t
         ));
         const tt = timetables.find(t => t.id === id);
+        const willBePublished = !tt?.isPublished;
+        
+        if (tt && willBePublished) {
+            alertService.sendAlert({
+                title: `📝 ${tt.type} Schedule Published`,
+                message: `The official examination timetable for ${tt.type} (Semester ${tt.semesterGroup === 1 ? 'Odd' : 'Even'}) is now live. Check your dashboard for details.`,
+                category: 'exam',
+                type: 'urgent',
+                targetAudience: 'both',
+                year: tt.years[0], // Using the first year for targeting
+                redirectUrl: '/dashboard/timetable'
+            });
+        }
+
         toast({ 
-            title: !tt?.isPublished ? "Published to Portal" : "Removed from Portal", 
-            description: !tt?.isPublished ? "Students and faculty can now view this schedule." : "Schedule is now hidden."
+            title: willBePublished ? "Published to Portal" : "Removed from Portal", 
+            description: willBePublished ? "Students and faculty can now view this schedule." : "Schedule is now hidden."
         });
     };
 
@@ -594,7 +625,12 @@ export default function ExamManagement() {
                                                                             <span className="font-black text-xs uppercase tracking-[0.1em] text-foreground/80">{branch}</span>
                                                                         </td>
                                                                         {yearSlots.map((slot, sIdx) => {
-                                                                            const subjectsInSlot = slot.subjects.filter(s => s.branch === branch && s.year === year);
+                                                                            const subjectsInSlot = slot.subjects.filter(s => {
+                                                                                const isMatched = s.branch === branch && s.year === year;
+                                                                                if (!isMatched) return false;
+                                                                                const course = MOCK_COURSES.find(c => c.code === s.courseCode);
+                                                                                return course ? course.credits > 0 : true;
+                                                                            });
                                                                             return (
                                                                                 <td key={sIdx} className="p-5 border-l border-border/20 align-top">
                                                                                     {subjectsInSlot.length > 0 ? (

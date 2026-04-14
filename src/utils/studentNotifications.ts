@@ -11,30 +11,27 @@ export interface StudentAlert {
     branch: string;
     year: number;
     section: string;
+    recipientId?: string; // Specific user ID (e.g. for faculty)
     type: 'substitution' | 'swap' | 'announcement';
     timestamp: number;
     isRead?: boolean;
 }
 
+import { alertService } from '@/services/alertService';
 const STORAGE_KEY = 'STUDENT_ALERTS';
 
 export const pushStudentAlert = (alert: Omit<StudentAlert, 'id' | 'timestamp'>) => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    const alerts: StudentAlert[] = saved ? JSON.parse(saved) : [];
-    
-    const newAlert: StudentAlert = {
-        ...alert,
-        id: `alert-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        timestamp: Date.now(),
-        isRead: false
-    };
-    
-    // Keep only last 50 alerts
-    const updated = [newAlert, ...alerts].slice(0, 50);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-    
-    // Trigger event for real-time UI updates
-    window.dispatchEvent(new Event('student_alerts_updated'));
+    alertService.sendAlert({
+        title: alert.title,
+        message: alert.message,
+        category: 'general',
+        type: 'normal',
+        targetAudience: 'students',
+        branch: alert.branch,
+        year: alert.year,
+        section: alert.section,
+        recipientId: alert.recipientId
+    });
 };
 
 export const getStudentAlerts = (branch?: string, year?: number, section?: string): StudentAlert[] => {
@@ -45,9 +42,15 @@ export const getStudentAlerts = (branch?: string, year?: number, section?: strin
     
     if (!branch && !year && !section) return alerts;
     
-    return alerts.filter(a => 
-        (!branch || a.branch === branch) &&
-        (!year || a.year === year) &&
-        (!section || a.section === section)
-    );
+    return alerts.filter(a => {
+        // If it's targeted to a specific person (like a faculty ID)
+        if (a.recipientId && a.recipientId !== 'all') {
+            return a.recipientId === (window as any).currentUser?.id;
+        }
+
+        // Section broadcasting
+        return (!branch || a.branch === branch) &&
+               (!year || a.year === year) &&
+               (!section || a.section === section);
+    });
 };

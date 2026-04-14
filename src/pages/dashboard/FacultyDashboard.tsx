@@ -84,12 +84,6 @@ export default function FacultyDashboard({ facultyId: propFacultyId }: { faculty
         { label: "Join Date", value: "Aug 2018", icon: CalendarDays, color: "text-amber-600", bg: "bg-amber-50" },
     ];
 
-    const stats = [
-        { title: "My Classes", value: "8", icon: BookOpen, change: "Today", color: "text-primary" },
-        { title: "Students", value: "156", icon: Users, change: "Total", color: "text-success" },
-        { title: "Pending Grades", value: "23", icon: FileText, change: "Due Soon", color: "text-warning" },
-        { title: "Attendance Balance", value: "92%", icon: CheckCircle, change: "This Week", color: "text-accent" },
-    ];
 
     const today = useMemo(() => format(new Date(), "EEEE"), []);
     const todayISO = useMemo(() => format(new Date(), "yyyy-MM-dd"), []);
@@ -133,26 +127,16 @@ export default function FacultyDashboard({ facultyId: propFacultyId }: { faculty
 
         // 1. Get Base Schedule from static and published stores
         const publishedStoreStr = localStorage.getItem('published_timetables');
-        const useDemoData = publishedStoreStr === null;
         const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
         
         const allTimetablesToProcess: Record<string, any> = {};
-        const branches = ["CSM", "CSE", "IT", "ECE"];
-        const years = [1, 2, 3, 4];
-        const sections = ["A", "B", "C"];
         
-        branches.forEach(branch => {
-            years.forEach(year => {
-                [1, 2].forEach(sem => {
-                    sections.forEach(section => {
-                        const publishedKey = `${branch}-${year}-${sem}-${section}`;
-                        const publishedEntry = publishedTimetables[publishedKey];
-                        if (publishedEntry) {
-                            allTimetablesToProcess[publishedKey] = publishedEntry.grid || publishedEntry;
-                        }
-                    });
-                });
-            });
+        // DYNAMIC SCAN: Check every single published key
+        Object.keys(publishedTimetables).forEach(key => {
+            const entry = publishedTimetables[key];
+            if (entry) {
+                allTimetablesToProcess[key] = entry.grid || entry;
+            }
         });
 
         Object.entries(allTimetablesToProcess).forEach(([key, table]: [string, any]) => {
@@ -311,6 +295,13 @@ export default function FacultyDashboard({ facultyId: propFacultyId }: { faculty
             return getMinutes(a.time) - getMinutes(b.time);
         });
     }, [user.name, user.id, today, todayISO, storageSyncStamp]);
+
+    const stats = useMemo(() => [
+        { title: "My Classes", value: todaySchedule.length.toString(), icon: BookOpen, change: "Today", color: "text-primary" },
+        { title: "Students", value: "156", icon: Users, change: "Total", color: "text-success" },
+        { title: "Pending Grades", value: "23", icon: FileText, change: "Due Soon", color: "text-warning" },
+        { title: "Attendance Balance", value: "92%", icon: CheckCircle, change: "This Week", color: "text-accent" },
+    ], [todaySchedule.length]);
 
     const incomingRequests = useMemo(() => {
         const saved = localStorage.getItem('FACULTY_REQUESTS');

@@ -86,7 +86,7 @@ const Grades = () => {
     }, [studentData, storageSyncStamp]);
 
     const resultsBySem = semesters.reduce((acc, sem) => {
-        const semCourses = branchCourses.filter(c => c.semester === sem);
+        const semCourses = branchCourses.filter(c => c.semester === sem && c.credits > 0);
         const visibility = academicService.getVisibility(currentYear, sem);
 
         if (semCourses.length > 0) {

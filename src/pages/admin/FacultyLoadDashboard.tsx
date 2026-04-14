@@ -43,19 +43,26 @@ interface FacultyWorkloadRecord {
 
 /** Map course code to a readable abbreviation */
 function getAbbreviation(code: string): string {
+    if (!code) return "N/A";
     const course = MOCK_COURSES.find(c => c.code === code);
-    if (!course) return code;
+    if (!course || !course.name) return code || "N/A";
+
+    const courseName = course.name;
 
     const matchByName = Object.entries(SUBJECT_MAPPING).find(
-        ([, fullName]) => fullName.toLowerCase() === course.name.toLowerCase()
+        ([, fullName]) => fullName && fullName.toLowerCase() === courseName.toLowerCase()
     );
     if (matchByName) return matchByName[0];
 
     // Derive from name
-    const stopWords = new Set(["and", "of", "for", "the", "in", "&", "a", "an", "through"]);
-    const parts = course.name.split(' ').filter(p => p.length > 0 && !stopWords.has(p.toLowerCase()));
-    if (parts.length >= 2) return parts.map(p => p[0]).join('').toUpperCase();
-    return course.name;
+    try {
+        const stopWords = new Set(["and", "of", "for", "the", "in", "&", "a", "an", "through"]);
+        const parts = courseName.split(' ').filter(p => p.length > 0 && !stopWords.has(p.toLowerCase()));
+        if (parts.length >= 2) return parts.map(p => p[0]).join('').toUpperCase();
+        return courseName;
+    } catch (e) {
+        return courseName || code;
+    }
 }
 
 /** Get full course name from code */
@@ -232,11 +239,17 @@ const FacultyLoadDashboard = () => {
         const q = search.toLowerCase();
         const result: Record<string, FacultyWorkloadRecord[]> = {};
         Object.entries(byDept).forEach(([dept, records]) => {
-            result[dept] = records.filter(r => 
-                r.facultyName.toLowerCase().includes(q) ||
-                r.theories.some(c => getAbbreviation(c).toLowerCase().includes(q)) ||
-                r.labs.some(c => getAbbreviation(c).toLowerCase().includes(q))
-            );
+            result[dept] = records.filter(r => {
+                try {
+                    const nameMatch = r.facultyName?.toLowerCase().includes(q);
+                    const theoryMatch = r.theories?.some(c => c && getAbbreviation(c)?.toLowerCase().includes(q));
+                    const labMatch = r.labs?.some(c => c && getAbbreviation(c)?.toLowerCase().includes(q));
+                    return nameMatch || theoryMatch || labMatch;
+                } catch (e) {
+                    console.error("Filter error for faculty:", r.facultyName, e);
+                    return false;
+                }
+            });
         });
         return result;
     }, [byDept, search]);

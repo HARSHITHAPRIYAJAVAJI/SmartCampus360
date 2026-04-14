@@ -150,6 +150,10 @@ export function reallocateLeavePeriods(
                                 date: date,
                                 period: sTime,
                                 section: sectionKey, // STRICT SECTION TARGETING
+                                branch: dept,
+                                year: year,
+                                sectionName: section,
+                                room: session.room || "TBD",
                                 parentId: leaveRequestId,
                                 reason: 'Automated substitution during leave',
                                 timestamp: Date.now()

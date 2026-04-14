@@ -9,6 +9,11 @@ class NotificationType(str, enum.Enum):
     SUCCESS = "success"
     WARNING = "warning"
     DESTRUCTIVE = "destructive"
+    ATTENDANCE = "attendance"
+    TIMETABLE = "timetable"
+    FEE = "fee"
+    MENTION = "mention"
+    SUBSTITUTION = "substitution"
 
 class TargetAudience(str, enum.Enum):
     ALL = "all"
@@ -40,9 +45,23 @@ class Notification(Base):
     
     status = Column(Enum(NotificationStatus), default=NotificationStatus.SENT)
     scheduled_for = Column(DateTime, nullable=True)
+    redirect_url = Column(String(512), nullable=True)
     
     # Relationships
     sender = relationship("User")
+    read_receipts = relationship("NotificationReadReceipt", back_populates="notification", cascade="all, delete-orphan")
+
+class NotificationReadReceipt(Base):
+    __tablename__ = "notification_read_receipts"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    notification_id = Column(Integer, ForeignKey("notifications.id", ondelete="CASCADE"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    read_at = Column(DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    notification = relationship("Notification", back_populates="read_receipts")
+    user = relationship("User")
 
 class UserDevice(Base):
     __tablename__ = "user_devices"

@@ -23,7 +23,7 @@ import {
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { reallocateLeavePeriods, revertLeavePeriods, revertSpecificRequest } from "@/utils/timetableAdjuster";
-import { pushStudentAlert } from "@/utils/studentNotifications";
+import { alertService } from "@/services/alertService";
 
 interface FacultyRequest {
     id: string;
@@ -123,20 +123,38 @@ const RequestsManagement = () => {
                             .map(adj => adj.newFaculty)
                             .filter((v, i, a) => a.indexOf(v) === i); // Unique names
 
-                        pushStudentAlert({
+                        alertService.sendAlert({
                             title: "Faculty Substitution: Assigned",
-                            message: `Due to absence of ${request.senderName}, your classes on ${request.date} will be taken by ${substitutes.join(", ")}.`,
+                            message: `Attention Students of ${branch}-${year}Y Sec ${section}: Due to absence of ${request.senderName}, your classes on ${request.date} will be taken by ${substitutes.join(", ")}. Please check your timetable for specifics.`,
                             branch,
                             year: parseInt(year),
                             section,
-                            type: 'substitution'
+                            category: 'substitution',
+                            type: 'priority',
+                            targetAudience: 'students',
+                            redirectUrl: '/dashboard/student'
                         });
+                    });
+
+                    // 4. ALSO notify the substitutes specifically
+                    newRequests.forEach(nr => {
+                        if (nr.type === 'replacement') {
+                            alertService.sendAlert({
+                                title: "Substitution Duty: Assigned",
+                                message: `You have been assigned to take the ${nr.period} class for ${nr.section} on ${nr.date} as a replacement for ${request.senderName}.`,
+                                category: 'substitution',
+                                type: 'urgent',
+                                targetAudience: 'faculty',
+                                recipientId: nr.targetId,
+                                redirectUrl: '/dashboard/faculty'
+                            });
+                        }
                     });
 
                     toast({
                         title: "Leave Approved & Substitutions Generated",
-                        description: `Successfully assigned ${totalAdjustments} replacement sessions for the leave duration. Faculty and students notified.`,
-                        className: "bg-green-600 text-white"
+                        description: `Successfully assigned ${totalAdjustments} replacement sessions. Faculty and students have been notified via personal feeds.`,
+                        className: "bg-emerald-600 text-white"
                     });
                     
                     window.dispatchEvent(new Event('faculty_request_updated'));
@@ -368,18 +386,44 @@ const RequestsManagement = () => {
                                                 </div>
                                             </TableCell>
                                             <TableCell>
-                                                <div className="space-y-0.5">
-                                                    <Badge variant="outline" className={`font-black text-[9px] uppercase ${req.type === 'swap' ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-indigo-200 bg-indigo-50 text-indigo-700'}`}>
+                                                <div className="space-y-1.5 py-1">
+                                                    <Badge className={`font-black text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-md ${
+                                                        req.type === 'swap' 
+                                                            ? 'bg-amber-100 text-amber-700 border border-amber-200' 
+                                                            : 'bg-indigo-100 text-indigo-700 border border-indigo-200'
+                                                    }`}>
                                                         {req.type}
                                                     </Badge>
+                                                    
                                                     {req.subject && (
-                                                        <p className="text-[10px] font-black text-indigo-700 truncate max-w-[120px]">
+                                                        <p className="text-[11px] font-black text-slate-700 truncate max-w-[150px] leading-tight mt-1">
                                                             {req.subject}
                                                         </p>
                                                     )}
-                                                    <div className="flex flex-wrap gap-1 mt-1">
-                                                        <Badge variant="outline" className="text-[7px] font-black h-4 px-1 border-slate-200 text-slate-500 uppercase">Room: {req.room || 'TBD'}</Badge>
-                                                        <Badge variant="outline" className="text-[7px] font-black h-4 px-1 border-slate-200 text-slate-500 uppercase">{req.branch}-{req.year}Y SEC:{req.sectionName}</Badge>
+
+                                                    <div className="flex flex-wrap gap-1.5 mt-1">
+                                                        {(() => {
+                                                            // For older requests or auto-generated ones, parse the sectionKey if fields are missing
+                                                            const parts = req.section?.split('-') || [];
+                                                            const branch = req.branch || parts[0] || "?";
+                                                            const year = req.year || parts[1] || "?";
+                                                            const sec = req.sectionName || parts[3] || "?";
+                                                            const room = req.room || "TBD";
+
+                                                            return (
+                                                                <>
+                                                                    <div className="flex items-center gap-1 bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded text-[8px] font-black border border-slate-200 shadow-sm uppercase">
+                                                                        <Building2 className="w-2.5 h-2.5" /> {room}
+                                                                    </div>
+                                                                    <div className="flex items-center gap-1 bg-primary/5 text-primary px-1.5 py-0.5 rounded text-[8px] font-black border border-primary/10 shadow-sm uppercase">
+                                                                        {branch}-{year}Y
+                                                                    </div>
+                                                                    <div className="flex items-center gap-1 bg-emerald-50 text-emerald-700 px-1.5 py-0.5 rounded text-[8px] font-black border border-emerald-100 shadow-sm uppercase">
+                                                                       SEC: {sec}
+                                                                    </div>
+                                                                </>
+                                                            );
+                                                        })()}
                                                     </div>
                                                 </div>
                                             </TableCell>
