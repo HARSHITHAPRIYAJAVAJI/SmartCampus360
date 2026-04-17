@@ -37,11 +37,22 @@ export const AttendanceHistory: React.FC<AttendanceHistoryProps> = ({ studentId,
         };
 
         fetchAttendance();
-        const handleUpdate = () => fetchAttendance(true);
-        window.addEventListener('attendance_updated', handleUpdate);
+        
+        // Listen for real-time broadcasts
+        const unsubscribe = attendanceService.onUpdate(() => fetchAttendance(true));
+        
+        // Cross-tab sync: Trigger refresh when directory changes
+        const handleStorage = (e: StorageEvent) => {
+            if (e.key === 'smartcampus_student_directory' || e.key === 'smartcampus_attendance_cache') {
+                fetchAttendance(true);
+            }
+        };
+        window.addEventListener('storage', handleStorage);
+        
         const pollInterval = setInterval(() => fetchAttendance(true), 15000);
         return () => {
-            window.removeEventListener('attendance_updated', handleUpdate);
+            unsubscribe();
+            window.removeEventListener('storage', handleStorage);
             clearInterval(pollInterval);
         };
     }, [studentId, rollNumber]);

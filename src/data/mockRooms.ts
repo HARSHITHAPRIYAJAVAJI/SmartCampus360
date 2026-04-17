@@ -78,7 +78,7 @@ export const MOCK_ROOMS: Room[] = [
     { id: "106", name: "106", capacity: 40, type: "Lab", building: "Admin Block", dept: "CSM", subjects: ["NLP Lab", "NLP"] },
 
     // Generic Rooms
-    { id: "aud-1", name: "Main Auditorium", capacity: 300, type: "Auditorium", building: "Admin Block", dept: "ALL" },
+    { id: "aud-1", name: "IT Seminar Hall", capacity: 300, type: "Seminar Hall", building: "South Block", dept: "IT" },
     { id: "n-aud", name: "North Block Auditorium", capacity: 300, type: "Auditorium", building: "North Block", dept: "ALL" },
-    { id: "hall-a", name: "Seminar Hall A", capacity: 120, type: "Classroom", building: "Admin Block", dept: "ALL" },
+
 ];

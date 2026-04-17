@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from "react";
-import { useOutletContext, useSearchParams } from "react-router-dom";
+import { useOutletContext, useSearchParams, useNavigate } from "react-router-dom";
 import {
     Card, CardContent, CardHeader, CardTitle, CardDescription
 } from "@/components/ui/card";
@@ -15,7 +15,7 @@ import {
     AlertTriangle, Info, Lock, Share2,
     Zap, Calendar, GraduationCap, Wallet, BookOpen, X, Pencil, Trash2,
     Briefcase, FileText, LayoutDashboard, Paperclip, Download, Eye, FileDigit, FileSignature, UserPlus,
-    Smile, UserCheck
+    Smile, UserCheck, UserCircle, Inbox, RotateCw
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -41,6 +41,7 @@ const MESSAGE_TEMPLATES = [
 
 export default function CommunicationHub() {
     const { user } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
+    const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     
     // -- Primary States (TOP LEVEL) --
@@ -135,6 +136,9 @@ export default function CommunicationHub() {
 
             // Faculty targeting (general notices)
             if (user.role === 'faculty') {
+                const audience = (a as any).targetAudience || 'both';
+                if (audience === 'students' || audience === 'student') return false;
+
                 const targetBranch = (a as any).branch || 'All';
                 return targetBranch === 'All' || targetBranch === facultyData?.department;
             }
@@ -149,7 +153,10 @@ export default function CommunicationHub() {
             const saved = localStorage.getItem('STUDENT_ALERTS');
             const allAlerts: InstitutionalNotification[] = saved ? JSON.parse(saved) : [];
             const filtered = allAlerts.filter(a => {
-                if (user.role === 'admin') return true;
+                if (user.role === 'admin') {
+                    const audience = (a.targetAudience || 'both').toLowerCase();
+                    return audience === 'both' || audience === 'all' || audience === '';
+                }
                 if (a.recipientId && a.recipientId !== 'all' && a.recipientId !== 'targeted') {
                     return a.recipientId === user.id;
                 }
@@ -162,6 +169,9 @@ export default function CommunicationHub() {
                            (targetSection === 'All' || targetSection === studentData.section);
                 }
                 if (user.role === 'faculty') {
+                    const audience = (a as any).targetAudience || 'both';
+                    if (audience === 'students' || audience === 'student') return false;
+
                     const targetBranch = (a as any).branch || 'All';
                     return targetBranch === 'All' || targetBranch === facultyData?.department;
                 }
@@ -298,7 +308,7 @@ export default function CommunicationHub() {
 
             // Role & Hierarchy filtering
             if (user.role === 'admin') {
-                return ['admin_broadcast', 'admin_to_yi', 'cr_coordination', 'faculty_only', 'placement_cell', 'section_group', 'year_group'].includes(conv.type);
+                return ['admin_broadcast', 'admin_to_yi', 'cr_coordination', 'faculty_only', 'placement_cell'].includes(conv.type);
             }
             if (user.role === 'faculty') {
                 if (conv.type === 'admin_to_yi') return isYI;
@@ -364,14 +374,25 @@ export default function CommunicationHub() {
     // Automatically mark as read when selecting a group
     useEffect(() => {
         if (selectedGroup) {
-            setAllMessages(prev => ({
-                ...prev,
-                [selectedGroup.id]: (prev[selectedGroup.id] || []).map(msg =>
+            setAllMessages(prev => {
+                const updatedGroupMsgs = (prev[selectedGroup.id] || []).map(msg =>
                     msg.senderId !== user.id && !msg.readBy?.includes(user.name)
                         ? { ...msg, readBy: [...(msg.readBy || []), user.name] }
                         : msg
-                )
-            }));
+                );
+                
+                // Check if anything actually changed to avoid infinite loops or wasted writes
+                const hasChanges = updatedGroupMsgs.some((msg, idx) => 
+                   msg.readBy?.length !== (prev[selectedGroup.id]?.[idx]?.readBy?.length || 0)
+                );
+
+                if (!hasChanges) return prev;
+
+                const newAll = { ...prev, [selectedGroup.id]: updatedGroupMsgs };
+                localStorage.setItem('smartcampus_messages', JSON.stringify(newAll));
+                window.dispatchEvent(new CustomEvent('messages_updated'));
+                return newAll;
+            });
         }
     }, [selectedGroup?.id, user.id, user.name]);
 

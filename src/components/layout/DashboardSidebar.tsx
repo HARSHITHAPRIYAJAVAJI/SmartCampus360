@@ -77,7 +77,6 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
         { title: "Student Management", url: "/dashboard/students", icon: GraduationCap },
         { title: "Course Management", url: "/dashboard/manage-courses", icon: BookOpen },
         { title: "Room Management", url: "/dashboard/manage-rooms", icon: Home },
-        { title: "Detailed Attendance", url: "/dashboard/attendance", icon: FileText },
         { title: "Analytics & Accreditation", url: "/dashboard/analytics-accreditation", icon: BarChart3 },
       ],
       faculty: [
@@ -112,17 +111,11 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
     };
 
     const navigationItems = [
-      ...commonItems.slice(0, 3),
+      ...commonItems.slice(0, 1),
+      ...commonItems.slice(2, 3), // Skip index 1 (My Profile)
       ...(roleSpecificItems[userRole] || []),
       ...commonItems.slice(3),
     ];
-
-    // For students and faculty, redirect "My Profile" to dashboard since they are merged
-    if (userRole === 'faculty' || userRole === 'student') {
-      return navigationItems.map(item => 
-        item.title === 'My Profile' ? { ...item, url: '/dashboard' } : item
-      );
-    }
 
     return navigationItems;
   };
@@ -145,36 +138,18 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
         ${collapsed ? "lg:w-16" : "lg:w-64"}
         w-64
       `}>
-        <div className="flex items-center justify-between p-4 border-b border-border">
-          <div className={`flex items-center gap-3 transition-all duration-300 ${collapsed && !mobileOpen ? "lg:justify-center lg:w-full lg:px-0" : "px-1"}`}>
-            <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary/20 transition-transform hover:scale-105 active:scale-95 duration-200">
-              <GraduationCap className="h-6 w-6 text-primary-foreground drop-shadow-sm" />
-            </div>
-            {(!collapsed || mobileOpen) && (
-              <span className="font-bold text-xl tracking-tight text-foreground bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text">Smart Campus</span>
-            )}
-          </div>
-          {!mobileOpen && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onToggle}
-              className="h-8 w-8 p-0 hidden lg:flex rounded-full hover:bg-primary/10 hover:text-primary transition-colors border border-transparent hover:border-primary/20"
-            >
-              {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-            </Button>
-          )}
-          {mobileOpen && (
+        {mobileOpen && (
+          <div className="p-4 border-b border-border flex justify-end lg:hidden">
             <Button
               variant="ghost"
               size="icon"
               onClick={onMobileClose}
-              className="h-8 w-8 p-0 lg:hidden"
+              className="h-8 w-8 p-0"
             >
               <ChevronLeft className="h-4 w-4" />
             </Button>
-          )}
-        </div>
+          </div>
+        )}
 
         <div className="flex-1 px-3 py-6 overflow-y-auto flex flex-col justify-between custom-scrollbar gap-8">
           <div className="space-y-2">
@@ -190,7 +165,7 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
           </div>
 
           {(!collapsed || mobileOpen) && (
-            <div className="mt-auto px-1">
+            <div className="mt-auto px-1 space-y-4">
               <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-2xl p-4 border border-primary/10 shadow-sm backdrop-blur-md">
                 <div className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/60 mb-2">Access Portal</div>
                 <div className="flex items-center gap-3">
@@ -203,7 +178,30 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
                     </div>
                 </div>
               </div>
+              
+              <div className="pt-2 border-t border-border/50">
+                   <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={onToggle}
+                      className="h-10 w-10 p-0 hidden lg:flex rounded-xl hover:bg-primary/10 hover:text-primary transition-colors border border-transparent hover:border-primary/20 mx-auto"
+                    >
+                      {collapsed ? <ChevronRight className="h-5 w-5" /> : <ChevronLeft className="h-5 w-5" />}
+                    </Button>
+              </div>
             </div>
+          )}
+          {collapsed && !mobileOpen && (
+              <div className="mt-auto flex flex-col items-center gap-4 pb-4">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={onToggle}
+                    className="h-10 w-10 p-0 hidden lg:flex rounded-xl hover:bg-primary/10 hover:text-primary transition-colors border border-transparent hover:border-primary/20"
+                  >
+                    <ChevronRight className="h-5 w-5" />
+                  </Button>
+              </div>
           )}
         </div>
       </div>

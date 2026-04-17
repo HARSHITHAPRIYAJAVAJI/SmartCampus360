@@ -606,10 +606,10 @@ const SECTION_VARIANTS: Record<string, Record<string, { id: string; courseCode: 
     // ── Year 4 Sem 1 ── Section B
     "4-1-B": {
         "Monday-01:30": { id: "4_1B-m-4", courseCode: "BDA", room: "Mrs. P. Rajini" },
-        "Monday-03:30": { id: "4_1B-m-6", courseCode: "IS", room: "RAMYA PRIYA" },
-        "Tuesday-01:30": { id: "4_1B-t-4", courseCode: "IS", room: "RAMYA PRIYA" },
+        "Monday-03:30": { id: "4_1B-m-6", courseCode: "IS", room: "TBD Faculty" },
+        "Tuesday-01:30": { id: "4_1B-t-4", courseCode: "IS", room: "TBD Faculty" },
         "Wednesday-01:30": { id: "4_1B-w-4", courseCode: "BDA", room: "Mrs. P. Rajini" },
-        "Wednesday-03:30": { id: "4_1B-w-6", courseCode: "IS", room: "RAMYA PRIYA" },
+        "Wednesday-03:30": { id: "4_1B-w-6", courseCode: "IS", room: "TBD Faculty" },
     },
     // ── Year 3 Sem 2 ── Section C
     "3-2-C": {
@@ -985,7 +985,7 @@ export const FACULTY_LOAD = {
         },
         {
             "code": "4E4EB",
-            "faculty": "RAMYA PRIYA",
+            "faculty": "TBD Faculty",
             "room": "202"
         },
         {
@@ -1641,7 +1641,7 @@ export const FACULTY_LOAD = {
         },
         {
             "code": "4E4FE",
-            "faculty": "RAMYA PRIYA",
+            "faculty": "TBD Faculty",
             "room": "N-401"
         },
         {
@@ -2232,7 +2232,7 @@ export const FACULTY_LOAD = {
         },
         {
             "code": "4E4EB",
-            "faculty": "RAMYA PRIYA",
+            "faculty": "TBD Faculty",
             "room": "C-301"
         },
         {

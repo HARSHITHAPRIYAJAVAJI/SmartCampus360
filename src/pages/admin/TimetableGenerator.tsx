@@ -259,15 +259,28 @@ const TimetableGenerator = () => {
             localStorage.setItem('published_timetables', JSON.stringify(savedTimetables));
             window.dispatchEvent(new Event('timetable_published'));
 
-            // Push institutional notification
+            // Push institutional notification (local + backend API)
             alertService.sendAlert({
                 title: "📅 New Timetable Published",
                 message: `The academic schedule for Semester ${batchSemester} has been published/updated. Please check your dashboard for the latest slots.`,
                 category: 'timetable',
                 type: 'priority',
                 targetAudience: 'both',
-                redirectUrl: '/dashboard/timetable'
+                redirectUrl: '/dashboard/timetable?tab=academic'
             });
+
+            try {
+                const { default: notificationService } = await import('@/services/notificationService');
+                await notificationService.createNotification({
+                    title: "📅 New Timetable Published",
+                    message: `The academic schedule for Semester ${batchSemester} has been published/updated. Please check your dashboard for the latest slots.`,
+                    type: 'timetable',
+                    target_audience: 'all',
+                    redirect_url: '/dashboard/timetable?tab=academic'
+                });
+            } catch(e) {
+                console.error("Backend notification push failed", e);
+            }
 
             setLastBatchPublished(true);
             setPublishedInfo({ dept: "All Departments", sem: batchSemester });

@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
-  GraduationCap, Users, Calendar, FileText, Award, Shield,
-  BookOpen, MapPin, ArrowRight, Globe, Briefcase, Heart,
-  Sparkles, Zap, Trophy, Video, Quote
+  GraduationCap, Users, Calendar, FileText, Shield,
+  BookOpen, MapPin, ArrowRight, Briefcase,
+  Sparkles, Zap, Quote
 } from "lucide-react";
 import Layout from "@/components/common/Layout";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
@@ -118,9 +118,9 @@ const Index = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
-              { name: "Timetable Generator", duration: "Automated", type: "AI-Driven", spots: "Optimized", image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&auto=format&fit=crop&q=60" },
-              { name: "Student Records", duration: "Real-time", type: "Cloud-Based", spots: "Encrypted", image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&auto=format&fit=crop&q=60" },
-              { name: "Faculty Management", duration: "Self-Service", type: "Role-Based", spots: "Integrated", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&auto=format&fit=crop&q=60" }
+              { name: "Timetable Generator", duration: "Automated", type: "AI-Driven", spots: "Optimized", image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&auto=format&fit=crop&q=60", url: "/features/timetable-generator" },
+              { name: "Student Records", duration: "Real-time", type: "Cloud-Based", spots: "Encrypted", image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&auto=format&fit=crop&q=60", url: "/features/student-records" },
+              { name: "Faculty Management", duration: "Self-Service", type: "Role-Based", spots: "Integrated", image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=500&auto=format&fit=crop&q=60", url: "/features/faculty-management" }
             ].map((program, index) => (
               <Card key={index} className="group overflow-hidden border-none shadow-lg hover:shadow-xl transition-all duration-300">
                 <div className="h-48 overflow-hidden relative">
@@ -139,48 +139,13 @@ const Index = () => {
                     <span className="flex items-center"><Zap className="h-4 w-4 mr-1" /> {program.duration}</span>
                     <span className="flex items-center"><Shield className="h-4 w-4 mr-1" /> {program.type}</span>
                   </div>
-                  <Button className="w-full bg-secondary text-secondary-foreground hover:bg-primary hover:text-white transition-colors">View Feature</Button>
+                  <Link to={program.url}>
+                    <Button className="w-full bg-secondary text-secondary-foreground hover:bg-primary hover:text-white transition-colors">View Feature</Button>
+                  </Link>
                 </CardContent>
               </Card>
             ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Features Section - Grid */}
-      <section className="py-24 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl font-bold mb-4">Digital Campus Platform</h2>
-            <p className="text-xl text-muted-foreground">
-              Experience a seamless educational journey with our integrated smart campus technologies.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { icon: Calendar, title: "Smart Scheduling", desc: "AI-powered timetable management." },
-              { icon: Shield, title: "Secure Access", desc: "Biometric and role-based security." },
-              { icon: Award, title: "Skill Tracking", desc: "Monitor your progress in real-time." },
-              { icon: Globe, title: "Global Connect", desc: "Connect with alumni worldwide." },
-              { icon: Video, title: "Virtual Labs", desc: "Access laboratories remotely." },
-              { icon: Trophy, title: "Gamified Learning", desc: "Earn badges and compete." },
-            ].map((feature, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="p-6 rounded-2xl bg-muted/30 border border-border/50 hover:bg-card hover:shadow-lg transition-all duration-300 group"
-              >
-                <div className="h-14 w-14 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors mb-6">
-                  <feature.icon className="h-7 w-7" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.desc}</p>
-              </motion.div>
-            ))}
           </div>
         </div>
       </section>

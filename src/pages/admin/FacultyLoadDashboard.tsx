@@ -4,9 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
     Users,
     BookOpen,
+    BookCopy,
     Clock,
     GraduationCap,
     LayoutGrid,
@@ -75,7 +77,7 @@ const MAX_WEEKLY_HOURS = 25;
 
 // ─── Real-Time Workload Builder ────────────────────────────────────────────
 
-function buildWorkloadFromTimetables(publishedTimetables: Record<string, any>): FacultyWorkloadRecord[] {
+function buildWorkloadFromTimetables(publishedTimetables: Record<string, any>, targetSem: number | "all" = "all"): FacultyWorkloadRecord[] {
     // Initialize records for ALL faculty
     const workloadMap: Record<string, FacultyWorkloadRecord> = {};
 
@@ -97,24 +99,33 @@ function buildWorkloadFromTimetables(publishedTimetables: Record<string, any>): 
         }
     });
 
+    // Track occupied slots per faculty to prevent double-counting simultaneous sessions
+    const occupiedSlotsMap: Record<string, Set<string>> = {};
+
     // Aggregate from published timetable slots
     Object.entries(publishedTimetables).forEach(([sectionKey, entry]: [string, any]) => {
         if (!entry) return;
+        
+        // Semester Detection from Section Key (e.g., "4-1-B" or "IT-2-1-A")
+        const parts = sectionKey.split('-');
+        let currentSem = 0;
+        if (parts.length === 3) currentSem = parseInt(parts[1]);
+        else if (parts.length === 4) currentSem = parseInt(parts[2]);
+
+        // Filter by target semester
+        if (targetSem !== "all" && currentSem !== targetSem) return;
+
         const grid = entry.grid || entry;
         if (!grid || typeof grid !== 'object') return;
 
-        Object.values(grid).forEach((slot: any) => {
+        Object.entries(grid).forEach(([slotKey, slot]: [string, any]) => {
+            // slotKey is "Monday-09:30" etc.
             if (!slot || !slot.faculty || slot.faculty === "Staff" || slot.faculty === "PET" || slot.faculty === "Librarian") return;
 
-            // Handle multiple faculty in one slot (common in labs)
             const rawFaculty = slot.faculty;
             const facultyNames = rawFaculty.split(/[&,]| and /).map((s: string) => s.trim()).filter(Boolean);
 
             facultyNames.forEach((fName: string) => {
-                // Find matching record in workloadMap using bidirectional logic
-                const normalizedSlotFaculty = fName.toLowerCase();
-                
-                // Try to find the official record for this person
                 let officialName = fName;
                 let officialId = fName;
                 let dept = "Other";
@@ -122,6 +133,7 @@ function buildWorkloadFromTimetables(publishedTimetables: Record<string, any>): 
 
                 const foundFaculty = MOCK_FACULTY.find(f => {
                     const normalizedOfficial = f.name.toLowerCase();
+                    const normalizedSlotFaculty = fName.toLowerCase();
                     return normalizedOfficial === normalizedSlotFaculty || 
                            normalizedOfficial.includes(normalizedSlotFaculty) || 
                            normalizedSlotFaculty.includes(normalizedOfficial);
@@ -151,15 +163,32 @@ function buildWorkloadFromTimetables(publishedTimetables: Record<string, any>): 
                 }
 
                 const record = workloadMap[officialName];
-                record.totalHours += 1;
+                
+                // CRITICAL: DEDUPLICATION LOGIC
+                // We track unique (Day-Time) combinations. If they are in 5 sections at Monday-09:30, 
+                // it only counts as 1 contact hour.
+                if (!occupiedSlotsMap[officialName]) {
+                    occupiedSlotsMap[officialName] = new Set<string>();
+                }
+                
+                const dayTimeKey = slotKey; // "Monday-09:30"
+                if (!occupiedSlotsMap[officialName].has(dayTimeKey)) {
+                    occupiedSlotsMap[officialName].add(dayTimeKey);
+                    record.totalHours += 1;
+                    
+                    if (slot.type === 'Lab' || (slot.courseName && slot.courseName.toLowerCase().includes('lab'))) {
+                        record.labHours += 1;
+                    } else {
+                        record.theoryHours += 1;
+                    }
+                }
 
+                // But we still track ALL sections handled and ALL subjects
                 if (slot.type === 'Lab' || (slot.courseName && slot.courseName.toLowerCase().includes('lab'))) {
-                    record.labHours += 1;
                     if (!record.labs.includes(slot.courseCode)) {
                         record.labs.push(slot.courseCode);
                     }
                 } else {
-                    record.theoryHours += 1;
                     if (!record.theories.includes(slot.courseCode)) {
                         record.theories.push(slot.courseCode);
                     }
@@ -184,6 +213,7 @@ function buildWorkloadFromTimetables(publishedTimetables: Record<string, any>): 
 
 const FacultyLoadDashboard = () => {
     const [search, setSearch] = useState("");
+    const [activeSem, setActiveSem] = useState<1 | 2>(1);
 
     const publishedStoreStr = localStorage.getItem('published_timetables');
     
@@ -192,8 +222,8 @@ const FacultyLoadDashboard = () => {
         return publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
     }, [publishedStoreStr]);
 
-    // Build workload from OFFICIAL published data only
-    const allWorkload = useMemo(() => buildWorkloadFromTimetables(officialTimetables), [officialTimetables]);
+    // Build workload from OFFICIAL published data only, filtered by active semester
+    const allWorkload = useMemo(() => buildWorkloadFromTimetables(officialTimetables, activeSem), [officialTimetables, activeSem]);
 
     // Group by department
     const byDept = useMemo(() => {
@@ -319,13 +349,12 @@ const FacultyLoadDashboard = () => {
             {hasData && (
                 <>
 
-
                     {/* Search Bar */}
                     <div className="relative">
                         <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
                             className="pl-11 h-12 rounded-2xl border-slate-200 bg-white shadow-sm"
-                            placeholder="Search faculty by name, subject code or abbreviation..."
+                            placeholder={`Search faculty in Semester ${activeSem}...`}
                             value={search}
                             onChange={e => setSearch(e.target.value)}
                         />
@@ -348,9 +377,31 @@ const FacultyLoadDashboard = () => {
                                     </TabsTrigger>
                                 ))}
                             </TabsList>
-                            <div className="flex items-center gap-3 px-4 py-2 border rounded-2xl bg-slate-50/50">
-                                <BarChart3 className="h-4 w-4 text-slate-400" />
-                                <span className="text-xs font-bold text-slate-600 uppercase tracking-tight">Sorted by Utilization</span>
+                            <div className="flex items-center gap-4">
+                                {/* Semester Switcher */}
+                                <div className="bg-slate-100 p-1 rounded-full flex gap-1 shadow-inner border border-slate-200">
+                                    <Button 
+                                        onClick={() => setActiveSem(1)}
+                                        variant={activeSem === 1 ? "default" : "ghost"}
+                                        size="sm"
+                                        className={`rounded-full px-6 h-9 transition-all duration-300 font-black text-[10px] tracking-widest ${activeSem === 1 ? 'bg-slate-900 shadow-lg' : 'text-slate-500'}`}
+                                    >
+                                        SEM 1
+                                    </Button>
+                                    <Button 
+                                        onClick={() => setActiveSem(2)}
+                                        variant={activeSem === 2 ? "default" : "ghost"}
+                                        size="sm"
+                                        className={`rounded-full px-6 h-9 transition-all duration-300 font-black text-[10px] tracking-widest ${activeSem === 2 ? 'bg-slate-900 shadow-lg' : 'text-slate-500'}`}
+                                    >
+                                        SEM 2
+                                    </Button>
+                                </div>
+
+                                <div className="flex items-center gap-3 px-4 py-2 border rounded-2xl bg-slate-50/50 h-11">
+                                    <BarChart3 className="h-4 w-4 text-slate-400" />
+                                    <span className="text-xs font-bold text-slate-600 uppercase tracking-tight">Sorted by Utilization</span>
+                                </div>
                             </div>
                         </div>
 
@@ -473,16 +524,19 @@ const FacultyLoadDashboard = () => {
                                                                             {getAbbreviation(code)}
                                                                         </Badge>
                                                                     ))}
-                                                                    {f.labs.map((code, idx) => (
-                                                                        <Badge
-                                                                            key={`lb-${idx}`}
-                                                                            variant="secondary"
-                                                                            title={`Lab: ${getCourseName(code)}`}
-                                                                            className="bg-emerald-50 text-emerald-700 border-none text-[8px] font-black px-2 py-0.5 rounded-md"
-                                                                        >
-                                                                            {getAbbreviation(code)} Lab
-                                                                        </Badge>
-                                                                    ))}
+                                                                    {f.labs.map((code, idx) => {
+                                                                        const abbr = getAbbreviation(code);
+                                                                        return (
+                                                                            <Badge
+                                                                                key={`lb-${idx}`}
+                                                                                variant="secondary"
+                                                                                title={`Lab: ${getCourseName(code)}`}
+                                                                                className="bg-emerald-50 text-emerald-700 border-none text-[8px] font-black px-2 py-0.5 rounded-md"
+                                                                            >
+                                                                                {abbr.toLowerCase().includes('lab') ? abbr : `${abbr} Lab`}
+                                                                            </Badge>
+                                                                        );
+                                                                    })}
                                                                 </div>
                                                             </div>
                                                         )}

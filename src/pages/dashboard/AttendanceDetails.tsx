@@ -51,13 +51,12 @@ const AttendanceDetails = () => {
 
         fetchAttendance();
         
-        // Instant sync on faculty submission (Same-tab)
-        const handleUpdate = () => fetchAttendance(true);
-        window.addEventListener('attendance_updated', handleUpdate);
+        // Listen for real-time broadcasts (Same origin, multi-tab)
+        const unsubscribe = attendanceService.onUpdate(() => fetchAttendance(true));
         
-        // Cross-tab sync (using directory as a trigger)
+        // Cross-tab sync fallback
         const handleStorage = (e: StorageEvent) => {
-            if (e.key === 'smartcampus_student_directory') {
+            if (e.key === 'smartcampus_student_directory' || e.key === 'smartcampus_attendance_cache') {
                 fetchAttendance(true);
             }
         };
@@ -66,7 +65,7 @@ const AttendanceDetails = () => {
         const pollInterval = setInterval(() => fetchAttendance(true), 10000);
         
         return () => {
-            window.removeEventListener('attendance_updated', handleUpdate);
+            unsubscribe();
             window.removeEventListener('storage', handleStorage);
             clearInterval(pollInterval);
         };

@@ -1,4 +1,5 @@
 import { MOCK_FACULTY } from "@/data/mockFaculty";
+import { MOCK_COURSES } from "@/data/mockCourses";
 import { getTimetable } from "@/data/aimlTimetable";
 
 /**
@@ -133,6 +134,20 @@ export function reallocateLeavePeriods(
                                    (session.faculty && targetFaculty.name && session.faculty.toLowerCase().includes(targetFaculty.name.toLowerCase()));
 
                     if (isMatch) {
+                        // NEW RULE: Labs and Projects should NOT be rescheduled
+                        // They have 2+ faculty members assigned, so the other(s) can handle it.
+                        const cCode = session.courseCode || session.subject || "";
+                        const courseInfo = MOCK_COURSES.find(c => c.code === cCode);
+                        const subjectName = (session.subject || (session.name && session.name !== "TBD") || courseInfo?.name || "").toUpperCase();
+                        
+                        const isLabOrProject = courseInfo?.type === 'Lab' || 
+                                             subjectName.includes('LAB') || 
+                                             subjectName.includes('PROJECT') || 
+                                             subjectName.includes('WORKSHOP') ||
+                                             subjectName.includes('SEMINAR');
+                        
+                        if (isLabOrProject) return;
+
                         const [dept, year, sem, section] = sectionKey.split('-');
                         const replacement = findReplacementFaculty(
                             dept, parseInt(year), section, sDay, sTime, facultyId, publishedTimetables
@@ -185,7 +200,7 @@ export function executeSwap(
     req: { senderId: string, targetId: string, date: string, period: string },
     publishedTimetables: Record<string, any>
 ) {
-    const updatedTimetables = { ...publishedTimetables };
+    const updatedTimetables = JSON.parse(JSON.stringify(publishedTimetables));
     let totalAdjustments = 0;
     const adjustments: any[] = [];
     const [startTime] = req.period.split('-');
@@ -204,8 +219,11 @@ export function executeSwap(
     const targetDay = dayNames[dObj.getDay()];
     const targetTime = timeMap[startTime] || startTime;
 
+    const sender = MOCK_FACULTY.find(f => f.id === req.senderId);
+    const target = MOCK_FACULTY.find(f => f.id === req.targetId);
+
     Object.entries(updatedTimetables).forEach(([sectionKey, entry]: [string, any]) => {
-        const grid = { ...(entry.grid || entry) };
+        const grid = entry.grid || entry;
         let entryModified = false;
 
         Object.entries(grid).forEach(([dayTime, session]: [string, any]) => {
@@ -214,11 +232,11 @@ export function executeSwap(
             
             // If this is the specific slot at the specific time AND DAY
             if (day === targetDay && time === targetTime) {
-                const sender = MOCK_FACULTY.find(f => f.id === req.senderId);
-                const target = MOCK_FACULTY.find(f => f.id === req.targetId);
+                // Determine if this session belongs to Sender or Target
+                const belongsToSender = session.facultyId === req.senderId || (session.faculty && session.faculty.toLowerCase().includes(sender?.name.toLowerCase() || ''));
+                const belongsToTarget = session.facultyId === req.targetId || (session.faculty && session.faculty.toLowerCase().includes(target?.name.toLowerCase() || ''));
 
-                // If sender was assigned, give to target
-                if (session.facultyId === req.senderId || (session.faculty && session.faculty.toLowerCase().includes(sender?.name.toLowerCase() || ''))) {
+                if (belongsToSender) {
                     grid[dayTime] = {
                         ...session,
                         facultyId: req.targetId,
@@ -235,6 +253,16 @@ export function executeSwap(
                         time,
                         subject: session.subject || session.name || session.courseCode
                     });
+                } else if (belongsToTarget) {
+                    grid[dayTime] = {
+                        ...session,
+                        facultyId: req.senderId,
+                        faculty: sender?.name || req.senderId,
+                        originalFacultyId: session.facultyId || req.targetId,
+                        originalFacultyName: session.faculty || target?.name || req.targetId,
+                        isSwap: true
+                    };
+                    entryModified = true;
                 }
             }
         });

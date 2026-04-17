@@ -94,8 +94,8 @@ export default function ExamManagement() {
     const groupedExams = useMemo(() => {
         const groups: Record<string, { main: Exam, sessions: Exam[] }> = {};
         exams.forEach(e => {
-            // Extract Timetable ID from EXT-ttID-idx format or use exam ID
-            const ttId = e.id.startsWith('EXT-') ? e.id.split('-')[1] : e.id;
+            // Extract Timetable ID correctly regardless of hyphens in Date.now() or prefix
+            const ttId = e.id.startsWith('EXT-') ? e.id.substring(0, e.id.lastIndexOf('-')) : e.id;
             if (!groups[ttId]) {
                 groups[ttId] = { main: e, sessions: [] };
             }
@@ -105,7 +105,7 @@ export default function ExamManagement() {
     }, [exams]);
 
     const handleGenerateAllocationGroup = (ttId: string) => {
-        const sessions = exams.filter(e => e.id.includes(`-${ttId}-`) || e.id === ttId);
+        const sessions = exams.filter(e => e.id.startsWith(ttId) || e.id === ttId);
         let allSeating: any[] = [];
         let allInvigs: any[] = [];
         
@@ -124,14 +124,24 @@ export default function ExamManagement() {
         setInvigilationList(prev => [...prev.filter(i => !sessionIds.includes(i.examId)), ...allInvigs]);
         setExams(prev => prev.map(e => sessionIds.includes(e.id) ? { ...e, status: "Allocated" } : e));
         
-        // Push notification for seating and duties
+        // Push notification specifically for Students (Seating only)
         alertService.sendAlert({
-            title: "🪑 Seating & Duties Finalized",
-            message: `Examination seating arrangements and invigilation duties have been generated for ${sessions.length} sessions. Please check your personal portal for halls/rooms.`,
+            title: "🪑 Exam Seating Allocated",
+            message: `Your examination seating arrangements have been finalized for ${sessions.length} upcoming sessions. Please check your personal portal to securely view your assigned hall and seat numbers.`,
             category: 'exam',
             type: 'urgent',
-            targetAudience: 'both',
-            redirectUrl: '/dashboard/student'
+            targetAudience: 'students',
+            redirectUrl: '/dashboard/timetable?tab=exams'
+        });
+
+        // Push notification specifically for Faculty (Invigilation only)
+        alertService.sendAlert({
+            title: "📋 Invigilation Duties Assigned",
+            message: `Invigilation duties and hall allocations have been assigned for ${sessions.length} exam sessions. Kindly review your securely mapped blocks and schedules from your portal.`,
+            category: 'exam',
+            type: 'urgent',
+            targetAudience: 'faculty',
+            redirectUrl: '/dashboard/timetable?tab=exams'
         });
 
         toast({ 
@@ -158,18 +168,18 @@ export default function ExamManagement() {
 
     const handleDeleteRoster = (examId: string) => {
         // Extract ttId to delete the whole cycle
-        const ttId = examId.startsWith('EXT-') ? examId.split('-')[1] : examId;
+        const ttId = examId.startsWith('EXT-') ? examId.substring(0, examId.lastIndexOf('-')) : examId;
         
         setExams(prev => prev.filter(e => {
-            const currentTtId = e.id.startsWith('EXT-') ? e.id.split('-')[1] : e.id;
+            const currentTtId = e.id.startsWith('EXT-') ? e.id.substring(0, e.id.lastIndexOf('-')) : e.id;
             return currentTtId !== ttId;
         }));
         setSeatingPlans(prev => prev.filter(s => {
-            const currentTtId = s.examId.startsWith('EXT-') ? s.examId.split('-')[1] : s.examId;
+            const currentTtId = s.examId.startsWith('EXT-') ? s.examId.substring(0, s.examId.lastIndexOf('-')) : s.examId;
             return currentTtId !== ttId;
         }));
         setInvigilationList(prev => prev.filter(i => {
-            const currentTtId = i.examId.startsWith('EXT-') ? i.examId.split('-')[1] : i.examId;
+            const currentTtId = i.examId.startsWith('EXT-') ? i.examId.substring(0, i.examId.lastIndexOf('-')) : i.examId;
             return currentTtId !== ttId;
         }));
         
@@ -270,8 +280,19 @@ export default function ExamManagement() {
                 category: 'exam',
                 type: 'urgent',
                 targetAudience: 'both',
-                year: tt.years[0], // Using the first year for targeting
-                redirectUrl: '/dashboard/timetable'
+                year: 0,
+                redirectUrl: '/dashboard/timetable?tab=exams'
+            });
+
+            // Push to backend notification sync
+            import('@/services/notificationService').then(mod => {
+                mod.default.createNotification({
+                    title: `📝 ${tt.type} Schedule Published`,
+                    message: `The official examination timetable for ${tt.type} (Semester ${tt.semesterGroup === 1 ? 'Odd' : 'Even'}) is now live. Check your dashboard for details.`,
+                    type: 'timetable',
+                    target_audience: 'students',
+                    redirect_url: '/dashboard/timetable'
+                }).catch(console.error);
             });
         }
 
@@ -473,11 +494,11 @@ export default function ExamManagement() {
                                     <p className="font-black uppercase tracking-widest text-xs">No active rosters initialized</p>
                                 </div>
                             )}
-                            {groupedExams.map((group) => {
+                                {groupedExams.map((group) => {
                                 const { main, sessions } = group;
                                 const isCycle = sessions.length > 1;
                                 const allAllocated = sessions.every(s => s.status === "Allocated");
-                                const ttId = main.id.startsWith('EXT-') ? main.id.split('-')[1] : main.id;
+                                const ttId = main.id.startsWith('EXT-') ? main.id.substring(0, main.id.lastIndexOf('-')) : main.id;
 
                                 return (
                                     <div key={ttId} className="group relative bg-muted/20 hover:bg-white dark:hover:bg-slate-900/50 p-6 rounded-[2rem] border border-border/40 transition-all hover:shadow-xl hover:scale-[1.01]">

@@ -94,6 +94,19 @@ const LeaveManagement = () => {
         ).sort((a,b) => b.timestamp - a.timestamp);
     }, [allRequests, user.id]);
 
+    const leaveBalances = useMemo(() => {
+        const totals = { casual: 15, sick: 12, academic: 15 };
+        myRequests.forEach(req => {
+            if (req.type === 'leave' && req.status === 'approved') {
+                const cat = req.category as keyof typeof totals;
+                if (totals[cat] !== undefined) {
+                    totals[cat] -= (req.duration || 0);
+                }
+            }
+        });
+        return totals;
+    }, [myRequests]);
+
     const availableFaculty = useMemo(() => {
         if (!swapDate || !period) return [];
         const publishedStoreStr = localStorage.getItem('published_timetables');
@@ -145,14 +158,8 @@ const LeaveManagement = () => {
                 }
             });
 
-            // USER REQUEST: For "Swap", show busy faculty with their classes. 
-            // For "Replacement", show free faculty.
-            if (requestType === 'swap') {
-                if (!currentClass) return null;
-            } else {
-                if (currentClass) return null;
-            }
-
+            // USER REQUEST: Always show faculty details to allow requester to choose
+            // We provide the currentClass info so they know if it's a Swap or Replacement opportunity
             return {
                 ...f,
                 currentClass,
@@ -265,6 +272,18 @@ const LeaveManagement = () => {
             }
         });
 
+        if (senderClass) {
+            const subject = (senderClass.subject || senderClass.courseName || senderClass.courseCode || "").toUpperCase();
+            if (subject.includes("LAB") || subject.includes("PROJECT") || subject.includes("WORKSHOP")) {
+                toast({
+                    title: "Action Restricted",
+                    description: "Lab and Project sessions do not require rescheduling. The co-faculty member will handle the session.",
+                    variant: "destructive"
+                });
+                return;
+            }
+        }
+
         const broadcastGroupId = `broadcast-${Date.now()}`;
         const newReqs: FacultyRequest[] = selectedFacultyIds.map(fid => {
             const target = MOCK_FACULTY.find(f => f.id === fid);
@@ -292,6 +311,18 @@ const LeaveManagement = () => {
         });
 
         saveRequests([...allRequests, ...newReqs]);
+
+        newReqs.forEach(req => {
+            alertService.sendAlert({
+                title: `${requestType === 'swap' ? 'Swap' : 'Replacement'}: ${user.name}`,
+                message: `${req.date} | ${req.period}`,
+                category: 'substitution',
+                type: 'urgent',
+                targetAudience: 'faculty',
+                recipientId: req.targetId,
+                redirectUrl: '/dashboard/leave'
+            });
+        });
 
         toast({
             title: "Requests Broadcasted",
@@ -590,29 +621,30 @@ const LeaveManagement = () => {
                                 </CardHeader>
                                 <CardContent className="grid grid-cols-2 gap-4">
                                     <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg text-center">
-                                        <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">8</div>
+                                        <div className="text-3xl font-bold text-blue-600 dark:text-blue-400">{leaveBalances.casual}</div>
                                         <div className="text-sm text-blue-800 dark:text-blue-300 font-medium">Casual Leaves</div>
                                     </div>
                                     <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg text-center">
-                                        <div className="text-3xl font-bold text-green-600 dark:text-green-400">12</div>
-                                        <div className="text-sm text-green-800 dark:text-green-300 font-medium">Sick Leaves</div>
+                                        <div className="text-3xl font-bold text-green-600 dark:text-green-400">{leaveBalances.sick}</div>
+                                        <div className="text-sm text-green-800 dark:text-green-300 font-medium">Sick/Medical Leaves</div>
                                     </div>
                                     <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg text-center col-span-2">
-                                        <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">5</div>
-                                        <div className="text-sm text-purple-800 dark:text-purple-300 font-medium">Academic Leaves</div>
+                                        <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{leaveBalances.academic}</div>
+                                        <div className="text-sm text-purple-800 dark:text-purple-300 font-medium">Academic / Duty Leaves</div>
                                     </div>
                                 </CardContent>
                             </Card>
 
                             <Card className="bg-muted/30">
                                 <CardHeader>
-                                    <CardTitle className="text-base">Note</CardTitle>
+                                    <CardTitle className="text-base uppercase font-black text-slate-800">TKR Leave Policy Guidelines</CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <ul className="text-sm list-disc pl-4 space-y-1 text-muted-foreground">
-                                        <li>Approvals usually take 5-6 hours.</li>
-                                        <li>In case of emergency, contact HR directly.</li>
-                                        <li>Medical certificate required for &gt;3 days sick leave.</li>
+                                    <ul className="text-[11px] list-disc pl-4 space-y-2 text-muted-foreground font-bold leading-relaxed">
+                                        <li><span className="text-slate-900">Casual Leave (CL):</span> 12-15 days/year (approx. 1 day/month credit). Max 6-7 per semester. Cannot be combined with vacation.</li>
+                                        <li><span className="text-slate-900">Medical Leave (ML):</span> 10-12 days per year. Medical certificate usually required for validation.</li>
+                                        <li><span className="text-slate-900">Academic/Duty Leave:</span> Up to 10-15 days/year for workshops, seminars, or exam-related duties.</li>
+                                        <li><span className="text-slate-900">Loss of Pay (LOP):</span> Available upon exhaustion of all other leave types, subject to management approval.</li>
                                     </ul>
                                 </CardContent>
                             </Card>
@@ -755,7 +787,7 @@ const LeaveManagement = () => {
                                     ) : availableFaculty.length === 0 ? (
                                         <div className="p-8 border-2 border-dashed border-amber-200 rounded-2xl flex flex-col items-center justify-center text-center bg-amber-50">
                                             <AlertCircle className="w-8 h-8 text-amber-600 mb-2" />
-                                            <p className="text-sm font-bold text-amber-800">No free departmental colleagues found for this slot</p>
+                                            <p className="text-sm font-bold text-amber-800">No {requestType === 'swap' ? 'faculty with classes' : 'free colleagues'} found for this slot</p>
                                         </div>
                                     ) : (
                                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">

@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import notificationService, { Notification } from '@/services/notificationService';
 import { MOCK_STUDENTS } from '@/data/mockStudents';
 import { MOCK_FACULTY } from '@/data/mockFaculty';
+import { MOCK_CONVERSATIONS } from '@/data/mockCommunications';
 
 export interface UIBackfilledNotification {
     id: string;
@@ -24,13 +25,17 @@ export function useNotifications(user: { id: string, name: string, role: string 
     const [unreadGroupMsgs, setUnreadGroupMsgs] = useState(0);
 
     const loadAll = useCallback(async () => {
+        const role = user.role;
         try {
             // 1. Fetch from Backend (Independent Try)
             try {
-                const data = await notificationService.getNotifications();
-                if (data) setApiNotifications(data);
+                const token = localStorage.getItem('token');
+                if (token) {
+                    const data = await notificationService.getNotifications();
+                    if (data) setApiNotifications(data);
+                }
             } catch (err) {
-                console.warn("Notification API unreachable.");
+                // Silent catch for dev/unauthorized environments
             }
 
             // 2. Load Faculty/Admin Requests (Local State Bridge)
@@ -57,14 +62,24 @@ export function useNotifications(user: { id: string, name: string, role: string 
             if (savedAlerts) {
                 const parsedData = JSON.parse(savedAlerts);
                 const parsed = Array.isArray(parsedData) ? parsedData : [];
-                const role = user.role;
                 
                 const myAlerts = parsed.filter((a: any) => {
-                    // Admin sees everything
-                    if (role === 'admin') return true;
+                    const target = a.targetAudience?.toLowerCase() || '';
+
+                    // RULE 1: Never show any alert back to the person who sent it
+                    if (a.senderId && a.senderId !== 'system' && a.senderId === user.id) return false;
+
+                    // RULE 2: Admins only see broad 'both' alerts (not student/faculty-only ones)
+                    if (role === 'admin') {
+                        return target === 'both' || target === '' || target === 'all';
+                    }
+
+                    // RULE 3: Strict Recipient Filtering (Direct mentions / Personal assignments)
+                    if (a.recipientId && a.recipientId !== 'all' && a.recipientId !== 'targeted') {
+                        return a.recipientId === user.id;
+                    }
 
                     // Role targeting - handle both 'student'/'students' and 'faculty' forms
-                    const target = a.targetAudience?.toLowerCase() || '';
                     const roleMatch = target === 'both' || 
                                      (role === 'student' && target.includes('student')) || 
                                      (role === 'faculty' && target.includes('faculty'));
@@ -78,7 +93,6 @@ export function useNotifications(user: { id: string, name: string, role: string 
                             (s.rollNumber && s.rollNumber.trim().toLowerCase() === user.id.trim().toLowerCase())
                         );
                         
-                        // IF we can't find the student, ONLY show broad 'All' alerts
                         if (!student) {
                            return a.branch === 'All' || a.branch === 'all' || target === 'both';
                         }
@@ -99,7 +113,7 @@ export function useNotifications(user: { id: string, name: string, role: string 
                             return a.branch === 'All' || a.branch === 'all' || target === 'both';
                         }
                         
-                        // If it's a broad exam/timetable alert for both, ignore branch lock to ensure visibility
+                        // Broad exam/timetable alerts for faculty always visible
                         if (target === 'both' && (a.category === 'exam' || a.category === 'timetable')) return true;
 
                         const branchMatch = a.branch === 'All' || a.branch === 'all' || a.branch === faculty.department;
@@ -111,17 +125,59 @@ export function useNotifications(user: { id: string, name: string, role: string 
                 setStudentAlerts(myAlerts);
             }
 
-            // 4. Load Group Message Unreads
+            // 4. Load Group Message Unreads (Filtered by Group Visibility)
             const savedMsgs = localStorage.getItem('smartcampus_messages');
+            const savedConvs = localStorage.getItem('smartcampus_conversations');
+            
             if (savedMsgs) {
                 const msgs: Record<string, any[]> = JSON.parse(savedMsgs);
+                const localConvs: any[] = savedConvs ? JSON.parse(savedConvs) : [];
+                
+                // Helper to check if user belongs to a group
+                const isMember = (conv: any) => {
+                    const type = conv.type;
+                    const branch = conv.branch;
+                    const year = conv.year;
+                    const section = conv.section;
+
+                    if (role === 'admin') {
+                        return ['admin_broadcast', 'admin_to_yi', 'cr_coordination', 'faculty_only', 'placement_cell'].includes(type);
+                    }
+                    
+                    const student = MOCK_STUDENTS.find(s => s.rollNumber === user.id || s.id === user.id);
+                    const faculty = MOCK_FACULTY.find(f => f.id === user.id);
+
+                    if (role === 'student' && student) {
+                        if (type === 'admin_broadcast' || type === 'placement_cell') return true;
+                        if (type === 'year_group') return branch === student.branch && year === student.year;
+                        if (type === 'section_group') return branch === student.branch && year === student.year && section === student.section;
+                        // Handle subject codes or codes in course groups
+                        if (type === 'subject_specific') return branch === student.branch && year === student.year;
+                        return false;
+                    }
+                    if (role === 'faculty' && faculty) {
+                        if (type === 'admin_broadcast' || type === 'placement_cell' || type === 'admin_to_yi') return true;
+                        if (type === 'faculty_only') return branch === faculty.department;
+                        if (type === 'year_group') return branch === faculty.department; 
+                        if (type === 'section_group') return branch === faculty.department;
+                        return false;
+                    }
+                    return false;
+                };
+
                 let unreadTotal = 0;
-                Object.values(msgs).forEach(groupMsgs => {
-                    groupMsgs.forEach(m => {
-                        if (m.senderId !== user.id && !m.readBy?.includes(user.name)) {
-                            unreadTotal++;
-                        }
-                    });
+                Object.entries(msgs).forEach(([groupId, groupMsgs]) => {
+                    // Find conversation meta in local storage OR fallback to mock
+                    const conv = localConvs.find(c => c.id === groupId) || MOCK_CONVERSATIONS.find(c => c.id === groupId);
+                    
+                    // Critical Fix: Only count if we successfully verify visibility/membership
+                    if (conv && isMember(conv)) {
+                        groupMsgs.forEach(m => {
+                            if (m.senderId !== user.id && !m.readBy?.includes(user.name)) {
+                                unreadTotal++;
+                            }
+                        });
+                    }
                 });
                 setUnreadGroupMsgs(unreadTotal);
             }
@@ -161,8 +217,17 @@ export function useNotifications(user: { id: string, name: string, role: string 
 
         // Map Faculty Requests
         const readReqs = JSON.parse(localStorage.getItem('READ_REQUESTS') || '[]');
+        const seenParentIds = new Set<string>();
+
         liveRequests.forEach(r => {
             const isStatusUpdate = r.senderId === user.id && r.status !== 'pending';
+            
+            // Deduplication logic for Broadcast status updates
+            if (isStatusUpdate && r.parentId) {
+                if (seenParentIds.has(r.parentId)) return;
+                seenParentIds.add(r.parentId);
+            }
+
             const type = r.status === 'rejected' ? "destructive" : r.status === 'approved' ? "success" : "warning";
             list.push({
                 id: `req-${r.id}`,
@@ -179,8 +244,9 @@ export function useNotifications(user: { id: string, name: string, role: string 
 
         // Map Institutional Alerts (All Roles)
         studentAlerts.forEach(a => {
+            const aId = String(a.id);
             list.push({
-                id: a.id.startsWith('alert-') ? a.id : `alert-${a.id}`,
+                id: aId.startsWith('alert-') ? aId : `alert-${aId}`,
                 title: a.title,
                 message: a.message,
                 type: (a.title.toLowerCase().includes('attendance') ? 'attendance' : 'info') as any,
@@ -216,11 +282,19 @@ export function useNotifications(user: { id: string, name: string, role: string 
         return list.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
     }, [liveRequests, studentAlerts, apiNotifications, user.id, user.role]);
 
-    const unreadCount = notifications.filter(n => !n.read).length + unreadGroupMsgs;
+    const systemUnreadCount = notifications.filter(n => !n.read).length;
+    const totalUnreadCount = systemUnreadCount + unreadGroupMsgs;
+
+    // Sync totalUnreadCount to localStorage for the Sidebar's Communication Hub badge
+    useEffect(() => {
+        localStorage.setItem('smartcampus_unread_count', String(totalUnreadCount));
+        window.dispatchEvent(new Event('storage'));
+    }, [totalUnreadCount]);
 
     return { 
         notifications, 
-        unreadCount, 
+        unreadCount: systemUnreadCount, // The Bell now ONLY shows system alerts/requests
+        totalUnreadCount,
         loading, 
         refresh: loadAll,
         markAsRead: async (id: string) => {
@@ -230,7 +304,8 @@ export function useNotifications(user: { id: string, name: string, role: string 
                 // Direct comparison — don't strip if the source already has the prefix
                 const savedAlerts = JSON.parse(localStorage.getItem('STUDENT_ALERTS') || '[]');
                 const updated = savedAlerts.map((a: any) => {
-                    const aId = a.id.startsWith('alert-') ? a.id : `alert-${a.id}`;
+                    const aIdStr = String(a.id);
+                    const aId = aIdStr.startsWith('alert-') ? aIdStr : `alert-${aIdStr}`;
                     return aId === id ? { ...a, isRead: true } : a;
                 });
                 localStorage.setItem('STUDENT_ALERTS', JSON.stringify(updated));
@@ -254,6 +329,22 @@ export function useNotifications(user: { id: string, name: string, role: string 
             // Mark all requests read
             const allReqIds = liveRequests.map(r => String(r.id));
             localStorage.setItem('READ_REQUESTS', JSON.stringify(allReqIds));
+
+            // Mark all group messages as read
+            const savedMsgs = localStorage.getItem('smartcampus_messages');
+            if (savedMsgs) {
+                const msgs: Record<string, any[]> = JSON.parse(savedMsgs);
+                Object.keys(msgs).forEach(key => {
+                    msgs[key] = msgs[key].map(m => {
+                        if (m.senderId !== user.id && !m.readBy?.includes(user.name)) {
+                            return { ...m, readBy: [...(m.readBy || []), user.name] };
+                        }
+                        return m;
+                    });
+                });
+                localStorage.setItem('smartcampus_messages', JSON.stringify(msgs));
+                window.dispatchEvent(new CustomEvent('messages_updated'));
+            }
             
             loadAll();
             window.dispatchEvent(new Event('storage'));

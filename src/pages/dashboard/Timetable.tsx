@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { EXAM_BRANCHES, ExamTimetable } from "@/utils/examTimetableGenerator";
 import { SeatingAssignment, InvigilationDuty } from "@/data/examData";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 import { AIML_TIMETABLES, FACULTY_LOAD, getTimetable } from "@/data/aimlTimetable";
 import { MOCK_STUDENTS } from "@/data/mockStudents";
 import { MOCK_FACULTY } from "@/data/mockFaculty";
@@ -21,7 +21,12 @@ interface TimetableProps {
 
 export default function Timetable({ userRole: propRole }: TimetableProps) {
   const { user } = useOutletContext<{ user: { id: string, name: string, role: string } }>();
-  const [activeTab, setActiveTab] = useState('academic');
+  const [searchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState(() => {
+    // Read ?tab= from URL on mount to support deep linking from notifications
+    const tabParam = searchParams.get('tab');
+    return tabParam === 'exams' ? 'exams' : 'academic';
+  });
   const [selectedSemester, setSelectedSemester] = useState<number>(1);
   const userRole = propRole || user?.role || "student";
 
@@ -179,18 +184,28 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
           const amISubstituting = approvedRequests.find((r: any) => {
              const rDate = new Date(r.date);
              const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
-             const isMatchingSlot = rDayName === day && r.period === time && r.section === key;
+             
+             const revMap: any = { "09:40": "09:30", "10:40": "10:30", "11:40": "11:40", "01:20": "01:30", "02:20": "02:30", "03:20": "03:30" };
+             const rStartTime = r.period?.split('-')[0];
+             const isMatchingSlot = rDayName === day && (r.period === time || r.period.startsWith(time) || rStartTime === time || (revMap[time] && (r.period.startsWith(revMap[time]) || rStartTime === revMap[time])));
+             
+             const isMatchingSection = r.section === key;
              const isMeTarget = r.targetId === facultyId || (r.targetName && r.targetName.toLowerCase() === facultyName.toLowerCase());
-             return isMatchingSlot && isMeTarget;
+             return isMatchingSlot && isMatchingSection && isMeTarget;
           });
 
           // Check for a substitution where I am being replaced by SOMEONE ELSE
           const amIBeingReplaced = approvedRequests.find((r: any) => {
              const rDate = new Date(r.date);
              const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
-             const isMatchingSlot = rDayName === day && r.period === time && r.section === key;
+             
+             const revMap: any = { "09:40": "09:30", "10:40": "10:30", "11:40": "11:40", "01:20": "01:30", "02:20": "02:30", "03:20": "03:30" };
+             const rStartTime = r.period?.split('-')[0];
+             const isMatchingSlot = rDayName === day && (r.period === time || r.period.startsWith(time) || rStartTime === time || (revMap[time] && (r.period.startsWith(revMap[time]) || rStartTime === revMap[time])));
+             
+             const isMatchingSection = r.section === key;
              const isMeSender = r.senderId === facultyId || (r.senderName && (session.faculty?.toLowerCase()?.includes(r.senderName.toLowerCase())));
-             return isMatchingSlot && isMeSender;
+             return isMatchingSlot && isMatchingSection && isMeSender;
           });
 
           let isAssigned = !!amISubstituting;
@@ -564,10 +579,10 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
               <CardTitle className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <span className="text-2xl font-black tracking-tight">{userRole === 'student' ? 'My Schedule' : 'Teaching Schedule'}</span>
-                  <Badge variant="outline" className="rounded-full border-primary/20 text-primary uppercase text-[8px] font-black tracking-widest">Official Release</Badge>
                   {userRole === 'student' && student && (
-                      <Badge className="ml-2 bg-primary/10 border-primary/30 text-primary font-black uppercase text-[10px]">
-                          {student.branch} | Y{student.year} | S{student.semester} | Sec {student.section}
+                      <Badge className="ml-3 px-4 py-1.5 bg-gradient-to-r from-indigo-500 to-primary text-white border-none shadow-lg shadow-primary/20 font-black uppercase text-[12px] tracking-wider rounded-full flex items-center gap-2">
+                          <span className="opacity-70 text-[10px]">Cohort:</span>
+                          {student.branch} | Y{student.year} | S{student.semester} | SEC {student.section}
                       </Badge>
                   )}
                 </div>
@@ -804,11 +819,11 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
                       <div className="p-8 border-b border-border/50 bg-gradient-to-r from-primary/5 via-transparent to-transparent flex justify-between items-center">
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
-                            <Badge className="bg-primary/10 text-primary border-none text-[8px] font-black uppercase tracking-widest">{tt.type}</Badge>
-                            <Badge variant="outline" className="text-[8px] font-black uppercase tracking-widest border-primary/20">{tt.semesterGroup === 1 ? 'Odd' : 'Even'} Semesters</Badge>
+                            <Badge className="bg-primary/10 text-primary border-none text-xs font-black uppercase tracking-widest">{tt.type}</Badge>
+                            <Badge variant="outline" className="text-xs font-black uppercase tracking-widest border-primary/20">{tt.semesterGroup === 1 ? 'Odd' : 'Even'} Semesters</Badge>
                           </div>
                           <h3 className="text-2xl font-black tracking-tighter text-foreground">{tt.title}</h3>
-                      <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-70">
+                      <p className="text-sm text-muted-foreground font-black uppercase tracking-widest opacity-70">
                         Official Release | {tt.startDate} to {tt.endDate}
                       </p>
                     </div>
@@ -819,7 +834,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
                   <div className="p-4 lg:p-8 overflow-x-auto">
                     <table className="w-full border-collapse border border-border/20 rounded-2xl overflow-hidden shadow-inner">
                       <thead>
-                        <tr className="bg-muted/40 text-[10px] font-black uppercase tracking-widest text-muted-foreground border-b border-border/20">
+                        <tr className="bg-muted/40 text-xs font-black uppercase tracking-widest text-muted-foreground border-b border-border/20">
                           <th className="p-4 text-left">Date & Day</th>
                           <th className="p-4 text-left">Session</th>
                           <th className="p-4 text-left">Time</th>
@@ -837,28 +852,28 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
                           return (
                             <tr key={sIdx} className="hover:bg-primary/[0.02] transition-colors group">
                               <td className="p-4 whitespace-nowrap">
-                                <span className="font-black text-xs text-foreground block">{slot.date}</span>
-                                <span className="text-[9px] font-bold text-primary/60 uppercase">{slot.day}</span>
+                                <span className="font-black text-sm text-foreground block">{slot.date}</span>
+                                <span className="text-xs font-bold text-primary/60 uppercase">{slot.day}</span>
                               </td>
                               <td className="p-4">
-                                <Badge variant="outline" className={`text-[8px] font-bold ${slot.session === 'FN' ? 'bg-indigo-50/50 text-indigo-600 border-indigo-200' : 'bg-orange-50/50 text-orange-600 border-orange-200'}`}>
+                                <Badge variant="outline" className={`text-xs font-bold ${slot.session === 'FN' ? 'bg-indigo-50/50 text-indigo-600 border-indigo-200' : 'bg-orange-50/50 text-orange-600 border-orange-200'}`}>
                                   {slot.session === 'FN' ? 'Forenoon' : 'Afternoon'}
                                 </Badge>
                               </td>
-                              <td className="p-4 text-[10px] font-mono font-bold text-muted-foreground">{slot.startTime} - {slot.endTime}</td>
+                              <td className="p-4 text-sm font-mono font-bold text-muted-foreground">{slot.startTime} - {slot.endTime}</td>
                               <td className="p-4 min-w-[300px]">
                                 <div className="space-y-2">
                                   {relevantSubjects.map((sub, subIdx) => (
                                     <div key={subIdx} className="p-3 rounded-xl bg-muted/30 border border-border/40 group-hover:border-primary/20 transition-all flex justify-between items-center gap-4">
                                       <div className="space-y-1">
-                                        <div className="text-[11px] font-black text-foreground">{formatSubjectName(sub.courseName)}</div>
-                                        <div className="text-[9px] font-mono font-bold text-muted-foreground opacity-60 uppercase">{sub.courseCode} | {sub.branch} (Year {sub.year})</div>
+                                        <div className="text-sm font-black text-foreground">{formatSubjectName(sub.courseName)}</div>
+                                        <div className="text-xs font-mono font-bold text-muted-foreground opacity-60 uppercase">{sub.courseCode} | {sub.branch} (Year {sub.year})</div>
                                       </div>
-                                      <Badge variant="outline" className="text-[8px] font-black uppercase border-primary/20 text-primary">Theo-II</Badge>
+                                      <Badge variant="outline" className="text-xs font-black uppercase border-primary/20 text-primary">Theo-II</Badge>
                                     </div>
                                   ))}
                                   {relevantSubjects.length === 0 && (
-                                    <span className="text-[10px] font-bold text-muted-foreground opacity-30 italic">No exams scheduled for your cohort in this slot.</span>
+                                    <span className="text-xs font-bold text-muted-foreground opacity-30 italic">No exams scheduled for your cohort in this slot.</span>
                                   )}
                                 </div>
                               </td>

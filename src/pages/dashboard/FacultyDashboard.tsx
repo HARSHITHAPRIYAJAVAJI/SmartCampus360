@@ -171,7 +171,7 @@ export default function FacultyDashboard({ facultyId: propFacultyId }: { faculty
                 
                 // 1. Check for a substitution/swap for this specific section, day, and time
                 const substitution = approvedRequests.find((r: any) => {
-                    return r.period === normalizedTime && r.section === key;
+                    return (r.period === normalizedTime || r.period?.startsWith(normalizedTime)) && r.section === key;
                 });
 
                 let isAssigned = false;
@@ -635,10 +635,10 @@ export default function FacultyDashboard({ facultyId: propFacultyId }: { faculty
                                                 {item.time.replace(' ', '\n')}
                                             </div>
                                             <div className="space-y-0.5">
-                                                <p className="font-black text-lg tracking-tight flex items-center gap-2">
+                                                <div className="font-black text-lg tracking-tight flex items-center gap-2">
                                                     {item.title}
                                                     {item.isOverride && <Badge className="text-[8px] h-4 bg-indigo-500 uppercase tracking-tighter">Substitute</Badge>}
-                                                </p>
+                                                </div>
                                                 <div className="flex items-center gap-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
                                                     <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> Hall {item.room}</span>
                                                     <span className="flex items-center gap-1"><BookOpen className="h-3 w-3" /> {item.code}</span>

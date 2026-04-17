@@ -132,7 +132,7 @@ const RequestsManagement = () => {
                             category: 'substitution',
                             type: 'priority',
                             targetAudience: 'students',
-                            redirectUrl: '/dashboard/student'
+                            redirectUrl: '/dashboard/communications?tab=notifications'
                         });
                     });
 

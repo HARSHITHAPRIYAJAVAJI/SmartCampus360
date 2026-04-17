@@ -43,7 +43,7 @@ const Navbar = () => {
     )}>
       {/* Top Bar - Standardized wider width */}
       <div className={cn(
-        "max-w-screen-2xl mx-auto px-4 md:px-8 w-full flex justify-between items-center text-[11px] font-medium transition-all duration-300 overflow-hidden",
+        "w-full px-6 md:px-16 flex justify-between items-center text-[11px] font-medium transition-all duration-300 overflow-hidden",
         isScrolled ? "h-0 opacity-0" : "h-10 opacity-100 border-b mb-2"
       )}>
         <div className="flex items-center space-x-6">
@@ -67,7 +67,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      <div className="max-w-screen-2xl mx-auto px-4 md:px-8 w-full flex items-center justify-between">
+      <div className="w-full px-6 md:px-16 flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3.5 shrink-0 group transition-all duration-300" aria-label="Smart Campus University Home">
           <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-primary/20 group-hover:scale-105 transition-all duration-300">

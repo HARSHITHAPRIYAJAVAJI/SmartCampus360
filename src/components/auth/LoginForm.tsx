@@ -151,7 +151,9 @@ export function LoginForm({
       let userName = "User";
 
       if (role === 'student') {
-        const student = MOCK_STUDENTS.find(s => s.rollNumber.toUpperCase() === cleanId);
+        const saved = localStorage.getItem('smartcampus_student_directory');
+        const allStudents = saved ? JSON.parse(saved) : MOCK_STUDENTS;
+        const student = allStudents.find((s: any) => s.rollNumber.toUpperCase() === cleanId);
         if (!student) {
           throw new Error('Student record not found. Please check your Roll Number.');
         }

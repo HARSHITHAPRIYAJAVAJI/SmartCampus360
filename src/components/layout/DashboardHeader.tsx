@@ -165,7 +165,14 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
   return (
     <header className="h-20 bg-card border-b border-border/60 flex items-center justify-between px-6 sticky top-0 z-30 shadow-sm backdrop-blur-md">
       {/* Sidebar Toggle & Search Bar */}
-      <div className="flex items-center gap-6 flex-1 max-w-2xl">
+      <div className="flex items-center gap-6 flex-1">
+        <div className="flex items-center gap-3 mr-4">
+          <div className="w-10 h-10 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg shadow-primary/20">
+            <GraduationCap className="h-6 w-6 text-primary-foreground" />
+          </div>
+          <span className="font-bold text-xl tracking-tight text-foreground hidden sm:block">Smart Campus</span>
+        </div>
+
         <Button
           variant="ghost"
           size="icon"
@@ -305,7 +312,12 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
                     key={notification.id} 
                     onClick={async () => {
                         await markAsRead(notification.id);
-                        navigate(notification.url);
+                        // Deep-link to the specific page if assigned (e.g. Requests/Leave/Grades)
+                        if (notification.url && notification.url !== '/dashboard') {
+                            navigate(notification.url);
+                        } else {
+                            navigate(`/dashboard/communications?tab=notifications&id=${notification.id}`);
+                        }
                     }}
                     className="flex gap-4 p-4 border-b border-border/10 last:border-0 hover:bg-muted/40 transition-colors cursor-pointer group focus:bg-muted/40 items-start"
                   >

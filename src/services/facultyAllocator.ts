@@ -80,8 +80,10 @@ const ABBR_TO_KEYWORDS: Record<string, string[]> = {
     "cao":          ["computer architecture and organization"],
     "pp":           ["python programming"],
     "pp lab":       ["python programming lab"],
-    "cpps":         ["c programming for problem solving"],
+    "cpps":         ["c programming for problem solving", "programming for problem solving"],
     "cpps lab":     ["c programming for problem solving lab"],
+    "pps":          ["c programming for problem solving", "programming for problem solving"],
+    "pps lab":      ["c programming for problem solving lab"],
     "is":           ["information security"],
     "cns":          ["cryptography and network security", "network security"],
     "ns":           ["network security"],
@@ -138,6 +140,8 @@ const ABBR_TO_KEYWORDS: Record<string, string[]> = {
     "natural language processing":  ["natural language processing"],
     "artificial intelligence":      ["artificial intelligence"],
     "soft computing":               ["soft computing"],
+    "ads":                          ["advanced data structures"],
+    "ads lab":                      ["advanced data structures lab"],
 
     // ── ECE abbreviations ─────────────────────────────────────────────────────
     "ep":       ["engineering physics", "applied physics", "physics", "advanced engineering physics", "aep"],
@@ -228,13 +232,23 @@ export class FacultyAllocator {
 
                 const matches = f.specialization.some(spec => {
                     const specLower = spec.trim().toLowerCase();
+                    
+                    // 1. Exact match with the full specialization tag
+                    if (courseNameLower.includes(specLower)) return true;
 
-                    // 1. Direct substring / exact match
-                    if (courseNameLower === specLower) return true;
-                    if (specLower.length >= 4 && courseNameLower.includes(specLower)) return true;
+                    // 2. Handle labels like "Machine Learning (ML)" by extracting tokens
+                    const cleanSpec = specLower.replace(/\(.*\)/, "").trim();
+                    const innerAbbr = specLower.match(/\((.*?)\)/)?.[1]?.trim();
 
-                    // 2. Abbreviation table lookup
-                    const keywords = ABBR_TO_KEYWORDS[specLower];
+                    if (cleanSpec && cleanSpec.length >= 3 && courseNameLower.includes(cleanSpec)) return true;
+                    if (innerAbbr && courseNameLower.includes(innerAbbr)) {
+                         // Check if the inner abbr actually maps to this course via our table
+                         const keywordsIfAbbr = ABBR_TO_KEYWORDS[innerAbbr];
+                         if (keywordsIfAbbr?.some(kw => courseNameLower.includes(kw.toLowerCase()))) return true;
+                    }
+
+                    // 3. Abbreviation table lookup (on the raw spec and clean spec)
+                    const keywords = ABBR_TO_KEYWORDS[specLower] || ABBR_TO_KEYWORDS[cleanSpec] || (innerAbbr ? ABBR_TO_KEYWORDS[innerAbbr] : null);
                     if (keywords) {
                         return keywords.some(kw => courseNameLower.includes(kw.toLowerCase()));
                     }

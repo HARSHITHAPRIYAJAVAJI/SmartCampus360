@@ -44,13 +44,18 @@ export interface Conversation {
 export interface InstitutionalNotification {
     id: string;
     recipientId: string;
+    targetAudience?: 'student' | 'students' | 'faculty' | 'both' | 'all';
+    branch?: string;
+    year?: number;
+    section?: string;
     title: string;
     message: string;
-    type: 'urgent' | 'normal' | 'info';
-    category: 'exam' | 'attendance' | 'fee' | 'timetable' | 'mention';
+    type: 'urgent' | 'normal' | 'info' | 'priority' | 'success';
+    category: 'exam' | 'attendance' | 'fee' | 'timetable' | 'mention' | 'substitution' | 'general';
     timestamp: string;
     isRead: boolean;
-    actionUrl?: string; // Link to specific module (e.g. Timetable page)
+    actionUrl?: string;
+    redirectUrl?: string; // Standardized with other alert systems
 }
 
 /**

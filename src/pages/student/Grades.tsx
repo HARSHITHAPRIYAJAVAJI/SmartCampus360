@@ -11,45 +11,6 @@ import { calculateAcademicMetrics } from "@/utils/academicCalculations";
 import { academicService, CourseMarks } from "@/services/academicService";
 import { useEffect, useState } from "react";
 
-// Helper to generate realistic dummy marks
-const getMarks = (course: Course) => {
-    const isLab = course.type === 'Lab';
-    const seed = course.code.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    const pseudoRandom = (min: number, max: number) => {
-        const val = ((seed * 9301 + 49297) % 233280) / 233280;
-        return Math.floor(min + val * (max - min));
-    };
-
-    if (course.credits === 0) {
-        return {
-            mid1: null, assgn1: null, mid2: null, assgn2: null,
-            labInternal: null, labExternal: null,
-            exam: null, total: 0, status: "Non-Credit", isNonCredit: true
-        };
-    }
-
-    if (isLab) {
-        const labInt = pseudoRandom(34, 39); // Out of 40
-        const labExt = pseudoRandom(48, 58); // Out of 60
-        return {
-            mid1: null, assgn1: null, mid2: null, assgn2: null,
-            labInternal: labInt, labExternal: labExt,
-            exam: null, total: labInt + labExt, status: "Pass"
-        };
-    } else {
-        const m1 = pseudoRandom(22, 28);
-        const m2 = pseudoRandom(20, 27);
-        const a1 = 5;
-        const a2 = 5;
-        const ex = pseudoRandom(40, 60);
-        return {
-            mid1: m1, assgn1: a1, mid2: m2, assgn2: a2,
-            labInternal: null, labExternal: null,
-            exam: ex, total: Math.max(m1, m2) + a1 + a2 + ex, status: "Pass"
-        };
-    }
-};
-
 const Grades = () => {
     const { user } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
     
@@ -90,28 +51,38 @@ const Grades = () => {
         const visibility = academicService.getVisibility(currentYear, sem);
 
         if (semCourses.length > 0) {
+
             acc[sem] = semCourses.map(c => {
                 const realMarks = storedMarks[c.code];
-                const dummy = getMarks(c);
+                
+                const isProject = c.name.toLowerCase().includes("project") && 
+                                  (c.name.toLowerCase().includes("stage") || 
+                                   c.name.toLowerCase().includes("phase"));
+                const isLab = c.type === 'Lab';
+
+                const dummy = academicService.getGeneratedMarks(studentData?.id || "unknown", c.code, c.name, isLab, isProject, c.credits, sem === currentSemester);
                 
                 // Merge real marks into dummy if they exist
                 const finalMarks = {
-                    ...dummy,
-                    ...(realMarks ? {
-                        mid1: realMarks.mid1 ?? dummy.mid1,
-                        mid2: realMarks.mid2 ?? dummy.mid2,
-                        assgn1: realMarks.assignment1 ?? dummy.assgn1,
-                        assgn2: realMarks.assignment2 ?? dummy.assgn2,
-                        labInternal: realMarks.labInternal ?? dummy.labInternal,
-                        labExternal: realMarks.labExternal ?? dummy.labExternal,
-                        exam: realMarks.examMark ?? dummy.exam
-                    } : {})
+                    mid1: realMarks?.mid1 ?? dummy.mid1,
+                    assignment1: realMarks?.assignment1 ?? dummy.assignment1,
+                    mid1_val: realMarks?.mid1 ?? dummy.mid1,
+                    assgn1: realMarks?.assignment1 ?? dummy.assignment1,
+                    mid2: realMarks?.mid2 ?? dummy.mid2,
+                    assgn2: realMarks?.assignment2 ?? dummy.assignment2,
+                    labInternal: realMarks?.labInternal ?? dummy.labInternal,
+                    labExternal: realMarks?.labExternal ?? dummy.labExternal,
+                    exam: realMarks?.examMark ?? dummy.exam,
+                    total: (realMarks ? (Math.max(realMarks.mid1 || 0, realMarks.mid2 || 0) + (realMarks.assignment1 || 0) + (realMarks.assignment2 || 0) + (realMarks.examMark || 0)) : dummy.total)
                 };
 
                 return {
                     code: c.code,
                     subject: c.name,
                     ...finalMarks,
+                    status: (finalMarks.total > 0 || c.credits === 0) ? (isProject ? "Project Review" : "Pass") : "Pending",
+                    isNonCredit: c.credits === 0 || isProject,
+                    isProject,
                     visibility
                 };
             });
@@ -143,7 +114,7 @@ const Grades = () => {
             </div>
 
             {/* Overview Cards */}
-            <div className="grid gap-4 md:grid-cols-3">
+            <div className="grid gap-4 md:grid-cols-4">
                 <Card className="border-none shadow-md bg-gradient-to-br from-violet-50 to-white dark:from-violet-950/20">
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Cumulative GPA</CardTitle>
@@ -152,6 +123,16 @@ const Grades = () => {
                     <CardContent>
                         <div className="text-3xl font-black text-primary">{studentData?.grade?.toFixed(2) || "0.00"}</div>
                         <p className="text-xs font-bold text-success mt-1">↑ 0.12 from last semester</p>
+                    </CardContent>
+                </Card>
+                <Card className="border-none shadow-md bg-gradient-to-br from-blue-50 to-white dark:from-blue-950/20">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-bold uppercase tracking-wider text-muted-foreground">Semester GPA (SGPA)</CardTitle>
+                        <TrendingUp className="h-4 w-4 text-blue-600" />
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-3xl font-black text-blue-600">8.8{currentSemester}</div>
+                        <p className="text-xs font-bold text-muted-foreground mt-1">Current Sem Performance</p>
                     </CardContent>
                 </Card>
                 <Card className="border-none shadow-md">
@@ -207,7 +188,7 @@ const Grades = () => {
                                                         <TableHead rowSpan={2} className="w-[250px] font-black border-r text-sm uppercase tracking-tighter">Subject</TableHead>
                                                         <TableHead colSpan={3} className="text-center font-black border-r bg-blue-50/50 dark:bg-blue-900/10 text-blue-700 text-sm uppercase tracking-widest">Internals (35M)</TableHead>
                                                         <TableHead colSpan={3} className="text-center font-black border-r bg-green-50/50 dark:bg-green-900/10 text-green-700 text-sm uppercase tracking-widest">Practical/Lab (100M)</TableHead>
-                                                        <TableHead colSpan={3} className="text-center font-black bg-amber-50/50 dark:bg-amber-900/10 text-amber-700 text-sm uppercase tracking-widest">Summary</TableHead>
+                                                        <TableHead colSpan={2} className="text-center font-black bg-amber-50/50 dark:bg-amber-900/10 text-amber-700 text-sm uppercase tracking-widest">SUMMARY</TableHead>
                                                     </TableRow>
                                                     <TableRow className="bg-slate-50/50 dark:bg-slate-900/20">
                                                         <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Mid 1+2</TableHead>
@@ -216,9 +197,8 @@ const Grades = () => {
                                                         <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Int (40)</TableHead>
                                                         <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Ext (60)</TableHead>
                                                         <TableHead className="text-center text-[11px] font-black py-2 border-r bg-green-100/30">Total</TableHead>
-                                                        <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Exam</TableHead>
-                                                        <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">Total</TableHead>
-                                                        <TableHead className="text-center text-[11px] font-black py-2 bg-amber-100/30 text-amber-700">%</TableHead>
+                                                        <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">SEMESTER</TableHead>
+                                                        <TableHead className="text-center text-[11px] font-bold py-2 border-r uppercase tracking-tight">TOTAL</TableHead>
                                                     </TableRow>
                                                 </TableHeader>
                                                 <TableBody className="text-sm">
@@ -257,16 +237,13 @@ const Grades = () => {
                                                                             {sub.visibility.showMid1 ? internalTotal : 'Hidd.'}
                                                                         </TableCell>
                                                                         <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.visibility.showMid1 ? (sub.labInternal || '-') : '—'}</TableCell>
-                                                                        <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.visibility.isHistorical ? (sub.labExternal || '-') : '—'}</TableCell>
+                                                                        <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.visibility.showMid2 ? (sub.labExternal || '-') : '—'}</TableCell>
                                                                         <TableCell className="text-center border-r font-black bg-green-50/30 dark:bg-green-900/10 text-green-700 text-sm">
-                                                                            {sub.visibility.isHistorical ? (labTotal > 0 ? labTotal : '-') : 'Hidd.'}
+                                                                            {sub.visibility.showMid2 ? (labTotal > 0 ? labTotal : '-') : 'Hidd.'}
                                                                         </TableCell>
                                                                         <TableCell className="text-center border-r font-bold text-sm text-slate-700">{sub.visibility.showExam ? (sub.exam || '-') : '—'}</TableCell>
-                                                                        <TableCell className="text-center border-r font-black text-slate-900 dark:text-white text-base">
-                                                                            {sub.visibility.isHistorical ? grandTotal : 'In Prog.'}
-                                                                        </TableCell>
-                                                                        <TableCell className="text-center bg-amber-50/30 dark:bg-amber-900/10 font-black text-amber-700 text-base">
-                                                                            {sub.visibility.isHistorical ? `${grandTotal}%` : '—'}
+                                                                        <TableCell className="text-center font-black text-slate-900 dark:text-white text-base">
+                                                                            {sub.visibility.showMid1 ? grandTotal : 'In Prog.'}
                                                                         </TableCell>
                                                                     </>
                                                                 )}
@@ -276,20 +253,12 @@ const Grades = () => {
                                                 </TableBody>
                                             </Table>
                                         </div>
-                                        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                            <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border flex flex-col gap-1 shadow-sm">
-                                                <span className="text-[10px] uppercase font-black text-muted-foreground tracking-widest">Attendance</span>
-                                                <span className="text-2xl font-black text-slate-900 dark:text-white">{studentData?.attendance || 0}%</span>
-                                            </div>
-                                            <div className="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border flex flex-col gap-1 shadow-sm">
-                                                <span className="text-[10px] uppercase font-black text-muted-foreground tracking-widest">SGPA</span>
-                                                <span className="text-2xl font-black text-primary">8.8{semNum}</span>
-                                            </div>
-                                            <div className="lg:col-span-2 bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border flex flex-col gap-1 shadow-sm relative overflow-hidden">
-                                                <div className="absolute top-0 right-0 p-4 opacity-10">
-                                                    <Award className="w-12 h-12" />
+                                        <div className="mt-8">
+                                            <div className="bg-slate-50 dark:bg-slate-900 p-6 rounded-2xl border flex flex-col gap-1 shadow-sm relative overflow-hidden">
+                                                <div className="absolute top-0 right-0 p-6 opacity-10">
+                                                    <Award className="w-16 h-16" />
                                                 </div>
-                                                <span className="text-[10px] uppercase font-black text-muted-foreground tracking-widest">Status</span>
+                                                <span className="text-[10px] uppercase font-black text-muted-foreground tracking-widest">Academic Standing</span>
                                                 <span className="text-xl font-bold text-success uppercase tracking-tight">PASS - First Class with Distinction</span>
                                             </div>
                                         </div>

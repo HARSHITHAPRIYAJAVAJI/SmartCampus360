@@ -64,8 +64,14 @@ export const generateExamTimetable = (config: ExamConfig): ExamTimetable => {
                 !c.name.toLowerCase().includes("project work") &&
                 !c.name.toLowerCase().includes("phase 1") &&
                 !c.name.toLowerCase().includes("phase 2") &&
+                !c.name.toLowerCase().includes("phase-1") &&
+                !c.name.toLowerCase().includes("phase-2") &&
                 !c.name.toLowerCase().includes("stage 1") &&
-                !c.name.toLowerCase().includes("stage 2")
+                !c.name.toLowerCase().includes("stage 2") &&
+                !c.name.toLowerCase().includes("stage-i") &&
+                !c.name.toLowerCase().includes("stage-ii") &&
+                !c.name.toLowerCase().includes("mini project") &&
+                !c.name.toLowerCase().includes("major project")
             ).slice(0, 6);
             yearSubjects[year][branch] = subjects;
             globalMaxSubjects = Math.max(globalMaxSubjects, subjects.length);

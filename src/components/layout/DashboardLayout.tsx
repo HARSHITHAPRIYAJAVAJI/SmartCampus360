@@ -29,20 +29,20 @@ export function DashboardLayout({ user, onLogout }: DashboardLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background flex">
-      <DashboardSidebar
-        userRole={user.role}
-        collapsed={sidebarCollapsed}
-        onToggle={toggleCollapsed}
-        mobileOpen={mobileOpen}
-        onMobileClose={() => setMobileOpen(false)}
+    <div className="min-h-screen bg-background flex flex-col">
+      <DashboardHeader
+        user={user}
+        onLogout={onLogout}
+        onToggleSidebar={toggleMobile}
       />
 
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <DashboardHeader
-          user={user}
-          onLogout={onLogout}
-          onToggleSidebar={toggleMobile}
+      <div className="flex-1 flex overflow-hidden">
+        <DashboardSidebar
+          userRole={user.role}
+          collapsed={sidebarCollapsed}
+          onToggle={toggleCollapsed}
+          mobileOpen={mobileOpen}
+          onMobileClose={() => setMobileOpen(false)}
         />
 
         <main className="flex-1 overflow-y-auto p-4 md:p-6 relative">

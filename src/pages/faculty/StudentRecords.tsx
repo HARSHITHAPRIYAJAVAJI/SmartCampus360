@@ -230,31 +230,33 @@ const StudentRecords = () => {
         });
     }, [students, searchQuery, selectedBranch, selectedYear, selectedSection]);
 
-    // SYNC: Ensure sessionMarks maps to the current filtered students
+
     useEffect(() => {
         if (activeMode === 'marks' && selectedCourse) {
-            setSessionMarks(prev => {
-                const updated = { ...prev };
-                let neededUpdate = false;
-                
-                filteredStudents.forEach(s => {
-                    // Only initialize if not already in session (to avoid overwriting typed changes)
-                    if (!updated[s.id]) {
-                        const realMarks = academicService.getMarks(s.id, selectedCourse);
-                        updated[s.id] = {
-                            assignment1: realMarks?.assignment1 ?? s.assignment1 ?? 0,
-                            mid1: realMarks?.mid1 ?? s.mid1 ?? 0,
-                            assignment2: realMarks?.assignment2 ?? s.assignment2 ?? 0,
-                            mid2: realMarks?.mid2 ?? s.mid2 ?? 0,
-                            labInternal: realMarks?.labInternal ?? s.labInternal ?? 0,
-                            labExternal: realMarks?.labExternal ?? s.labExternal ?? 0
-                        };
-                        neededUpdate = true;
-                    }
-                });
-                
-                return neededUpdate ? updated : prev;
+            const marksData: Record<string, any> = {};
+            
+            const course = MOCK_COURSES.find(c => c.code === selectedCourse);
+            const isLab = course?.type === 'Lab' || false;
+            const isProject = course?.name.toLowerCase().includes("project") || 
+                           (course?.name.toLowerCase().includes("stage") || 
+                            course?.name.toLowerCase().includes("phase")) || false;
+            const credits = course?.credits || 0;
+
+            filteredStudents.forEach(s => {
+                const realMarks = academicService.getMarks(s.id, selectedCourse);
+                const dummy = academicService.getGeneratedMarks(s.id, selectedCourse, course?.name || "", isLab, isProject, credits, true);
+
+                marksData[s.id] = {
+                    assignment1: realMarks?.assignment1 ?? dummy.assignment1 ?? 0,
+                    mid1: realMarks?.mid1 ?? dummy.mid1 ?? 0,
+                    assignment2: realMarks?.assignment2 ?? dummy.assignment2 ?? 0,
+                    mid2: realMarks?.mid2 ?? dummy.mid2 ?? 0,
+                    labInternal: realMarks?.labInternal ?? dummy.labInternal ?? 0,
+                    labExternal: realMarks?.labExternal ?? dummy.labExternal ?? 0
+                };
             });
+            
+            setSessionMarks(marksData);
         }
     }, [filteredStudents, activeMode, selectedCourse]);
 
@@ -430,29 +432,7 @@ const StudentRecords = () => {
             // Dispatch event for real-time sync with student dashboard and history components
             window.dispatchEvent(new CustomEvent('attendance_updated'));
             
-            // Generate Alerts for Absent Students
-            const absentees = records.filter(r => r.status === 'Absent');
-            if (absentees.length > 0) {
-               const savedAlerts = JSON.parse(localStorage.getItem('STUDENT_ALERTS') || '[]');
-               const newAlerts = absentees.map(r => {
-                  const s = filteredStudents.find(fs => parseInt(fs.id.replace(/\D/g, '')) === r.student_id);
-                  return {
-                     id: Date.now() + Math.random(),
-                     title: "Attendance Alert",
-                     message: `Your attendance in ${r.course_code} (Period ${r.period}) has been marked as ABSENT.`,
-                     branch: s?.branch || "All",
-                     year: s?.year || 0,
-                     section: s?.section || "All",
-                     isRead: false,
-                     timestamp: new Date().toISOString()
-                  };
-               });
-               localStorage.setItem('STUDENT_ALERTS', JSON.stringify([...newAlerts, ...savedAlerts].slice(0, 50)));
-               window.dispatchEvent(new CustomEvent('student_alerts_updated'));
-            }
-
             // Increment sync stamp to trigger the useEffect refetch from backend
-            // This ensures the UI remains synced with the database state
             setAttendanceSyncStamp(prev => prev + 1);
             
             // Do NOT switch to 'view' mode automatically to allow faculty to verify the save state
@@ -717,15 +697,21 @@ const StudentRecords = () => {
                                 >
                                     <ClipboardCheck className="h-4 w-4 mr-2" /> Attendance
                                 </Button>
-                                 <Button 
+                                  <Button 
                                     variant={activeMode === 'marks' ? "secondary" : "ghost"} 
                                     size="sm" 
                                     onClick={() => {
                                         const course = MOCK_COURSES.find(c => c.code === selectedCourse);
-                                        if (course?.credits === 0) {
+                                        const isProject = course?.name.toLowerCase().includes("project") && 
+                                                        (course?.name.toLowerCase().includes("stage") || 
+                                                         course?.name.toLowerCase().includes("phase"));
+                                        
+                                        if (course?.credits === 0 || isProject) {
                                             toast({ 
-                                                title: "Non-Credit Subject", 
-                                                description: "This subject does not require marks entry.",
+                                                title: isProject ? "Project Subject" : "Non-Credit Subject", 
+                                                description: isProject 
+                                                    ? "Project Stage assessment is managed separately and doesn't have standard midterm/semester exams."
+                                                    : "This subject does not require marks entry.",
                                                 variant: "destructive"
                                             });
                                             return;
@@ -733,7 +719,11 @@ const StudentRecords = () => {
                                         setActiveMode('marks');
                                         // Initialization will happen in useEffect
                                     }}
-                                    className={`h-8 ${MOCK_COURSES.find(c => c.code === selectedCourse)?.credits === 0 ? 'opacity-40 cursor-not-allowed grayscale' : ''}`}
+                                    className={`h-8 ${(MOCK_COURSES.find(c => c.code === selectedCourse)?.credits === 0 || 
+                                                     (MOCK_COURSES.find(c => c.code === selectedCourse)?.name.toLowerCase().includes("project") && 
+                                                      (MOCK_COURSES.find(c => c.code === selectedCourse)?.name.toLowerCase().includes("stage") || 
+                                                       MOCK_COURSES.find(c => c.code === selectedCourse)?.name.toLowerCase().includes("phase")))) 
+                                                     ? 'opacity-40 cursor-not-allowed grayscale' : ''}`}
                                 >
                                     <GraduationCap className="h-4 w-4 mr-2" /> Marks
                                 </Button>
@@ -799,7 +789,7 @@ const StudentRecords = () => {
                                     <CardTitle className="text-xl">
                                         {year}{year === 1 ? 'st' : year === 2 ? 'nd' : year === 3 ? 'rd' : 'th'} Year
                                     </CardTitle>
-                                    <p className="text-sm text-muted-foreground mt-1">Academic Year 2024-25</p>
+
                                 </CardContent>
                             </Card>
                         ))}
@@ -896,28 +886,33 @@ const StudentRecords = () => {
                                         />
                                     </div>
                                 ) : activeMode === 'attendance' ? (
-                                    <div className="flex items-center gap-4">
-                                        <div className="flex items-center gap-2">
-                                            <Label className="whitespace-nowrap">Date:</Label>
+                                    <div className="flex items-end gap-4">
+                                        <div className="flex flex-col gap-2">
+                                            <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/70 ml-1">Attendance Date</Label>
                                             <Input 
                                                 type="date" 
-                                                className="h-9 w-40" 
+                                                className="h-9 w-44" 
                                                 value={currentDate} 
                                                 onChange={e => setCurrentDate(e.target.value)} 
                                             />
                                         </div>
-                                        <div className="flex items-center gap-2">
-                                            <Label className="whitespace-nowrap">Period:</Label>
-                                            <Select value={currentPeriod} onValueChange={setCurrentPeriod}>
-                                                <SelectTrigger className="h-9 w-24">
-                                                    <SelectValue />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    {[1, 2, 3, 4, 5, 6].map(p => (
-                                                        <SelectItem key={p} value={String(p)}>Period {p}</SelectItem>
-                                                    ))}
-                                                </SelectContent>
-                                            </Select>
+                                        <div className="flex flex-col gap-2">
+                                            <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/70 ml-1">Select Academic Period</Label>
+                                            <div className="flex items-center gap-1.5 bg-muted/50 p-1 rounded-2xl border border-border/40">
+                                                {[1, 2, 3, 4, 5, 6].map(p => (
+                                                    <button
+                                                        key={p}
+                                                        onClick={() => setCurrentPeriod(String(p))}
+                                                        className={`h-7 w-9 rounded-xl text-xs font-black transition-all duration-200 flex items-center justify-center
+                                                            ${currentPeriod === String(p) 
+                                                                ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20 scale-105' 
+                                                                : 'text-muted-foreground hover:bg-background hover:text-foreground'
+                                                            }`}
+                                                    >
+                                                        {p}
+                                                    </button>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                 ) : (
@@ -985,19 +980,39 @@ const StudentRecords = () => {
 
                                             {activeMode === 'marks' && (
                                                 <>
-                                                    {MOCK_COURSES.find(c => c.code === selectedCourse)?.type === 'Lab' ? (
-                                                        <>
-                                                            <TableHead className="w-[120px] font-black text-xs uppercase text-primary">Lab Internal (0-40M)</TableHead>
-                                                            <TableHead className="w-[120px] font-black text-xs uppercase text-primary opacity-50">Lab External (Locked)</TableHead>
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <TableHead className="w-[130px] font-black text-[11px] uppercase text-primary text-center">Assign 1 (0-5M)</TableHead>
-                                                            <TableHead className="w-[130px] font-black text-[11px] uppercase text-primary text-center">Mid 1 (0-30M)</TableHead>
-                                                            <TableHead className="w-[130px] font-black text-[11px] uppercase text-primary text-center">Assign 2 (0-5M)</TableHead>
-                                                            <TableHead className="w-[130px] font-black text-[11px] uppercase text-primary text-center">Mid 2 (0-30M)</TableHead>
-                                                        </>
-                                                    )}
+                                                    {(() => {
+                                                        const course = MOCK_COURSES.find(c => c.code === selectedCourse);
+                                                        const isProject = course?.name.toLowerCase().includes("project") || 
+                                                                        (course?.name.toLowerCase().includes("stage") || 
+                                                                         course?.name.toLowerCase().includes("phase"));
+                                                        
+                                                        if (isProject) {
+                                                            return (
+                                                                <>
+                                                                    <TableHead className="w-[100px] font-black text-[10px] uppercase text-indigo-600 text-center bg-indigo-50/30">Review 1 (25)</TableHead>
+                                                                    <TableHead className="w-[100px] font-black text-[10px] uppercase text-indigo-600 text-center bg-indigo-50/30">Review 2 (25)</TableHead>
+                                                                    <TableHead className="w-[100px] font-black text-[10px] uppercase text-indigo-600 text-center bg-indigo-50/30">Review 3 (25)</TableHead>
+                                                                    <TableHead className="w-[100px] font-black text-[10px] uppercase text-indigo-600 text-center bg-indigo-50/30">Review 4 (25)</TableHead>
+                                                                    <TableHead className="w-[100px] font-black text-[10px] uppercase text-indigo-700 text-center bg-indigo-100/50">Total (100)</TableHead>
+                                                                </>
+                                                            );
+                                                        }
+
+                                                        return course?.type === 'Lab' ? (
+                                                            <>
+                                                                <TableHead className="w-[150px] font-black text-xs uppercase text-primary text-center">Lab Internal (40M)</TableHead>
+                                                                <TableHead className="w-[150px] font-black text-xs uppercase text-primary text-center opacity-70">Lab External (60M)</TableHead>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <TableHead className="w-[120px] font-black text-[10px] uppercase text-primary text-center">Assgn 1 (5M)</TableHead>
+                                                                <TableHead className="w-[120px] font-black text-[10px] uppercase text-primary text-center">Mid 1 (30M)</TableHead>
+                                                                <TableHead className="w-[120px] font-black text-[10px] uppercase text-primary text-center">Assgn 2 (5M)</TableHead>
+                                                                <TableHead className="w-[120px] font-black text-[10px] uppercase text-primary text-center">Mid 2 (30M)</TableHead>
+                                                                <TableHead className="w-[120px] font-black text-[10px] uppercase text-green-600 text-center bg-green-50/50">Total (40M)</TableHead>
+                                                            </>
+                                                        );
+                                                    })()}
                                                 </>
                                             )}
                                         </TableRow>
@@ -1119,9 +1134,13 @@ const StudentRecords = () => {
                                                         <>
                                                             {(() => {
                                                                 const course = MOCK_COURSES.find(c => c.code === selectedCourse);
+                                                                const isProject = course?.name.toLowerCase().includes("project") || 
+                                                                                (course?.name.toLowerCase().includes("stage") || 
+                                                                                 course?.name.toLowerCase().includes("phase"));
+                                                                
                                                                 if (course?.credits === 0) {
                                                                     return (
-                                                                        <TableCell colSpan={4} className="bg-muted/30 text-center">
+                                                                        <TableCell colSpan={course?.type === 'Lab' ? 2 : 5} className="bg-muted/30 text-center">
                                                                             <div className="flex items-center justify-center gap-2 text-muted-foreground font-black uppercase text-[10px] tracking-widest italic opacity-50">
                                                                                 <X className="h-3 w-3" /> No Marks Data Required (Non-Credit)
                                                                             </div>
@@ -1129,63 +1148,101 @@ const StudentRecords = () => {
                                                                     );
                                                                 }
 
+                                                                if (isProject) {
+                                                                    return (
+                                                                        <>
+                                                                            <TableCell className="bg-indigo-50/20 text-center">
+                                                                                <Input type="number" max={25} value={sessionMarks[student.id]?.assignment1 || 0} onChange={(e) => updateMark(student.id, 'assignment1', e.target.value)} className="h-8 w-16 mx-auto text-center" />
+                                                                            </TableCell>
+                                                                            <TableCell className="bg-indigo-50/20 text-center">
+                                                                                <Input type="number" max={25} value={sessionMarks[student.id]?.mid1 || 0} onChange={(e) => updateMark(student.id, 'mid1', e.target.value)} className="h-8 w-16 mx-auto text-center" />
+                                                                            </TableCell>
+                                                                            <TableCell className="bg-indigo-50/20 text-center">
+                                                                                <Input type="number" max={25} value={sessionMarks[student.id]?.assignment2 || 0} onChange={(e) => updateMark(student.id, 'assignment2', e.target.value)} className="h-8 w-16 mx-auto text-center" />
+                                                                            </TableCell>
+                                                                            <TableCell className="bg-indigo-50/20 text-center">
+                                                                                <Input type="number" max={25} value={sessionMarks[student.id]?.mid2 || 0} onChange={(e) => updateMark(student.id, 'mid2', e.target.value)} className="h-8 w-16 mx-auto text-center" />
+                                                                            </TableCell>
+                                                                            <TableCell className="bg-indigo-100/30 text-center font-black text-indigo-700">
+                                                                                {(sessionMarks[student.id]?.assignment1 || 0) + (sessionMarks[student.id]?.mid1 || 0) + (sessionMarks[student.id]?.assignment2 || 0) + (sessionMarks[student.id]?.mid2 || 0)}
+                                                                            </TableCell>
+                                                                        </>
+                                                                    );
+                                                                }
+
                                                                 return course?.type === 'Lab' ? (
                                                                     <>
-                                                                        <TableCell>
+                                                                        <TableCell className="text-center">
                                                                             <Input 
                                                                                 type="number" 
                                                                                 max={40}
-                                                                                placeholder="Max 40"
+                                                                                placeholder="Int 40"
                                                                                 value={sessionMarks[student.id]?.labInternal || 0} 
                                                                                 onChange={(e) => updateMark(student.id, 'labInternal', e.target.value)} 
                                                                                 className="h-8 w-24 text-center font-bold"
                                                                             />
                                                                         </TableCell>
-                                                                        <TableCell className="bg-muted/10">
-                                                                            <div className="text-[10px] font-bold text-muted-foreground text-center italic">Institutional Lock</div>
+                                                                        <TableCell className="text-center">
+                                                                            <Input 
+                                                                                type="number" 
+                                                                                max={60}
+                                                                                placeholder="Ext 60"
+                                                                                value={sessionMarks[student.id]?.labExternal || 0} 
+                                                                                onChange={(e) => updateMark(student.id, 'labExternal', e.target.value)} 
+                                                                                className="h-8 w-24 text-center font-bold bg-muted/20"
+                                                                            />
                                                                         </TableCell>
                                                                     </>
                                                                 ) : (
                                                                     <>
-                                                                        <TableCell>
+                                                                        <TableCell className="text-center">
                                                                             <Input 
                                                                                 type="number" 
                                                                                 max={5}
-                                                                                placeholder="Max 5"
+                                                                                placeholder="5M"
                                                                                 value={sessionMarks[student.id]?.assignment1 || 0} 
                                                                                 onChange={(e) => updateMark(student.id, 'assignment1', e.target.value)} 
-                                                                                className="h-8 w-20 text-center"
+                                                                                className="h-8 w-16 text-center mx-auto"
                                                                             />
                                                                         </TableCell>
-                                                                        <TableCell>
+                                                                        <TableCell className="text-center">
                                                                             <Input 
                                                                                 type="number" 
                                                                                 max={30}
-                                                                                placeholder="Max 30"
+                                                                                placeholder="30M"
                                                                                 value={sessionMarks[student.id]?.mid1 || 0} 
                                                                                 onChange={(e) => updateMark(student.id, 'mid1', e.target.value)} 
-                                                                                className="h-8 w-20 text-center"
+                                                                                className="h-8 w-20 text-center mx-auto"
                                                                             />
                                                                         </TableCell>
-                                                                        <TableCell>
+                                                                        <TableCell className="text-center">
                                                                             <Input 
                                                                                 type="number" 
                                                                                 max={5}
-                                                                                placeholder="Max 5"
+                                                                                placeholder="5M"
                                                                                 value={sessionMarks[student.id]?.assignment2 || 0} 
                                                                                 onChange={(e) => updateMark(student.id, 'assignment2', e.target.value)} 
-                                                                                className="h-8 w-20 text-center"
+                                                                                className="h-8 w-16 text-center mx-auto"
                                                                             />
                                                                         </TableCell>
-                                                                        <TableCell>
+                                                                        <TableCell className="text-center">
                                                                             <Input 
                                                                                 type="number" 
                                                                                 max={30}
-                                                                                placeholder="Max 30"
+                                                                                placeholder="30M"
                                                                                 value={sessionMarks[student.id]?.mid2 || 0} 
                                                                                 onChange={(e) => updateMark(student.id, 'mid2', e.target.value)} 
-                                                                                className="h-8 w-20 text-center"
+                                                                                className="h-8 w-20 text-center mx-auto"
                                                                             />
+                                                                        </TableCell>
+                                                                        <TableCell className="text-center bg-green-50/30">
+                                                                            <div className="font-black text-green-700 text-sm">
+                                                                                {(() => {
+                                                                                    const m = sessionMarks[student.id] || { mid1: 0, mid2: 0, assignment1: 0, assignment2: 0 };
+                                                                                    // Institutional Formula: Max(Mid1, Mid2) + Assignment1 + Assignment2 = 40M Total
+                                                                                    return (Math.max(m.mid1, m.mid2) + m.assignment1 + m.assignment2);
+                                                                                })()}
+                                                                            </div>
                                                                         </TableCell>
                                                                     </>
                                                                 );
@@ -1241,36 +1298,48 @@ const StudentRecords = () => {
                                 <GraduationCap className="h-4 w-4" />
                                 Internal Assessment Marks
                             </h4>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Assignment 1 (5M)</Label>
-                                    <Input 
-                                        type="number" 
-                                        max={5}
-                                        className="h-9"
-                                        value={editingStudent?.assignment1 || 0} 
-                                        onChange={e => setEditingStudent(prev => prev ? {...prev, assignment1: parseInt(e.target.value) || 0} : null)} 
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Midterm 1 (30M)</Label>
-                                    <Input 
-                                        type="number" 
-                                        max={30}
-                                        className="h-9"
-                                        value={editingStudent?.mid1 || 0} 
-                                        onChange={e => setEditingStudent(prev => prev ? {...prev, mid1: parseInt(e.target.value) || 0} : null)} 
-                                    />
-                                </div>
-                                <div className="space-y-2 opacity-50 grayscale pointer-events-none">
-                                    <Label className="text-[10px] uppercase font-bold">Assignment 2 (Future)</Label>
-                                    <Input disabled className="h-9 bg-muted" value={0} />
-                                </div>
-                                <div className="space-y-2 opacity-50 grayscale pointer-events-none">
-                                    <Label className="text-[10px] uppercase font-bold">Midterm 2 (Future)</Label>
-                                    <Input disabled className="h-9 bg-muted" value={0} />
-                                </div>
-                            </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-2">
+                                            <Label className="text-[10px] uppercase font-bold text-muted-foreground">Assignment 1 (5M)</Label>
+                                            <Input 
+                                                type="number" 
+                                                max={5}
+                                                className="h-9"
+                                                value={editingStudent?.assignment1 || 0} 
+                                                onChange={e => setEditingStudent(prev => prev ? {...prev, assignment1: parseInt(e.target.value) || 0} : null)} 
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-[10px] uppercase font-bold text-muted-foreground">Midterm 1 (30M)</Label>
+                                            <Input 
+                                                type="number" 
+                                                max={30}
+                                                className="h-9"
+                                                value={editingStudent?.mid1 || 0} 
+                                                onChange={e => setEditingStudent(prev => prev ? {...prev, mid1: parseInt(e.target.value) || 0} : null)} 
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-[10px] uppercase font-bold text-muted-foreground">Assignment 2 (5M)</Label>
+                                            <Input 
+                                                type="number" 
+                                                max={5}
+                                                className="h-9"
+                                                value={editingStudent?.assignment2 || 0} 
+                                                onChange={e => setEditingStudent(prev => prev ? {...prev, assignment2: parseInt(e.target.value) || 0} : null)} 
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-[10px] uppercase font-bold text-muted-foreground">Midterm 2 (30M)</Label>
+                                            <Input 
+                                                type="number" 
+                                                max={30}
+                                                className="h-9"
+                                                value={editingStudent?.mid2 || 0} 
+                                                onChange={e => setEditingStudent(prev => prev ? {...prev, mid2: parseInt(e.target.value) || 0} : null)} 
+                                            />
+                                        </div>
+                                    </div>
                         </div>
                     </div>
                     <DialogFooter>
@@ -1287,47 +1356,72 @@ const StudentRecords = () => {
 
 // --- Detailed Student Profile Component ---
 const StudentDetailView = ({ student, onBack }: { student: Student, onBack: () => void }) => {
-    // Helper to generate marks (same seed logic as student grades page)
+    // Fetch real marks from academic service (Single Source of Truth)
+    const storedMarks = useMemo(() => {
+        return academicService.getAllForStudent(student.id);
+    }, [student.id]);
+
     const getMarks = (courseCode: string, type: string, courseSem: number, currentSem: number, credits: number) => {
+        const real = storedMarks[courseCode];
+        const visibility = academicService.getVisibility(student.year, courseSem);
+        
+        // Logical Defaults (Seed-based for missing data to match student view's "realistic" base)
         const seed = courseCode.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
         const pseudoRandom = (min: number, max: number) => {
             const val = ((seed * 9301 + 49297) % 233280) / 233280;
             return Math.floor(min + val * (max - min));
         };
 
-        if (credits === 0) {
-            return { mid: 'N/A', assgn: 'N/A', total: 0, status: "Non-Credit", type, isNonCredit: true };
+        const isProject = courseCode.toLowerCase().includes("pw") || 
+                          (branchCourses.find(c => c.code === courseCode)?.name.toLowerCase().includes("project") && 
+                           (branchCourses.find(c => c.code === courseCode)?.name.toLowerCase().includes("stage") || 
+                            branchCourses.find(c => c.code === courseCode)?.name.toLowerCase().includes("phase")));
+
+        if (credits === 0 || isProject) {
+            return { 
+                mid: 'N/A', 
+                assgn: 'N/A', 
+                total: 0, 
+                status: isProject ? "Project" : "Non-Credit", 
+                type, 
+                isNonCredit: true,
+                isProject: isProject
+            };
         }
 
-        const isFutureSem = courseSem > currentSem;
-        const isCurrentSem = courseSem === currentSem;
-
-        if (isFutureSem) {
-            return { mid: '-', assgn: '-', total: 0, status: "-", type, isFuture: true };
-        }
+        const dummy = academicService.getGeneratedMarks(student.id, courseCode, branchCourses.find(c => c.code === courseCode)?.name || "", type === 'Lab', isProject, credits, courseSem === student.semester);
+        
+        const m1 = real?.mid1 ?? dummy.mid1;
+        const m2 = real?.mid2 ?? dummy.mid2;
+        const a1 = real?.assignment1 ?? dummy.assignment1;
+        const a2 = real?.assignment2 ?? dummy.assignment2;
+        const ex = real?.examMark ?? dummy.exam;
+        const li = real?.labInternal ?? dummy.labInternal;
+        const le = real?.labExternal ?? dummy.labExternal;
 
         if (type === 'Lab') {
-            const labInt = pseudoRandom(25, 30);
-            const labExt = pseudoRandom(55, 68);
-            
-            if (isCurrentSem) {
-                // Current semester labs only show ongoing internal progress (Mid-1 period)
-                const ongoingInt = Math.floor(labInt * 0.4); // Only 40% of internal work done
-                return { mid: '-', assgn: '-', total: ongoingInt, status: "Ongoing", type: 'Lab', isCurrent: true, labInt: ongoingInt, labExt: '-' };
-            }
-            
-            return { mid: '-', assgn: '-', total: labInt + labExt, status: "Pass", type: 'Lab', labInt, labExt };
+            return {
+                m1, m2, a1, a2, 
+                total: li + le,
+                status: "Processed", 
+                type: 'Lab',
+                labInt: li,
+                labExt: le,
+                visibility: { ...visibility, showMid1: true, showMid2: true, showAssgn1: true, showAssgn2: true, showExam: true, isHistorical: true }
+            };
         } else {
-            const m1 = pseudoRandom(22, 28);
-            const a1 = 5;
-            const ex = pseudoRandom(40, 60);
+            const internalTotal = Math.max(m1, m2) + a1 + a2;
+            const finalTotal = internalTotal + ex;
 
-            if (isCurrentSem) {
-                // Current semester theory only shows Mid-1 and Assignment-1
-                return { mid: m1, assgn: a1, total: m1 + a1, status: "Ongoing", type: 'Theory', isCurrent: true, ex: '-' };
-            }
-
-            return { mid: m1, assgn: a1, total: m1 + a1 + ex, status: "Pass", type: 'Theory', ex };
+            return {
+                m1, m2, a1, a2,
+                total: internalTotal,
+                status: "Processed",
+                type: 'Theory',
+                ex: ex,
+                finalTotal: finalTotal,
+                visibility: { ...visibility, showMid1: true, showMid2: true, showAssgn1: true, showAssgn2: true, showExam: true, isHistorical: true }
+            };
         }
     };
 
@@ -1384,27 +1478,27 @@ const StudentDetailView = ({ student, onBack }: { student: Student, onBack: () =
                                 <TabsContent key={semNum} value={semNum.toString()} className="animate-in fade-in-50 zoom-in-95 duration-300 ring-offset-background focus-visible:outline-none">
                                     {semCourses.length > 0 ? (
                                         <div className="space-y-4">
-                                            {isActiveSem && (
-                                                <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 flex items-center gap-2">
-                                                    <Badge className="bg-primary animate-pulse">CURRENT PROGRESS (MID-1)</Badge>
-                                                    <span className="text-xs font-bold text-primary">Transcript shows current semester evaluation limited to Mid-1 and Assignment-1 as per academic policy.</span>
-                                                </div>
-                                            )}
-                                            
                                             <div className="rounded-xl border shadow-sm overflow-hidden bg-white">
                                                 <Table>
                                                     <TableHeader className="bg-slate-50">
                                                         <TableRow>
                                                             <TableHead rowSpan={2} className="font-bold text-xs uppercase text-muted-foreground w-[100px] border-r">Code</TableHead>
                                                             <TableHead rowSpan={2} className="font-bold text-xs uppercase text-muted-foreground border-r">Subject Name</TableHead>
-                                                            <TableHead colSpan={3} className="text-center font-black text-[10px] uppercase bg-blue-50/50 text-blue-700 border-r tracking-wider border-b">Internal Assessment (40M)</TableHead>
-                                                            <TableHead colSpan={2} className="text-center font-black text-[10px] uppercase bg-amber-50/50 text-amber-700 tracking-wider border-b">Final (100M)</TableHead>
+                                                            <TableHead colSpan={(() => {
+                                                                const course = branchCourses.find(c => c.credits > 0);
+                                                                return 5; // Fixed span to handle project logic
+                                                            })()} className="text-center font-black text-[10px] uppercase bg-blue-50/50 text-blue-700 border-r tracking-wider border-b">
+                                                                Institutional Performance Matrix
+                                                            </TableHead>
+                                                            <TableHead colSpan={2} className="text-center font-black text-[10px] uppercase bg-amber-50/50 text-amber-700 tracking-wider border-b">Transcript Final</TableHead>
                                                         </TableRow>
                                                         <TableRow>
-                                                            <TableHead className="text-center text-[9px] font-black uppercase text-muted-foreground border-r">Mid (30)</TableHead>
-                                                            <TableHead className="text-center text-[9px] font-black uppercase text-muted-foreground border-r">Assgn (10)</TableHead>
-                                                            <TableHead className="text-center text-[9px] font-black uppercase text-primary border-r bg-blue-100/20 italic">Total</TableHead>
-                                                            <TableHead className="text-center text-[9px] font-black uppercase text-muted-foreground border-r">External (60)</TableHead>
+                                                            <TableHead className="text-center text-[9px] font-black uppercase text-muted-foreground border-r">Assessment 1 & 2</TableHead>
+                                                            <TableHead className="text-center text-[9px] font-black uppercase text-muted-foreground border-r">Assessment 3 & 4</TableHead>
+                                                            <TableHead className="text-center text-[9px] font-black uppercase text-primary border-r bg-blue-100/20 italic">Base Val</TableHead>
+                                                            <TableHead className="text-center text-[9px] font-black uppercase text-primary border-r bg-blue-100/20 font-black">Total</TableHead>
+                                                            <TableHead className="text-center text-[9px] font-black uppercase text-primary border-r bg-blue-100/20">Credits</TableHead>
+                                                            <TableHead className="text-center text-[9px] font-black uppercase text-muted-foreground border-r">External</TableHead>
                                                             <TableHead className="text-center text-[10px] font-black uppercase bg-primary text-white">Grand Total</TableHead>
                                                         </TableRow>
                                                     </TableHeader>
@@ -1417,19 +1511,32 @@ const StudentDetailView = ({ student, onBack }: { student: Student, onBack: () =
                                                                     <TableCell className="font-mono font-bold text-[10px] border-r">{course.code}</TableCell>
                                                                     <TableCell className="font-bold border-r text-sm">
                                                                         {course.name}
-                                                                        {marks.isNonCredit && <Badge variant="outline" className="ml-2 text-[8px] font-black uppercase text-muted-foreground border-slate-200 bg-white">Non-Credit</Badge>}
+                                                                        {marks.isNonCredit && !marks.isProject && <Badge variant="outline" className="ml-2 text-[8px] font-black uppercase text-muted-foreground border-slate-200 bg-white">Non-Credit</Badge>}
+                                                                        {marks.isProject && <Badge variant="outline" className="ml-2 text-[8px] font-black uppercase text-indigo-600 border-indigo-200 bg-indigo-50/50">Project Review</Badge>}
                                                                     </TableCell>
                                                                     <TableCell className="text-center border-r font-medium">
-                                                                        {marks.isNonCredit ? '-' : marks.mid}
+                                                                        <div className="flex flex-col text-[10px]">
+                                                                            <span className="text-blue-600 font-bold">{marks.isNonCredit ? '-' : marks.m1}</span>
+                                                                            <span className="text-slate-400">{marks.isNonCredit ? '-' : marks.m2}</span>
+                                                                        </div>
                                                                     </TableCell>
                                                                     <TableCell className="text-center border-r font-medium">
-                                                                        {marks.isNonCredit ? '-' : (typeof marks.assgn === 'number' ? ((marks.assgn as number) * 2) : marks.assgn)}
+                                                                        <div className="flex flex-col text-[10px]">
+                                                                            <span className="text-blue-600 font-bold">{marks.isNonCredit ? '-' : marks.a1}</span>
+                                                                            <span className="text-slate-400">{marks.isNonCredit ? '-' : marks.a2}</span>
+                                                                        </div>
+                                                                    </TableCell>
+                                                                    <TableCell className="text-center border-r font-medium text-[10px] text-slate-400">
+                                                                        {marks.isNonCredit ? '-' : (marks.isProject ? 'Combined' : Math.max(marks.m1 || 0, marks.m2 || 0))}
                                                                     </TableCell>
                                                                     <TableCell className={`text-center border-r font-black ${marks.isNonCredit ? 'text-slate-300' : 'bg-blue-50/30 text-blue-700'}`}>
-                                                                        {marks.isNonCredit ? '-' : marks.total}
+                                                                        {marks.isNonCredit ? '-' : (marks.isProject ? (marks.m1 + marks.m2 + marks.a1 + marks.a2) : marks.total)}
+                                                                    </TableCell>
+                                                                    <TableCell className="text-center border-r font-bold text-xs text-slate-500">
+                                                                        {course.credits}
                                                                     </TableCell>
                                                                     <TableCell className="text-center border-r font-black text-slate-400 italic">
-                                                                        {marks.isNonCredit ? '-' : (marks.type === 'Lab' ? (marks as any).labExt : (marks as any).ex)}
+                                                                        {marks.isNonCredit ? '-' : (marks.isProject ? 'Viva Voce' : (marks.type === 'Lab' ? (marks as any).labExt : (marks as any).ex))}
                                                                     </TableCell>
                                                                     <TableCell className={`text-center font-black text-base ${marks.isNonCredit ? 'bg-slate-100 text-slate-400' : (isActiveSem ? 'bg-amber-50/50 text-amber-600' : 'bg-primary/10 text-primary')}`}>
                                                                         {marks.isNonCredit ? (

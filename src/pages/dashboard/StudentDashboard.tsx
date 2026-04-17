@@ -136,15 +136,24 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
 
     useEffect(() => {
         const handleStorage = (e: StorageEvent) => {
-            if (e.key === 'published_timetables' || e.key === 'smartcampus_student_directory') {
+            if (e.key === 'published_timetables' || e.key === 'smartcampus_student_directory' || e.key === 'smartcampus_attendance_cache') {
                 setStorageSyncStamp(s => s + 1);
             }
         };
         window.addEventListener('storage', handleStorage);
+        
+        // Listen for real-time broadcasts
+        const unsubscribe = attendanceService.onUpdate(() => {
+            setStorageSyncStamp(s => s + 1);
+            syncWithBackend(); 
+        });
+
         // Fallback custom event for same-tab routing overrides
-        const handleCustomEvent = () => setStorageSyncStamp(s => s + 1);
+        const handleCustomEvent = () => {
+            setStorageSyncStamp(s => s + 1);
+            syncWithBackend(); // Force immediate update
+        };
         window.addEventListener('timetable_published', handleCustomEvent);
-        window.addEventListener('attendance_updated', handleCustomEvent);
         
         // --- REAL-TIME DB POLLING SYNC ---
         const syncWithBackend = async () => {
@@ -152,7 +161,7 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
             try {
                 // Use the ORIGINAL mock attendance as the fixed historical baseline
                 // to avoid double-counting sessions updated in the current reactive window
-                const originalStudent = MOCK_STUDENTS.find(s => s.rollNumber === user.id);
+                const originalStudent = MOCK_STUDENTS.find(s => s.rollNumber.toUpperCase() === user.id.toUpperCase());
                 const basePct = originalStudent?.attendance || studentData.attendance || 0;
                 
                 const numericId = parseInt(studentData.id.replace(/\D/g, '')) || 0;
@@ -184,7 +193,7 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
         return () => {
             window.removeEventListener('storage', handleStorage);
             window.removeEventListener('timetable_published', handleCustomEvent);
-            window.removeEventListener('attendance_updated', handleCustomEvent);
+            unsubscribe();
             clearInterval(pollInterval);
         };
     }, [studentData, storageSyncStamp]);
@@ -295,10 +304,20 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
         const slot = todayExamTT.slots.find((s: any) => s.date === todayStr);
         const seating = examSeatingStr ? (JSON.parse(examSeatingStr) as any[]).find(s => s.examId.includes(todayExamTT.id) && s.rollNumber.toUpperCase() === user.id.toUpperCase()) : null;
 
+        const format12Hour = (timeStr: string) => {
+            if (!timeStr) return '';
+            const [hoursStr, minutesStr] = timeStr.replace(/\s*(AM|PM)\s*/i, '').split(':');
+            let hours = parseInt(hoursStr, 10);
+            if (isNaN(hours)) return timeStr;
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+            return `${hours.toString().padStart(2, '0')}:${minutesStr || '00'} ${ampm}`;
+        };
+
         return {
             title: todayExamTT.title,
             type: todayExamTT.type,
-            time: `${slot.startTime} - ${slot.endTime}`,
+            time: `${format12Hour(slot.startTime)} - ${format12Hour(slot.endTime)}`,
             slot: slot.session,
             room: seating?.room || "Check Seating Plan",
             block: seating?.block || "TBD",

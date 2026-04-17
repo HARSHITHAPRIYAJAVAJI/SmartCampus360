@@ -541,18 +541,6 @@ export const MOCK_FACULTY: Faculty[] = [
     ]
   },
   {
-    "id": "ramya-priya",
-    "name": "RAMYA PRIYA",
-    "rollNumber": "22F91F6633",
-    "designation": "Assistant Professor",
-    "department": "CSM",
-    "email": "ramyapriya@smartcampus.com",
-    "phone": "+91 98765 43242",
-    "specialization": [
-      "IS"
-    ]
-  },
-  {
     "id": "g-shivaleela",
     "name": "Mrs. G. Shivaleela",
     "rollNumber": "22F91F6634",
@@ -1960,7 +1948,7 @@ export const MOCK_FACULTY: Faculty[] = [
   {
     "id": "ch-vinay-kumar",
     "name": "CH. Vinay Kumar",
-    "rollNumber": "CSM-NLP-01",
+    "rollNumber": "22F91F6645",
     "designation": "Assistant Professor",
     "department": "CSM",
     "email": "vinaykumar.ch@smartcampus.com",
@@ -2252,7 +2240,7 @@ export const MOCK_FACULTY: Faculty[] = [
   {
     "id": "n-kiranmai",
     "name": "Mrs. N. Kiranmai",
-    "rollNumber": "CSM-D02",
+    "rollNumber": "22F91F6646",
     "designation": "Assistant Professor",
     "department": "CSM",
     "email": "kiranmai.n@smartcampus.com",

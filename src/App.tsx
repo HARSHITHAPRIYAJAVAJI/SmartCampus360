@@ -53,6 +53,10 @@ const CommunicationHub = lazy(() => import("./pages/dashboard/CommunicationHub")
 
 
 const RequestsManagement = lazy(() => import("./pages/admin/RequestsManagement"));
+const TimetableGeneratorInfo = lazy(() => import("./pages/features/TimetableGeneratorInfo"));
+const StudentRecordsInfo = lazy(() => import("./pages/features/StudentRecordsInfo"));
+const FacultyManagementInfo = lazy(() => import("./pages/features/FacultyManagementInfo"));
+
 
 // Lazy load UI overlays to reduce initial bundle size
 const Toaster = lazy(() => import("@/components/ui/toaster").then(mod => ({ default: mod.Toaster })));
@@ -127,6 +131,9 @@ const App = () => {
               <Route path="/contact" element={<Contact />} />
               <Route path="/courses" element={<Layout><div className="container mx-auto py-8"><CourseManagement readOnly={true} /></div></Layout>} />
               <Route path="/placements" element={<Placements />} />
+              <Route path="/features/timetable-generator" element={<TimetableGeneratorInfo />} />
+              <Route path="/features/student-records" element={<StudentRecordsInfo />} />
+              <Route path="/features/faculty-management" element={<FacultyManagementInfo />} />
               <Route path="/login">
                 <Route
                   index
