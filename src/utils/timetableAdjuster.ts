@@ -207,12 +207,12 @@ export function executeSwap(
     
     // Period format in DB might be different, let's normalize
     const timeMap: Record<string, string> = { 
-        "09:30": "09:30", "09:40": "09:30",
-        "10:30": "10:30", "10:40": "10:30", 
+        "09:40": "09:40",
+        "10:40": "10:40", 
         "11:40": "11:40",
-        "13:30": "01:30", "01:30": "01:30", "01:20": "01:30",
-        "14:30": "02:30", "02:30": "02:30", "02:20": "02:30",
-        "15:30": "03:30", "03:30": "03:30", "03:20": "03:30"
+        "01:20": "01:20",
+        "02:20": "02:20",
+        "03:20": "03:20"
     };
     const dObj = new Date(req.date);
     const dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -332,12 +332,12 @@ export function revertSpecificRequest(req: any, publishedTimetables: Record<stri
     const [startTime] = (req.period || "").split('-');
     
     const timeMap: Record<string, string> = { 
-        "09:30": "09:30", "09:40": "09:30",
-        "10:30": "10:30", "10:40": "10:30", 
+        "09:40": "09:40",
+        "10:40": "10:40", 
         "11:40": "11:40",
-        "13:30": "01:30", "01:30": "01:30", "01:20": "01:30",
-        "14:30": "02:30", "02:30": "02:30", "02:20": "02:30",
-        "15:30": "03:30", "03:30": "03:30", "03:20": "03:30"
+        "01:20": "01:20",
+        "02:20": "02:20",
+        "03:20": "03:20"
     };
     const targetTime = timeMap[startTime] || startTime;
     const dObj = new Date(req.date);

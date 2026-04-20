@@ -62,15 +62,12 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
 
       const semNum = selectedSemester % 2 === 0 ? 2 : 1;
       
-      // Resolve which source of truth to use
       const publishedStoreStr = localStorage.getItem('published_timetables');
       const allTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : null;
       const strictPublishedKey = `${(student.branch || "").toUpperCase()}-${student.year}-${semNum}-${student.section}`;
       
       let publishedEntry = allTimetables ? allTimetables[strictPublishedKey] : null;
 
-      // Logic: Prioritize the specific published entry, fallback to institutional defaults ONLY on initial boot before any publishing happens.
-      const useDemoData = publishedStoreStr === null;
       const liveTable = publishedEntry?.grid || 
                         (publishedEntry && !publishedEntry.metadata ? publishedEntry : {});
       const liveMetadata = publishedEntry?.metadata || null;
@@ -79,11 +76,8 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
       Object.entries(liveTable).forEach(([dayTime, session]: [string, any]) => {
         if (!session) return;
         let [day, time] = dayTime.split('-');
-        const timeMap: Record<string, string> = { "09:30": "09:40", "10:30": "10:40", "11:40": "11:40", "01:30": "01:20", "02:30": "02:20", "03:30": "03:20" };
-        time = timeMap[time] || time;
         if (!result.slots[day]) result.slots[day] = {};
 
-        // Find faculty for this session
         const facultyLoadKey = `${student.branch}-${student.year}-${semNum}`;
         const genericLoadKey = `${student.year}-${semNum}`;
         const currentLoad = (FACULTY_LOAD[facultyLoadKey as keyof typeof FACULTY_LOAD] || 
@@ -94,7 +88,6 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
         const fullName = formatSubjectName(session.courseName || session.courseCode);
         const abbrev = getSubjectAbbreviation(session.courseName || session.courseCode);
 
-        // Check for a substitution for this specific date/time for the student's section
         const savedRequests = localStorage.getItem('FACULTY_REQUESTS');
         const approvedRequests = savedRequests ? JSON.parse(savedRequests).filter((r: any) => 
           r.status === 'approved' && 
@@ -105,16 +98,14 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
            const rDate = new Date(r.date);
            const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
            const rStartTime = r.period?.split('-')[0];
-           const revMap: any = { "09:40": "09:30", "10:40": "10:30", "11:40": "11:40", "01:20": "01:30", "02:20": "02:30", "03:20": "03:30" };
            
-           const isSlotMatch = rDayName === day && (r.period === time || rStartTime === (revMap[time] || time));
+           const isSlotMatch = rDayName === day && (r.period === time || rStartTime === time);
            const isSectionMatch = r.section === strictPublishedKey;
            
            return isSlotMatch && isSectionMatch;
         });
 
         const displayFaculty = currentSubstitution ? currentSubstitution.targetName : (session.faculty || loadInfo?.faculty || "Staff");
-
         const isCRT = (session.courseName || session.courseCode || "").toLowerCase().includes('crt');
 
         result.slots[day][time] = {
@@ -134,14 +125,12 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
       const facultyName = user.name;
       const facultyId = user.id;
 
-      // Create a map for course name lookup to avoid confusing codes
       const courseNameMap: Record<string, string> = {};
       MOCK_COURSES.forEach(c => {
         courseNameMap[c.code] = c.name;
         courseNameMap[c.code.replace(' Lab', '').trim()] = c.name;
       });
 
-      // Resolve which source of truth to use - dynamically fetch all 4 branches without overlapping duplicates
       const publishedStoreStr = localStorage.getItem('published_timetables');
       const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
       
@@ -169,7 +158,6 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
 
         const semKey = `${year}-${sem}`;
         const load = (FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || []) as any[];
-        // Load Approved Substitutions/Swaps
         const savedRequests = localStorage.getItem('FACULTY_REQUESTS');
         const approvedRequests = savedRequests ? JSON.parse(savedRequests).filter((r: any) => 
           r.status === 'approved' && 
@@ -180,29 +168,21 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
           if (!session) return;
           const [day, time] = dayTime.split('-');
           
-          // Check for a substitution where SOMEONE ELSE is being replaced by ME
           const amISubstituting = approvedRequests.find((r: any) => {
              const rDate = new Date(r.date);
              const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
-             
-             const revMap: any = { "09:40": "09:30", "10:40": "10:30", "11:40": "11:40", "01:20": "01:30", "02:20": "02:30", "03:20": "03:30" };
              const rStartTime = r.period?.split('-')[0];
-             const isMatchingSlot = rDayName === day && (r.period === time || r.period.startsWith(time) || rStartTime === time || (revMap[time] && (r.period.startsWith(revMap[time]) || rStartTime === revMap[time])));
-             
+             const isMatchingSlot = rDayName === day && (r.period === time || r.period.startsWith(time) || rStartTime === time);
              const isMatchingSection = r.section === key;
              const isMeTarget = r.targetId === facultyId || (r.targetName && r.targetName.toLowerCase() === facultyName.toLowerCase());
              return isMatchingSlot && isMatchingSection && isMeTarget;
           });
 
-          // Check for a substitution where I am being replaced by SOMEONE ELSE
           const amIBeingReplaced = approvedRequests.find((r: any) => {
              const rDate = new Date(r.date);
              const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
-             
-             const revMap: any = { "09:40": "09:30", "10:40": "10:30", "11:40": "11:40", "01:20": "01:30", "02:20": "02:30", "03:20": "03:30" };
              const rStartTime = r.period?.split('-')[0];
-             const isMatchingSlot = rDayName === day && (r.period === time || r.period.startsWith(time) || rStartTime === time || (revMap[time] && (r.period.startsWith(revMap[time]) || rStartTime === revMap[time])));
-             
+             const isMatchingSlot = rDayName === day && (r.period === time || r.period.startsWith(time) || rStartTime === time);
              const isMatchingSection = r.section === key;
              const isMeSender = r.senderId === facultyId || (r.senderName && (session.faculty?.toLowerCase()?.includes(r.senderName.toLowerCase())));
              return isMatchingSlot && isMatchingSection && isMeSender;
@@ -213,12 +193,11 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
           let isSubstituted = !!amIBeingReplaced || !!amISubstituting;
 
           if (amISubstituting) {
-             displayFaculty = facultyName; // I am taking the class
+             displayFaculty = facultyName;
           } else if (amIBeingReplaced) {
-             displayFaculty = amIBeingReplaced.targetName; // Someone else is taking my class
+             displayFaculty = amIBeingReplaced.targetName;
           }
 
-          // 1. ID-BASED MATCHING ONLY for the viewer (if they are the leave-taking faculty)
           if (!isAssigned && session.facultyId && facultyId) {
             isAssigned = session.facultyId === facultyId || session.originalFacultyId === facultyId;
           } 
@@ -226,7 +205,6 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
               isAssigned = true;
           }
 
-          // 2. NAME-BASED MATCHING (More inclusive matching for multi-departmental support)
           if (!isAssigned) {
             const normalizedFaculty = (session.faculty || "").toLowerCase();
             const normalizedTarget = facultyName.toLowerCase();
@@ -252,8 +230,6 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
           
           if (isAssigned) {
             let [d, t] = dayTime.split('-');
-            const timeMap: Record<string, string> = { "09:30": "09:40", "10:30": "10:40", "11:40": "11:40", "01:30": "01:20", "02:30": "02:20", "03:30": "03:20" };
-            t = timeMap[t] || t;
             if (!facultyResult.slots[d]) facultyResult.slots[d] = {};
             
             const rawSubject = session.courseName || session.courseCode || session.subject || "Unknown";

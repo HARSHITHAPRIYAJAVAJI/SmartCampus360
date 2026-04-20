@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { useOutletContext } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MOCK_FACULTY } from "@/data/mockFaculty";
-import { executeSwap } from "@/utils/timetableAdjuster";
+import { executeSwap, revertSpecificRequest, revertLeavePeriods } from "@/utils/timetableAdjuster";
 import { alertService } from "@/services/alertService";
 
 interface FacultyRequest {
@@ -251,9 +251,10 @@ const LeaveManagement = () => {
         
         const publishedStoreStr = localStorage.getItem('published_timetables');
         const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
-        let senderClass: any = null;
-        
         // Find what the SENDER is currently teaching at that time
+        // We look for all potential matches and prioritize non-lab sessions to avoid false-positive restrictions
+        const matchingSessions: any[] = [];
+        
         Object.entries(publishedTimetables).forEach(([sectionId, table]: [string, any]) => {
             const grid = (table as any).grid || table;
             const session = grid[`${day}-${startTime}`];
@@ -263,18 +264,33 @@ const LeaveManagement = () => {
                 const sId = session.facultyId;
                 const uId = user.id;
 
-                const isMatch = (sId && sId === uId) || 
-                                (sFac && (sFac.includes(uName) || uName.includes(sFac)));
+                const isMatch = (uId && sId === uId) || 
+                                (uName && (sFac && (sFac.includes(uName) || uName.includes(sFac))));
 
                 if (isMatch) {
-                    senderClass = { ...session, fullSection: sectionId };
+                    matchingSessions.push({ ...session, fullSection: sectionId });
                 }
             }
         });
 
+        // Pick the most relevant session (prefer non-lab if available)
+        let senderClass = matchingSessions.find(s => {
+            const sbj = (s.subject || s.courseName || s.courseCode || "").toUpperCase();
+            return !sbj.includes("LAB") && !sbj.includes("PROJECT") && !sbj.includes("WORKSHOP");
+        }) || matchingSessions[0];
+
         if (senderClass) {
             const subject = (senderClass.subject || senderClass.courseName || senderClass.courseCode || "").toUpperCase();
-            if (subject.includes("LAB") || subject.includes("PROJECT") || subject.includes("WORKSHOP")) {
+            // Stricter check for Lab/Project to avoid blocking subjects with "Lab" in name if they are theories
+            // Here we look for " LAB" or "-LAB" or "LAB " or exact match "LAB"
+            const isLabOrProject = subject === "LAB" || 
+                                   subject.includes(" LAB") || 
+                                   subject.includes("-LAB") || 
+                                   subject.includes("LAB ") ||
+                                   subject.includes("PROJECT") || 
+                                   subject.includes("WORKSHOP");
+
+            if (isLabOrProject) {
                 toast({
                     title: "Action Restricted",
                     description: "Lab and Project sessions do not require rescheduling. The co-faculty member will handle the session.",
@@ -416,11 +432,33 @@ const LeaveManagement = () => {
     };
 
     const handleDeleteRequest = (id: string) => {
+        const request = allRequests.find(r => r.id === id);
+        
+        // If it was an approved swap/replacement, REVERT IT before deleting
+        if (request && request.status === 'approved') {
+            const publishedStoreStr = localStorage.getItem('published_timetables');
+            if (publishedStoreStr) {
+                let updatedTimetables = JSON.parse(publishedStoreStr);
+                
+                if (request.type === 'leave') {
+                    // Revert all replacements linked to this leave
+                    const { updatedTimetables: reverted } = revertLeavePeriods(request.senderId, updatedTimetables);
+                    updatedTimetables = reverted;
+                } else if (request.type === 'swap' || request.type === 'replacement') {
+                    // Revert specific swap/replacement
+                    updatedTimetables = revertSpecificRequest(request, updatedTimetables);
+                }
+                
+                localStorage.setItem('published_timetables', JSON.stringify(updatedTimetables));
+                window.dispatchEvent(new Event('timetable_published'));
+            }
+        }
+
         const updated = allRequests.filter(r => r.id !== id && r.parentId !== id);
         saveRequests(updated);
         toast({
             title: "Request Deleted",
-            description: "The request and all associated timetable changes have been permanently removed. Original state restored.",
+            description: "The request has been removed and original duties have been restored.",
         });
     };
 
@@ -759,12 +797,12 @@ const LeaveManagement = () => {
                                             <SelectValue placeholder="Select period to swap/replace" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="09:30-10:30">09:40 AM - 10:40 AM</SelectItem>
-                                            <SelectItem value="10:30-11:30">10:40 AM - 11:40 AM</SelectItem>
+                                            <SelectItem value="09:40-10:40">09:40 AM - 10:40 AM</SelectItem>
+                                            <SelectItem value="10:40-11:40">10:40 AM - 11:40 AM</SelectItem>
                                             <SelectItem value="11:40-12:40">11:40 AM - 12:40 PM</SelectItem>
-                                            <SelectItem value="01:30-02:30">01:20 PM - 02:20 PM</SelectItem>
-                                            <SelectItem value="02:30-03:30">02:20 PM - 03:20 PM</SelectItem>
-                                            <SelectItem value="03:30-04:30">03:20 PM - 04:20 PM</SelectItem>
+                                            <SelectItem value="01:20-02:20">01:20 PM - 02:20 PM</SelectItem>
+                                            <SelectItem value="02:20-03:20">02:20 PM - 03:20 PM</SelectItem>
+                                            <SelectItem value="03:20-04:20">03:20 PM - 04:20 PM</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>

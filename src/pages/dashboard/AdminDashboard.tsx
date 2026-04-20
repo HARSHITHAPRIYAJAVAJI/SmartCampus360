@@ -40,6 +40,7 @@ import { Mail, Smartphone, MapPin, History, LayoutDashboard, UserCircle, LogOut,
 import { alertService } from "@/services/alertService";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
+import { motion } from "framer-motion";
 
 export default function AdminDashboard() {
     const navigate = useNavigate();
@@ -201,128 +202,71 @@ export default function AdminDashboard() {
     return (
         <div className="space-y-6">
             {/* Combined Profile & Command Header */}
-            <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 {/* Admin Persona Card */}
-                <div className="xl:col-span-2 relative overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 rounded-[2.5rem] p-1 shadow-2xl border border-indigo-500/10">
-                    <div className="bg-slate-950/40 backdrop-blur-3xl rounded-[2.4rem] p-8 h-full">
-                        <div className="absolute top-0 right-0 p-12 opacity-5 rotate-12 pointer-events-none">
-                            <ShieldCheck className="w-64 h-64 text-white" />
-                        </div>
+                <div className="xl:col-span-3 relative overflow-hidden bg-white dark:bg-slate-950 rounded-[2.5rem] p-10 shadow-premium border border-slate-200/60 dark:border-slate-800 flex flex-col justify-between min-h-[320px]">
+                    {/* Floating Decorative Elements */}
+                    <div className="absolute top-0 right-0 p-8 opacity-5 rotate-12 pointer-events-none translate-x-1/4 -translate-y-1/4 text-primary">
+                        <ShieldCheck className="w-80 h-80" />
+                    </div>
 
-                        <div className="relative z-10 flex flex-col md:flex-row items-center gap-8">
-                            <div className="relative group">
-                                <div className="absolute inset-0 bg-indigo-500 rounded-full blur-2xl opacity-20 group-hover:opacity-40 transition-opacity" />
-                                <Avatar className="h-32 w-32 border-4 border-white/10 shadow-2xl relative z-10">
-                                    <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${adminProfile.name}`} />
-                                    <AvatarFallback className="text-4xl font-black bg-indigo-600 text-white">{adminProfile.name[0]}</AvatarFallback>
-                                </Avatar>
-                                <div className="absolute bottom-1 right-1 h-6 w-6 rounded-full bg-emerald-500 border-4 border-slate-900 shadow-lg z-20" />
-                            </div>
-
-                            <div className="flex-1 text-center md:text-left space-y-3">
-                                <div className="flex flex-wrap items-center justify-center md:justify-start gap-3">
-                                    <Badge className="bg-indigo-500/20 text-indigo-300 border-indigo-500/20 px-3 py-1 rounded-full font-black tracking-widest text-[9px] uppercase">
-                                        Executive Level Authority
+                    <div className="relative z-10">
+                        <div className="flex flex-col md:flex-row md:items-center gap-8 mb-8">
+                            <div className="flex-1 space-y-2">
+                                <div className="flex flex-wrap items-center gap-3 mb-1">
+                                    <Badge variant="secondary" className="bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border-none px-3 font-black text-[9px] tracking-widest uppercase">
+                                        EXECUTIVE LEVEL
                                     </Badge>
-                                    <Badge variant="outline" className="border-emerald-500/40 text-emerald-400 text-[9px] font-black uppercase">
+                                    <span className="text-emerald-600 dark:text-emerald-400 text-[10px] font-black uppercase tracking-tighter flex items-center gap-1.5 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100 dark:bg-emerald-500/10 dark:border-emerald-500/20">
+                                        <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                                         System Online
-                                    </Badge>
+                                    </span>
                                 </div>
-                                <h1 className="text-4xl font-black tracking-tighter text-white uppercase italic">
+                                <h1 className="text-4xl md:text-5xl font-black tracking-tighter leading-none mb-1 text-slate-900 dark:text-white uppercase">
                                     {adminProfile.name}
                                 </h1>
-                                <p className="text-indigo-100/60 font-medium tracking-tight flex items-center justify-center md:justify-start gap-2">
-                                    <Building2 className="w-4 h-4" /> {adminProfile.dept}
-                                </p>
-                            </div>
-
-                            <div className="hidden lg:flex flex-col items-end gap-3 pr-4 border-l border-white/5 pl-8">
-                                <div className="text-right">
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-indigo-300/60">Institutional ID</p>
-                                    <p className="font-mono text-sm text-white font-bold tracking-widest uppercase">{adminProfile.id}</p>
-                                </div>
-                                <div className="text-right">
-                                    <p className="text-[10px] font-black uppercase tracking-widest text-indigo-300/60">Last Event</p>
-                                    <p className="text-sm text-indigo-100 font-bold italic">{adminProfile.lastActivity}</p>
+                                <div className="flex items-center gap-2 text-slate-400 font-bold tracking-tight text-sm">
+                                    <Building2 className="w-4 h-4 text-slate-300" />
+                                    <p>{adminProfile.dept}</p>
                                 </div>
                             </div>
                         </div>
 
-                        <div className="mt-8 pt-8 border-t border-white/5 grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-slate-100 dark:border-slate-800">
                             {[
                                 { icon: Mail, label: "Institutional Email", value: adminProfile.email },
-                                { icon: Smartphone, label: "Encrypted Phone", value: adminProfile.phone },
+                                { icon: Smartphone, label: "Secure Line", value: adminProfile.phone },
                                 { icon: MapPin, label: "Command Location", value: adminProfile.location },
                             ].map((item, i) => (
-                                <div key={i} className="flex items-center gap-3 group px-4 py-2 hover:bg-white/5 rounded-2xl transition-colors">
-                                    <item.icon className="w-4 h-4 text-indigo-400 group-hover:scale-110 transition-transform" />
-                                    <div>
-                                        <p className="text-[9px] font-black uppercase tracking-widest text-indigo-300/40">{item.label}</p>
-                                        <p className="text-[11px] font-bold text-indigo-100 tracking-tight">{item.value}</p>
+                                <div key={i} className="space-y-1">
+                                    <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-300 dark:text-slate-600 truncate">{item.label}</p>
+                                    <div className="flex items-center gap-2 group cursor-pointer">
+                                        <item.icon className="w-3.5 h-3.5 text-slate-400 group-hover:text-primary transition-colors" />
+                                        <p className="text-xs font-bold text-slate-600 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white transition-colors truncate">{item.value}</p>
                                     </div>
                                 </div>
                             ))}
                         </div>
                     </div>
-                </div>
-
-                {/* Quick Governance Stats */}
-                <div className="relative overflow-hidden bg-white dark:bg-slate-950 rounded-[2.5rem] p-8 shadow-xl border border-border/50 flex flex-col justify-between">
-                    <div className="space-y-4">
-                        <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 rounded-2xl bg-rose-500/10 flex items-center justify-center text-rose-600">
-                                <TrendingUp className="w-5 h-5" />
-                            </div>
-                            <div>
-                                <h3 className="font-black text-sm tracking-tight">Personnel Analytics</h3>
-                                <p className="text-[10px] uppercase font-black tracking-widest text-muted-foreground/60">Across All Sub-systems</p>
-                            </div>
-                        </div>
-
-                        <div className="space-y-3 pt-4">
-                            {[
-                                { label: "Student Engagement", value: 92 },
-                                { label: "Faculty Compliance", value: 88 },
-                                { label: "System Uptime", value: 100 },
-                            ].map((stat, i) => (
-                                <div key={i} className="space-y-1.5">
-                                    <div className="flex justify-between text-[10px] font-black uppercase tracking-tighter">
-                                        <span>{stat.label}</span>
-                                        <span>{stat.value}%</span>
-                                    </div>
-                                    <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-900 rounded-full overflow-hidden">
-                                        <div
-                                            className="h-full bg-gradient-to-r from-rose-500 to-rose-600 rounded-full"
-                                            style={{ width: `${stat.value}%` }}
-                                        />
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <Button variant="outline" className="w-full mt-6 rounded-2xl border-rose-100 hover:bg-rose-50 text-rose-600 font-black text-[10px] uppercase tracking-widest h-12">
-                        View Detailed Audit Trail <ChevronRight className="w-3 h-3 ml-2" />
-                    </Button>
                 </div>
             </div>
 
-            {/* Existing Stats Grid */}
+            {/* Stats Overview */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat, index) => (
-                    <Card key={index} className={`border-none shadow-premium hover:shadow-2xl transition-all duration-300 rounded-[2rem] overflow-hidden group bg-white dark:bg-slate-950 border-t-4 ${stat.border.replace('border-', 'border-t-')}`}>
+                    <Card key={index} className="border-none shadow-sm hover:shadow-xl transition-all duration-300 rounded-[2.5rem] overflow-hidden group bg-white dark:bg-slate-950">
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
-                            <CardTitle className="text-xs font-black uppercase tracking-widest text-muted-foreground opacity-60 group-hover:opacity-100 transition-opacity">
+                            <CardTitle className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">
                                 {stat.title}
                             </CardTitle>
-                            <div className={`p-2 rounded-xl ${stat.bg} ${stat.color} group-hover:scale-110 transition-transform duration-300`}>
-                                <stat.icon className="h-5 w-5" />
+                            <div className="p-2 rounded-xl bg-slate-50 dark:bg-slate-900 text-slate-400 group-hover:bg-primary/10 group-hover:text-primary transition-all duration-300">
+                                <stat.icon className="h-4 w-4" />
                             </div>
                         </CardHeader>
                         <CardContent>
-                            <div className="text-3xl font-black tracking-tighter mb-1">{stat.value}</div>
-                            <p className="text-[10px] font-bold text-muted-foreground flex items-center gap-1">
-                                <TrendingUp className="h-3 w-3 text-emerald-500" />
+                            <div className="text-3xl font-black tracking-tighter text-slate-900 dark:text-white mb-1 group-hover:scale-110 transition-transform origin-left">{stat.value}</div>
+                            <p className="text-[10px] font-bold text-slate-400 flex items-center gap-1 uppercase tracking-widest">
+                                <div className="h-1 w-1 rounded-full bg-emerald-500" />
                                 {stat.trend}
                             </p>
                         </CardContent>
@@ -375,37 +319,6 @@ export default function AdminDashboard() {
                 </div>
             </div>
 
-            {/* Institutional Directory Drill-down (Simulation) */}
-            <div className="mt-8">
-                <Card className="border-none shadow-premium rounded-[2.5rem] overflow-hidden bg-white dark:bg-slate-950">
-                    <CardHeader className="bg-slate-50 dark:bg-slate-900/50 p-8">
-                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                            <div className="space-y-1">
-                                <CardTitle className="text-2xl font-black tracking-tighter uppercase italic">Institutional Directory</CardTitle>
-                                <CardDescription className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Global personnel and asset search</CardDescription>
-                            </div>
-                            <div className="relative w-full md:w-96">
-                                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                                <Input 
-                                    placeholder="Search Roll ID, Faculty Code, or Name..." 
-                                    className="pl-12 h-14 bg-white dark:bg-slate-950 border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-sm shadow-inner"
-                                />
-                            </div>
-                        </div>
-                    </CardHeader>
-                    <CardContent className="p-0">
-                        <div className="p-8 text-center bg-slate-50/50 dark:bg-slate-900/20">
-                            <div className="max-w-md mx-auto space-y-4">
-                                <div className="h-20 w-20 bg-indigo-50 dark:bg-indigo-900/20 rounded-3xl flex items-center justify-center mx-auto text-indigo-600 mb-6">
-                                    <Search className="w-10 h-10" />
-                                </div>
-                                <h3 className="text-xl font-black tracking-tight uppercase">Ready for Analysis</h3>
-                                <p className="text-sm text-muted-foreground font-medium italic">Use the search bar above to drill down into specific department performance or student cohorts.</p>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
-            </div>
         </div>
     );
 }

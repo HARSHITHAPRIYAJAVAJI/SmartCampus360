@@ -154,6 +154,15 @@ export default function CommunicationHub() {
             const allAlerts: InstitutionalNotification[] = saved ? JSON.parse(saved) : [];
             const filtered = allAlerts.filter(a => {
                 if (user.role === 'admin') {
+                    const title = (a.title || '').toLowerCase();
+                    const message = (a.message || '').toLowerCase();
+                    
+                    // Exclude specific high-frequency/non-admin alerts
+                    const isAcademicUpdate = title.includes('academic update') || message.includes('new marks');
+                    const isTimetablePublish = title.includes('timetable published');
+                    
+                    if (isAcademicUpdate || isTimetablePublish) return false;
+
                     const audience = (a.targetAudience || 'both').toLowerCase();
                     return audience === 'both' || audience === 'all' || audience === '';
                 }

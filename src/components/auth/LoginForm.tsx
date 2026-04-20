@@ -217,61 +217,17 @@ export function LoginForm({
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 rounded-[2.5rem] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] bg-card/30 backdrop-blur-2xl border border-white/20 dark:border-white/10 relative z-10"
       >
-        {/* Left side - Dynamic Illustration */}
-        <div className="hidden lg:flex flex-col justify-center p-16 bg-gradient-to-br from-primary via-primary/90 to-primary-dark text-white relative overflow-hidden">
-          {/* Floating Icons Decor */}
-          <motion.div 
-            animate={{ y: [0, -15, 0] }} 
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute top-20 right-20 opacity-20 pointer-events-none"
-          >
-            <GraduationCap className="w-32 h-32" />
-          </motion.div>
-          <motion.div 
-            animate={{ y: [0, 10, 0], x: [0, 10, 0] }} 
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-            className="absolute bottom-20 left-20 opacity-10 pointer-events-none"
-          >
-            <Shield className="w-24 h-24" />
-          </motion.div>
-
-          <div className="relative z-10 text-center lg:text-left space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-5xl font-black tracking-tight leading-[1.1]">
-                SmartCampus<span className="text-white/70">360</span>
-              </h2>
-              <p className="text-xl text-white/80 font-medium max-w-sm">
-                Empowering academic excellence through localized automation and AI.
-              </p>
-            </div>
-
-            <div className="relative group">
-              <div className="absolute -inset-1 bg-gradient-to-r from-white/20 to-white/10 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-              <div className="relative bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="h-12 w-12 rounded-xl bg-white/20 flex items-center justify-center">
-                    <Smartphone className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-lg">One Campus Sync</h4>
-                    <p className="text-white/60 text-sm">Timetable, Grades, Fees</p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="bg-white/5 rounded-lg p-3">
-                    <div className="text-2xl font-black">9.8k</div>
-                    <div className="text-[10px] uppercase font-bold text-white/40 tracking-widest">Active Students</div>
-                  </div>
-                  <div className="bg-white/5 rounded-lg p-3">
-                    <div className="text-2xl font-black">450+</div>
-                    <div className="text-[10px] uppercase font-bold text-white/40 tracking-widest">Faculty Members</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none mix-blend-overlay" />
+        {/* Left side - Illustration */}
+        <div className="hidden lg:flex flex-col justify-center bg-primary relative overflow-hidden">
+          <img 
+            src={graduationImage} 
+            alt="SmartCampus360 Illustration" 
+            className="w-full h-full object-cover"
+          />
+          {/* Red light gradient filter layer */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-red-600/40 via-primary/20 to-transparent mix-blend-overlay pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-primary/60 pointer-events-none" />
+          <div className="absolute inset-0 bg-red-500/10 pointer-events-none" />
         </div>
 
         {/* Right side - Login Form */}

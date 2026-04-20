@@ -180,11 +180,23 @@ const RequestsManagement = () => {
     };
 
     const handleDeleteRequest = (id: string) => {
+        const request = allRequests.find(r => r.id === id);
+        
+        // If it was an approved leave, REVERT all replacements before deleting
+        if (request && request.status === 'approved' && request.type === 'leave') {
+            const publishedStoreStr = localStorage.getItem('published_timetables');
+            if (publishedStoreStr) {
+                const { updatedTimetables } = revertLeavePeriods(request.senderId, JSON.parse(publishedStoreStr));
+                localStorage.setItem('published_timetables', JSON.stringify(updatedTimetables));
+                window.dispatchEvent(new Event('timetable_published'));
+            }
+        }
+
         const updated = allRequests.filter(r => r.id !== id && r.parentId !== id);
         saveRequests(updated);
         toast({
             title: "Record Deleted",
-            description: "The request record has been removed.",
+            description: "The request has been removed and all associated schedule changes restored.",
         });
         window.dispatchEvent(new Event('faculty_request_updated'));
     };

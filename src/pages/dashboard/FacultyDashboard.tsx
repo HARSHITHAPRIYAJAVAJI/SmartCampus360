@@ -34,7 +34,7 @@ import { YEAR_IN_CHARGES, CLASS_TEACHERS } from "@/data/mockHierarchy";
 
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { useMemo, useState, useEffect } from "react";
-import { FACULTY_LOAD, getTimetable } from "@/data/aimlTimetable";
+import { FACULTY_LOAD, getTimetable, AIML_TIMETABLES } from "@/data/aimlTimetable";
 import { MOCK_COURSES } from "@/data/mockCourses";
 import { format } from "date-fns";
 import { formatSubjectName } from "@/data/subjectMapping";
@@ -125,13 +125,18 @@ export default function FacultyDashboard({ facultyId: propFacultyId }: { faculty
         const nameToMatch = user.name;
         const idToMatch = user.id;
 
-        // 1. Get Base Schedule from static and published stores
+        // DYNAMIC SCAN: Check every single published key + base static keys
+        const allTimetablesToProcess: Record<string, any> = {};
+        
+        // 1. Add static base timetables
+        Object.keys(AIML_TIMETABLES).forEach(key => {
+            allTimetablesToProcess[key] = AIML_TIMETABLES[key];
+        });
+
+        // 2. Override with published ones from localStorage
         const publishedStoreStr = localStorage.getItem('published_timetables');
         const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
         
-        const allTimetablesToProcess: Record<string, any> = {};
-        
-        // DYNAMIC SCAN: Check every single published key
         Object.keys(publishedTimetables).forEach(key => {
             const entry = publishedTimetables[key];
             if (entry) {
@@ -140,9 +145,13 @@ export default function FacultyDashboard({ facultyId: propFacultyId }: { faculty
         });
 
         Object.entries(allTimetablesToProcess).forEach(([key, table]: [string, any]) => {
-            const [dept, year, sem, section] = key.split('-');
+            const parts = key.split('-');
+            const section = parts.length > 3 ? parts[3] : (parts.length > 2 ? parts[2] : 'A');
+            const dept = parts.length > 0 ? (parts[0].includes('CSM') || parts[0].includes('CSE') ? parts[0] : 'CSM') : 'CSM';
+            const yearStr = parts.length > 1 ? parts[1] : (parts.length > 0 ? parts[0] : '1');
+            const semStr = parts.length > 2 ? parts[2] : (parts.length > 1 ? parts[1] : '1');
 
-            const semKey = `${year}-${sem}`;
+            const semKey = `${yearStr}-${semStr}`;
             const load = FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || [];
             
             // Create a map for course name lookup
@@ -165,9 +174,7 @@ export default function FacultyDashboard({ facultyId: propFacultyId }: { faculty
                 let [day, time] = dayTime.split('-');
                 if (day !== today) return;
                 
-                const timeMap: Record<string, string> = { "09:30": "09:40", "10:30": "10:40", "11:40": "11:40", "01:30": "01:20", "02:30": "02:20", "03:30": "03:20" };
                 const normalizedTime = time;
-                time = timeMap[time] || time;
                 
                 // 1. Check for a substitution/swap for this specific section, day, and time
                 const substitution = approvedRequests.find((r: any) => {
@@ -197,11 +204,13 @@ export default function FacultyDashboard({ facultyId: propFacultyId }: { faculty
                 // 3. NAME-BASED MATCHING (Inclusive)
                 if (!isAssigned) {
                     const normalizedFaculty = (session.faculty || "").toLowerCase();
+                    const normalizedRoom = (session.room || "").toLowerCase(); // Check room field for static mock data
                     const normalizedTarget = nameToMatch.toLowerCase();
 
                     if (normalizedTarget && (
                         (normalizedFaculty && (normalizedFaculty.includes(normalizedTarget) || normalizedTarget.includes(normalizedFaculty))) ||
-                        (session.originalFacultyName && session.originalFacultyName.toLowerCase().includes(normalizedTarget))
+                        (session.originalFacultyName && session.originalFacultyName.toLowerCase().includes(normalizedTarget)) ||
+                        (normalizedRoom && (normalizedRoom.includes(normalizedTarget) || normalizedTarget.includes(normalizedRoom)))
                     )) {
                         isAssigned = true;
                     }
@@ -236,7 +245,7 @@ export default function FacultyDashboard({ facultyId: propFacultyId }: { faculty
                         status: isTransferred ? 'transferred' : 'active',
                         isOverride: session.facultyId !== idToMatch && session.originalFacultyId !== idToMatch, // I am the substitute
                         dept,
-                        year,
+                        year: yearStr,
                         section,
                         code: cleanCode
                     });
@@ -253,12 +262,9 @@ export default function FacultyDashboard({ facultyId: propFacultyId }: { faculty
             approvedForToday.forEach((req: any) => {
                 if (req.senderId === idToMatch) {
                     const reqStart = req.period?.split('-')[0];
-                    const revMap: any = { "09:40": "09:30", "10:40": "10:30", "11:40": "11:40", "01:20": "01:30", "02:20": "02:30", "03:20": "03:30" };
-                    
                     const idx = schedule.findIndex(s => 
                         s.rawTime === req.period || 
-                        s.rawTime === reqStart || 
-                        (revMap[s.rawTime] && revMap[s.rawTime] === reqStart)
+                        s.rawTime === reqStart
                     );
                     if (idx !== -1) {
                         schedule[idx].title = `${schedule[idx].title} (Handed to ${req.targetName})`;
@@ -329,68 +335,100 @@ export default function FacultyDashboard({ facultyId: propFacultyId }: { faculty
     return (
         <div className="space-y-8 animate-in fade-in-50 slide-in-from-bottom-4 duration-700">
             {/* Unified Header / Banner Profile (From Profile.tsx) */}
-            <div className="relative">
-                <div className={`h-48 w-full bg-gradient-to-r ${isImpersonating ? 'from-slate-700 to-slate-950' : 'from-teal-600 via-blue-700 to-indigo-900'} rounded-[2.5rem] shadow-lg relative overflow-hidden text-white p-8 animate-in zoom-in-95 duration-500`}>
-                    <div className="absolute inset-0 opacity-10">
-                        <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                            <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                                <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5" />
-                            </pattern>
-                            <rect width="100" height="100" fill="url(#grid)" />
-                        </svg>
-                    </div>
+            <motion.div 
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="relative overflow-hidden bg-gradient-to-br from-[#0D9488] via-[#2563EB] to-[#4F46E5] rounded-[2.5rem] p-10 text-white shadow-[0_20px_50px_rgba(37,99,235,0.2)] flex flex-col justify-between min-h-[300px]"
+            >
+                {/* Floating Decorative Elements */}
+                <div className="absolute top-0 right-0 p-4 opacity-10 rotate-12 pointer-events-none translate-x-1/4 -translate-y-1/4">
+                    <Building2 className="w-80 h-80" />
+                </div>
+                <div className="absolute bottom-0 left-0 p-4 opacity-5 pointer-events-none -translate-x-1/4 translate-y-1/4">
+                    <Zap className="w-64 h-64" />
+                </div>
+
+                <div className="relative z-10">
                     {isImpersonating && (
-                        <div className="absolute top-6 right-8 bg-amber-500 text-black text-[10px] font-black uppercase tracking-[0.2em] py-1 px-3 rounded-full border border-black/10 shadow-lg">
-                            Admin Viewing Mode
+                        <div className="bg-amber-400 text-black text-[10px] font-black uppercase tracking-[0.2em] mb-6 py-1.5 px-4 rounded-full border border-white/20 w-fit flex items-center gap-2 shadow-lg">
+                            <ShieldCheck className="w-3.5 h-3.5" /> Admin Viewing Mode
                         </div>
                     )}
-                </div>
-                
-                <div className="px-8 -mt-16 flex flex-col md:flex-row items-end gap-6 relative z-10">
-                    <motion.div 
-                        initial={{ scale: 0.8, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        transition={{ type: "spring", stiffness: 100 }}
-                        className="p-1.5 bg-background rounded-[2.5rem] shadow-2xl relative"
-                    >
-                        <Avatar className="h-32 w-32 md:h-40 md:w-40 border-4 border-background rounded-[2.2rem]">
-                            <AvatarImage src={`https://api.dicebear.com/7.x/${profileData.imageType}/svg?seed=${profileData.name}`} />
-                            <AvatarFallback className="text-4xl bg-muted">{profileData.name[0]}</AvatarFallback>
-                        </Avatar>
-                        <div className={`absolute bottom-4 right-4 h-6 w-6 rounded-full border-4 border-background shadow-sm bg-blue-500`} />
-                    </motion.div>
                     
-                    <div className="pb-4 flex-1">
-                        <h1 className="text-3xl md:text-4xl font-black tracking-tight text-foreground mb-1">
-                            Welcome back, {profileData.name}!
-                        </h1>
-                        <div className="flex flex-wrap items-center gap-3">
-                            <Badge variant="secondary" className={`font-bold px-3 py-1 border-none bg-teal-100 text-teal-800`}>
-                                {profileData.id}
-                            </Badge>
-                            <div className="flex items-center gap-1.5 text-muted-foreground font-medium">
-                                <Briefcase className="w-4 h-4" />
-                                {profileData.role === 'Student' ? `${profileData.dept} Department` : profileData.role}
+                    <div className="flex flex-col md:flex-row md:items-center gap-8 mb-8">
+                        {/* Avatar removed as per request */}
+                        
+                        <div className="space-y-1.5">
+                            <div className="flex items-center gap-3 mb-1">
+                                <Badge variant="secondary" className="bg-white/20 hover:bg-white/30 text-white border-white/20 backdrop-blur-md px-3 font-black text-[10px] tracking-widest uppercase">
+                                    STAFF ID: {profileData.id}
+                                </Badge>
+                                <span className="text-white/50 text-[10px] font-black uppercase tracking-tighter flex items-center gap-1.5">
+                                    Active Session
+                                </span>
                             </div>
-                            {classTeacherSection.length > 0 && (
-                                <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200 font-black px-3">
-                                    CLASS TEACHER: {classTeacherSection.map(ct => `${ct.year}-${ct.branch}-${ct.section}`).join(', ')}
-                                </Badge>
-                            )}
-                            {yearInChargeInfo.length > 0 && (
-                                <Badge className="bg-violet-100 text-violet-700 border-violet-200 font-black px-3">
-                                    YEAR IN-CHARGE: {yearInChargeInfo.map(yic => `${yic.branch} ${yic.year}${yic.year === 1 ? 'st' : yic.year === 2 ? 'nd' : yic.year === 3 ? 'rd' : 'th'} Year`).join(', ')}
-                                </Badge>
-                            )}
+                            <h1 className="text-4xl md:text-5xl font-black tracking-tighter leading-none mb-1">
+                                Welcome back, {profileData.name}!
+                            </h1>
+                            <div className="flex items-center gap-2 text-white/70 font-bold tracking-tight">
+                                <Briefcase className="w-4 h-4 text-white/50" />
+                                <p>{profileData.role === 'Student' ? `${profileData.dept} Department` : profileData.role}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2.5">
+                        {classTeacherSection.length > 0 && (
+                            <Badge className="bg-emerald-400/20 hover:bg-emerald-400/30 text-emerald-100 border-emerald-400/30 backdrop-blur-3xl px-5 py-2 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all hover:scale-105">
+                                CLASS TEACHER: {classTeacherSection.map(ct => `${ct.year}-${ct.branch}-${ct.section}`).join(', ')}
+                            </Badge>
+                        )}
+                        {yearInChargeInfo.length > 0 && (
+                            <Badge className="bg-indigo-400/20 hover:bg-indigo-400/30 text-indigo-100 border-indigo-400/30 backdrop-blur-3xl px-5 py-2 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all hover:scale-105">
+                                YEAR IN-CHARGE: {yearInChargeInfo.map(yic => `${yic.branch} ${yic.year}${yic.year === 1 ? 'st' : yic.year === 2 ? 'nd' : yic.year === 3 ? 'rd' : 'th'} Year`).join(', ')}
+                            </Badge>
+                        )}
+                        <Badge className="bg-white/10 hover:bg-white/20 text-white border-white/10 backdrop-blur-3xl px-5 py-2 rounded-2xl font-black uppercase tracking-widest text-[10px] transition-all hover:scale-105">
+                            {profileData.dept} DEPARTMENT
+                        </Badge>
+                    </div>
+                </div>
+
+                <div className="mt-8 flex items-center justify-end">
+                    <div className="hidden md:flex items-center gap-4 text-white/50 text-xs font-black uppercase tracking-widest">
+                        <div className="flex items-center gap-1.5">
+                            <Clock className="w-3.5 h-3.5" />
+                            Session started at 08:30 AM
                         </div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
             {/* Main Content Layout */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 {/* Left Column (Stats and Profiles) */}
                 <div className="lg:col-span-4 space-y-8">
+                    {/* Quick Access Tiles */}
+                    <div className="grid grid-cols-1 gap-4">
+                        {quickActions.map((action, index) => (
+                            <motion.div
+                                key={index}
+                                whileHover={{ scale: 1.02, x: 5 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={action.action}
+                                className="p-5 bg-gradient-to-br from-white to-slate-50 dark:from-slate-900 dark:to-slate-800 border border-slate-200 dark:border-slate-700 rounded-[2rem] shadow-sm hover:shadow-xl transition-all cursor-pointer group flex items-center gap-4"
+                            >
+                                <div className="h-10 w-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all duration-300">
+                                    <Zap className="h-5 w-5" />
+                                </div>
+                                <div className="space-y-0.5">
+                                    <h3 className="font-black tracking-tight text-sm group-hover:text-primary transition-colors">{action.title}</h3>
+                                    <p className="text-[10px] font-medium text-slate-500 line-clamp-1">{action.description}</p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+
                     {/* Contact & Professional Info Cards */}
                     <Card className="border-none shadow-premium rounded-[2rem] overflow-hidden bg-gradient-to-br from-white to-slate-50/50 dark:from-slate-900 dark:to-slate-950">
                         <CardHeader className="bg-muted/30 border-b">
@@ -671,27 +709,6 @@ export default function FacultyDashboard({ facultyId: propFacultyId }: { faculty
                             </div>
                         </CardContent>
                     </Card>
-
-                    {/* Quick Access Tiles */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pb-8">
-                        {quickActions.map((action, index) => (
-                            <motion.div
-                                key={index}
-                                whileHover={{ scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                onClick={action.action}
-                                className="p-6 bg-gradient-to-br from-white to-slate-100 dark:from-slate-900 dark:to-slate-800 border border-slate-200 dark:border-slate-700 rounded-[2rem] shadow-sm hover:shadow-xl transition-all cursor-pointer group flex items-start gap-4"
-                            >
-                                <div className="h-12 w-12 rounded-2xl bg-white dark:bg-slate-950 flex items-center justify-center shadow-md group-hover:bg-primary group-hover:text-white transition-colors duration-500">
-                                    <Zap className="h-5 w-5" />
-                                </div>
-                                <div className="space-y-1">
-                                    <h3 className="font-black tracking-tight text-lg group-hover:text-primary transition-colors">{action.title}</h3>
-                                    <p className="text-xs font-medium text-slate-500 leading-relaxed">{action.description}</p>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
                 </div>
             </div>
         </div>

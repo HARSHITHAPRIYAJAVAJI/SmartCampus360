@@ -485,6 +485,8 @@ const StudentRecords = () => {
                 id: Date.now() + Math.random(),
                 title: "Academic Update",
                 message: `New marks (Midterm/Assignment) have been uploaded for ${selectedCourse}.`,
+                category: "exam",
+                targetAudience: "students",
                 branch: s?.branch || "All",
                 year: s?.year || 0,
                 section: s?.section || "All",

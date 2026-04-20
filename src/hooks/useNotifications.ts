@@ -69,8 +69,17 @@ export function useNotifications(user: { id: string, name: string, role: string 
                     // RULE 1: Never show any alert back to the person who sent it
                     if (a.senderId && a.senderId !== 'system' && a.senderId === user.id) return false;
 
-                    // RULE 2: Admins only see broad 'both' alerts (not student/faculty-only ones)
+                    // RULE 2: Admins only see broad institutional alerts, excluding personal academic/timetable noise
                     if (role === 'admin') {
+                        const title = (a.title || '').toLowerCase();
+                        const message = (a.message || '').toLowerCase();
+                        
+                        // Exclude specific high-frequency/non-admin alerts
+                        const isAcademicUpdate = title.includes('academic update') || message.includes('new marks');
+                        const isTimetablePublish = title.includes('timetable published');
+                        
+                        if (isAcademicUpdate || isTimetablePublish) return false;
+
                         return target === 'both' || target === '' || target === 'all';
                     }
 
