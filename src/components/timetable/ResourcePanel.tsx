@@ -18,6 +18,8 @@ interface Faculty {
     first_name: string;
     last_name: string;
   };
+  is_active?: boolean;
+  deleted_at?: string | null;
 }
 
 interface Subject {

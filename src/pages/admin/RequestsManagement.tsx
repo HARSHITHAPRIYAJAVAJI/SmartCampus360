@@ -24,6 +24,7 @@ import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 import { reallocateLeavePeriods, revertLeavePeriods, revertSpecificRequest } from "@/utils/timetableAdjuster";
 import { alertService } from "@/services/alertService";
+import { dataPersistence } from "@/utils/dataPersistence";
 
 interface FacultyRequest {
     id: string;
@@ -31,7 +32,7 @@ interface FacultyRequest {
     senderName: string;
     targetId: string;
     targetName: string;
-    type: "swap" | "replacement" | "leave";
+    type: "swap" | "replacement" | "leave" | "resignation";
     parentId?: string;
     date: string;
     duration?: number;
@@ -81,6 +82,10 @@ const RequestsManagement = () => {
         allRequests.filter(r => r.type === 'swap' || r.type === 'replacement').sort((a,b) => b.timestamp - a.timestamp),
     [allRequests]);
 
+    const resignationRequests = useMemo(() => 
+        allRequests.filter(r => r.type === 'resignation').sort((a,b) => b.timestamp - a.timestamp),
+    [allRequests]);
+
     const handleLeaveAction = (requestId: string, status: "approved" | "rejected") => {
         const request = allRequests.find(r => r.id === requestId);
         if (!request) return;
@@ -90,9 +95,26 @@ const RequestsManagement = () => {
         saveRequests(updatedRequests);
 
         // 2. If Approved, Trigger Timetable Adjustment
-        if (status === "approved" && request.type === "leave") {
+        if (status === "approved" && (request.type === "leave" || request.type === "resignation")) {
+            // SPECIAL CASE: Resignation Soft Delete
+            if (request.type === 'resignation') {
+                const allFac = dataPersistence.getAllFaculty();
+                const updatedFac = allFac.map(f => 
+                    (f.id === request.senderId || f.rollNumber === request.senderId)
+                        ? { ...f, is_active: false, deleted_at: new Date().toISOString() }
+                        : f
+                );
+                dataPersistence.saveFaculty(updatedFac);
+                
+                toast({
+                    title: "Faculty Decommissioned",
+                    description: `${request.senderName} has been moved to the inactive registry.`,
+                    variant: "destructive"
+                });
+            }
+
             const publishedStoreStr = localStorage.getItem('published_timetables');
-            if (publishedStoreStr) {
+            if (publishedStoreStr && request.type === "leave") {
                 const publishedTimetables = JSON.parse(publishedStoreStr);
                 
                 const { newRequests, totalAdjustments, adjustments } = reallocateLeavePeriods(
@@ -238,7 +260,90 @@ const RequestsManagement = () => {
                 </Badge>
             </div>
 
-            <div className="grid gap-6">
+            <div className="grid gap-8">
+                {/* Formal Resignation Requests */}
+                {resignationRequests.length > 0 && (
+                    <Card className="border-none shadow-[0_20px_50px_rgba(239,68,68,0.15)] rounded-[2rem] overflow-hidden border-t-8 border-rose-600">
+                        <CardHeader className="bg-gradient-to-br from-rose-50 to-white dark:from-rose-950/20 p-8 border-b">
+                            <div className="flex justify-between items-center">
+                                <div className="flex items-center gap-4">
+                                    <div className="h-12 w-12 rounded-2xl bg-rose-600 flex items-center justify-center text-white shadow-lg shadow-rose-600/20">
+                                        <XCircle className="h-6 w-6" />
+                                    </div>
+                                    <div>
+                                        <CardTitle className="text-2xl font-black text-rose-600 tracking-tight">Pending Resignations</CardTitle>
+                                        <CardDescription className="text-xs font-bold uppercase tracking-widest text-rose-500/70">Staff Exit Notices (High Priority)</CardDescription>
+                                    </div>
+                                </div>
+                                <div className="animate-pulse bg-rose-100 text-rose-600 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest border border-rose-200">
+                                    Action Required
+                                </div>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="p-0">
+                            <Table>
+                                <TableHeader className="bg-rose-50/30">
+                                    <TableRow>
+                                        <TableHead className="font-black uppercase text-[10px] pl-8 text-rose-900">Faculty Member</TableHead>
+                                        <TableHead className="font-black uppercase text-[10px] text-rose-900">Intended Last Day</TableHead>
+                                        <TableHead className="font-black uppercase text-[10px] text-rose-900">Notice Statement</TableHead>
+                                        <TableHead className="font-black uppercase text-[10px] text-rose-900 pr-8 text-right">Decision</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {resignationRequests.map((req) => (
+                                        <TableRow key={req.id} className="hover:bg-rose-50/20 transition-colors border-b border-rose-100/50">
+                                            <TableCell className="pl-8 py-6">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="h-11 w-11 rounded-2xl bg-rose-100 flex items-center justify-center text-rose-600 font-black">
+                                                        {req.senderName[0]}
+                                                    </div>
+                                                    <div>
+                                                        <p className="font-black text-slate-800 text-base">{req.senderName}</p>
+                                                        <p className="text-[10px] text-muted-foreground font-bold tracking-widest uppercase">{req.senderId}</p>
+                                                    </div>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="space-y-1.5">
+                                                    <div className="flex items-center gap-2 text-sm font-black text-rose-700 bg-rose-100/50 w-fit px-3 py-1 rounded-lg border border-rose-200">
+                                                        <Calendar className="h-4 w-4" /> {req.date}
+                                                    </div>
+                                                    <p className="text-[10px] text-muted-foreground font-bold uppercase pl-1">Target Relieving Date</p>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="max-w-[300px]">
+                                                    <p className="text-sm font-medium text-slate-600 leading-relaxed italic">"{req.reason}"</p>
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="text-right pr-8">
+                                                <div className="flex justify-end gap-3">
+                                                    <Button 
+                                                        size="sm" 
+                                                        className="rounded-2xl bg-rose-600 hover:bg-rose-700 font-black shadow-lg shadow-rose-600/20 h-10 px-6"
+                                                        onClick={() => handleLeaveAction(req.id, 'approved')}
+                                                    >
+                                                        ACCEPT
+                                                    </Button>
+                                                    <Button 
+                                                        size="sm" 
+                                                        variant="ghost" 
+                                                        className="rounded-2xl font-black text-slate-400 hover:text-slate-600 h-10"
+                                                        onClick={() => handleLeaveAction(req.id, 'rejected')}
+                                                    >
+                                                        REJECT
+                                                    </Button>
+                                                </div>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </CardContent>
+                    </Card>
+                )}
+
                 {/* Formal Leave Requests */}
                 <Card className="border-none shadow-premium rounded-[2rem] overflow-hidden">
                     <CardHeader className="bg-slate-900 text-white p-8">

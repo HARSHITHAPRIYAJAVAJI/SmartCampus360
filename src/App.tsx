@@ -53,9 +53,11 @@ const CommunicationHub = lazy(() => import("./pages/dashboard/CommunicationHub")
 
 
 const RequestsManagement = lazy(() => import("./pages/admin/RequestsManagement"));
+const RecycleBin = lazy(() => import("./pages/admin/RecycleBin"));
 const TimetableGeneratorInfo = lazy(() => import("./pages/features/TimetableGeneratorInfo"));
 const StudentRecordsInfo = lazy(() => import("./pages/features/StudentRecordsInfo"));
 const FacultyManagementInfo = lazy(() => import("./pages/features/FacultyManagementInfo"));
+const CampusLocator = lazy(() => import("./pages/CampusLocator"));
 
 
 // Lazy load UI overlays to reduce initial bundle size
@@ -129,6 +131,7 @@ const App = () => {
               <Route path="/about/vision" element={<Vision />} />
               <Route path="/about/leadership" element={<Leadership />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/find-people" element={<CampusLocator />} />
               <Route path="/courses" element={<Layout><div className="container mx-auto py-8"><CourseManagement readOnly={true} /></div></Layout>} />
               <Route path="/placements" element={<Placements />} />
               <Route path="/features/timetable-generator" element={<TimetableGeneratorInfo />} />
@@ -209,6 +212,7 @@ const App = () => {
                 <Route path="analytics-accreditation" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><AnalyticsAccreditation /></RoleGuard>} />
                 <Route path="exams" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><ExamManagement /></RoleGuard>} />
                 <Route path="users" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><UserManagement /></RoleGuard>} />
+                <Route path="trash" element={<RoleGuard allowedRoles={['admin']} userRole={user?.role || ''}><RecycleBin /></RoleGuard>} />
                 
                 {/* Faculty/Admin Routes */}
                 <Route path="classes" element={<RoleGuard allowedRoles={['faculty', 'admin']} userRole={user?.role || ''}><MyClasses /></RoleGuard>} />

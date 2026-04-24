@@ -704,46 +704,85 @@ const TimetableGenerator = () => {
                                     {days.map(day => (
                                         <div key={day} className="contents">
                                             <div className="p-3 bg-muted/50 font-black text-center border-r border-muted flex items-center justify-center text-xs uppercase">{day}</div>
-                                            {timeSlots.map(slot => {
-                                                if (slot.type === 'break') {
-                                                    return <div key={slot.id} className="border border-border/30 bg-yellow-50/40 flex items-center justify-center h-20">
-                                                        <span className="text-[10px] text-yellow-600 font-bold uppercase tracking-widest rotate-0">Lunch</span>
-                                                    </div>;
-                                                }
-                                                const sessionKey = `${day}-${slot.id}`;
-                                                const session = viewTable[sessionKey];
-                                                const isLabSession = session?.type === 'Lab' || session?.courseName?.toLowerCase().includes('lab');
-                                                const isProjectV1 = session?.courseCode?.includes('Ph-1') || session?.courseCode === '4M1';
-                                                const isProjectV2 = session?.courseCode?.includes('Ph-2') || session?.courseCode === '4M2';
-                                                const isCAEG = session?.courseCode === '4E1DD' || session?.courseName?.includes('CAEG');
-                                                const isSports = session?.courseCode === 'SPORTS' || session?.courseName?.toLowerCase().includes('sports');
-                                                const isLibrarySession = session?.courseCode === 'LIBRARY' || session?.courseName?.toLowerCase().includes('library');
-                                                const isCRT = session?.courseCode === 'CRT' || session?.courseName?.includes('CRT');
+                                            {(() => {
+                                                const mergedSlots: { time: string; span: number; slot: any }[] = [];
+                                                let i = 0;
+                                                while (i < timeSlots.length) {
+                                                    const slot = timeSlots[i];
+                                                    if (slot.type === 'break') {
+                                                        mergedSlots.push({ time: slot.id, span: 1, slot });
+                                                        i++;
+                                                        continue;
+                                                    }
+                                                    
+                                                    const sessionKey = `${day}-${slot.id}`;
+                                                    const session = viewTable[sessionKey];
+                                                    
+                                                    if (!session) {
+                                                        mergedSlots.push({ time: slot.id, span: 1, slot });
+                                                        i++;
+                                                        continue;
+                                                    }
 
-                                                return (
-                                                    <div key={slot.id} className={`border p-2 h-20 flex flex-col justify-between overflow-hidden transition-colors ${isCAEG ? 'bg-orange-100/90 dark:bg-orange-900/40 border-orange-300/50' :
-                                                            isProjectV1 ? 'bg-amber-100/90 dark:bg-amber-900/40 border-amber-300/50' :
-                                                                isProjectV2 ? 'bg-rose-100/90 dark:bg-rose-900/40 border-rose-300/50' :
-                                                                    isSports ? 'bg-lime-100/90 dark:bg-lime-900/40 border-lime-300/50' :
-                                                                        isLibrarySession ? 'bg-violet-100/90 dark:bg-violet-900/40 border-violet-300/50' :
-                                                                            isCRT ? 'bg-indigo-100/90 dark:bg-indigo-900/40 border-indigo-300/50' :
-                                                                                isLabSession ? 'bg-fuchsia-100/90 dark:bg-fuchsia-900/40 border-fuchsia-300/50' :
-                                                                                    'bg-sky-50/50 dark:bg-sky-950/10 border-border/30'
-                                                        }`}>
-                                                        {session ? (
-                                                            <>
-                                                                <div className="font-bold text-[11px] leading-tight text-foreground truncate">{session.courseName || session.courseCode}</div>
-                                                                <div className="text-[10px] text-muted-foreground truncate">{session.faculty || "Staff"}</div>
-                                                                <div className="text-[10px] font-mono bg-primary/10 text-primary px-1 rounded self-start">{session.room || "TBD"}</div>
-                                                            </>
-                                                        ) : (
-                                                            <div className="h-full flex items-center justify-center">
-                                                                <span className="text-muted-foreground/20 text-lg">—</span>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                );
-                                            })}
+                                                    let span = 1;
+                                                    while (i + span < timeSlots.length && timeSlots[i + span].type !== 'break') {
+                                                        const nextKey = `${day}-${timeSlots[i + span].id}`;
+                                                        const nextSession = viewTable[nextKey];
+                                                        if (nextSession && nextSession.courseCode === session.courseCode) {
+                                                            span++;
+                                                        } else {
+                                                            break;
+                                                        }
+                                                    }
+                                                    mergedSlots.push({ time: slot.id, span, slot });
+                                                    i += span;
+                                                }
+
+                                                return mergedSlots.map(({ time, span, slot }) => {
+                                                    if (slot.type === 'break') {
+                                                        return <div key={slot.id} className="border border-border/30 bg-yellow-50/40 flex items-center justify-center h-20">
+                                                            <span className="text-[10px] text-yellow-600 font-bold uppercase tracking-widest rotate-0">Lunch</span>
+                                                        </div>;
+                                                    }
+                                                    
+                                                    const sessionKey = `${day}-${slot.id}`;
+                                                    const session = viewTable[sessionKey];
+                                                    const isLabSession = session?.type === 'Lab' || session?.courseName?.toLowerCase().includes('lab');
+                                                    const isProjectV1 = session?.courseCode?.includes('Ph-1') || session?.courseCode === '4M1';
+                                                    const isProjectV2 = session?.courseCode?.includes('Ph-2') || session?.courseCode === '4M2';
+                                                    const isCAEG = session?.courseCode === '4E1DD' || session?.courseName?.includes('CAEG');
+                                                    const isSports = session?.courseCode === 'SPORTS' || session?.courseName?.toLowerCase().includes('sports');
+                                                    const isLibrarySession = session?.courseCode === 'LIBRARY' || session?.courseName?.toLowerCase().includes('library');
+                                                    const isCRT = session?.courseCode === 'CRT' || session?.courseName?.includes('CRT');
+
+                                                    return (
+                                                        <div 
+                                                            key={slot.id} 
+                                                            style={{ gridColumn: span > 1 ? `span ${span}` : undefined }}
+                                                            className={`border p-2 h-20 flex flex-col justify-between overflow-hidden transition-colors ${isCAEG ? 'bg-orange-100/90 dark:bg-orange-900/40 border-orange-300/50' :
+                                                                isProjectV1 ? 'bg-amber-100/90 dark:bg-amber-900/40 border-amber-300/50' :
+                                                                    isProjectV2 ? 'bg-rose-100/90 dark:bg-rose-900/40 border-rose-300/50' :
+                                                                        isSports ? 'bg-lime-100/90 dark:bg-lime-900/40 border-lime-300/50' :
+                                                                            isLibrarySession ? 'bg-violet-100/90 dark:bg-violet-900/40 border-violet-300/50' :
+                                                                                isCRT ? 'bg-indigo-100/90 dark:bg-indigo-900/40 border-indigo-300/50' :
+                                                                                    isLabSession ? 'bg-fuchsia-100/90 dark:bg-fuchsia-900/40 border-fuchsia-300/50' :
+                                                                                        'bg-sky-50/50 dark:bg-sky-950/10 border-border/30'
+                                                            }`}>
+                                                            {session ? (
+                                                                <>
+                                                                    <div className="font-bold text-[11px] leading-tight text-foreground truncate">{session.courseName || session.courseCode}</div>
+                                                                    <div className="text-[10px] text-muted-foreground truncate">{session.faculty || "Staff"}</div>
+                                                                    <div className="text-[10px] font-mono bg-primary/10 text-primary px-1 rounded self-start">{session.room || "TBD"}</div>
+                                                                </>
+                                                            ) : (
+                                                                <div className="h-full flex items-center justify-center">
+                                                                    <span className="text-muted-foreground/20 text-lg">—</span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    );
+                                                });
+                                            })()}
                                         </div>
                                     ))}
                                 </div>

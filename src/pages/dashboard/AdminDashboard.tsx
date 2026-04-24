@@ -1,5 +1,5 @@
-
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { dataPersistence } from "@/utils/dataPersistence";
 import { Button } from "@/components/ui/button";
 import {
     Users,
@@ -77,9 +77,9 @@ export default function AdminDashboard() {
     }, []);
 
     // Real-time data counts
-    const totalStudents = MOCK_STUDENTS.length.toLocaleString();
-    const totalFaculty = MOCK_FACULTY.length.toLocaleString();
-    const totalCourses = MOCK_COURSES.length.toLocaleString();
+    const totalStudents = dataPersistence.getStudents().length.toLocaleString();
+    const totalFaculty = dataPersistence.getFaculty().length.toLocaleString();
+    const totalCourses = dataPersistence.getCourses().length.toLocaleString();
 
     const stats = [
         { 
@@ -200,18 +200,18 @@ export default function AdminDashboard() {
     ];
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-2">
             {/* Combined Profile & Command Header */}
             <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 {/* Admin Persona Card */}
-                <div className="xl:col-span-3 relative overflow-hidden bg-white dark:bg-slate-950 rounded-[2.5rem] p-10 shadow-premium border border-slate-200/60 dark:border-slate-800 flex flex-col justify-between min-h-[320px]">
+                <div className="xl:col-span-3 relative overflow-hidden bg-white dark:bg-slate-950 rounded-[2.5rem] p-6 shadow-premium border border-slate-200/60 dark:border-slate-800 flex flex-col justify-between min-h-[260px]">
                     {/* Floating Decorative Elements */}
                     <div className="absolute top-0 right-0 p-8 opacity-5 rotate-12 pointer-events-none translate-x-1/4 -translate-y-1/4 text-primary">
                         <ShieldCheck className="w-80 h-80" />
                     </div>
 
                     <div className="relative z-10">
-                        <div className="flex flex-col md:flex-row md:items-center gap-8 mb-8">
+                        <div className="flex flex-col md:flex-row md:items-center gap-8 mb-6">
                             <div className="flex-1 space-y-2">
                                 <div className="flex flex-wrap items-center gap-3 mb-1">
                                     <Badge variant="secondary" className="bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400 border-none px-3 font-black text-[9px] tracking-widest uppercase">
@@ -232,7 +232,7 @@ export default function AdminDashboard() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-8 border-t border-slate-100 dark:border-slate-800">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-slate-100 dark:border-slate-800">
                             {[
                                 { icon: Mail, label: "Institutional Email", value: adminProfile.email },
                                 { icon: Smartphone, label: "Secure Line", value: adminProfile.phone },
@@ -265,10 +265,10 @@ export default function AdminDashboard() {
                         </CardHeader>
                         <CardContent>
                             <div className="text-3xl font-black tracking-tighter text-slate-900 dark:text-white mb-1 group-hover:scale-110 transition-transform origin-left">{stat.value}</div>
-                            <p className="text-[10px] font-bold text-slate-400 flex items-center gap-1 uppercase tracking-widest">
+                            <div className="text-[10px] font-bold text-slate-400 flex items-center gap-1 uppercase tracking-widest">
                                 <div className="h-1 w-1 rounded-full bg-emerald-500" />
                                 {stat.trend}
-                            </p>
+                            </div>
                         </CardContent>
                     </Card>
                 ))}

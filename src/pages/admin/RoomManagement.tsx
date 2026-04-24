@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { DoorClosed, Users, Plus, Edit, Trash2, Search, Building2, LayoutGrid } from "lucide-react";
+import { DoorClosed, Users, Plus, Edit, Trash2, Search, Building2, LayoutGrid, X, Briefcase } from "lucide-react";
 import {
     Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger
 } from "@/components/ui/dialog";
@@ -26,7 +26,7 @@ const RoomManagement = () => {
     const [formData, setFormData] = useState<Partial<Room>>({});
     const [activeTab, setActiveTab] = useState("all");
     const [statusFilter, setStatusFilter] = useState<"all" | "available" | "inuse">("all");
-    
+
     // Developer Tool: Simulation Time Override
     const [simulatedTime, setSimulatedTime] = useState<string>("live");
 
@@ -111,14 +111,14 @@ const RoomManagement = () => {
         const draftStoreStr = localStorage.getItem('draft_timetables');
         const examTimetablesStr = localStorage.getItem('EXAM_TIMETABLES');
         const examSeatingStr = localStorage.getItem('EXAM_SEATING_PLAN');
-        
+
         const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
         const draftTimetables = draftStoreStr ? JSON.parse(draftStoreStr) : {};
         const examTimetables = examTimetablesStr ? JSON.parse(examTimetablesStr) as any[] : [];
         const examSeating = examSeatingStr ? JSON.parse(examSeatingStr) as any[] : [];
 
         const status: Record<string, { info: string; isDraft: boolean; subject: string; faculty: string; isExam?: boolean }> = {};
-        
+
         // 1. Check EXAM Priority (Calendar Date Specific)
         const todayStr = format(now, "yyyy-MM-dd");
         const activeExams = examTimetables.filter(et => {
@@ -141,7 +141,7 @@ const RoomManagement = () => {
             activeExams.forEach(et => {
                 const relevantSeating = examSeating.filter(s => s.examId.includes(et.id) || s.examId === et.id);
                 const roomsInUse = Array.from(new Set(relevantSeating.map(s => s.room)));
-                
+
                 roomsInUse.forEach(rName => {
                     status[rName] = {
                         info: et.type + " EXAM",
@@ -157,7 +157,7 @@ const RoomManagement = () => {
         // 2. Check Academic Timetable (Weekly Schedule)
         if (activeSlot) {
             const slotKey = `${activeDayName}-${activeSlot.id}`;
-            
+
             const allSources = [
                 { data: publishedTimetables, isDraft: false },
                 { data: draftTimetables, isDraft: true }
@@ -185,10 +185,23 @@ const RoomManagement = () => {
     }, [refreshKey, simulatedTime]);
 
     const filteredRooms = useMemo(() => {
+        const query = searchQuery.toLowerCase();
         return rooms.filter(r => {
-            const matchesSearch = r.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                r.building.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                (r.subjects && r.subjects.some(s => s.toLowerCase().includes(searchQuery.toLowerCase())));
+            const occ = currentOccupancy[r.name];
+            const matchesOccupancy = occ ? (
+                occ.subject.toLowerCase().includes(query) ||
+                occ.faculty.toLowerCase().includes(query) ||
+                occ.info.toLowerCase().includes(query)
+            ) : false;
+
+            const matchesSearch =
+                r.name.toLowerCase().includes(query) ||
+                r.building.toLowerCase().includes(query) ||
+                r.type.toLowerCase().includes(query) ||
+                (r.dept && r.dept.toLowerCase().includes(query)) ||
+                r.capacity.toString().includes(query) ||
+                (r.subjects && r.subjects.some(s => s.toLowerCase().includes(query))) ||
+                matchesOccupancy;
 
             const isOccupied = !!currentOccupancy[r.name];
             const matchesStatus = statusFilter === 'all' ? true :
@@ -198,6 +211,8 @@ const RoomManagement = () => {
 
             if (activeTab === 'all') return matchesSearch;
             if (activeTab === 'labs') return matchesSearch && r.type === 'Lab';
+            if (activeTab === 'offices') return matchesSearch && r.type === 'Office';
+            if (activeTab === 'aiml_csm') return matchesSearch && (r.dept === 'AIML' || r.dept === 'CSM');
             return matchesSearch && r.dept === activeTab.toUpperCase();
         });
     }, [rooms, searchQuery, activeTab, statusFilter, currentOccupancy]);
@@ -208,7 +223,10 @@ const RoomManagement = () => {
             case 'ECE': return 'bg-amber-100 text-amber-700 border-amber-200';
             case 'CSE': return 'bg-cyan-100 text-cyan-700 border-cyan-200';
             case 'AIML': return 'bg-purple-100 text-purple-700 border-purple-200';
+            case 'CSM': return 'bg-indigo-100 text-indigo-700 border-indigo-200';
+            case 'CSD': return 'bg-rose-100 text-rose-700 border-rose-200';
             case 'GEN': return 'bg-emerald-100 text-emerald-700 border-emerald-200';
+            case 'ALL': return 'bg-slate-200 text-slate-800 border-slate-300';
             default: return 'bg-slate-100 text-slate-700';
         }
     };
@@ -221,19 +239,29 @@ const RoomManagement = () => {
                         <Building2 className="h-8 w-8" />
                         Infrastructure Management
                     </h1>
-                    <p className="text-muted-foreground text-sm">Managing block-wise allocation — 1st Year (T-Block) & Branch-specific (IT, ECE, AIML, CSE)</p>
+
                 </div>
                 <div className="flex gap-3">
-                    <div className="relative w-64">
-                        <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <div className="relative w-72">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <Input
-                            placeholder="Search rooms or buildings..."
+                            placeholder="Search rooms, buildings, capacity..."
                             value={searchQuery}
                             onChange={e => setSearchQuery(e.target.value)}
-                            className="pl-9 h-10 shadow-sm"
+                            className="pl-9 pr-9 h-11 shadow-sm border-primary/20 focus-visible:ring-primary/30"
                         />
+                        {searchQuery && (
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-foreground"
+                                onClick={() => setSearchQuery("")}
+                            >
+                                <X className="h-4 w-4" />
+                            </Button>
+                        )}
                     </div>
-                    
+
                     <Select value={simulatedTime} onValueChange={setSimulatedTime}>
                         <SelectTrigger className="w-[180px] h-10 border-primary/20 bg-primary/5 text-primary font-bold">
                             <SelectValue placeholder="Live Time" />
@@ -263,7 +291,7 @@ const RoomManagement = () => {
                                         <SelectContent>
                                             <SelectItem value="IT">IT Branch (South)</SelectItem>
                                             <SelectItem value="CSE">CSE Branch (Central)</SelectItem>
-                                            <SelectItem value="ECE">ECE Branch (Central)</SelectItem>
+                                            <SelectItem value="ECE">ECE Branch (South)</SelectItem>
                                             <SelectItem value="AIML">AIML Branch (North)</SelectItem>
                                             <SelectItem value="GEN">1st Year (T-Block)</SelectItem>
                                         </SelectContent>
@@ -334,56 +362,108 @@ const RoomManagement = () => {
                 <TabsList className="bg-slate-100/50 p-1 mb-6 overflow-x-auto justify-start border-b-none h-12 shadow-inner">
                     <TabsTrigger value="all" className="px-6 font-black uppercase text-[10px] tracking-widest">All Infrastructure</TabsTrigger>
                     <TabsTrigger value="labs" className="px-6 uppercase text-[10px] font-black tracking-widest bg-purple-100/50 data-[state=active]:bg-purple-600 data-[state=active]:text-white">Laboratories</TabsTrigger>
+                    <TabsTrigger value="offices" className="px-6 uppercase text-[10px] font-black tracking-widest bg-amber-100/50 data-[state=active]:bg-amber-600 data-[state=active]:text-white">Offices</TabsTrigger>
                     <TabsTrigger value="it" className="px-6 uppercase text-[10px] font-black tracking-widest">IT (South)</TabsTrigger>
                     <TabsTrigger value="cse" className="px-6 uppercase text-[10px] font-black tracking-widest">CSE (Central)</TabsTrigger>
-                    <TabsTrigger value="ece" className="px-6 uppercase text-[10px] font-black tracking-widest">ECE (Central)</TabsTrigger>
-                    <TabsTrigger value="aiml" className="px-6 uppercase text-[10px] font-black tracking-widest">AIML (North)</TabsTrigger>
+                    <TabsTrigger value="ece" className="px-6 uppercase text-[10px] font-black tracking-widest">ECE (South)</TabsTrigger>
+                    <TabsTrigger value="aiml_csm" className="px-6 uppercase text-[10px] font-black tracking-widest bg-purple-50 hover:bg-purple-100 data-[state=active]:bg-purple-600 data-[state=active]:text-white">AIML/CSM (North)</TabsTrigger>
+
                     <TabsTrigger value="gen" className="px-6 uppercase text-[10px] font-black tracking-widest">1st Year</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="all" className="mt-0 animate-in fade-in-50 duration-500">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                        {filteredRooms.map(room => (
-                            <RoomCard 
-                                key={room.id} 
-                                room={room} 
-                                currentOccupancy={currentOccupancy} 
-                                onEdit={() => { setCurrentRoom(room); setFormData(room); setIsEditOpen(true); }} 
-                                onDelete={() => handleDelete(room.id)} 
-                                getBadgeColor={getDeptBadgeColor}
-                            />
-                        ))}
+                        {filteredRooms.length > 0 ? (
+                            filteredRooms.map(room => (
+                                <RoomCard
+                                    key={room.id}
+                                    room={room}
+                                    currentOccupancy={currentOccupancy}
+                                    onEdit={() => { setCurrentRoom(room); setFormData(room); setIsEditOpen(true); }}
+                                    onDelete={() => handleDelete(room.id)}
+                                    getBadgeColor={getDeptBadgeColor}
+                                />
+                            ))
+                        ) : (
+                            <EmptyState searchQuery={searchQuery} onClear={() => setSearchQuery("")} />
+                        )}
                     </div>
                 </TabsContent>
 
                 <TabsContent value="labs" className="mt-0 animate-in slide-in-from-right-4 duration-500">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                        {filteredRooms.map(room => (
-                            <RoomCard 
-                                key={room.id} 
-                                room={room} 
-                                currentOccupancy={currentOccupancy} 
-                                onEdit={() => { setCurrentRoom(room); setFormData(room); setIsEditOpen(true); }} 
-                                onDelete={() => handleDelete(room.id)} 
-                                getBadgeColor={getDeptBadgeColor}
-                            />
-                        ))}
+                        {filteredRooms.length > 0 ? (
+                            filteredRooms.map(room => (
+                                <RoomCard
+                                    key={room.id}
+                                    room={room}
+                                    currentOccupancy={currentOccupancy}
+                                    onEdit={() => { setCurrentRoom(room); setFormData(room); setIsEditOpen(true); }}
+                                    onDelete={() => handleDelete(room.id)}
+                                    getBadgeColor={getDeptBadgeColor}
+                                />
+                            ))
+                        ) : (
+                            <EmptyState searchQuery={searchQuery} onClear={() => setSearchQuery("")} />
+                        )}
                     </div>
                 </TabsContent>
 
-                {['it', 'cse', 'ece', 'aiml', 'gen'].map(dept => (
-                    <TabsContent key={dept} value={dept} className="mt-0 animate-in fade-in-50">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                            {filteredRooms.map(room => (
-                                <RoomCard 
-                                    key={room.id} 
-                                    room={room} 
-                                    currentOccupancy={currentOccupancy} 
-                                    onEdit={() => { setCurrentRoom(room); setFormData(room); setIsEditOpen(true); }} 
-                                    onDelete={() => handleDelete(room.id)} 
+                <TabsContent value="offices" className="mt-0 animate-in slide-in-from-bottom-4 duration-500">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        {filteredRooms.length > 0 ? (
+                            filteredRooms.map(room => (
+                                <RoomCard
+                                    key={room.id}
+                                    room={room}
+                                    currentOccupancy={currentOccupancy}
+                                    onEdit={() => { setCurrentRoom(room); setFormData(room); setIsEditOpen(true); }}
+                                    onDelete={() => handleDelete(room.id)}
                                     getBadgeColor={getDeptBadgeColor}
                                 />
-                            ))}
+                            ))
+                        ) : (
+                            <EmptyState searchQuery={searchQuery} onClear={() => setSearchQuery("")} />
+                        )}
+                    </div>
+                </TabsContent>
+
+                <TabsContent value="aiml_csm" className="mt-0 animate-in fade-in-50">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        {filteredRooms.length > 0 ? (
+                            filteredRooms.map(room => (
+                                <RoomCard
+                                    key={room.id}
+                                    room={room}
+                                    currentOccupancy={currentOccupancy}
+                                    onEdit={() => { setCurrentRoom(room); setFormData(room); setIsEditOpen(true); }}
+                                    onDelete={() => handleDelete(room.id)}
+                                    getBadgeColor={getDeptBadgeColor}
+                                />
+                            ))
+                        ) : (
+                            <EmptyState searchQuery={searchQuery} onClear={() => setSearchQuery("")} />
+                        )}
+                    </div>
+                </TabsContent>
+
+                {['it', 'cse', 'ece', 'csd', 'gen'].map(dept => (
+                    <TabsContent key={dept} value={dept} className="mt-0 animate-in fade-in-50">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            {filteredRooms.length > 0 ? (
+                                filteredRooms.map(room => (
+                                    <RoomCard
+                                        key={room.id}
+                                        room={room}
+                                        currentOccupancy={currentOccupancy}
+                                        onEdit={() => { setCurrentRoom(room); setFormData(room); setIsEditOpen(true); }}
+                                        onDelete={() => handleDelete(room.id)}
+                                        getBadgeColor={getDeptBadgeColor}
+                                    />
+                                ))
+                            ) : (
+                                <EmptyState searchQuery={searchQuery} onClear={() => setSearchQuery("")} />
+                            )}
                         </div>
                     </TabsContent>
                 ))}
@@ -411,10 +491,10 @@ const RoomManagement = () => {
 };
 
 // Sub-components for better organization
-const RoomCard = ({ room, currentOccupancy, onEdit, onDelete, getBadgeColor }: { 
-    room: Room, 
-    currentOccupancy: Record<string, { info: string; isDraft: boolean; subject: string; faculty: string; isExam?: boolean }>, 
-    onEdit: () => void, 
+const RoomCard = ({ room, currentOccupancy, onEdit, onDelete, getBadgeColor }: {
+    room: Room,
+    currentOccupancy: Record<string, { info: string; isDraft: boolean; subject: string; faculty: string; isExam?: boolean }>,
+    onEdit: () => void,
     onDelete: () => void,
     getBadgeColor: (dept?: string) => string
 }) => (
@@ -426,10 +506,13 @@ const RoomCard = ({ room, currentOccupancy, onEdit, onDelete, getBadgeColor }: {
                 </Badge>
                 <MenuActions onEdit={onEdit} onDelete={onDelete} />
             </div>
-            
+
             <div className="flex items-center gap-3 mb-2">
-                <div className={`p-2 rounded-lg ${room.type === 'Lab' ? 'bg-purple-100 text-purple-600' : 'bg-slate-100 text-slate-600'}`}>
-                    <DoorClosed className="h-5 w-5" />
+                <div className={`p-2 rounded-lg ${room.type === 'Lab' ? 'bg-purple-100 text-purple-600' :
+                    room.type === 'Office' ? 'bg-amber-100 text-amber-600' :
+                        'bg-slate-100 text-slate-600'
+                    }`}>
+                    {room.type === 'Office' ? <Briefcase className="h-5 w-5" /> : <DoorClosed className="h-5 w-5" />}
                 </div>
                 <div>
                     <h3 className="font-bold text-lg leading-tight">{room.name}</h3>
@@ -481,6 +564,31 @@ const RoomCard = ({ room, currentOccupancy, onEdit, onDelete, getBadgeColor }: {
             </div>
         </CardContent>
     </Card>
+);
+
+const EmptyState = ({ searchQuery, onClear }: { searchQuery: string, onClear: () => void }) => (
+    <div className="col-span-full flex flex-col items-center justify-center py-16 text-center bg-slate-50/50 rounded-2xl border-2 border-dashed border-slate-200 animate-in fade-in zoom-in-95 duration-300">
+        <div className="bg-white p-4 rounded-full shadow-sm mb-4">
+            <Search className="h-10 w-10 text-slate-300" />
+        </div>
+        <h3 className="text-xl font-bold text-slate-900 mb-1">No rooms found</h3>
+        <p className="text-slate-500 max-w-xs mx-auto text-sm">
+            {searchQuery
+                ? `We couldn't find any rooms matching "${searchQuery}" in this category.`
+                : "No rooms are currently available in this category."}
+        </p>
+        <div className="mt-6 flex gap-3">
+            {searchQuery && (
+                <Button
+                    variant="outline"
+                    onClick={onClear}
+                    className="font-bold border-slate-300"
+                >
+                    Clear Search
+                </Button>
+            )}
+        </div>
+    </div>
 );
 
 const MenuActions = ({ onEdit, onDelete }: { onEdit: () => void, onDelete: () => void }) => (

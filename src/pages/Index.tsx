@@ -17,11 +17,12 @@ import graduationImage from "@/assets/graduation.jpg";
 import laboratoryImage from "@/assets/labs.jpg";
 import sportsImage from "@/assets/sports.jpg";
 import dormitoryImage from "@/assets/housing.jpg";
+
 const Index = () => {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden pt-16">
         <div className="absolute inset-0">
           <img
             src="/clg.jpeg"
@@ -67,7 +68,7 @@ const Index = () => {
               </Button>
             </Link>
           </motion.div>
-          <div className="h-12 md:h-20 lg:h-24"></div> {/* Spacing to prevent overlap */}
+          <div className="h-12 md:h-16 lg:h-20"></div> {/* Reduced Spacing */}
         </div>
 
         {/* Floating Stats */}
@@ -89,6 +90,30 @@ const Index = () => {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Find People & Places CTA */}
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+        <div className="container mx-auto px-4 text-center">
+          <div className="max-w-3xl mx-auto space-y-6">
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+              Lost on Campus? <br/>
+              <span className="text-primary italic">We've got you covered.</span>
+            </h2>
+            <p className="text-lg text-slate-600">
+              Our AI-powered Campus Locator helps you find classrooms, faculty, and facilities in real-time.
+            </p>
+            <div className="flex justify-center pt-4">
+              <Link to="/find-people">
+                <Button size="lg" className="h-14 px-10 text-lg rounded-full bg-slate-900 hover:bg-slate-800 shadow-2xl shadow-slate-200 transition-all group">
+                  Open Campus Locator
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

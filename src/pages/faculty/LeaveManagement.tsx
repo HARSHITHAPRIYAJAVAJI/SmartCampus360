@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Label } from "@/components/ui/label";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Calendar as CalendarIcon, Clock, CheckCircle2, XCircle, AlertCircle, RefreshCw, Send, Check, X, Trash2, Users } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, CheckCircle2, XCircle, AlertCircle, RefreshCw, Send, Check, X, Trash2, Users, ShieldCheck, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
@@ -25,7 +25,7 @@ interface FacultyRequest {
     senderName: string;
     targetId: string;
     targetName: string;
-    type: "swap" | "replacement" | "leave";
+    type: "swap" | "replacement" | "leave" | "resignation";
     parentId?: string;
     category?: string;
     date: string;
@@ -58,6 +58,11 @@ const LeaveManagement = () => {
     const [duration, setDuration] = useState("1");
     const [proofUploaded, setProofUploaded] = useState(false);
     const [period, setPeriod] = useState("");
+
+    // Resignation State
+    const [noticePeriod, setNoticePeriod] = useState("3");
+    const [resignationReason, setResignationReason] = useState("");
+    const [lastWorkingDate, setLastWorkingDate] = useState<Date>();
 
     // Persistent Requests
     const [allRequests, setAllRequests] = useState<FacultyRequest[]>([]);
@@ -95,7 +100,8 @@ const LeaveManagement = () => {
     }, [allRequests, user.id]);
 
     const leaveBalances = useMemo(() => {
-        const totals = { casual: 15, sick: 12, academic: 15 };
+        // INSTITUTIONAL UPDATE: Total 12 personal leaves per semester (6 CL, 6 Sick)
+        const totals = { casual: 6, sick: 6 }; 
         myRequests.forEach(req => {
             if (req.type === 'leave' && req.status === 'approved') {
                 const cat = req.category as keyof typeof totals;
@@ -197,6 +203,18 @@ const LeaveManagement = () => {
         }
 
         const days = parseInt(duration);
+        
+        // Balance Check
+        const currentBalance = leaveBalances[leaveType as keyof typeof leaveBalances] || 0;
+        if (days > currentBalance) {
+            toast({
+                title: "Insufficient Balance",
+                description: `You only have ${currentBalance} day(s) left for ${leaveType} leave.`,
+                variant: "destructive"
+            });
+            return;
+        }
+
         if (days > 5 && !proofUploaded) {
             toast({
                 title: "Proof Required",
@@ -350,6 +368,51 @@ const LeaveManagement = () => {
         setSelectedFacultyIds([]);
         setPeriod("");
         setSwapDate(undefined);
+    };
+
+    const handleResignationSubmit = () => {
+        if (!resignationReason || !lastWorkingDate) {
+            toast({
+                title: "Incomplete Request",
+                description: "Please provide a reason and select your intended last working date.",
+                variant: "destructive"
+            });
+            return;
+        }
+
+        const newReq: FacultyRequest = {
+            id: `resign-${Date.now()}`,
+            senderId: user.id,
+            senderName: user.name,
+            targetId: 'admin',
+            targetName: 'Admin',
+            type: "resignation",
+            category: "Resignation",
+            date: format(lastWorkingDate, "yyyy-MM-dd"),
+            reason: resignationReason,
+            status: "pending",
+            timestamp: Date.now()
+        };
+
+        saveRequests([...allRequests, newReq]);
+        
+        // Notify Admin
+        alertService.sendAlert({
+            title: "🛑 Resignation Submitted",
+            message: `${user.name} has submitted a formal resignation request.`,
+            category: 'general',
+            type: 'urgent',
+            targetAudience: 'admin',
+            redirectUrl: '/dashboard/requests'
+        });
+
+        toast({
+            title: "Resignation Submitted",
+            description: "Your request has been forwarded to the HR & Registry department for review.",
+        });
+
+        setResignationReason("");
+        setLastWorkingDate(undefined);
     };
 
     const executeSwapInDB = (request: FacultyRequest) => {
@@ -549,9 +612,10 @@ const LeaveManagement = () => {
             )}
 
             <Tabs defaultValue="leave" className="w-full">
-                <TabsList className="grid w-full md:w-[400px] grid-cols-2">
+                <TabsList className="grid w-full md:w-[600px] grid-cols-3">
                     <TabsTrigger value="leave">Leave Request</TabsTrigger>
                     <TabsTrigger value="swap">Period Swap / Replace</TabsTrigger>
+                    <TabsTrigger value="resignation" className="text-destructive hover:bg-destructive/5">Resignation</TabsTrigger>
                 </TabsList>
                 
                 {/* LEAVE TAB */}
@@ -572,7 +636,6 @@ const LeaveManagement = () => {
                                         <SelectContent>
                                             <SelectItem value="sick">Sick Leave</SelectItem>
                                             <SelectItem value="casual">Casual Leave</SelectItem>
-                                            <SelectItem value="academic">Academic Leave</SelectItem>
                                             <SelectItem value="unpaid">Unpaid Leave</SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -666,10 +729,6 @@ const LeaveManagement = () => {
                                         <div className="text-3xl font-bold text-green-600 dark:text-green-400">{leaveBalances.sick}</div>
                                         <div className="text-sm text-green-800 dark:text-green-300 font-medium">Sick/Medical Leaves</div>
                                     </div>
-                                    <div className="bg-purple-50 dark:bg-purple-900/20 p-4 rounded-lg text-center col-span-2">
-                                        <div className="text-3xl font-bold text-purple-600 dark:text-purple-400">{leaveBalances.academic}</div>
-                                        <div className="text-sm text-purple-800 dark:text-purple-300 font-medium">Academic / Duty Leaves</div>
-                                    </div>
                                 </CardContent>
                             </Card>
 
@@ -679,10 +738,10 @@ const LeaveManagement = () => {
                                 </CardHeader>
                                 <CardContent>
                                     <ul className="text-[11px] list-disc pl-4 space-y-2 text-muted-foreground font-bold leading-relaxed">
-                                        <li><span className="text-slate-900">Casual Leave (CL):</span> 12-15 days/year (approx. 1 day/month credit). Max 6-7 per semester. Cannot be combined with vacation.</li>
-                                        <li><span className="text-slate-900">Medical Leave (ML):</span> 10-12 days per year. Medical certificate usually required for validation.</li>
-                                        <li><span className="text-slate-900">Academic/Duty Leave:</span> Up to 10-15 days/year for workshops, seminars, or exam-related duties.</li>
-                                        <li><span className="text-slate-900">Loss of Pay (LOP):</span> Available upon exhaustion of all other leave types, subject to management approval.</li>
+                                        <li><span className="text-slate-900">Semester Quota:</span> Total 12 personal leaves allowed per semester (CL + Sick combined).</li>
+                                        <li><span className="text-slate-900">Casual Leave (CL):</span> 6 days per semester. Max 2 consecutive days without HOD approval.</li>
+                                        <li><span className="text-slate-900">Medical Leave (ML):</span> 6 days per semester. Medical certificate required for more than 2 days.</li>
+                                        <li><span className="text-slate-900">Loss of Pay (LOP):</span> Applicable once the 12-day semester quota is exhausted.</li>
                                     </ul>
                                 </CardContent>
                             </Card>
@@ -967,6 +1026,198 @@ const LeaveManagement = () => {
                                 </Table>
                             </CardContent>
                         </Card>
+                    </div>
+                </TabsContent>
+
+                {/* RESIGNATION TAB */}
+                <TabsContent value="resignation" className="mt-6 space-y-6 animate-in fade-in-50 duration-500">
+                    <div className="grid gap-8 lg:grid-cols-12">
+                        <div className="lg:col-span-7 space-y-6">
+                            <Card className="border-none shadow-[0_20px_50px_rgba(239,68,68,0.15)] rounded-[2rem] overflow-hidden overflow-visible relative">
+                                {/* Decorative Gradient Overlay */}
+                                <div className="absolute top-0 right-0 p-4 opacity-[0.03] pointer-events-none">
+                                    <XCircle className="w-64 h-64 rotate-12" />
+                                </div>
+
+                                <CardHeader className="bg-gradient-to-br from-rose-50 to-white dark:from-rose-950/10 border-b p-8">
+                                    <div className="flex items-center gap-4 mb-2">
+                                        <div className="h-12 w-12 rounded-2xl bg-rose-500 flex items-center justify-center text-white shadow-lg shadow-rose-500/20">
+                                            <FileText className="h-6 w-6" />
+                                        </div>
+                                        <div>
+                                            <CardTitle className="text-2xl font-black tracking-tight bg-gradient-to-r from-rose-600 to-orange-600 bg-clip-text text-transparent">Formal Resignation</CardTitle>
+                                            <CardDescription className="text-xs font-bold uppercase tracking-widest opacity-70">Notice Submission & Exit Processing</CardDescription>
+                                        </div>
+                                    </div>
+                                </CardHeader>
+                                
+                                <CardContent className="p-8 space-y-8">
+                                    {/* Policy Alert */}
+                                    <div className="p-5 bg-amber-50 dark:bg-amber-900/10 rounded-2xl border border-amber-200/50 flex gap-4 items-start shadow-sm">
+                                        <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                                        <div className="space-y-1">
+                                            <p className="text-sm font-black text-amber-900 dark:text-amber-400 leading-none">Standard Notice Period Policy</p>
+                                            <p className="text-[12px] font-medium text-amber-700/80 dark:text-amber-500/80 leading-relaxed">
+                                                A minimum notice period of <span className="font-black text-rose-600 underline underline-offset-4">3 months (90 days)</span> is required to ensure academic continuity and proper handover of responsibilities.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div className="grid gap-6">
+                                        <div className="space-y-3">
+                                            <Label className="text-xs font-black uppercase tracking-widest text-slate-500 flex items-center gap-2">
+                                                <CalendarIcon className="w-3.5 h-3.5" /> Intended Last Working Date
+                                            </Label>
+                                            <Popover>
+                                                <PopoverTrigger asChild>
+                                                    <Button
+                                                        variant={"outline"}
+                                                        className={cn(
+                                                            "w-full justify-start text-left font-bold h-14 rounded-2xl border-slate-200 hover:border-rose-300 hover:bg-rose-50/50 transition-all text-base",
+                                                            !lastWorkingDate && "text-muted-foreground"
+                                                        )}
+                                                    >
+                                                        {lastWorkingDate ? format(lastWorkingDate, "PPP") : <span>Select your final date...</span>}
+                                                    </Button>
+                                                </PopoverTrigger>
+                                                <PopoverContent className="w-auto p-0 rounded-2xl shadow-2xl border-none">
+                                                    <Calendar
+                                                        mode="single"
+                                                        selected={lastWorkingDate}
+                                                        onSelect={setLastWorkingDate}
+                                                        disabled={(date) => date < new Date()}
+                                                        initialFocus
+                                                    />
+                                                </PopoverContent>
+                                            </Popover>
+                                        </div>
+
+                                        <div className="space-y-3">
+                                            <Label className="text-xs font-black uppercase tracking-widest text-slate-500 flex items-center gap-2">
+                                                <Clock className="w-3.5 h-3.5" /> Notice Duration
+                                            </Label>
+                                            <Select value={noticePeriod} onValueChange={setNoticePeriod}>
+                                                <SelectTrigger className="h-14 rounded-2xl border-slate-200 font-bold text-base hover:border-rose-300 focus:ring-rose-500/20">
+                                                    <SelectValue />
+                                                </SelectTrigger>
+                                                <SelectContent className="rounded-2xl shadow-2xl border-none">
+                                                    <SelectItem value="1" className="font-medium p-3">1 Month (Short Notice / Emergency)</SelectItem>
+                                                    <SelectItem value="2" className="font-medium p-3">2 Months (Standard Transition)</SelectItem>
+                                                    <SelectItem value="3" className="font-medium p-3 font-black text-rose-600">3 Months (Standard Institutional Policy)</SelectItem>
+                                                    <SelectItem value="6" className="font-medium p-3">6 Months (End of Academic Session)</SelectItem>
+                                                </SelectContent>
+                                            </Select>
+                                        </div>
+
+                                        <div className="space-y-3">
+                                            <Label className="text-xs font-black uppercase tracking-widest text-slate-500 flex items-center gap-2">
+                                                <FileText className="h-3.5 w-3.5" /> Statement of Intent / Reason
+                                            </Label>
+                                            <Textarea
+                                                placeholder="Please provide a brief reason for your resignation..."
+                                                className="rounded-2xl min-h-[140px] border-slate-200 font-medium p-4 focus:ring-rose-500/20 text-base"
+                                                value={resignationReason}
+                                                onChange={(e) => setResignationReason(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <Button 
+                                        className="w-full bg-gradient-to-r from-rose-600 to-rose-700 hover:from-rose-500 hover:to-rose-600 text-white font-black h-16 rounded-2xl shadow-xl shadow-rose-600/30 transition-all hover:scale-[1.01] active:scale-95 text-lg" 
+                                        onClick={handleResignationSubmit}
+                                    >
+                                        <Send className="w-5 h-5 mr-3" />
+                                        Submit Formal Notice
+                                    </Button>
+
+                                    <p className="text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                        This action will trigger an official notification to HR and the Registry.
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        </div>
+
+                        <div className="lg:col-span-5 space-y-6">
+                            <Card className="bg-slate-900 text-white border-none shadow-2xl rounded-[2rem] overflow-hidden">
+                                <CardHeader className="border-b border-white/10 p-8 bg-white/[0.02]">
+                                    <CardTitle className="text-xl font-black flex items-center gap-3">
+                                        <ShieldCheck className="h-6 w-6 text-emerald-400" />
+                                        Institutional Exit Protocol
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent className="p-8 space-y-8">
+                                    <div className="flex gap-5 group">
+                                        <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0 transition-transform group-hover:scale-110">
+                                            <CheckCircle2 className="h-6 w-6 text-emerald-400" />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <h4 className="font-black text-sm uppercase tracking-tight">Clearance Certificate</h4>
+                                            <p className="text-xs text-slate-400 font-medium leading-relaxed">Verification of all equipment, library assets, and internal marks completion is mandatory.</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-5 group">
+                                        <div className="h-12 w-12 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center shrink-0 transition-transform group-hover:scale-110">
+                                            <ShieldCheck className="h-6 w-6 text-blue-400" />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <h4 className="font-black text-sm uppercase tracking-tight">Benefit Settlement</h4>
+                                            <p className="text-xs text-slate-400 font-medium leading-relaxed">Gratuity and PF settlements are initiated upon successful verification of your last working day.</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-5 group">
+                                        <div className="h-12 w-12 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center shrink-0 transition-transform group-hover:scale-110">
+                                            <Send className="h-6 w-6 text-purple-400" />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <h4 className="font-black text-sm uppercase tracking-tight">Experience Letter</h4>
+                                            <p className="text-xs text-slate-400 font-medium leading-relaxed">Official relieving letters and experience certificates are issued on your final day of service.</p>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            <Card className="border-none shadow-xl rounded-[2rem] overflow-hidden">
+                                <CardHeader className="bg-slate-50 dark:bg-slate-900/50 p-6">
+                                    <div className="flex justify-between items-center">
+                                        <div>
+                                            <CardTitle className="text-lg font-black tracking-tight">Active Request Tracking</CardTitle>
+                                            <CardDescription className="text-[10px] font-bold uppercase tracking-widest mt-1">HR & Registry Decision Status</CardDescription>
+                                        </div>
+                                        <div className="h-10 w-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                                            <Users className="h-5 w-5" />
+                                        </div>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="p-6">
+                                    {myRequests.filter(r => r.type === 'resignation').length === 0 ? (
+                                        <div className="py-12 text-center opacity-30 border-2 border-dashed rounded-3xl">
+                                            <AlertCircle className="h-10 w-10 mx-auto mb-3" />
+                                            <p className="text-[10px] font-black uppercase tracking-widest">No active resignation requests</p>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            {myRequests.filter(r => r.type === 'resignation').map(req => (
+                                                <div key={req.id} className="p-5 rounded-2xl border border-rose-100 bg-rose-50/20 flex justify-between items-center group hover:border-rose-200 transition-all">
+                                                    <div className="space-y-1">
+                                                        <h5 className="font-black text-sm uppercase text-slate-800">Formal Resignation</h5>
+                                                        <div className="flex items-center gap-2">
+                                                            <CalendarIcon className="w-3 h-3 text-slate-400" />
+                                                            <p className="text-[10px] font-bold text-muted-foreground uppercase">Last Day: <span className="text-rose-600 font-black">{req.date}</span></p>
+                                                        </div>
+                                                    </div>
+                                                    <Badge className={
+                                                        req.status === 'approved' ? 'bg-emerald-500 font-black px-3 py-1 text-[10px] rounded-lg' : 
+                                                        req.status === 'pending' ? 'bg-amber-100 text-amber-700 border-none font-black px-3 py-1 text-[10px] rounded-lg animate-pulse' : 'bg-rose-500 font-black px-3 py-1 text-[10px] rounded-lg'
+                                                    }>
+                                                        {req.status.toUpperCase()}
+                                                    </Badge>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </div>
                     </div>
                 </TabsContent>
             </Tabs>

@@ -18,6 +18,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MOCK_LEAVE_REQUESTS, LeaveRequest } from "@/data/mockLeaves";
 import { formatSubject } from "@/data/subjectMapping";
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { dataPersistence } from "@/utils/dataPersistence";
 
 // Types
 interface FacultyMember {
@@ -30,6 +31,8 @@ interface FacultyMember {
     totalLoad: number;
     email?: string;
     phone?: string;
+    is_active?: boolean;
+    deleted_at?: string | null;
 }
 
 interface FacultyManagementProps {
@@ -57,21 +60,39 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
         }
     }, [searchParams]);
 
-    const departments = useMemo(() => [
-        { id: "CSM", name: "CSE (AI & Machine Learning)", icon: BookOpen, color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30", description: "Department of AI & ML" },
-        { id: "IT", name: "Information Technology", icon: Building2, color: "text-cyan-600 bg-cyan-100 dark:bg-cyan-900/30", description: "Department of IT" },
-        { id: "CSE", name: "Computer Science & Engineering", icon: GraduationCap, color: "text-purple-600 bg-purple-100 dark:bg-purple-900/30", description: "Department of CSE" },
-        { id: "ECE", name: "Electronics & Communication", icon: Clock, color: "text-green-600 bg-green-100 dark:bg-green-100/30", description: "Department of ECE" },
-    ].map(dept => ({
-        ...dept,
-        count: MOCK_FACULTY.filter(f => f.department === dept.id).length
-    })), []);
-
     const { toast } = useToast();
     const [facultyList, setFacultyList] = useState<FacultyMember[]>([]);
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [isEditOpen, setIsEditOpen] = useState(false);
     const [currentFaculty, setCurrentFaculty] = useState<FacultyMember | null>(null);
+
+    // Load dynamic data
+    useEffect(() => {
+        const loadData = () => {
+            const activeFaculty = dataPersistence.getFaculty();
+            setFacultyList(activeFaculty.map(f => ({
+                ...f,
+                subjects: f.specialization || [],
+                totalLoad: 0
+            })));
+        };
+        loadData();
+        window.addEventListener('dynamic_data_updated', loadData);
+        return () => window.removeEventListener('dynamic_data_updated', loadData);
+    }, []);
+
+    const departments = useMemo(() => {
+        const allFaculty = dataPersistence.getAllFaculty();
+        return [
+            { id: "CSM", name: "CSE (AI & Machine Learning)", icon: BookOpen, color: "text-blue-600 bg-blue-100 dark:bg-blue-900/30", description: "Department of AI & ML" },
+            { id: "IT", name: "Information Technology", icon: Building2, color: "text-cyan-600 bg-cyan-100 dark:bg-cyan-900/30", description: "Department of IT" },
+            { id: "CSE", name: "Computer Science & Engineering", icon: GraduationCap, color: "text-purple-600 bg-purple-100 dark:bg-purple-900/30", description: "Department of CSE" },
+            { id: "ECE", name: "Electronics & Communication", icon: Clock, color: "text-green-600 bg-green-100 dark:bg-green-100/30", description: "Department of ECE" },
+        ].map(dept => ({
+            ...dept,
+            count: allFaculty.filter(f => f.department === dept.id && f.is_active !== false).length
+        }));
+    }, [facultyList]);
     const [viewMode, setViewMode] = useState<'grid' | 'list' | 'compact'>('grid');
     const [formData, setFormData] = useState<Partial<FacultyMember>>({});
 
@@ -145,13 +166,16 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
         }
         const newFaculty = {
             ...formData,
-            id: Date.now().toString(),
+            id: `fac-${Date.now()}`,
             subjects: formData.subjects || [],
             totalLoad: 0,
-            department: selectedDept || "CSM"
-        } as FacultyMember;
+            department: selectedDept || "CSM",
+            is_active: true,
+            deleted_at: null
+        } as any;
 
-        setFacultyList([newFaculty, ...facultyList]);
+        const allFac = dataPersistence.getAllFaculty();
+        dataPersistence.saveFaculty([newFaculty, ...allFac]);
         setIsAddOpen(false);
         setFormData({});
         toast({ title: "Success", description: "Faculty member added successfully" });
@@ -201,7 +225,9 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
 
     const handleEdit = () => {
         if (!currentFaculty) return;
-        setFacultyList(prev => prev.map(f => f.id === currentFaculty.id ? { ...f, ...formData } : f));
+        const allFac = dataPersistence.getAllFaculty();
+        const updated = allFac.map(f => f.id === currentFaculty.id ? { ...f, ...formData } : f);
+        dataPersistence.saveFaculty(updated);
         setIsEditOpen(false);
         setCurrentFaculty(null);
         setFormData({});
@@ -209,8 +235,10 @@ const FacultyManagement = ({ userRole = 'admin' }: FacultyManagementProps) => {
     };
 
     const handleDelete = (id: string) => {
-        setFacultyList(prev => prev.filter(f => f.id !== id));
-        toast({ title: "Deleted", description: "Faculty member removed", variant: "destructive" });
+        const allFac = dataPersistence.getAllFaculty();
+        const updated = allFac.map(f => f.id === id ? { ...f, is_active: false, deleted_at: new Date().toISOString() } : f);
+        dataPersistence.saveFaculty(updated);
+        toast({ title: "Moved to Trash", description: "Faculty member can be restored from Recycle Bin.", variant: "destructive" });
     };
 
     if (!selectedDept) {

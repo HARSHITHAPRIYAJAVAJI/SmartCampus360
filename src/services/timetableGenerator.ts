@@ -547,17 +547,39 @@ export class TimetableEngine {
                 let bestIdx = pool.findIndex(c => {
                     const res = this.getFacultyForCourse(c, section, year, 1, department);
                     const faculties = res.names || [res.name];
+                    
+                    let withinDailyLimit = true;
+                    for (const f of faculties) {
+                        let todayLoad = 0;
+                        this.slots.forEach(s => {
+                            if (this.facultySchedule[`${day}-${s}`].has(f)) todayLoad++;
+                        });
+                        if (todayLoad + 1 > 5) withinDailyLimit = false;
+                    }
+
                     return !usedToday.includes(c.code) && 
                            faculties.every(f => !this.facultySchedule[key].has(f)) && 
-                           !this.roomSchedule[key].has(defaultRoomStr);
+                           !this.roomSchedule[key].has(defaultRoomStr) &&
+                           withinDailyLimit;
                 });
 
                 if (bestIdx === -1) {
                     bestIdx = pool.findIndex(c => {
                         const res = this.getFacultyForCourse(c, section, year, 1, department);
                         const faculties = res.names || [res.name];
+                        
+                        let withinDailyLimit = true;
+                        for (const f of faculties) {
+                            let todayLoad = 0;
+                            this.slots.forEach(s => {
+                                if (this.facultySchedule[`${day}-${s}`].has(f)) todayLoad++;
+                            });
+                            if (todayLoad + 1 > 5) withinDailyLimit = false;
+                        }
+
                         return faculties.every(f => !this.facultySchedule[key].has(f)) && 
-                               !this.roomSchedule[key].has(defaultRoomStr);
+                               !this.roomSchedule[key].has(defaultRoomStr) &&
+                               withinDailyLimit;
                     });
                 }
 
@@ -588,6 +610,16 @@ export class TimetableEngine {
     }
 
     private isBlockFree(day: string, slots: string[], faculties: string[], room: string | null, grid: TimetableGrid): boolean {
+        // Daily limits check for all faculties involved in this lab block
+        // Ensures no faculty exceeds 5 periods a day (1 free period guaranteed)
+        for (const f of faculties) {
+            let todayLoad = 0;
+            this.slots.forEach(s => {
+                if (this.facultySchedule[`${day}-${s}`].has(f)) todayLoad++;
+            });
+            if (todayLoad + slots.length > 5) return false;
+        }
+
         return slots.every(s => 
             grid[`${day}-${s}`] === null && 
             faculties.every(f => !this.facultySchedule[`${day}-${s}`].has(f)) && 

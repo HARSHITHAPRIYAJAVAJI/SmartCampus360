@@ -73,7 +73,7 @@ function getCourseName(code: string): string {
 }
 
 // Max weekly load hours for progress display
-const MAX_WEEKLY_HOURS = 20;
+const MAX_WEEKLY_HOURS = 36;
 
 // ─── Real-Time Workload Builder ────────────────────────────────────────────
 
@@ -285,8 +285,8 @@ const FacultyLoadDashboard = () => {
     }, [byDept, search]);
 
     const getLoadColor = (hours: number) => {
-        if (hours > 19) return { text: 'text-red-600', bg: 'bg-red-50', border: 'border-l-red-500', badge: 'bg-red-100 text-red-700', label: 'Overloaded' };
-        if (hours >= 15) return { text: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-l-emerald-500', badge: 'bg-emerald-100 text-emerald-700', label: 'Optimal' };
+        if (hours > 36) return { text: 'text-red-600', bg: 'bg-red-50', border: 'border-l-red-500', badge: 'bg-red-100 text-red-700', label: 'Overloaded' };
+        if (hours >= 25) return { text: 'text-emerald-600', bg: 'bg-emerald-50', border: 'border-l-emerald-500', badge: 'bg-emerald-100 text-emerald-700', label: 'Optimal' };
         if (hours > 0)  return { text: 'text-amber-600', bg: 'bg-amber-50', border: 'border-l-amber-500', badge: 'bg-amber-100 text-amber-700', label: 'Under-utilized' };
         return { text: 'text-slate-400', bg: 'bg-slate-50', border: 'border-l-slate-300', badge: 'bg-slate-100 text-slate-500', label: 'Not Assigned' };
     };

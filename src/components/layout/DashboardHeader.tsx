@@ -163,7 +163,7 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
   };
 
   return (
-    <header className="h-20 bg-card border-b border-border/60 flex items-center justify-between px-6 sticky top-0 z-30 shadow-sm backdrop-blur-md">
+    <header className="h-14 bg-card border-b border-border/60 flex items-center justify-between px-6 sticky top-0 z-30 shadow-sm backdrop-blur-md">
       {/* Sidebar Toggle & Search Bar */}
       <div className="flex items-center gap-6 flex-1">
         <div className="flex items-center gap-3 mr-4">
@@ -272,10 +272,10 @@ export function DashboardHeader({ user, onLogout, onToggleSidebar }: DashboardHe
         {/* Notifications */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" className="relative h-10 w-10 rounded-full hover:bg-muted/60 transition-all active:scale-95 group">
-              <Bell className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+            <Button variant="ghost" size="icon" className="relative h-12 w-12 rounded-full hover:bg-muted/60 transition-all active:scale-95 group">
+              <Bell className="h-7 w-7 text-muted-foreground group-hover:text-primary transition-colors" />
               {unreadCount > 0 && (
-                <span className="absolute top-1.5 right-1.5 h-4 w-4 rounded-full bg-red-500 flex items-center justify-center text-[9px] font-black text-white shadow-lg ring-2 ring-card animate-pulse shadow-red-500/50">
+                <span className="absolute top-2 right-2 h-5 w-5 rounded-full bg-red-500 flex items-center justify-center text-[10px] font-black text-white shadow-lg ring-2 ring-card animate-pulse shadow-red-500/50">
                   {unreadCount}
                 </span>
               )}

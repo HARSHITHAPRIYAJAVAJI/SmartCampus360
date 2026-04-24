@@ -68,6 +68,20 @@ export default function ExamManagement() {
         return saved ? JSON.parse(saved) : [];
     });
 
+    const [trash, setTrash] = useState<{
+        id: string,
+        type: 'roster' | 'timetable',
+        title: string,
+        exams: Exam[],
+        seatingPlans: SeatingAssignment[],
+        invigilationList: InvigilationDuty[],
+        timetables: ExamTimetable[],
+        deletedAt: string
+    }[]>(() => {
+        const saved = localStorage.getItem('EXAM_TRASH');
+        return saved ? JSON.parse(saved) : [];
+    });
+
     useEffect(() => {
         // Migration: Remove legacy exams that don't have the 'years' property
         const validExams = exams.filter(e => e.years && Array.isArray(e.years));
@@ -81,10 +95,11 @@ export default function ExamManagement() {
         localStorage.setItem('EXAM_SEATING_PLAN', JSON.stringify(seatingPlans));
         localStorage.setItem('INVIGILATION_LIST', JSON.stringify(invigilationList));
         localStorage.setItem('EXAM_TIMETABLES', JSON.stringify(timetables));
+        localStorage.setItem('EXAM_TRASH', JSON.stringify(trash));
         
         // Notify other components (like Timetable.tsx) to refresh
         window.dispatchEvent(new Event('exams_updated'));
-    }, [exams, seatingPlans, invigilationList, timetables]);
+    }, [exams, seatingPlans, invigilationList, timetables, trash]);
 
     const filteredExams = exams.filter(exam => 
         exam.type?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -169,6 +184,22 @@ export default function ExamManagement() {
     const handleDeleteRoster = (examId: string) => {
         // Extract ttId to delete the whole cycle
         const ttId = examId.startsWith('EXT-') ? examId.substring(0, examId.lastIndexOf('-')) : examId;
+        const mainExam = exams.find(e => e.id === examId || e.id.startsWith(ttId));
+
+        const deletedExams = exams.filter(e => (e.id.startsWith(ttId) || e.id === ttId));
+        const deletedSeating = seatingPlans.filter(s => (s.examId.startsWith(ttId) || s.examId === ttId));
+        const deletedInvigs = invigilationList.filter(i => (i.examId.startsWith(ttId) || i.examId === ttId));
+
+        setTrash(prev => [{
+            id: `trash-${Date.now()}`,
+            type: 'roster',
+            title: mainExam ? `${mainExam.type} Assessment Cycle` : 'Exam Roster',
+            exams: deletedExams,
+            seatingPlans: deletedSeating,
+            invigilationList: deletedInvigs,
+            timetables: [],
+            deletedAt: new Date().toISOString()
+        }, ...prev]);
         
         setExams(prev => prev.filter(e => {
             const currentTtId = e.id.startsWith('EXT-') ? e.id.substring(0, e.id.lastIndexOf('-')) : e.id;
@@ -183,20 +214,56 @@ export default function ExamManagement() {
             return currentTtId !== ttId;
         }));
         
-        toast({ title: "Roster Group Deleted", variant: "destructive" });
+        toast({ title: "Moved to Trash", description: "Roster has been moved to the trash and can be restored." });
     };
 
     const handleDeleteTimetable = (id: string) => {
         // Scrub ID prefix if it exists to match exams
         const ttId = id.startsWith('TT-') ? id.split('-')[1] : id;
+        const tt = timetables.find(t => t.id === id);
+
+        const deletedTimetables = timetables.filter(t => t.id === id);
+        const deletedExams = exams.filter(e => e.id.includes(ttId));
+        const deletedSeating = seatingPlans.filter(s => s.examId.includes(ttId));
+        const deletedInvigs = invigilationList.filter(i => i.examId.includes(ttId));
+
+        setTrash(prev => [{
+            id: `trash-${Date.now()}`,
+            type: 'timetable',
+            title: tt ? tt.title : 'Exam Timetable',
+            exams: deletedExams,
+            seatingPlans: deletedSeating,
+            invigilationList: deletedInvigs,
+            timetables: deletedTimetables,
+            deletedAt: new Date().toISOString()
+        }, ...prev]);
         
         setTimetables(prev => prev.filter(t => t.id !== id));
-        // Also delete associated execution rosters
         setExams(prev => prev.filter(e => !e.id.includes(ttId)));
         setSeatingPlans(prev => prev.filter(s => !s.examId.includes(ttId)));
         setInvigilationList(prev => prev.filter(i => !i.examId.includes(ttId)));
         
-        toast({ title: "Timetable Deleted", description: "Associated rosters have also been cleared.", variant: "destructive" });
+        toast({ title: "Moved to Trash", description: "Timetable and associated rosters moved to trash." });
+    };
+
+    const handleRestore = (trashId: string) => {
+        const item = trash.find(t => t.id === trashId);
+        if (!item) return;
+
+        if (item.timetables.length > 0) {
+            setTimetables(prev => [...prev, ...item.timetables]);
+        }
+        setExams(prev => [...prev, ...item.exams]);
+        setSeatingPlans(prev => [...prev, ...item.seatingPlans]);
+        setInvigilationList(prev => [...prev, ...item.invigilationList]);
+
+        setTrash(prev => prev.filter(t => t.id !== trashId));
+        toast({ title: "Restored Successfully", description: "Data has been returned to active rosters." });
+    };
+
+    const handlePermanentDelete = (trashId: string) => {
+        setTrash(prev => prev.filter(t => t.id !== trashId));
+        toast({ title: "Permanently Deleted", variant: "destructive" });
     };
 
     const handleGlobalReset = () => {
@@ -470,6 +537,9 @@ export default function ExamManagement() {
                     </TabsTrigger>
                     <TabsTrigger value="invigilation" className="px-6 rounded-lg text-xs font-bold transition-all gap-2">
                         <UserCheck className="h-3.5 w-3.5" /> Duties
+                    </TabsTrigger>
+                    <TabsTrigger value="trash" className="px-6 rounded-lg text-xs font-bold transition-all gap-2 text-destructive hover:bg-destructive/10">
+                        <Trash2 className="h-3.5 w-3.5" /> Trash ({trash.length})
                     </TabsTrigger>
                 </TabsList>
 
@@ -804,6 +874,59 @@ export default function ExamManagement() {
                         </div>
                     </Card>
                 </TabsContent>
+
+                <TabsContent value="trash" className="space-y-4">
+                    <Card className="border-border/40 shadow-sm rounded-2xl overflow-hidden bg-destructive/[0.02]">
+                        <CardHeader className="bg-destructive/5 border-b p-5">
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <CardTitle className="text-lg font-bold text-destructive">Data Recyle Bin</CardTitle>
+                                    <CardDescription className="text-xs">Restore or permanently delete examination records</CardDescription>
+                                </div>
+                                {trash.length > 0 && (
+                                    <Button variant="ghost" size="sm" className="text-destructive font-black uppercase text-[10px] tracking-widest hover:bg-destructive/10" onClick={() => {
+                                        if (window.confirm("Permanently delete all items in trash?")) setTrash([]);
+                                    }}>
+                                        Empty Trash
+                                    </Button>
+                                )}
+                            </div>
+                        </CardHeader>
+                        <div className="divide-y divide-border/30">
+                            {trash.length === 0 ? (
+                                <div className="py-20 text-center opacity-20">
+                                    <Trash2 className="h-12 w-12 mx-auto mb-3" />
+                                    <p className="font-black uppercase tracking-widest text-[10px]">Trash is empty</p>
+                                </div>
+                            ) : (
+                                trash.map((item) => (
+                                    <div key={item.id} className="p-6 hover:bg-white dark:hover:bg-slate-900 transition-colors flex items-center justify-between">
+                                        <div className="flex items-center gap-4">
+                                            <div className="h-10 w-10 rounded-xl bg-destructive/10 flex items-center justify-center text-destructive">
+                                                {item.type === 'timetable' ? <FileSpreadsheet className="h-5 w-5" /> : <Calendar className="h-5 w-5" />}
+                                            </div>
+                                            <div>
+                                                <h4 className="font-bold text-sm">{item.title}</h4>
+                                                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">
+                                                    Deleted on {new Date(item.deletedAt).toLocaleString()} • {item.exams.length} Slots
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <Button variant="outline" size="sm" className="rounded-xl font-black text-[10px] tracking-widest h-9 px-6 border-emerald-500/30 text-emerald-600 hover:bg-emerald-500/10" onClick={() => handleRestore(item.id)}>
+                                                RESTORE
+                                            </Button>
+                                            <Button variant="ghost" size="icon" className="h-9 w-9 text-destructive hover:bg-destructive/10" onClick={() => handlePermanentDelete(item.id)}>
+                                                <Trash2 className="h-4 w-4" />
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                    </Card>
+                </TabsContent>
+
 
                 <TabsContent value="invigilation">
                     <div className="mb-6 flex justify-between items-center bg-card/60 p-4 rounded-2xl border border-border/50">

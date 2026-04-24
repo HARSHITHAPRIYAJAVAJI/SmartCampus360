@@ -20,7 +20,8 @@ import {
   ChevronDown,
   ShieldCheck,
   MessageSquare,
-  Link
+  Link,
+  Trash2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -78,6 +79,7 @@ export function DashboardSidebar({ userRole, collapsed, onToggle, mobileOpen, on
         { title: "Course Management", url: "/dashboard/manage-courses", icon: BookOpen },
         { title: "Room Management", url: "/dashboard/manage-rooms", icon: Home },
         { title: "Analytics & Accreditation", url: "/dashboard/analytics-accreditation", icon: BarChart3 },
+        { title: "Recycle Bin", url: "/dashboard/trash", icon: Trash2 },
       ],
       faculty: [
         { title: "My Classes", url: "/dashboard/classes", icon: BookOpen },

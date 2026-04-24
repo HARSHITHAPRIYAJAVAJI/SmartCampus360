@@ -34,8 +34,9 @@ import {
 } from "@/components/ui/dialog";
 import { calculateAcademicMetrics } from "@/utils/academicCalculations";
 import { format } from "date-fns";
-import { getTimetable } from "@/data/aimlTimetable";
+import { getTimetable, FACULTY_LOAD } from "@/data/aimlTimetable";
 import { useNotifications } from "@/hooks/useNotifications";
+import { academicService } from "@/services/academicService";
 
 export default function StudentDashboard({ studentId: propStudentId }: { studentId?: string }) {
     const { user: authUser } = useOutletContext<{ user: { name: string, id: string, role: string } }>();
@@ -202,23 +203,13 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
         if (!studentData) return [];
         
         const semNum = studentData.semester % 2 === 0 ? 2 : 1;
+        const strictPublishedKey = `${(studentData.branch || "").toUpperCase()}-${studentData.year}-${semNum}-${studentData.section}`;
         
         // Resolve which source of truth to use
         const publishedStoreStr = localStorage.getItem('published_timetables');
         const allTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : null;
-        const strictPublishedKey = `${(studentData.branch || "").toUpperCase()}-${studentData.year}-${semNum}-${studentData.section}`;
-        
         let publishedEntry = allTimetables ? allTimetables[strictPublishedKey] : null;
 
-        if (!publishedEntry && allTimetables) {
-            const altSemNum = semNum === 1 ? 2 : 1;
-            const altKey = `${(studentData.branch || "").toUpperCase()}-${studentData.year}-${altSemNum}-${studentData.section}`;
-            if (allTimetables[altKey]) {
-                publishedEntry = allTimetables[altKey];
-            }
-        }
-
-        const useDemoData = publishedStoreStr === null;
         const liveTable = publishedEntry?.grid || 
                           (publishedEntry && !publishedEntry.metadata ? publishedEntry : {});
         
@@ -231,19 +222,31 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
             (r.type === 'replacement' || r.type === 'swap')
         ) : [];
 
+        // Faculty Load fallback (same as Timetable.tsx)
+        const facultyLoadKey = `${studentData.branch}-${studentData.year}-${semNum}`;
+        const genericLoadKey = `${studentData.year}-${semNum}`;
+        const currentLoad = (FACULTY_LOAD[facultyLoadKey as keyof typeof FACULTY_LOAD] || 
+                           FACULTY_LOAD[genericLoadKey as keyof typeof FACULTY_LOAD]) as any[];
+
         const schedule: any[] = [];
         Object.entries(liveTable).forEach(([dayTime, session]: [string, any]) => {
             if (!session) return;
-            let [day, time] = dayTime.split('-');
-            const normalizedTime = time;
+            const [day, time] = dayTime.split('-');
             if (day !== today) return;
+
+            // Find subject match in load for faculty fallback
+            const loadInfo = currentLoad?.find(l => l.code === session.courseCode);
 
             // Check if this specific session has an override for TODAY & SECTION
             const override = approvedReplacements.find((r: any) => {
-                const sameSlot = r.period === normalizedTime && r.section === strictPublishedKey;
-                const matchesOriginalFaculty = r.senderId === session.facultyId || 
-                                              (session.faculty && r.senderName && session.faculty.toLowerCase().includes(r.senderName.toLowerCase()));
-                return sameSlot && matchesOriginalFaculty;
+                const rDate = new Date(r.date);
+                const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
+                const rStartTime = r.period?.split('-')[0];
+                
+                const isSlotMatch = rDayName === today && (r.period === time || rStartTime === time);
+                const isSectionMatch = r.section === strictPublishedKey;
+                
+                return isSlotMatch && isSectionMatch;
             });
 
             const hour = parseInt(time.split(':')[0]);
@@ -253,13 +256,15 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                 time: `${time} ${ampm}`,
                 rawTime: time,
                 title: formatSubjectName(session.courseName || session.courseCode),
-                room: session.room || "TBD",
-                faculty: override ? override.targetName : (session.faculty || "Staff"),
+                room: session.room || loadInfo?.room || "TBD",
+                faculty: override ? override.targetName : (session.faculty || loadInfo?.faculty || "Staff"),
                 isReplacement: !!override,
-                type: (session.courseName || session.courseCode || "").toLowerCase().includes('lab') ? 'lab' : 'lecture'
+                type: (session.courseName || session.courseCode || "").toLowerCase().includes('crt') ? 'crt' : 
+                      (session.courseName || session.courseCode || "").toLowerCase().includes('lab') ? 'lab' : 'lecture'
             });
         });
 
+        // Add sorting by time to ensure it matches Timetable view order
         return schedule.sort((a, b) => {
             const getMinutes = (timeStr: string) => {
                 const [time, period] = timeStr.split(' ');
@@ -481,40 +486,6 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                 
                 {/* Left Side: Academic Monitoring */}
                 <div className="lg:col-span-8 space-y-8">
-                    {activeExamToday && (
-                        <motion.div
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            className="relative group"
-                        >
-                            <div className="absolute -inset-0.5 bg-gradient-to-r from-red-500 to-orange-500 rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-                            <Card className="relative border-none shadow-2xl rounded-[2.5rem] overflow-hidden bg-white dark:bg-slate-950 border-l-[6px] border-l-red-500">
-                                <CardContent className="p-0">
-                                    <div className="bg-red-500/5 p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                                        <div className="flex gap-5 items-center">
-                                            <div className="h-16 w-16 rounded-[1.5rem] bg-red-500/20 flex items-center justify-center shrink-0">
-                                                <ShieldCheck className="h-8 w-8 text-red-600 animate-pulse" />
-                                            </div>
-                                            <div className="space-y-1">
-                                                <Badge className="bg-red-600 text-white border-none text-[8px] font-black uppercase tracking-[0.2em] px-3">{activeExamToday.type} ACTIVE</Badge>
-                                                <h3 className="text-2xl font-black tracking-tighter text-slate-900 dark:text-white">
-                                                    {activeExamToday.title}
-                                                </h3>
-                                                <p className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-                                                    <Clock className="h-4 w-4" /> {activeExamToday.time} ({activeExamToday.slot === 'FN' ? 'Forenoon' : 'Afternoon'})
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col items-end gap-2 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-red-500/10 shadow-sm min-w-[150px]">
-                                            <span className="text-[10px] font-black text-red-600 uppercase tracking-tighter">Your Location</span>
-                                            <div className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">Hall {activeExamToday.room}</div>
-                                            <Badge variant="outline" className="border-red-200 text-red-600 font-bold bg-red-50/50">Seat: {activeExamToday.seat}</Badge>
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </motion.div>
-                    )}
 
                     {/* Today's Schedule (NEW) */}
                     <Card className="border-none shadow-xl rounded-[2rem] overflow-hidden">
@@ -578,7 +549,72 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                         </CardContent>
                     </Card>
 
-                    {/* Grade Matrix Card */}
+                    {/* Academic Portfolio: Subject-wise Performance */}
+                    <Card className="border-none shadow-premium rounded-[2.5rem] overflow-hidden bg-white/50 dark:bg-slate-900/50 border border-white/20">
+                        <CardHeader className="p-8 pb-4">
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <CardTitle className="text-2xl font-black tracking-tighter flex items-center gap-3">
+                                        <BookOpen className="w-6 h-6 text-primary" />
+                                        Academic Portfolio
+                                    </CardTitle>
+                                    <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest mt-1">INTERNAL ASSESSMENTS - SEMESTER {studentData?.semester}</p>
+                                </div>
+                                <Badge className="bg-primary/10 text-primary border-none text-[10px] font-black px-4 py-1.5 h-8">
+                                    CURRENT SEMESTER
+                                </Badge>
+                            </div>
+                        </CardHeader>
+                        <CardContent className="p-8 pt-0">
+                            <div className="overflow-x-auto">
+                                <table className="w-full">
+                                    <thead>
+                                        <tr className="border-b border-border/50">
+                                            <th className="py-4 text-left text-[10px] font-black uppercase text-muted-foreground tracking-widest">Course Title</th>
+                                            <th className="py-4 text-center text-[10px] font-black uppercase text-muted-foreground tracking-widest w-24">Code</th>
+                                            <th className="py-4 text-center text-[10px] font-black uppercase text-muted-foreground tracking-widest w-20">Assgn 1</th>
+                                            <th className="py-4 text-center text-[10px] font-black uppercase text-muted-foreground tracking-widest w-20">Mid 1</th>
+                                            <th className="py-4 text-center text-[10px] font-black uppercase text-muted-foreground tracking-widest w-20">Assgn 2</th>
+                                            <th className="py-4 text-center text-[10px] font-black uppercase text-muted-foreground tracking-widest w-20">Mid 2</th>
+                                            <th className="py-4 text-right text-[10px] font-black uppercase text-green-600 tracking-widest w-24">Total (40)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-border/30 text-slate-800 dark:text-slate-200">
+                                        {MOCK_COURSES.filter(c => c.department === (studentData?.branch || 'CSM') && c.semester === (studentData?.semester || 1)).map((c) => {
+                                            const realMarks = academicService.getMarks(studentData?.id || '', c.code);
+                                            const dummy = academicService.getGeneratedMarks(studentData?.id || '', c.code, c.name, c.type === 'Lab', false, c.credits, true);
+                                            
+                                            const m = {
+                                                assignment1: realMarks?.assignment1 ?? dummy.assignment1 ?? 0,
+                                                mid1: realMarks?.mid1 ?? dummy.mid1 ?? 0,
+                                                assignment2: realMarks?.assignment2 ?? dummy.assignment2 ?? 0,
+                                                mid2: realMarks?.mid2 ?? dummy.mid2 ?? 0,
+                                            };
+                                            
+                                            const total = (Math.max(m.mid1, m.mid2) + m.assignment1 + m.assignment2);
+
+                                            return (
+                                                <tr key={c.id} className="group hover:bg-primary/5 transition-colors">
+                                                    <td className="py-4">
+                                                        <div className="text-xs font-black group-hover:text-primary transition-colors">{c.name}</div>
+                                                        <div className="text-[10px] text-muted-foreground font-bold">{c.type} • {c.credits} Credits</div>
+                                                    </td>
+                                                    <td className="py-4 text-center font-bold text-[10px] text-muted-foreground">{c.code}</td>
+                                                    <td className="py-4 text-center text-xs font-black">{m.assignment1}</td>
+                                                    <td className="py-4 text-center text-xs font-black">{m.mid1}</td>
+                                                    <td className="py-4 text-center text-xs font-black">{m.assignment2}</td>
+                                                    <td className="py-4 text-center text-xs font-black">{m.mid2}</td>
+                                                    <td className="py-4 text-right">
+                                                        <span className="text-sm font-black text-green-600">{total}</span>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </CardContent>
+                    </Card>
 
                     {/* Operational Tasks Hub */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -686,32 +722,183 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
 
                 {/* Right Side: Advanced Professional Suite */}
                 <div className="lg:col-span-4 space-y-8">
-                    {/* Contact Details Section (Moved from Profile) */}
-                    <Card className="border-none shadow-xl rounded-[2rem] overflow-hidden">
-                        <CardHeader className="bg-muted/30 border-b py-5">
-                            <CardTitle className="text-lg flex items-center gap-2">
-                                <User className="w-5 h-5 text-primary" />
-                                Contact Details
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="p-6 space-y-5">
-                            {[
-                                { label: "Institutional Email", value: studentData?.email || `${studentData?.rollNumber.toLowerCase()}@smartcampus.edu`, icon: Mail },
-                                { label: "Emergency Phone", value: studentData?.phone || "+91 88888 88888", icon: Smartphone },
-                                { label: "Reporting To", value: "HOD (AIML)", icon: Users },
-                            ].map((info, i) => (
-                                <div key={i} className="flex items-center gap-4 group/item">
-                                    <div className="p-2.5 rounded-xl bg-muted text-muted-foreground group-hover/item:bg-primary/10 group-hover/item:text-primary transition-colors">
-                                        <info.icon className="w-4 h-4" />
+                    {/* Exam Seating Alert (Real-time integration) */}
+                    {(() => {
+                        const seatingStr = localStorage.getItem('EXAM_SEATING_PLAN');
+                        const examScheduleStr = localStorage.getItem('EXAM_SCHEDULE');
+                        if (!seatingStr || !examScheduleStr) return null;
+
+                        const seating = JSON.parse(seatingStr);
+                        const schedule = JSON.parse(examScheduleStr);
+                        const todayISO = format(new Date(), 'yyyy-MM-dd');
+                        
+                        // Find exams scheduled for TODAY
+                        const todaysExams = schedule.filter((e: any) => e.date === todayISO).map((e: any) => e.id);
+                        
+                        // Find the seat for this student that matches today's exam(s)
+                        const mySeat = seating.find((s: any) => 
+                            s.rollNumber.toUpperCase() === (studentData?.rollNumber || "").toUpperCase() &&
+                            todaysExams.includes(s.examId)
+                        );
+                        
+                        // Use top 3 relevant notifications
+                        const displayAlerts = notifications.slice(0, 3);
+
+                        return (
+                            <div className="space-y-6">
+                                {mySeat && (
+                                    <div className="relative group">
+                                         <div className="absolute -inset-0.5 bg-gradient-to-r from-red-500 to-orange-500 rounded-[2.5rem] blur opacity-10 group-hover:opacity-30 transition duration-1000 group-hover:duration-200"></div>
+                                        <Card className="relative border-2 border-primary/20 shadow-xl rounded-[2rem] bg-primary/5 overflow-hidden animate-in zoom-in-95 duration-500">
+                                            <CardHeader className="pb-2">
+                                                <CardTitle className="text-lg font-black flex items-center gap-2 text-primary">
+                                                    <ShieldCheck className="w-5 h-5" /> Active Exam Allocation
+                                                </CardTitle>
+                                            </CardHeader>
+                                            <CardContent className="space-y-4">
+                                                <div className="flex items-center justify-between p-4 bg-background/80 rounded-2xl border border-primary/10">
+                                                    <div>
+                                                        <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Hall / Block</p>
+                                                        <p className="text-xl font-black">{mySeat.room}</p>
+                                                        <p className="text-xs font-bold text-muted-foreground">{mySeat.block}</p>
+                                                    </div>
+                                                    <div className="bg-primary text-white h-14 w-14 rounded-2xl flex flex-col items-center justify-center shadow-lg shadow-primary/30">
+                                                        <span className="text-[10px] font-black uppercase">Seat</span>
+                                                        <span className="text-xl font-bold">{mySeat.seatNumber}</span>
+                                                    </div>
+                                                </div>
+                                                
+                                                <Dialog>
+                                                    <DialogTrigger asChild>
+                                                        <Button variant="outline" className="w-full font-bold border-primary/20 hover:bg-primary/5 text-primary">
+                                                            View Hall Seating Chart
+                                                        </Button>
+                                                    </DialogTrigger>
+                                                    <DialogContent className="max-w-md rounded-[2rem]">
+                                                        <DialogHeader>
+                                                            <DialogTitle className="text-xl font-black">Hall {mySeat.room} Seating List</DialogTitle>
+                                                            <DialogDescription className="font-bold text-[10px] uppercase tracking-widest">Institutional roll numbers assigned to this hall</DialogDescription>
+                                                        </DialogHeader>
+                                                        <div className="max-h-[400px] overflow-y-auto pr-2 custom-scrollbar mt-4">
+                                                            {/* Your Seat Highlight */}
+                                                            <div className="mb-6 p-4 rounded-2xl bg-primary text-white shadow-lg shadow-primary/30">
+                                                                <p className="text-[10px] font-black uppercase tracking-widest opacity-80 mb-1">Your Assignment</p>
+                                                                <div className="flex justify-between items-end">
+                                                                    <div>
+                                                                        <h4 className="text-xl font-black">{studentData?.rollNumber}</h4>
+                                                                        <p className="text-xs font-bold opacity-90">{studentData?.name}</p>
+                                                                    </div>
+                                                                    <div className="text-right">
+                                                                        <span className="text-3xl font-black">{mySeat.seatNumber}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div className="space-y-4">
+                                                                <h4 className="text-[10px] font-black uppercase text-muted-foreground tracking-widest border-b pb-2">Full Room List (Hall {mySeat.room})</h4>
+                                                                <div className="grid grid-cols-2 gap-2 mt-4">
+                                                                    {seating.filter((s: any) => s.room === mySeat.room && s.examId === mySeat.examId).map((other: any) => (
+                                                                        <div key={other.rollNumber} className={`p-3 rounded-xl border ${other.rollNumber === studentData?.rollNumber ? 'bg-primary/10 border-primary text-primary' : 'bg-muted/30 border-border/50'} flex justify-between items-center`}>
+                                                                            <span className="text-xs font-mono font-black">{other.rollNumber}</span>
+                                                                            <span className="text-[9px] font-black uppercase opacity-60 text-right">{other.seatNumber}</span>
+                                                                        </div>
+                                                                    ))}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </DialogContent>
+                                                </Dialog>
+                                            </CardContent>
+                                        </Card>
                                     </div>
-                                    <div className="flex flex-col">
-                                        <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">{info.label}</span>
-                                        <span className="text-sm font-semibold break-all leading-tight">{info.value}</span>
-                                    </div>
-                                </div>
-                            ))}
-                        </CardContent>
-                    </Card>
+                                )}
+
+                                <Card className="border-none shadow-xl rounded-[2rem]">
+                                    <CardHeader className="pb-2">
+                                        <div className="flex justify-between items-center">
+                                            <CardTitle className="text-lg font-black flex items-center gap-2">
+                                                <Bell className="w-5 h-5 text-rose-500" /> Smart Alerts
+                                            </CardTitle>
+                                            {unreadCount > 0 && <Badge className="bg-rose-500 text-white animate-pulse">{unreadCount} New</Badge>}
+                                        </div>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
+                                        {displayAlerts.length > 0 ? displayAlerts.map((note) => (
+                                            <div 
+                                                key={note.id} 
+                                                onClick={async () => {
+                                                    await markAsRead(note.id);
+                                                    navigate(note.url);
+                                                }}
+                                                className={`flex gap-4 p-4 rounded-2xl transition-all cursor-pointer border ${!note.read ? 'bg-primary/5 border-primary/10 shadow-sm' : 'bg-muted/20 border-transparent opacity-70 hover:opacity-100 hover:bg-muted/40'}`}
+                                            >
+                                                <div className={`mt-1 h-8 w-8 rounded-xl flex items-center justify-center shrink-0 ${
+                                                    note.type === 'attendance' ? 'bg-amber-100 text-amber-600' :
+                                                    note.type === 'fee' ? 'bg-rose-100 text-rose-600' :
+                                                    note.type === 'timetable' ? 'bg-blue-100 text-blue-600' :
+                                                    'bg-indigo-100 text-indigo-600'
+                                                }`}>
+                                                    {note.type === 'attendance' ? <Clock className="w-4 h-4" /> :
+                                                     note.type === 'fee' ? <CreditCard className="w-4 h-4" /> :
+                                                     note.type === 'timetable' ? <Calendar className="w-4 h-4" /> :
+                                                     <Info className="w-4 h-4" />}
+                                                </div>
+                                                <div className="space-y-1 flex-1">
+                                                    <div className="flex justify-between items-center gap-4">
+                                                        <h5 className="text-sm font-black text-foreground/90">{note.title}</h5>
+                                                        {!note.read && <div className="h-1.5 w-1.5 rounded-full bg-primary" />}
+                                                    </div>
+                                                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{note.message}</p>
+                                                    <div className="pt-1 flex justify-between items-center">
+                                                        <span className="text-[9px] font-black uppercase text-muted-foreground opacity-60">
+                                                            {note.senderName}
+                                                        </span>
+                                                        <ChevronRight className="w-3 h-3 text-primary opacity-0 group-hover:opacity-100" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        )) : (
+                                            <div className="text-center py-10 opacity-30">
+                                                <Inbox className="w-10 h-10 mx-auto mb-2" />
+                                                <p className="text-xs font-bold uppercase">No Active Alerts</p>
+                                            </div>
+                                        )}
+                                        {notifications.length > 3 && (
+                                            <Button variant="ghost" className="w-full text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/5" onClick={() => navigate('/dashboard/communications')}>
+                                                View All Notifications
+                                            </Button>
+                                        )}
+                                    </CardContent>
+                                </Card>
+
+                                <Card className="border-none shadow-xl rounded-[2rem] overflow-hidden">
+                                     <CardHeader className="bg-muted/30 border-b py-5">
+                                        <CardTitle className="text-lg flex items-center gap-2">
+                                            <User className="w-5 h-5 text-primary" />
+                                            Contact Details
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="p-6 space-y-5">
+                                        {[
+                                            { label: "Institutional Email", value: studentData?.email || `${studentData?.rollNumber.toLowerCase()}@smartcampus.edu`, icon: Mail },
+                                            { label: "Emergency Phone", value: studentData?.phone || "+91 88888 88888", icon: Smartphone },
+                                            { label: "Reporting To", value: "HOD (AIML)", icon: Users },
+                                        ].map((info, i) => (
+                                            <div key={i} className="flex items-center gap-4 group/item">
+                                                <div className="p-2.5 rounded-xl bg-muted text-muted-foreground group-hover/item:bg-primary/10 group-hover/item:text-primary transition-colors">
+                                                    <info.icon className="w-4 h-4" />
+                                                </div>
+                                                <div className="flex flex-col">
+                                                    <span className="text-[10px] uppercase font-bold text-muted-foreground tracking-widest">{info.label}</span>
+                                                    <span className="text-sm font-semibold break-all leading-tight">{info.value}</span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        );
+                    })()}
 
                     {/* Predictive Tools */}
                     <Card className="border-none shadow-xl rounded-[2rem]">
@@ -775,124 +962,7 @@ export default function StudentDashboard({ studentId: propStudentId }: { student
                         </CardContent>
                     </Card>
 
-                    {/* Exam Seating Alert (Real-time integration) */}
-                    {(() => {
-                        const seatingStr = localStorage.getItem('EXAM_SEATING_PLAN');
-                        const seating = seatingStr ? JSON.parse(seatingStr) : [];
-                        const mySeat = seating.find((s: any) => s.rollNumber.toUpperCase() === studentData?.rollNumber.toUpperCase());
-                        
-                        // Use top 3 relevant notifications
-                        const displayAlerts = notifications.slice(0, 3);
 
-                        return (
-                            <div className="space-y-6">
-                                {mySeat && (
-                                    <Card className="border-2 border-primary/20 shadow-xl rounded-[2rem] bg-primary/5 overflow-hidden animate-in zoom-in-95 duration-500">
-                                        <CardHeader className="pb-2">
-                                            <CardTitle className="text-lg font-black flex items-center gap-2 text-primary">
-                                                <ShieldCheck className="w-5 h-5" /> Active Exam Allocation
-                                            </CardTitle>
-                                        </CardHeader>
-                                        <CardContent className="space-y-4">
-                                            <div className="flex items-center justify-between p-4 bg-background/80 rounded-2xl border border-primary/10">
-                                                <div>
-                                                    <p className="text-[10px] font-black uppercase text-muted-foreground tracking-widest">Hall / Block</p>
-                                                    <p className="text-xl font-black">{mySeat.room}</p>
-                                                    <p className="text-xs font-bold text-muted-foreground">{mySeat.block}</p>
-                                                </div>
-                                                <div className="bg-primary text-white h-14 w-14 rounded-2xl flex flex-col items-center justify-center shadow-lg shadow-primary/30">
-                                                    <span className="text-[10px] font-black uppercase">Seat</span>
-                                                    <span className="text-xl font-bold">{mySeat.seatNumber}</span>
-                                                </div>
-                                            </div>
-                                            
-                                            <Dialog>
-                                                <DialogTrigger asChild>
-                                                    <Button variant="outline" className="w-full font-bold border-primary/20 hover:bg-primary/5 text-primary">
-                                                        View Hall Seating Chart
-                                                    </Button>
-                                                </DialogTrigger>
-                                                <DialogContent className="max-w-md rounded-[2rem]">
-                                                    <DialogHeader>
-                                                        <DialogTitle className="text-xl font-black">Hall {mySeat.room} Seating List</DialogTitle>
-                                                        <DialogDescription className="font-bold text-[10px] uppercase tracking-widest">Institutional roll numbers assigned to this hall</DialogDescription>
-                                                    </DialogHeader>
-                                                    <div className="max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
-                                                        <div className="grid grid-cols-2 gap-2 mt-4">
-                                                            {seating.filter((s: any) => s.room === mySeat.room).map((other: any) => (
-                                                                <div key={other.rollNumber} className={`p-3 rounded-xl border ${other.rollNumber === studentData?.rollNumber ? 'bg-primary/10 border-primary text-primary' : 'bg-muted/30 border-border/50'} flex justify-between items-center`}>
-                                                                    <span className="text-xs font-mono font-black">{other.rollNumber}</span>
-                                                                    <span className="text-[9px] font-black uppercase opacity-60 text-right">{other.seatNumber}</span>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    </div>
-                                                </DialogContent>
-                                            </Dialog>
-                                        </CardContent>
-                                    </Card>
-                                )}
-
-                                <Card className="border-none shadow-xl rounded-[2rem]">
-                                    <CardHeader className="pb-2">
-                                        <div className="flex justify-between items-center">
-                                            <CardTitle className="text-lg font-black flex items-center gap-2">
-                                                <Bell className="w-5 h-5 text-rose-500" /> Smart Alerts
-                                            </CardTitle>
-                                            {unreadCount > 0 && <Badge className="bg-rose-500 text-white animate-pulse">{unreadCount} New</Badge>}
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="space-y-4">
-                                        {displayAlerts.length > 0 ? displayAlerts.map((note) => (
-                                            <div 
-                                                key={note.id} 
-                                                onClick={async () => {
-                                                    await markAsRead(note.id);
-                                                    navigate(note.url);
-                                                }}
-                                                className={`flex gap-4 p-4 rounded-2xl transition-all cursor-pointer border ${!note.read ? 'bg-primary/5 border-primary/10 shadow-sm' : 'bg-muted/20 border-transparent opacity-70 hover:opacity-100 hover:bg-muted/40'}`}
-                                            >
-                                                <div className={`mt-1 h-8 w-8 rounded-xl flex items-center justify-center shrink-0 ${
-                                                    note.type === 'attendance' ? 'bg-amber-100 text-amber-600' :
-                                                    note.type === 'fee' ? 'bg-rose-100 text-rose-600' :
-                                                    note.type === 'timetable' ? 'bg-blue-100 text-blue-600' :
-                                                    'bg-indigo-100 text-indigo-600'
-                                                }`}>
-                                                    {note.type === 'attendance' ? <Clock className="w-4 h-4" /> :
-                                                     note.type === 'fee' ? <CreditCard className="w-4 h-4" /> :
-                                                     note.type === 'timetable' ? <Calendar className="w-4 h-4" /> :
-                                                     <Info className="w-4 h-4" />}
-                                                </div>
-                                                <div className="space-y-1 flex-1">
-                                                    <div className="flex justify-between items-center gap-4">
-                                                        <h5 className="text-sm font-black text-foreground/90">{note.title}</h5>
-                                                        {!note.read && <div className="h-1.5 w-1.5 rounded-full bg-primary" />}
-                                                    </div>
-                                                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">{note.message}</p>
-                                                    <div className="pt-1 flex justify-between items-center">
-                                                        <span className="text-[9px] font-black uppercase text-muted-foreground opacity-60">
-                                                            {note.senderName}
-                                                        </span>
-                                                        <ChevronRight className="w-3 h-3 text-primary opacity-0 group-hover:opacity-100" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        )) : (
-                                            <div className="text-center py-8 opacity-40">
-                                                <Inbox className="w-8 h-8 mx-auto mb-2" />
-                                                <p className="text-xs font-bold uppercase tracking-widest">No Active Alerts</p>
-                                            </div>
-                                        )}
-                                        {notifications.length > 3 && (
-                                            <Button variant="ghost" className="w-full text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/5" onClick={() => navigate('/dashboard/communications')}>
-                                                View All Notifications
-                                            </Button>
-                                        )}
-                                    </CardContent>
-                                </Card>
-                            </div>
-                        );
-                    })()}
                 </div>
 
             </div>

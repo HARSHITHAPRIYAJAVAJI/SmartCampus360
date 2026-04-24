@@ -8,6 +8,8 @@ export interface Faculty {
   phone: string;
   specialization?: string[];
   isNonTeaching?: boolean;
+  is_active?: boolean;
+  deleted_at?: string | null;
 }
 
 export const MOCK_FACULTY: Faculty[] = [
@@ -20,10 +22,8 @@ export const MOCK_FACULTY: Faculty[] = [
     "email": "sunilsrinivas@smartcampus.com",
     "phone": "+91 98765 43210",
     "specialization": [
-      "DS",
-      "OE",
-      "FDS",
-      "Fundamentals of Data Science (FDS)"
+      "Fundamentals of Data Science (FDS)",
+      "OE"
     ],
     "isNonTeaching": true
   },
@@ -89,11 +89,7 @@ export const MOCK_FACULTY: Faculty[] = [
     "email": "jayalakshmi.c@smartcampus.com",
     "phone": "+91 98765 43214",
     "specialization": [
-      "DL",
-      "DL Lab",
-      "ML",
       "Machine Learning Lab",
-      "Deep Learning Lab",
       "Deep Learning (DL)",
       "Deep Learning Lab (DL Lab)"
     ]
@@ -1954,8 +1950,6 @@ export const MOCK_FACULTY: Faculty[] = [
     "email": "vinaykumar.ch@smartcampus.com",
     "phone": "+91 91000 00019",
     "specialization": [
-      "NLP",
-      "NLP Lab",
       "Natural Language Processing (NLP)",
       "Natural Language Processing Lab (NLP Lab)"
     ]

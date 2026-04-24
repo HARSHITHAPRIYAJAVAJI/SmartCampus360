@@ -4,3 +4,4 @@ from .placements import Company, JobPosting, PlacementApplication
 from .admissions import AdmissionApplication
 from .training import Skill, TrainingModule, UserSkillProgress
 from .notification import Notification, UserDevice
+from .navigation import Location, FacultyLocation

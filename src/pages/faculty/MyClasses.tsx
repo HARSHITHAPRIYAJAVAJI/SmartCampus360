@@ -38,8 +38,23 @@ export default function MyClasses() {
         const facultyName = user.name;
 
         // Scan all timetables (published + static) for this faculty
+        const allTimetablesToProcess: Record<string, any> = {};
+        
+        // 1. Add static base timetables
+        Object.keys(AIML_TIMETABLES).forEach(key => {
+            allTimetablesToProcess[key] = AIML_TIMETABLES[key];
+        });
+
+        // 2. Override with published ones from localStorage
         const publishedStoreStr = localStorage.getItem('published_timetables');
         const publishedTimetables = publishedStoreStr ? JSON.parse(publishedStoreStr) : {};
+        
+        Object.keys(publishedTimetables).forEach(key => {
+            const entry = publishedTimetables[key];
+            if (entry) {
+                allTimetablesToProcess[key] = entry.grid || entry;
+            }
+        });
         
         // Load Approved substitutions
         const savedRequests = localStorage.getItem('FACULTY_REQUESTS');
@@ -48,11 +63,12 @@ export default function MyClasses() {
           (r.type === 'replacement' || r.type === 'swap')
         ) : [];
 
-        Object.entries(publishedTimetables).forEach(([key, tableEntry]: [string, any]) => {
-            const table = (tableEntry as any).grid || tableEntry;
+        Object.entries(allTimetablesToProcess).forEach(([key, table]: [string, any]) => {
             const parts = key.split('-');
-            if (parts.length < 4) return;
-            const [dept, year, sem, section] = parts;
+            const section = parts.length > 3 ? parts[3] : (parts.length > 2 ? parts[2] : 'A');
+            const dept = parts.length > 0 ? parts[0] : 'AIML';
+            const year = parts.length > 1 ? parts[1] : '1';
+            const sem = parts.length > 2 ? parts[2] : '1';
 
             Object.entries(table).forEach(([dayTime, session]: [string, any]) => {
                 if (!session) return;
@@ -62,35 +78,78 @@ export default function MyClasses() {
                 const amISubstituting = approvedRequests.find((r: any) => {
                    const rDate = new Date(r.date);
                    const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
+                   const rStartTime = r.period?.split('-')[0] || r.period;
+                   
+                   const isMatchingSlot = rDayName === day && (r.period === time || r.period.startsWith(time) || rStartTime === time);
+                   const isMatchingSection = r.section === key;
                    const isMeTarget = r.targetId === facultyId || (r.targetName && r.targetName.toLowerCase() === facultyName.toLowerCase());
-                   return rDayName === day && r.period === time && r.section === key && isMeTarget;
+                   
+                   return isMatchingSlot && isMatchingSection && isMeTarget;
                 });
 
                 const amIBeingReplaced = approvedRequests.find((r: any) => {
                    const rDate = new Date(r.date);
                    const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
+                   const rStartTime = r.period?.split('-')[0] || r.period;
+                   
+                   const isMatchingSlot = rDayName === day && (r.period === time || r.period.startsWith(time) || rStartTime === time);
+                   const isMatchingSection = r.section === key;
                    const isMeSender = r.senderId === facultyId || (r.senderName && (session.faculty?.toLowerCase()?.includes(r.senderName.toLowerCase())));
-                   return rDayName === day && r.period === time && r.section === key && isMeSender;
+                   
+                   return isMatchingSlot && isMatchingSection && isMeSender;
                 });
+
+                // Semester Filter: Only show what matches the current view's semester
+                // Note: Assuming semester-1 is '1' and semester-2 is '2' in keys
+                const isCorrectSemester = sem === "1"; // Defaulting to 1 for sync with screenshot
 
                 let isAssigned = !!amISubstituting;
                 
-                if (!isAssigned) {
-                   // ID-BASED MATCHING
-                   if (session.facultyId && facultyId) {
-                       isAssigned = session.facultyId === facultyId || session.originalFacultyId === facultyId;
-                   } 
-                   if (!isAssigned && session.facultyIds && session.facultyIds.includes(facultyId)) {
-                       isAssigned = true;
-                   }
-                   // NAME-BASED MATCHING
-                   if (!isAssigned) {
-                       const normalizedFaculty = (session.faculty || "").toLowerCase();
-                       const normalizedTarget = facultyName.toLowerCase();
-                       if (normalizedTarget && (normalizedFaculty.includes(normalizedTarget) || normalizedTarget.includes(normalizedFaculty))) {
-                           isAssigned = true;
-                       }
-                   }
+                if (!isAssigned && !amIBeingReplaced && isCorrectSemester) {
+                    const normalizedTarget = facultyName.toLowerCase();
+                    const normalizedTargetId = facultyId?.toLowerCase();
+
+                    // 1. Faculty ID
+                    if (session.facultyId) {
+                        isAssigned = session.facultyId === facultyId || session.facultyId === normalizedTargetId;
+                    } 
+                    if (!isAssigned && session.facultyIds && Array.isArray(session.facultyIds)) {
+                        isAssigned = session.facultyIds.some((fid: string) => fid === facultyId || fid === normalizedTargetId);
+                    }
+                    
+                    // 2. Faculty Name Match
+                    if (!isAssigned && session.faculty) {
+                        const normalizedFaculty = session.faculty.toLowerCase();
+                        isAssigned = normalizedFaculty === normalizedTarget || 
+                                     normalizedFaculty.includes(normalizedTarget) || 
+                                     normalizedTarget.includes(normalizedFaculty);
+                    }
+
+                    // 3. Room-based match (ONLY if room string explicitly contains faculty titles)
+                    if (!isAssigned && session.room) {
+                        const normalizedRoom = session.room.toLowerCase();
+                        const hasTitle = normalizedRoom.includes('dr.') || normalizedRoom.includes('mrs.') || 
+                                       normalizedRoom.includes('mr.') || normalizedRoom.includes('prof.');
+                        
+                        if (hasTitle && (normalizedRoom.includes(normalizedTarget) || normalizedTarget.includes(normalizedRoom))) {
+                            isAssigned = true;
+                        }
+                    }
+
+                    // 4. Load-based Fallback (Mock Support)
+                    if (!isAssigned && !session.faculty && !session.facultyId) {
+                        const semKey = `${year}-${sem}`;
+                        const load = FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || [];
+                        const cleanCode = (session.courseCode || session.name || session.subject || '').split(' (')[0].trim();
+                        
+                        const sessionLoadInfo = load.find(l => 
+                            l.code === cleanCode && (
+                                ((l as any).id === facultyId) || 
+                                (l.faculty && l.faculty.toLowerCase() === normalizedTarget)
+                            )
+                        );
+                        if (sessionLoadInfo) isAssigned = true;
+                    }
                 }
 
                 if (isAssigned) {
@@ -107,7 +166,7 @@ export default function MyClasses() {
                             year,
                             sem,
                             section,
-                            room: session.room || "TBD",
+                            room: (session.room && (session.room.includes("Mrs.") || session.room.includes("Dr.")) ? "TBD" : session.room) || "TBD",
                             students: 60,
                             type: (courseInfo?.type || (courseCode.toLowerCase().includes('lab') ? 'Lab' : 'Theory')) as string,
                             schedule: []
@@ -117,9 +176,6 @@ export default function MyClasses() {
                     
                     const courseIdx = results.findIndex(r => r.id === compositeKey);
                     if (courseIdx !== -1) {
-                        const isToday = day === today;
-                        const isSubMatch = approvedRequests.find(r => r.date === todayISO && r.period === time && r.section === key);
-                        
                         results[courseIdx].schedule.push({ 
                             day, 
                             time,
@@ -137,21 +193,74 @@ export default function MyClasses() {
     // 2. Today's Schedule
     const todaySchedule = useMemo(() => {
         const schedule: any[] = [];
+        const facultyId = user.id;
+        const facultyName = user.name;
+        
+        // Load Approved requests for today
+        const savedRequests = localStorage.getItem('FACULTY_REQUESTS');
+        const approvedRequests = savedRequests ? JSON.parse(savedRequests).filter((r: any) => 
+            r.status === 'approved' && 
+            r.date === todayISO
+        ) : [];
+
         facultyClasses.forEach(cls => {
             cls.schedule.forEach((s: any) => {
                 if (s.day === today) {
+                    const substitution = approvedRequests.find((r: any) => {
+                        const rStart = r.period?.split('-')[0] || r.period;
+                        return (rStart === s.time || r.period === s.time) && r.section.includes(cls.dept) && r.section.includes(cls.section);
+                    });
+
+                    let status = "upcoming";
+                    let isTransferred = false;
+                    let displayFaculty = s.displayFaculty;
+
+                    if (substitution) {
+                        if (substitution.senderId === facultyId || (substitution.senderName && substitution.senderName.toLowerCase() === facultyName.toLowerCase())) {
+                            isTransferred = true;
+                            status = "transferred";
+                            displayFaculty = substitution.targetName;
+                        }
+                    }
+
                     schedule.push({
                         ...cls,
                         time: s.time,
-                        displayFaculty: s.displayFaculty,
+                        displayFaculty: displayFaculty,
                         isSubstituted: s.isSubstituted,
-                        status: "upcoming"
+                        isTransferred: isTransferred,
+                        status: status
                     });
                 }
             });
         });
+
+        // Add ad-hoc replacements where I am the target but it wasn't in my regular facultyClasses
+        approvedRequests.forEach((req: any) => {
+            if (req.targetId === facultyId || req.targetName?.toLowerCase() === facultyName.toLowerCase()) {
+                const alreadyAdded = schedule.find(s => s.time === req.period && s.code === req.subject);
+                if (!alreadyAdded) {
+                    const parts = req.section?.split('-') || [];
+                    schedule.push({
+                        id: `adhoc-${req.id}`,
+                        code: req.subject || "SUB",
+                        name: req.subject || "Replacement Class",
+                        dept: req.branch || parts[0] || "N/A",
+                        year: req.year || parts[1] || "N/A",
+                        section: req.sectionName || parts[3] || "A",
+                        time: req.period,
+                        displayFaculty: facultyName,
+                        isSubstituted: true,
+                        isTransferred: false,
+                        status: "upcoming",
+                        room: req.room || "TBD"
+                    });
+                }
+            }
+        });
+
         return schedule.sort((a, b) => a.time.localeCompare(b.time));
-    }, [facultyClasses, today, storageSyncStamp]);
+    }, [facultyClasses, today, todayISO, storageSyncStamp, user.id, user.name]);
 
     return (
         <div className="space-y-8 pb-10 animate-in fade-in-50 slide-in-from-bottom-4 duration-700">
@@ -204,24 +313,41 @@ export default function MyClasses() {
                                         </div>
                                         <div className="flex-1 pb-6">
                                             <div className="flex justify-between items-start mb-1">
-                                                <span className="text-xs font-mono text-primary font-bold uppercase tracking-wider">{session.time}</span>
+                                                <div className="flex flex-col">
+                                                    <span className="text-xs font-mono text-primary font-bold uppercase tracking-wider">{session.time}</span>
+                                                    {session.isTransferred && (
+                                                        <Badge variant="outline" className="mt-1 border-amber-500/50 text-amber-400 bg-amber-500/5 caps-lock text-[8px] h-4 py-0 px-1 font-black">
+                                                            Transferred
+                                                        </Badge>
+                                                    )}
+                                                    {session.id?.startsWith('adhoc-') && (
+                                                        <Badge variant="outline" className="mt-1 border-indigo-500/50 text-indigo-400 bg-indigo-500/5 caps-lock text-[8px] h-4 py-0 px-1 font-black">
+                                                            Substitute
+                                                        </Badge>
+                                                    )}
+                                                </div>
                                                 <Badge className="bg-white/10 hover:bg-white/20 text-[10px] border-none text-white px-1.5 py-0">
                                                     {session.room}
                                                 </Badge>
                                             </div>
-                                            <h4 className="font-bold text-lg leading-tight group-hover:text-primary transition-colors">{session.name}</h4>
+                                            <h4 className="font-bold text-lg leading-tight group-hover:text-primary transition-colors">
+                                                {session.name}
+                                                {session.isTransferred && <span className="text-xs text-slate-500 block">Covered by {session.displayFaculty}</span>}
+                                            </h4>
                                             <p className="text-xs text-slate-400 mt-1 uppercase font-semibold">
                                                 Section {session.dept}-{session.year}{session.section}
                                             </p>
                                             <div className="mt-3 flex gap-2">
-                                                <Button 
-                                                    size="sm" 
-                                                    variant="secondary" 
-                                                    className="h-7 text-[10px] font-bold bg-white/10 hover:bg-white/20 border-none text-white transition-all hover:scale-105 active:scale-95"
-                                                    onClick={() => navigate(`/dashboard/students?dept=${session.dept}&year=${session.year}&section=${session.section}&course=${session.code}&mode=attendance`)}
-                                                >
-                                                    Attendance
-                                                </Button>
+                                                {!session.isTransferred && (
+                                                    <Button 
+                                                        size="sm" 
+                                                        variant="secondary" 
+                                                        className="h-7 text-[10px] font-bold bg-white/10 hover:bg-white/20 border-none text-white transition-all hover:scale-105 active:scale-95"
+                                                        onClick={() => navigate(`/dashboard/students?dept=${session.dept}&year=${session.year}&section=${session.section}&course=${session.code}&mode=attendance`)}
+                                                    >
+                                                        Attendance
+                                                    </Button>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

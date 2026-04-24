@@ -36,9 +36,9 @@ export const AIML_TIMETABLES: Record<string, Record<string, TimetableEntry | nul
         "Thursday-02:20": { id: "1_1-th-5", courseCode: "4B1AA", room: "Sreedevi" },
         "Thursday-03:20": { id: "1_1-th-6", courseCode: "4E1AJ", room: "Dr. D. Anitha Kumari" },
 
-        "Friday-09:40": { id: "1_1-f-1", courseCode: "4E1DD", room: "Drawing Hall" },
+        "Friday-09:40": { id: "1_1-f-1", courseCode: "4E1AJ", room: "T-502" },
         "Friday-10:40": { id: "1_1-f-2", courseCode: "4E1DD", room: "Drawing Hall" },
-        "Friday-11:40": { id: "1_1-f-3", courseCode: "4E1DD", room: "Drawing Hall" },
+        "Friday-11:40": { id: "1_1-f-3", courseCode: "4E1AJ", room: "T-502" },
         "Friday-01:20": { id: "1_1-f-4", courseCode: "4H1AH", room: "Dr. A. Premalatha" },
         "Friday-02:20": { id: "1_1-f-5", courseCode: "4E1AJ", room: "Dr. D. Anitha Kumari" },
         "Friday-03:20": { id: "1_1-f-6", courseCode: "Sports", room: "Ground" },
@@ -92,7 +92,7 @@ export const AIML_TIMETABLES: Record<string, Record<string, TimetableEntry | nul
         "Friday-11:40": { id: "f-2-3", courseCode: "SE", room: "Mrs. Thirumani Anusha" },
         "Friday-01:20": { id: "f-2-4", courseCode: "DBMS", room: "Mrs. P. Geethanjali" },
         "Friday-02:20": { id: "f-2-5", courseCode: "WT", room: "Mrs. K. Ishwarya Devi" },
-        "Friday-03:20": { id: "f-2-6", courseCode: "Sports", room: "Ground" },
+        "Friday-03:20": { id: "f-2-6", courseCode: "JAVA Lab", room: "Mrs. K. Ishwarya Devi" },
 
         // Saturday
         "Saturday-09:40": { id: "sa-2-1", courseCode: "DBMS", room: "Mrs. P. Geethanjali" },
@@ -185,7 +185,7 @@ export const AIML_TIMETABLES: Record<string, Record<string, TimetableEntry | nul
         "Friday-11:40": { id: "2_1-f-3", courseCode: "4E3EB", room: "Mrs. D Mounika" },
         "Friday-01:20": { id: "2_1-f-4", courseCode: "4E3ED", room: "Mrs. M. Indira" },
         "Friday-02:20": { id: "2_1-f-5", courseCode: "4E3EE", room: "Mrs. S. Swathi" },
-        "Friday-03:20": { id: "2_1-f-6", courseCode: "Sports", room: "Ground" },
+        "Friday-03:20": { id: "2_1-f-6", courseCode: "4E3ED", room: "N-407" },
 
         "Saturday-09:40": { id: "2_1-sa-1", courseCode: "4E3ED", room: "Mrs. M. Indira" },
         "Saturday-10:40": { id: "2_1-sa-2", courseCode: "4E3EC", room: "Mrs. T. Praneetha" },
@@ -236,7 +236,7 @@ export const EXTRA_TIMETABLES: Record<string, Record<string, { id: string; cours
         "Friday-11:40": { id: "2_1-f-3", courseCode: "4E3EB", room: "Mrs. D. Mounika" },
         "Friday-01:20": { id: "2_1-f-4", courseCode: "4E3EE", room: "Mrs. S. Swathi" },
         "Friday-02:20": { id: "2_1-f-5", courseCode: "4E3EA", room: "Mrs. Jagruthi" },
-        "Friday-03:20": { id: "2_1-f-6", courseCode: "Sports", room: "Ground" },
+        "Friday-03:20": { id: "2_1-f-6", courseCode: "4E3ED", room: "N-407" },
 
         "Saturday-09:40": { id: "2_1-sa-1", courseCode: "4B30D", room: "Dr. P. Madhavi" },
         "Saturday-10:40": { id: "2_1-sa-2", courseCode: "4E3EC", room: "Mrs. G. Shivaleela" },
@@ -278,13 +278,12 @@ export const EXTRA_TIMETABLES: Record<string, Record<string, { id: string; cours
         "Friday-11:40": { id: "2_2-f-3", courseCode: "4E4EB", room: "Mallayya" },
         "Friday-01:20": { id: "2_2-f-4", courseCode: "4E4EA", room: "Dr. D. Anitha Kumari" },
         "Friday-02:20": { id: "2_2-f-5", courseCode: "4E4EC", room: "Mrs. T. Praneetha" },
-        "Friday-03:20": { id: "2_2-f-6", courseCode: "Sports", room: "Ground" },
-        "Saturday-09:40": { id: "2_2-sa-1", courseCode: "4E4ED", room: "Mrs. E. Radhika" },
-        "Saturday-10:40": { id: "2_2-sa-2", courseCode: "4E4EB", room: "Mallayya" },
-        "Saturday-11:40": { id: "2_2-sa-3", courseCode: "4E4EA", room: "Dr. D. Anitha Kumari" },
-        "Saturday-01:20": { id: "2_2-sa-4", courseCode: "4E4EC", room: "Mrs. T. Praneetha" },
-        "Saturday-02:20": { id: "2_2-sa-5", courseCode: "4E4EE", room: "Mrs. E. Radhika" },
-        "Saturday-03:20": { id: "2_2-sa-6", courseCode: "Library", room: "Library" },
+        "Friday-03:20": { id: "2_2-f-6", courseCode: "4E4EA", room: "C-302" },
+    },
+
+    // Year 3, Semester 1 (III-I)
+    "3-1": {
+        "Friday-03:20": { id: "3_1-f-6", courseCode: "4E5EB", room: "C-501" },
     },
 
     // Year 4, Semester 1 (IV-I)
@@ -322,7 +321,7 @@ export const EXTRA_TIMETABLES: Record<string, Record<string, { id: string; cours
         "Friday-11:40": { id: "4_1-f-3", courseCode: "DM", room: "Mrs. Y. Latha" },
         "Friday-01:20": { id: "4_1-f-4", courseCode: "KRR", room: "Mr. K. Venugopal Reddy" },
         "Friday-02:20": { id: "4_1-f-5", courseCode: "BDA", room: "Dr. K. Srinivas" },
-        "Friday-03:20": { id: "4_1-f-6", courseCode: "Major Project", room: "Project Lab" },
+        "Friday-03:20": { id: "4_1-f-6", courseCode: "4E706", room: "Mrs. P. Vijaya Kumari" },
 
         "Saturday-09:40": { id: "4_1-sa-1", courseCode: "Major Project", room: "Project Lab" },
         "Saturday-10:40": { id: "4_1-sa-2", courseCode: "Major Project", room: "Project Lab" },
@@ -333,16 +332,15 @@ export const EXTRA_TIMETABLES: Record<string, Record<string, { id: string; cours
     },
 
     // Year 4, Semester 2 (IV-II)
-    "4-2": {
-        "Monday-09:40": { id: "4_2-m-1", courseCode: "RL", room: "Dr. Syed Hussain" },
+    "4-2": {        "Monday-09:40": { id: "4_2-m-1", courseCode: "RL", room: "Mr. K. Venugopal Reddy" },
         "Monday-10:40": { id: "4_2-m-2", courseCode: "QC", room: "Mrs. D Uma Maheshwari" },
         "Monday-11:40": { id: "4_2-m-3", courseCode: "OE", room: "Mrs. V. Pravalika" },
         "Monday-01:20": { id: "4_2-m-4", courseCode: "DS OE", room: "Dr. B. Sunil Srinivas" },
-        "Monday-02:20": { id: "4_2-m-5", courseCode: "RL", room: "Dr. Syed Hussain" },
+        "Monday-02:20": { id: "4_2-m-5", courseCode: "RL", room: "Mr. K. Venugopal Reddy" },
         "Monday-03:20": { id: "4_2-m-6", courseCode: "QC", room: "Mrs. D Uma Maheshwari" },
-
+ 
         "Tuesday-09:40": { id: "4_2-t-1", courseCode: "OE", room: "Mrs. V. Pravalika" },
-        "Tuesday-10:40": { id: "4_2-t-2", courseCode: "RL", room: "Dr. Syed Hussain" },
+        "Tuesday-10:40": { id: "4_2-t-2", courseCode: "RL", room: "Mr. K. Venugopal Reddy" },
         "Tuesday-11:40": { id: "4_2-t-3", courseCode: "DS OE", room: "Dr. B. Sunil Srinivas" },
         "Tuesday-01:20": { id: "4_2-t-4", courseCode: "QC", room: "Mrs. D Uma Maheshwari" },
         "Tuesday-02:20": { id: "4_2-t-5", courseCode: "OE", room: "Mrs. V. Pravalika" },
@@ -350,7 +348,7 @@ export const EXTRA_TIMETABLES: Record<string, Record<string, { id: string; cours
 
         "Wednesday-09:40": { id: "4_2-w-1", courseCode: "QC", room: "Mrs. D Uma Maheshwari" },
         "Wednesday-10:40": { id: "4_2-w-2", courseCode: "DS OE", room: "Dr. B. Sunil Srinivas" },
-        "Wednesday-11:40": { id: "4_2-w-3", courseCode: "RL", room: "Dr. Syed Hussain" },
+        "Wednesday-11:40": { id: "4_2-w-3", courseCode: "RL", room: "Mr. K. Venugopal Reddy" },
         "Wednesday-01:20": { id: "4_2-w-4", courseCode: "Major Project", room: "Project Lab" },
         "Wednesday-02:20": { id: "4_2-w-5", courseCode: "Major Project", room: "Project Lab" },
         "Wednesday-03:20": { id: "4_2-w-6", courseCode: "Major Project", room: "Project Lab" },
@@ -362,7 +360,7 @@ export const EXTRA_TIMETABLES: Record<string, Record<string, { id: string; cours
         "Thursday-02:20": { id: "4_2-th-5", courseCode: "Major Project", room: "Project Lab" },
         "Thursday-03:20": { id: "4_2-th-6", courseCode: "Major Project", room: "Project Lab" },
 
-        "Friday-09:40": { id: "4_2-f-1", courseCode: "RL", room: "Dr. Syed Hussain" },
+        "Friday-09:40": { id: "4_2-f-1", courseCode: "RL", room: "Mr. K. Venugopal Reddy" },
         "Friday-10:40": { id: "4_2-f-2", courseCode: "OE", room: "Mrs. V. Pravalika" },
         "Friday-11:40": { id: "4_2-f-3", courseCode: "QC", room: "Mrs. D Uma Maheshwari" },
         "Friday-01:20": { id: "4_2-f-4", courseCode: "Major Project", room: "Project Lab" },
@@ -749,12 +747,12 @@ export const FACULTY_LOAD = {
         },
         {
             "code": "4B108",
-            "faculty": "Mrs. P. Vijaya Kumari",
+            "faculty": "Sudha Menon",
             "room": "Language Lab"
         },
         {
             "code": "4B108",
-            "faculty": "V. Murugan",
+            "faculty": "Sudha Menon",
             "room": "Language Lab"
         },
         {
@@ -779,24 +777,24 @@ export const FACULTY_LOAD = {
         },
         {
             "code": "4E115",
-            "faculty": "Mr. K. Indra Kiran Reddy",
+            "faculty": "Mrs. M. Suryakumari",
             "room": "Workshop"
         },
         {
             "code": "4E115",
-            "faculty": "Mrs. P. Vijaya Kumari",
+            "faculty": "Mrs. Jhansi Rani",
             "room": "Workshop"
         }
     ],
     "1-2": [
         {
             "code": "4H2AL",
-            "faculty": "Mrs. P. Geethanjali",
+            "faculty": "Mrs. V. Ramani",
             "room": "102"
         },
         {
             "code": "4H2AL",
-            "faculty": "B. Gnanesh Netha",
+            "faculty": "Mrs. V. Ramani",
             "room": "102"
         },
         {
@@ -1122,7 +1120,7 @@ export const FACULTY_LOAD = {
         },
         {
             "code": "4P5GD",
-            "faculty": "Mrs. M. Indira",
+            "faculty": "Mrs. P. Geethanjali",
             "room": "301"
         },
         {
@@ -1209,7 +1207,7 @@ export const FACULTY_LOAD = {
         },
         {
             "code": "4E611",
-            "faculty": "A. Pradeep",
+            "faculty": "Vinay",
             "room": "Lab AI"
         },
         {
@@ -1224,7 +1222,7 @@ export const FACULTY_LOAD = {
         },
         {
             "code": "4E612",
-            "faculty": "D. Kavitha",
+            "faculty": "Mrs. P. Vijaya Kumari",
             "room": "Lab AI"
         },
         {
@@ -1549,32 +1547,27 @@ export const FACULTY_LOAD = {
         },
         {
             "code": "4B3AD",
-            "faculty": "Mrs. P. Manjula",
+            "faculty": "G.Shankar",
             "room": "N-301"
         },
         {
             "code": "4H3FA",
-            "faculty": "Technical Trainer 3",
+            "faculty": "Dr. P. Madhavi",
             "room": "N-301"
         },
         {
             "code": "4H3FA",
-            "faculty": "Mrs. V. Pravalika",
+            "faculty": "Dr. P. Madhavi",
             "room": "N-301"
         },
         {
             "code": "4E3FD",
-            "faculty": "Mr. M. A. Raghu",
+            "faculty": "Dr. D. Anitha Kumari",
             "room": "N-301"
         },
         {
             "code": "4E3FD",
-            "faculty": "Mr. B. Srikanth",
-            "room": "N-301"
-        },
-        {
-            "code": "4E3FC",
-            "faculty": "Mounika Nakrekanti",
+            "faculty": "Mrs. B. Vijitha",
             "room": "N-301"
         },
         {
@@ -1583,13 +1576,18 @@ export const FACULTY_LOAD = {
             "room": "N-301"
         },
         {
-            "code": "4E3FB",
-            "faculty": "Dr. Nallamothu Satyanarayana",
+            "code": "4E3FC",
+            "faculty": "Mrs. Jhansi Rani",
             "room": "N-301"
         },
         {
             "code": "4E3FB",
             "faculty": "Mrs. M. Indira",
+            "room": "N-301"
+        },
+        {
+            "code": "4E3FB",
+            "faculty": "Mr. N. Kiran Kumar",
             "room": "N-301"
         },
         {
@@ -1626,27 +1624,22 @@ export const FACULTY_LOAD = {
     "IT-2-2": [
         {
             "code": "4E4FA",
-            "faculty": "Mrs. E. Radhika",
+            "faculty": "G.Shankar",
             "room": "N-401"
         },
         {
             "code": "4E4FA",
-            "faculty": "Mrs. G. Shivaleela",
+            "faculty": "Dr. P. Madhavi",
             "room": "N-401"
         },
         {
             "code": "4E4FE",
-            "faculty": "Dr. Syed Hussain",
+            "faculty": "Mr. N. Kiran Kumar",
             "room": "N-401"
         },
         {
             "code": "4E4FE",
-            "faculty": "TBD Faculty",
-            "room": "N-401"
-        },
-        {
-            "code": "4E4FD",
-            "faculty": "N. Anjali",
+            "faculty": "Mallayya",
             "room": "N-401"
         },
         {
@@ -1655,13 +1648,18 @@ export const FACULTY_LOAD = {
             "room": "N-401"
         },
         {
-            "code": "4E4FC",
-            "faculty": "P. Swathi",
+            "code": "4E4FD",
+            "faculty": "Mrs. P. Geethanjali",
             "room": "N-401"
         },
         {
             "code": "4E4FC",
-            "faculty": "Mrs. S. Swathi",
+            "faculty": "Mrs. K. Ishwarya Devi",
+            "room": "N-401"
+        },
+        {
+            "code": "4E4FC",
+            "faculty": "Mrs. D. Uma Maheshwari",
             "room": "N-401"
         },
         {

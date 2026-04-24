@@ -13,6 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MOCK_COURSES, Course } from "@/data/mockCourses";
 import { formatSubjectName } from "@/data/subjectMapping";
+import { dataPersistence } from "@/utils/dataPersistence";
 import {
     Table,
     TableBody,
@@ -46,7 +47,10 @@ const CourseManagement = ({ readOnly = false }: CourseManagementProps) => {
     ];
 
     useEffect(() => {
-        setCourses(MOCK_COURSES);
+        const load = () => setCourses(dataPersistence.getCourses());
+        load();
+        window.addEventListener('dynamic_data_updated', load);
+        return () => window.removeEventListener('dynamic_data_updated', load);
     }, []);
 
     const filteredCourses = useMemo(() => {
@@ -72,15 +76,19 @@ const CourseManagement = ({ readOnly = false }: CourseManagementProps) => {
         }
 
         const newCourse: Course = {
-            id: `new-${Date.now()}`,
+            id: `course-${Date.now()}`,
             name: formData.name || "New Course",
             code: formData.code?.toUpperCase() || "NEW101",
             credits: Number(formData.credits) || 3,
             type: formData.type || "Theory",
             department: selectedDept || formData.department || "CSM",
-            semester: Number(formData.semester) || 1
-        };
-        setCourses([...courses, newCourse]);
+            semester: Number(formData.semester) || 1,
+            is_active: true,
+            deleted_at: null
+        } as any;
+        
+        const all = dataPersistence.getAllCourses();
+        dataPersistence.saveCourses([newCourse, ...all]);
         setIsAddOpen(false);
         setFormData({});
         toast({ title: "Course Added", description: `${newCourse.code} added successfully.` });
@@ -88,8 +96,9 @@ const CourseManagement = ({ readOnly = false }: CourseManagementProps) => {
 
     const handleEdit = () => {
         if (!currentCourse) return;
-        const updatedList = courses.map(c => c.id === currentCourse.id ? { ...c, ...formData } as Course : c);
-        setCourses(updatedList);
+        const all = dataPersistence.getAllCourses();
+        const updated = all.map(c => c.id === currentCourse.id ? { ...c, ...formData } : c);
+        dataPersistence.saveCourses(updated);
         setIsEditOpen(false);
         setCurrentCourse(null);
         setFormData({});
@@ -97,8 +106,10 @@ const CourseManagement = ({ readOnly = false }: CourseManagementProps) => {
     };
 
     const handleDelete = (id: string) => {
-        setCourses(courses.filter(c => c.id !== id));
-        toast({ title: "Course Deleted", variant: "destructive", description: "Course removed from catalog." });
+        const all = dataPersistence.getAllCourses();
+        const updated = all.map(c => c.id === id ? { ...c, is_active: false, deleted_at: new Date().toISOString() } : c);
+        dataPersistence.saveCourses(updated);
+        toast({ title: "Moved to Trash", variant: "destructive", description: "Course moved to Recycle Bin." });
     };
 
     const openEdit = (course: Course) => {

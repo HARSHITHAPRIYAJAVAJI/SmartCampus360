@@ -55,6 +55,8 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
   const timeSlots = ["09:40", "10:40", "11:40", "12:40", "01:20", "02:20", "03:20"];
 
   const student = useMemo(() => MOCK_STUDENTS.find(s => s.rollNumber.toUpperCase() === user.id.toUpperCase()), [user.id]);
+  const faculty = useMemo(() => MOCK_FACULTY.find(f => f.id === user.id || f.rollNumber === user.id), [user.id]);
+  const facultyDept = faculty?.department || "";
 
   const processedData = useMemo(() => {
     if (userRole === "student") {
@@ -124,6 +126,7 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
     } else if (userRole === "faculty") {
       const facultyName = user.name;
       const facultyId = user.id;
+      // facultyDept already defined above in component scope
 
       const courseNameMap: Record<string, string> = {};
       MOCK_COURSES.forEach(c => {
@@ -156,107 +159,128 @@ export default function Timetable({ userRole: propRole }: TimetableProps) {
       Object.entries(allTimetablesToProcess).forEach(([key, table]: [string, any]) => {
         const [dept, year, sem, section] = key.split('-');
 
-        const semKey = `${year}-${sem}`;
-        const load = (FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || []) as any[];
-        const savedRequests = localStorage.getItem('FACULTY_REQUESTS');
-        const approvedRequests = savedRequests ? JSON.parse(savedRequests).filter((r: any) => 
-          r.status === 'approved' && 
-          (r.type === 'replacement' || r.type === 'swap')
-        ) : [];
-        
-        Object.entries(table).forEach(([dayTime, session]: [string, any]) => {
-          if (!session) return;
-          const [day, time] = dayTime.split('-');
+          const deptKey = `${dept}-${year}-${sem}`;
+          const semKey = `${year}-${sem}`;
+          const load = (FACULTY_LOAD[deptKey as keyof typeof FACULTY_LOAD] || 
+                       FACULTY_LOAD[semKey as keyof typeof FACULTY_LOAD] || []) as any[];
           
-          const amISubstituting = approvedRequests.find((r: any) => {
-             const rDate = new Date(r.date);
-             const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
-             const rStartTime = r.period?.split('-')[0];
-             const isMatchingSlot = rDayName === day && (r.period === time || r.period.startsWith(time) || rStartTime === time);
-             const isMatchingSection = r.section === key;
-             const isMeTarget = r.targetId === facultyId || (r.targetName && r.targetName.toLowerCase() === facultyName.toLowerCase());
-             return isMatchingSlot && isMatchingSection && isMeTarget;
-          });
+          const savedRequests = localStorage.getItem('FACULTY_REQUESTS');
+          const approvedRequests = savedRequests ? JSON.parse(savedRequests).filter((r: any) => 
+            r.status === 'approved' && 
+            (r.type === 'replacement' || r.type === 'swap')
+          ) : [];
+          
+          Object.entries(table).forEach(([dayTime, session]: [string, any]) => {
+            if (!session) return;
+            const [day, time] = dayTime.split('-');
+            
+            const amISubstituting = approvedRequests.find((r: any) => {
+               const rDate = new Date(r.date);
+               const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
+               const rStartTime = r.period?.split('-')[0];
+               const isMatchingSlot = rDayName === day && (r.period === time || r.period.startsWith(time) || rStartTime === time);
+               const isMatchingSection = r.section === key;
+               const isMeTarget = r.targetId === facultyId || (r.targetName && r.targetName.toLowerCase() === facultyName.toLowerCase());
+               return isMatchingSlot && isMatchingSection && isMeTarget;
+            });
 
-          const amIBeingReplaced = approvedRequests.find((r: any) => {
-             const rDate = new Date(r.date);
-             const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
-             const rStartTime = r.period?.split('-')[0];
-             const isMatchingSlot = rDayName === day && (r.period === time || r.period.startsWith(time) || rStartTime === time);
-             const isMatchingSection = r.section === key;
-             const isMeSender = r.senderId === facultyId || (r.senderName && (session.faculty?.toLowerCase()?.includes(r.senderName.toLowerCase())));
-             return isMatchingSlot && isMatchingSection && isMeSender;
-          });
+            const amIBeingReplaced = approvedRequests.find((r: any) => {
+               const rDate = new Date(r.date);
+               const rDayName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][rDate.getDay()];
+               const rStartTime = r.period?.split('-')[0];
+               const isMatchingSlot = rDayName === day && (r.period === time || r.period.startsWith(time) || rStartTime === time);
+               const isMatchingSection = r.section === key;
+               const isMeSender = r.senderId === facultyId || (r.senderName && (session.faculty?.toLowerCase()?.includes(r.senderName.toLowerCase())));
+               return isMatchingSlot && isMatchingSection && isMeSender;
+            });
 
-          let isAssigned = !!amISubstituting;
-          let displayFaculty = session.faculty || "Staff";
-          let isSubstituted = !!amIBeingReplaced || !!amISubstituting;
+            let isAssigned = !!amISubstituting;
+            let displayFaculty = session.faculty || "Staff";
+            let isSubstituted = !!amIBeingReplaced || !!amISubstituting;
 
-          if (amISubstituting) {
-             displayFaculty = facultyName;
-          } else if (amIBeingReplaced) {
-             displayFaculty = amIBeingReplaced.targetName;
-          }
-
-          if (!isAssigned && session.facultyId && facultyId) {
-            isAssigned = session.facultyId === facultyId || session.originalFacultyId === facultyId;
-          } 
-          if (!isAssigned && session.facultyIds && session.facultyIds.includes(facultyId)) {
-              isAssigned = true;
-          }
-
-          if (!isAssigned) {
-            const normalizedFaculty = (session.faculty || "").toLowerCase();
-            const normalizedTarget = facultyName.toLowerCase();
-
-            if (normalizedTarget && (
-                (normalizedFaculty && (normalizedFaculty.includes(normalizedTarget) || normalizedTarget.includes(normalizedFaculty))) ||
-                (session.originalFacultyName && session.originalFacultyName.toLowerCase().includes(normalizedTarget))
-            )) {
-              isAssigned = true;
+            if (amISubstituting) {
+               displayFaculty = facultyName;
+            } else if (amIBeingReplaced) {
+               displayFaculty = amIBeingReplaced.targetName;
             }
-          }
 
-          if (!isAssigned && !session.faculty && !session.facultyId) {
-              const cleanCode = (session.courseName || session.courseCode || session.subject || "Unknown").split(' (')[0].trim();
-              const sessionLoadInfo = load.find(l => l.code === cleanCode);
-              if (sessionLoadInfo && (((sessionLoadInfo as any).id === facultyId) || (sessionLoadInfo.faculty && sessionLoadInfo.faculty === facultyName))) {
-                  isAssigned = true;
+            if (!isAssigned && session.facultyId && facultyId) {
+              isAssigned = session.facultyId === facultyId || session.originalFacultyId === facultyId;
+            } 
+            if (!isAssigned && session.facultyIds && session.facultyIds.includes(facultyId)) {
+                isAssigned = true;
+            }
+
+            if (!isAssigned) {
+              const normalizedTarget = facultyName.toLowerCase().replace('.', '').trim();
+              
+              // 1. Check explicit faculty field or original name (Strict match)
+              const normalizedFaculty = (session.faculty || "").toLowerCase().replace('.', '').trim();
+              if (normalizedFaculty && (normalizedFaculty === normalizedTarget)) {
+                isAssigned = true;
+              } else if (session.originalFacultyName && session.originalFacultyName.toLowerCase().replace('.', '').trim() === normalizedTarget) {
+                isAssigned = true;
               }
-          }
+              
+              // 2. Check room field (Legacy/Static data fallback) - Strictly match full name
+              if (!isAssigned && session.room) {
+                const normalizedRoom = session.room.toLowerCase().replace('.', '').trim();
+                if (normalizedRoom === normalizedTarget) {
+                  isAssigned = true;
+                }
+              }
+
+              // 3. Exhaustive check of FACULTY_LOAD (Matches ALL faculty assigned to a code)
+              if (!isAssigned) {
+                  const rawSubject = session.courseName || session.courseCode || session.subject || "Unknown";
+                  const cleanCode = rawSubject.split(' (')[0].trim();
+                  const sessionLoadInfos = load.filter(l => l.code === cleanCode);
+                  
+                  const matchesAny = sessionLoadInfos.some(l => 
+                    ((l as any).id === facultyId) || 
+                    (l.faculty && l.faculty.toLowerCase().replace('.', '').trim() === normalizedTarget)
+                  );
+                  
+                  if (matchesAny) isAssigned = true;
+              }
+            }
 
           const isSameSemester = sem === selectedSemester.toString();
-          if (!isSameSemester) isAssigned = false;
           
-          if (isAssigned) {
+          // Faculty should see all their classes for the selected sem (e.g. all Sem 1 classes across Y1, Y2, Y3, Y4)
+          // But they MUST be actually assigned to them.
+          if (isAssigned && isSameSemester) {
             let [d, t] = dayTime.split('-');
             if (!facultyResult.slots[d]) facultyResult.slots[d] = {};
+            // Avoid duplicate slots from overlapping department keys by prioritizing faculty's own department
+            const isPriority = !facultyResult.slots[d][t] || key.startsWith(facultyDept || '');
             
-            const rawSubject = session.courseName || session.courseCode || session.subject || "Unknown";
-            const cleanCode = rawSubject.split(' (')[0].trim();
-            const fullName = courseNameMap[cleanCode] || cleanCode;
-            const abbrev = getSubjectAbbreviation(fullName);
+            if (isPriority) {
+              const rawSubject = session.courseName || session.courseCode || session.subject || "Unknown";
+              const cleanCode = rawSubject.split(' (')[0].trim();
+              const fullName = courseNameMap[cleanCode] || cleanCode;
+              const abbrev = getSubjectAbbreviation(fullName);
+              const isCRT = (fullName || "").toLowerCase().includes('crt');
 
-            const isCRT = (fullName || "").toLowerCase().includes('crt');
-
-            facultyResult.slots[d][t] = {
-              subject: abbrev,
-              fullName: `${fullName} (${dept}-${year}${section})`,
-              room: session.room && (session.room.includes("Mrs.") || session.room.includes("Dr.")) ? "TBD" : (session.room || "TBD"),
-              branch: `${dept} | Y${year} S${sem} - Sec ${section}`,
-              faculty: displayFaculty,
-              isSubstituted: isSubstituted,
-              type: isCRT ? 'crt' : (fullName || "").toLowerCase().includes('lab') ? 'lab' : 'lecture',
-              duration: 1,
-              isLive: true
-            };
+              facultyResult.slots[d][t] = {
+                subject: abbrev,
+                fullName: `${fullName} (${dept}-${year}${section})`,
+                room: session.room && (session.room.includes("Mrs.") || session.room.includes("Dr.")) ? "TBD" : (session.room || "TBD"),
+                branch: `${dept} | Y${year} S${sem} - Sec ${section}`,
+                faculty: displayFaculty,
+                isSubstituted: isSubstituted,
+                type: isCRT ? 'crt' : (fullName || "").toLowerCase().includes('lab') ? 'lab' : 'lecture',
+                duration: 1,
+                isLive: true
+              };
+            }
           }
         });
       });
       return facultyResult;
     }
     return { slots: {}, metadata: null };
-  }, [userRole, student, user.id, user.name, selectedSemester, storageSyncStamp]);
+  }, [userRole, student, user.id, user.name, facultyDept, selectedSemester, storageSyncStamp]);
 
   const publishedExamTimetables = useMemo(() => {
     const saved = localStorage.getItem('EXAM_TIMETABLES');

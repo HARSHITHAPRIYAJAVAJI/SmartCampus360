@@ -16,6 +16,7 @@ import { attendanceService } from "@/services/attendanceService";
 import { MOCK_COURSES } from "@/data/mockCourses";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { academicService } from "@/services/academicService";
+import { dataPersistence } from "@/utils/dataPersistence";
 
 const StudentRecords = () => {
     const { toast } = useToast();
@@ -41,15 +42,15 @@ const StudentRecords = () => {
         return { attended, total, percentage };
     };
 
-    const [students, setStudents] = useState<Student[]>(() => {
-        const saved = localStorage.getItem('smartcampus_student_directory');
-        return saved ? JSON.parse(saved) : MOCK_STUDENTS;
-    });
+    const [students, setStudents] = useState<Student[]>([]);
     
-    // Persist student directory changes
+    // Load dynamic data
     useEffect(() => {
-        localStorage.setItem('smartcampus_student_directory', JSON.stringify(students));
-    }, [students]);
+        const load = () => setStudents(dataPersistence.getStudents());
+        load();
+        window.addEventListener('dynamic_data_updated', load);
+        return () => window.removeEventListener('dynamic_data_updated', load);
+    }, []);
 
     const [searchQuery, setSearchQuery] = useState("");
     const [hasManuallyReset, setHasManuallyReset] = useState(false);
@@ -313,8 +314,10 @@ const StudentRecords = () => {
     };
 
     const handleDelete = (id: string) => {
-        setStudents(prev => prev.filter(s => s.id !== id));
-        toast({ title: "Student Deleted", description: "Record has been removed successfully.", variant: "destructive" });
+        const all = dataPersistence.getAllStudents();
+        const updated = all.map(s => s.id === id ? { ...s, is_active: false, deleted_at: new Date().toISOString() } : s);
+        dataPersistence.saveStudents(updated);
+        toast({ title: "Student Moved to Trash", description: "Record matches can be restored from Recycle Bin.", variant: "destructive" });
     };
 
     const handleOpenEdit = (student: Student) => {
@@ -326,20 +329,18 @@ const StudentRecords = () => {
 
     const handleSaveEdit = () => {
         if (!editingStudent) return;
-        setStudents(prev => prev.map(s => {
+        const all = dataPersistence.getAllStudents();
+        const updated = all.map(s => {
             if (s.id === editingStudent.id) {
                 return {
                     ...s,
                     attendance: parseInt(editAttendance) || 0,
                     grade: parseFloat(editGrade) || 0,
-                    assignment1: editingStudent.assignment1,
-                    mid1: editingStudent.mid1,
-                    assignment2: editingStudent.assignment2,
-                    mid2: editingStudent.mid2
                 };
             }
             return s;
-        }));
+        });
+        dataPersistence.saveStudents(updated);
         setIsEditOpen(false);
         toast({ title: "Record Updated", description: "Attendance and grade updated." });
     };
@@ -509,7 +510,10 @@ const StudentRecords = () => {
     };
 
     const updateMark = (studentId: string, field: string, value: string) => {
-        const numVal = parseInt(value) || 0;
+        let numVal = parseInt(value);
+        if (isNaN(numVal)) numVal = 0;
+        else if (numVal < 0) numVal = 0;
+
         setSessionMarks(prev => ({
             ...prev,
             [studentId]: {
@@ -526,23 +530,26 @@ const StudentRecords = () => {
         }
 
         const studentToAdd: Student = {
-            id: `stud-custom-${Date.now()}`,
+            id: `stud-${Date.now()}`,
             rollNumber: newStudent.rollNumber.toUpperCase(),
             name: newStudent.name,
             email: `${newStudent.rollNumber.toLowerCase()}@smartcampus.com`,
             branch: newStudent.branch || "CSE",
             year: newStudent.year || 1,
-            semester: (newStudent.year || 1) * 2 - 1, // Align with current Odd Semester policy
+            semester: (newStudent.year || 1) * 2 - 1, 
             section: newStudent.section || "A",
             phone: "+910000000000",
-            attendance: Number(newStudent.attendance) || 100,
-            grade: Number(newStudent.grade) || 10
-        };
+            attendance: Number(newStudent.attendance) || 90,
+            grade: Number(newStudent.grade) || 8.5,
+            is_active: true,
+            deleted_at: null
+        } as any;
 
-        setStudents([studentToAdd, ...students]);
+        const all = dataPersistence.getAllStudents();
+        dataPersistence.saveStudents([studentToAdd, ...all]);
         setIsAddOpen(false);
         setNewStudent({ branch: "CSE", year: 1, section: "A", attendance: 90, grade: 9.0 });
-        toast({ title: "Student Added", description: `${studentToAdd.name} registered successfully.` });
+        toast({ title: "Student Registered", description: `${studentToAdd.name} added successfully.` });
     };
 
     const branchInfo: Record<string, { color: string, icon: any, desc: string }> = {
@@ -1007,11 +1014,11 @@ const StudentRecords = () => {
                                                             </>
                                                         ) : (
                                                             <>
-                                                                <TableHead className="w-[120px] font-black text-[10px] uppercase text-primary text-center">Assgn 1 (5M)</TableHead>
-                                                                <TableHead className="w-[120px] font-black text-[10px] uppercase text-primary text-center">Mid 1 (30M)</TableHead>
-                                                                <TableHead className="w-[120px] font-black text-[10px] uppercase text-primary text-center">Assgn 2 (5M)</TableHead>
-                                                                <TableHead className="w-[120px] font-black text-[10px] uppercase text-primary text-center">Mid 2 (30M)</TableHead>
-                                                                <TableHead className="w-[120px] font-black text-[10px] uppercase text-green-600 text-center bg-green-50/50">Total (40M)</TableHead>
+                                                                <TableHead className="w-32 font-black text-[10px] uppercase text-primary text-center border-l bg-slate-50/50">Assgn 1 (5M)</TableHead>
+                                                                <TableHead className="w-32 font-black text-[10px] uppercase text-primary text-center border-l bg-slate-50/50">Mid 1 (30M)</TableHead>
+                                                                <TableHead className="w-32 font-black text-[10px] uppercase text-primary text-center border-l bg-slate-50/50">Assgn 2 (5M)</TableHead>
+                                                                <TableHead className="w-32 font-black text-[10px] uppercase text-primary text-center border-l bg-slate-50/50">Mid 2 (30M)</TableHead>
+                                                                <TableHead className="w-36 font-black text-[10px] uppercase text-green-700 text-center bg-green-50 border-l border-green-200 shadow-inner tracking-widest">Total (40M)</TableHead>
                                                             </>
                                                         );
                                                     })()}
@@ -1154,16 +1161,16 @@ const StudentRecords = () => {
                                                                     return (
                                                                         <>
                                                                             <TableCell className="bg-indigo-50/20 text-center">
-                                                                                <Input type="number" max={25} value={sessionMarks[student.id]?.assignment1 || 0} onChange={(e) => updateMark(student.id, 'assignment1', e.target.value)} className="h-8 w-16 mx-auto text-center" />
+                                                                                <Input type="number" min={0} max={25} value={sessionMarks[student.id]?.assignment1 || 0} onChange={(e) => updateMark(student.id, 'assignment1', e.target.value)} className="h-8 w-16 mx-auto text-center" />
                                                                             </TableCell>
                                                                             <TableCell className="bg-indigo-50/20 text-center">
-                                                                                <Input type="number" max={25} value={sessionMarks[student.id]?.mid1 || 0} onChange={(e) => updateMark(student.id, 'mid1', e.target.value)} className="h-8 w-16 mx-auto text-center" />
+                                                                                <Input type="number" min={0} max={25} value={sessionMarks[student.id]?.mid1 || 0} onChange={(e) => updateMark(student.id, 'mid1', e.target.value)} className="h-8 w-16 mx-auto text-center" />
                                                                             </TableCell>
                                                                             <TableCell className="bg-indigo-50/20 text-center">
-                                                                                <Input type="number" max={25} value={sessionMarks[student.id]?.assignment2 || 0} onChange={(e) => updateMark(student.id, 'assignment2', e.target.value)} className="h-8 w-16 mx-auto text-center" />
+                                                                                <Input type="number" min={0} max={25} value={sessionMarks[student.id]?.assignment2 || 0} onChange={(e) => updateMark(student.id, 'assignment2', e.target.value)} className="h-8 w-16 mx-auto text-center" />
                                                                             </TableCell>
                                                                             <TableCell className="bg-indigo-50/20 text-center">
-                                                                                <Input type="number" max={25} value={sessionMarks[student.id]?.mid2 || 0} onChange={(e) => updateMark(student.id, 'mid2', e.target.value)} className="h-8 w-16 mx-auto text-center" />
+                                                                                <Input type="number" min={0} max={25} value={sessionMarks[student.id]?.mid2 || 0} onChange={(e) => updateMark(student.id, 'mid2', e.target.value)} className="h-8 w-16 mx-auto text-center" />
                                                                             </TableCell>
                                                                             <TableCell className="bg-indigo-100/30 text-center font-black text-indigo-700">
                                                                                 {(sessionMarks[student.id]?.assignment1 || 0) + (sessionMarks[student.id]?.mid1 || 0) + (sessionMarks[student.id]?.assignment2 || 0) + (sessionMarks[student.id]?.mid2 || 0)}
@@ -1177,6 +1184,7 @@ const StudentRecords = () => {
                                                                         <TableCell className="text-center">
                                                                             <Input 
                                                                                 type="number" 
+                                                                                min={0}
                                                                                 max={40}
                                                                                 placeholder="Int 40"
                                                                                 value={sessionMarks[student.id]?.labInternal || 0} 
@@ -1187,6 +1195,7 @@ const StudentRecords = () => {
                                                                         <TableCell className="text-center">
                                                                             <Input 
                                                                                 type="number" 
+                                                                                min={0}
                                                                                 max={60}
                                                                                 placeholder="Ext 60"
                                                                                 value={sessionMarks[student.id]?.labExternal || 0} 
@@ -1197,52 +1206,56 @@ const StudentRecords = () => {
                                                                     </>
                                                                 ) : (
                                                                     <>
-                                                                        <TableCell className="text-center">
+                                                                        <TableCell className="text-center border-l bg-slate-50/10">
                                                                             <Input 
                                                                                 type="number" 
+                                                                                min={0}
                                                                                 max={5}
-                                                                                placeholder="5M"
-                                                                                value={sessionMarks[student.id]?.assignment1 || 0} 
+                                                                                placeholder="0"
+                                                                                value={sessionMarks[student.id]?.assignment1 ?? ''} 
                                                                                 onChange={(e) => updateMark(student.id, 'assignment1', e.target.value)} 
-                                                                                className="h-8 w-16 text-center mx-auto"
+                                                                                className="h-8 w-16 text-center mx-auto bg-transparent border-slate-200 hover:border-primary focus:ring-1 focus:ring-primary/30 transition-all font-bold text-xs"
                                                                             />
                                                                         </TableCell>
-                                                                        <TableCell className="text-center">
+                                                                        <TableCell className="text-center border-l bg-slate-50/10">
                                                                             <Input 
                                                                                 type="number" 
+                                                                                min={0}
                                                                                 max={30}
-                                                                                placeholder="30M"
-                                                                                value={sessionMarks[student.id]?.mid1 || 0} 
+                                                                                placeholder="0"
+                                                                                value={sessionMarks[student.id]?.mid1 ?? ''} 
                                                                                 onChange={(e) => updateMark(student.id, 'mid1', e.target.value)} 
-                                                                                className="h-8 w-20 text-center mx-auto"
+                                                                                className="h-8 w-16 text-center mx-auto bg-transparent border-slate-200 hover:border-primary focus:ring-1 focus:ring-primary/30 transition-all font-bold text-xs"
                                                                             />
                                                                         </TableCell>
-                                                                        <TableCell className="text-center">
+                                                                        <TableCell className="text-center border-l bg-slate-50/10">
                                                                             <Input 
                                                                                 type="number" 
+                                                                                min={0}
                                                                                 max={5}
-                                                                                placeholder="5M"
-                                                                                value={sessionMarks[student.id]?.assignment2 || 0} 
+                                                                                placeholder="0"
+                                                                                value={sessionMarks[student.id]?.assignment2 ?? ''} 
                                                                                 onChange={(e) => updateMark(student.id, 'assignment2', e.target.value)} 
-                                                                                className="h-8 w-16 text-center mx-auto"
+                                                                                className="h-8 w-16 text-center mx-auto bg-transparent border-slate-200 hover:border-primary focus:ring-1 focus:ring-primary/30 transition-all font-bold text-xs"
                                                                             />
                                                                         </TableCell>
-                                                                        <TableCell className="text-center">
+                                                                        <TableCell className="text-center border-l bg-slate-50/10">
                                                                             <Input 
                                                                                 type="number" 
+                                                                                min={0}
                                                                                 max={30}
-                                                                                placeholder="30M"
-                                                                                value={sessionMarks[student.id]?.mid2 || 0} 
+                                                                                placeholder="0"
+                                                                                value={sessionMarks[student.id]?.mid2 ?? ''} 
                                                                                 onChange={(e) => updateMark(student.id, 'mid2', e.target.value)} 
-                                                                                className="h-8 w-20 text-center mx-auto"
+                                                                                className="h-8 w-16 text-center mx-auto bg-transparent border-slate-200 hover:border-primary focus:ring-1 focus:ring-primary/30 transition-all font-bold text-xs"
                                                                             />
                                                                         </TableCell>
-                                                                        <TableCell className="text-center bg-green-50/30">
-                                                                            <div className="font-black text-green-700 text-sm">
+                                                                        <TableCell className="text-center bg-green-50 border-l border-green-200 shadow-inner align-middle">
+                                                                            <div className="font-extrabold text-green-700 text-sm tracking-widest text-center mt-1">
                                                                                 {(() => {
                                                                                     const m = sessionMarks[student.id] || { mid1: 0, mid2: 0, assignment1: 0, assignment2: 0 };
                                                                                     // Institutional Formula: Max(Mid1, Mid2) + Assignment1 + Assignment2 = 40M Total
-                                                                                    return (Math.max(m.mid1, m.mid2) + m.assignment1 + m.assignment2);
+                                                                                    return (Math.max(m.mid1 ?? 0, m.mid2 ?? 0) + (m.assignment1 ?? 0) + (m.assignment2 ?? 0));
                                                                                 })()}
                                                                             </div>
                                                                         </TableCell>
@@ -1379,15 +1392,15 @@ const StudentDetailView = ({ student, onBack }: { student: Student, onBack: () =
                            (branchCourses.find(c => c.code === courseCode)?.name.toLowerCase().includes("stage") || 
                             branchCourses.find(c => c.code === courseCode)?.name.toLowerCase().includes("phase")));
 
-        if (credits === 0 || isProject) {
+        if (credits === 0) {
             return { 
                 mid: 'N/A', 
                 assgn: 'N/A', 
                 total: 0, 
-                status: isProject ? "Project" : "Non-Credit", 
+                status: "Non-Credit", 
                 type, 
                 isNonCredit: true,
-                isProject: isProject
+                isProject: false
             };
         }
 

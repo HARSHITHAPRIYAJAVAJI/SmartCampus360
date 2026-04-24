@@ -194,8 +194,8 @@ const ABBR_TO_KEYWORDS: Record<string, string[]> = {
 };
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-const MAX_LOAD_HOURS = 22.5; // Strictly avoid exceeding 22-23 hours
-const TARGET_MIN_LOAD = 19; // All faculty MUST reach at least 19 hours
+const MAX_LOAD_HOURS = 36; // Maximum 36 hours
+const TARGET_MIN_LOAD = 25; // All faculty MUST reach at least 25 hours
 
 // ─── Core Allocator ───────────────────────────────────────────────────────────
 
@@ -357,18 +357,14 @@ export class FacultyAllocator {
             if (byName && !seen.has(byName.id)) result.push(byName);
         }
 
-        // 4. Emergency Fallback: Any department faculty who are NOT already overloaded
-        // This ensures the 23-24 hour balance by only considering available capacity
-        if (result.length === 0) {
-            const cappedDeptFaculty = MOCK_FACULTY
-                .filter(f => {
-                    const load = this.workload[f.id]?.totalHours || 0;
-                    return f.department.toUpperCase() === deptUpper && load < MAX_LOAD_HOURS;
-                })
-                .sort((a, b) => (this.workload[a.id]?.totalHours || 0) - (this.workload[b.id]?.totalHours || 0));
+        // 3. Fallback: Any department faculty who are NOT already overloaded or are severely underutilized
+        const otherDeptFaculty = MOCK_FACULTY
+            .filter(f => {
+                const load = this.workload[f.id]?.totalHours || 0;
+                return f.department.toUpperCase() === deptUpper && f.isNonTeaching !== true;
+            });
             
-            addUniq(cappedDeptFaculty);
-        }
+        addUniq(otherDeptFaculty);
 
         // 5. GLOBAL EQUALIZATION: If still no candidates, pick ANY teaching faculty with load < 19
         // This ensures under-utilized faculty are "forced" into the pool for any available subject
@@ -376,7 +372,7 @@ export class FacultyAllocator {
             const underUtilized = MOCK_FACULTY
                 .filter(f => {
                     const load = this.workload[f.id]?.totalHours || 0;
-                    return f.isNonTeaching !== true && load < 19;
+                    return f.isNonTeaching !== true && load < 25;
                 })
                 .sort((a, b) => (this.workload[a.id]?.totalHours || 0) - (this.workload[b.id]?.totalHours || 0));
             
@@ -422,23 +418,27 @@ export class FacultyAllocator {
             let score = 0;
             const remainsBuffer = MAX_LOAD_HOURS - currentLoad;
             
-            // Priority 1: Reach the standard load of 19-22 hrs
+            // Priority 1: Reach the standard load of 25-36 hrs
             // Drastically boost those who are way behind
-            if (currentLoad < 15) score += 10000; 
+            if (currentLoad < 20) score += 10000; 
             if (currentLoad < TARGET_MIN_LOAD) score += 5000; 
             
             // Priority 2: Harshly penalize those nearing upper limit
             score += remainsBuffer * 100;
-            if (currentLoad >= 20.5) score -= 2000; // Early warning zone
-            if (currentLoad >= 21.5) score -= 6000; // Danger zone
+            if (currentLoad >= 30) score -= 2000; // Early warning zone
+            if (currentLoad >= 34) score -= 6000; // Danger zone
             if (currentLoad >= MAX_LOAD_HOURS) score -= 20000; // Strict Hard cap
             
             const isSpecialist = (this.subjectFacultyIndex[courseCode] || []).some(x => x.id === f.id);
-            if (isSpecialist) score += 300; 
+            if (isSpecialist) score += 3000; // Increased priority for true specialists
             if (f.department.toUpperCase() === dept.toUpperCase()) score += 100;
             
             // Diversity constraint: Try to avoid assigning many sections of the same course to one person
-            if (alreadyAssignedThisSubject) score -= 1000; 
+            // EXCEPT if they are underutilized (then we WANT them to take additional sections)
+            if (alreadyAssignedThisSubject) {
+                if (currentLoad < TARGET_MIN_LOAD) score += 4000; // Encourage multiple sections
+                else score -= 1000; // Penalize if they are healthy
+            }
 
             return { faculty: f, score };
         });

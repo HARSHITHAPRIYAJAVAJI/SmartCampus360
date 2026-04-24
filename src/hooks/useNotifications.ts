@@ -76,7 +76,7 @@ export function useNotifications(user: { id: string, name: string, role: string 
                         
                         // Exclude specific high-frequency/non-admin alerts
                         const isAcademicUpdate = title.includes('academic update') || message.includes('new marks');
-                        const isTimetablePublish = title.includes('timetable published');
+                        const isTimetablePublish = title.includes('timetable published') || title.includes('schedule published');
                         
                         if (isAcademicUpdate || isTimetablePublish) return false;
 

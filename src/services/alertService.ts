@@ -6,7 +6,7 @@ export interface AlertOptions {
     message: string;
     category: 'general' | 'fee' | 'exam' | 'attendance' | 'timetable' | 'event' | 'substitution';
     type: 'normal' | 'priority' | 'urgent';
-    targetAudience: 'students' | 'faculty' | 'both';
+    targetAudience: 'students' | 'faculty' | 'both' | 'admin';
     branch?: string;
     year?: number;
     section?: string;
