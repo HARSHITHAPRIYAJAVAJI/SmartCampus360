@@ -57,92 +57,75 @@ const PublicSearch = () => {
     const slotKey = `${dayName}-${currentSlot.id}`;
     const cleanName = (n: string) => n.toLowerCase().replace(/^(dr|mrs|mr|prof)\.?\s+/i, '').replace(/\./g, ' ').trim();
     const searchName = cleanName(facultyName);
-    
-    // Scan all timetables
+
+    // Special named locations that are NOT room codes but should be shown as-is
+    const NAMED_LOCATIONS = new Set(['Workshop', 'Library', 'Ground', 'Auditorium', 'Language Lab', 'Drawing Hall', 'Chemistry Lab', 'Project Lab']);
+
+    // Does this string look like a real physical room code (e.g. N-407, C-302, T-502)?
+    // Real codes: short, no spaces, not a person's name/title
+    const isRoomCode = (s: string): boolean => {
+      if (!s || s.length > 12) return false;
+      if (NAMED_LOCATIONS.has(s)) return true;
+      if (/\s/.test(s)) return false;          // spaces → likely a name
+      if (/^(Dr|Mrs|Mr|Prof)/i.test(s)) return false; // titles → name
+      return /^[A-Za-z][-A-Za-z0-9]+$/.test(s); // pattern like N-407
+    };
+
+    const blockFromCode = (code: string): string => {
+      if (code.startsWith('N-')) return 'North Block';
+      if (code.startsWith('S-')) return 'South Block';
+      if (code.startsWith('C-')) return 'Central Block';
+      if (code.startsWith('T-')) return 'T-Block';
+      const meta = MOCK_ROOMS.find(r => r.name === code || r.id === code);
+      return meta ? meta.building : 'Campus';
+    };
+
+    const blockFromSection = (sectionKey: string): string => {
+      if (sectionKey.includes('CSM') || sectionKey.match(/^\d-\d/)) return 'North Block';
+      if (sectionKey.includes('IT')) return 'South Block';
+      if (sectionKey.includes('CSE')) return 'Central Block';
+      if (sectionKey.includes('ECE')) return 'South Block';
+      return 'Campus';
+    };
+
+    // Scan all timetable sections
     for (const [sectionKey, sem] of Object.entries(AIML_TIMETABLES)) {
       const entry = sem[slotKey];
       if (!entry) continue;
 
-      let isAssigned = false;
+      // The room field stores the faculty name for each specific slot.
+      // Only match on this — FACULTY_LOAD is section-wide (not slot-specific)
+      // and causes false positives.
+      const roomName = cleanName(entry.room);
+      const isMatch =
+        roomName === searchName ||
+        roomName.includes(searchName) ||
+        // word-level: all words > 3 chars in searchName must appear in room
+        (searchName.split(/\s+/).filter(w => w.length > 3).length > 0 &&
+         searchName.split(/\s+/).filter(w => w.length > 3).every(w => roomName.includes(w)));
 
-      // Check 1: Direct name match in room field
-      if (cleanName(entry.room).includes(searchName) || searchName.includes(cleanName(entry.room))) {
-          isAssigned = true;
+      if (!isMatch) continue;
+
+      // ── Faculty is assigned to this specific slot ──
+      const course = MOCK_COURSES.find(c => c.code === entry.courseCode);
+      const courseName = course ? course.name : entry.courseCode;
+
+      // Special activities
+      if (entry.courseCode === 'Sports') return 'Sports Ground';
+      if (NAMED_LOCATIONS.has(entry.room)) return `${entry.room} — ${courseName}`;
+
+      // If room field is a real room code, use it
+      if (isRoomCode(entry.room)) {
+        return `${entry.room}, ${blockFromCode(entry.room)} — ${courseName}`;
       }
 
-      // Check 2: Check FACULTY_LOAD for assigned teacher
-      if (!isAssigned) {
-          // Normalize sectionKey: CSM-1-1-B -> 1-1; 4-1-B -> 4-1
-          const baseKey = sectionKey.replace(/^[A-Z]+-/, '').replace(/-[A-Z]$/, '');
-          
-          // Aggressive search: look in ALL FACULTY_LOAD entries that match this section
-          const relevantLoadKeys = Object.keys(FACULTY_LOAD).filter(k => 
-              k === sectionKey || 
-              k === baseKey || 
-              k.includes(`-${baseKey}`) || 
-              (baseKey.length > 2 && k.includes(baseKey))
-          );
-
-          for (const loadKey of relevantLoadKeys) {
-            const load = (FACULTY_LOAD as any)[loadKey];
-            if (load && Array.isArray(load)) {
-              const match = load.find((l: any) => 
-                  l.code === entry.courseCode && 
-                  (cleanName(l.faculty).includes(searchName) || searchName.includes(cleanName(l.faculty)))
-              );
-              if (match) {
-                isAssigned = true;
-                break;
-              }
-            }
-          }
-      }
-
-      if (isAssigned) {
-        const course = MOCK_COURSES.find(c => c.code === entry.courseCode);
-        const courseName = course ? course.name : entry.courseCode;
-
-        let physicalRoom = entry.room;
-        let block = "Main Block";
-
-        if (entry.room.length > 8 || entry.room.includes('.') || entry.courseCode === 'Sports') {
-             if (entry.courseCode === 'Sports') {
-                 physicalRoom = "Ground";
-                 block = "Main Block";
-             } else if (sectionKey.startsWith('1-')) {
-                 physicalRoom = `T-40${Math.floor(Math.random() * 4) + 1}`;
-                 block = "T-Block";
-             } else if (sectionKey.includes('IT')) {
-                 physicalRoom = "S-401";
-                 block = "South Block";
-             } else if (sectionKey.includes('AIML') || sectionKey.includes('CSM')) {
-                 physicalRoom = "N-402";
-                 block = "North Block";
-             } else if (sectionKey.includes('ECE')) {
-                 physicalRoom = "S-305";
-                 block = "South Block";
-             } else if (sectionKey.includes('CSE')) {
-                 physicalRoom = "C-302";
-                 block = "Central Block";
-             } else {
-                 physicalRoom = "Room 204";
-                 block = "Block A";
-             }
-        } else {
-            const roomMeta = MOCK_ROOMS.find(r => r.name === physicalRoom || r.id === physicalRoom);
-            if (roomMeta) block = roomMeta.building;
-            else if (physicalRoom.startsWith('S-')) block = "South Block";
-            else if (physicalRoom.startsWith('N-')) block = "North Block";
-            else if (physicalRoom.startsWith('C-')) block = "Central Block";
-            else if (physicalRoom.startsWith('T-')) block = "T-Block";
-        }
-
-        return `Room ${physicalRoom}, ${block} - ${courseName} Class`;
-      }
+      // Room field was the faculty name → infer block from section key
+      return `Classroom, ${blockFromSection(sectionKey)} — ${courseName}`;
     }
 
     return "Staff Room";
   };
+
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

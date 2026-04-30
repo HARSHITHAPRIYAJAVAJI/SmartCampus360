@@ -16,8 +16,8 @@ export default function StudentRecordsInfo() {
             <div className="pt-24 pb-20 bg-background overflow-hidden">
                 <div className="container mx-auto px-4">
                     {/* Breadcrumb / Back */}
-                    <Link to="/" className="inline-flex items-center gap-2 text-primary hover:gap-3 transition-all font-bold text-sm mb-12 group">
-                        <ArrowLeft className="w-4 h-4" /> Back to Home
+                    <Link to="/modules" className="inline-flex items-center gap-2 text-primary hover:gap-3 transition-all font-bold text-sm mb-12 group">
+                        <ArrowLeft className="w-4 h-4" /> Back to Modules
                     </Link>
 
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">

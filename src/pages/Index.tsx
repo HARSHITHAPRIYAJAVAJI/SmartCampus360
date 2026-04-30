@@ -94,32 +94,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Find People & Places CTA */}
-      <section className="py-20 bg-white relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto space-y-6">
-            <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-              Lost on Campus? <br/>
-              <span className="text-primary italic">We've got you covered.</span>
-            </h2>
-            <p className="text-lg text-slate-600">
-              Our AI-powered Campus Locator helps you find classrooms, faculty, and facilities in real-time.
-            </p>
-            <div className="flex justify-center pt-4">
-              <Link to="/find-people">
-                <Button size="lg" className="h-14 px-10 text-lg rounded-full bg-slate-900 hover:bg-slate-800 shadow-2xl shadow-slate-200 transition-all group">
-                  Open Campus Locator
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-
       {/* Programs Section */}
       <section className="py-24 bg-secondary/30 relative">
         <div className="container mx-auto px-4">
@@ -134,7 +108,7 @@ const Index = () => {
                 Explore our sophisticated range of management tools designed to streamline institutional operations.
               </p>
             </div>
-            <Link to="/dashboard/admin">
+            <Link to="/modules">
               <Button variant="outline" size="sm" className="group rounded-full px-5 border-primary/20 text-primary hover:bg-primary hover:text-white transition-all duration-300">
                 Explore All Modules <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
@@ -175,6 +149,30 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Find People & Places CTA */}
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+        <div className="container mx-auto px-4 text-center">
+          <div className="max-w-3xl mx-auto space-y-6">
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+              Lost on Campus? <br/>
+              <span className="text-primary italic">We've got you covered.</span>
+            </h2>
+            <p className="text-lg text-slate-600">
+              Our AI-powered Campus Locator helps you find classrooms, faculty, and facilities in real-time.
+            </p>
+            <div className="flex justify-center pt-4">
+              <Link to="/find-people">
+                <Button size="lg" className="h-14 px-10 text-lg rounded-full bg-slate-900 hover:bg-slate-800 shadow-2xl shadow-slate-200 transition-all group">
+                  Open Campus Locator
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Gallery Carousel */}
       <section className="py-24 bg-black text-white overflow-hidden">
         <div className="container mx-auto px-4">
@@ -209,88 +207,6 @@ const Index = () => {
             <CarouselPrevious className="left-4 bg-white/10 border-white/20 hover:bg-white/20 text-white" />
             <CarouselNext className="right-4 bg-white/10 border-white/20 hover:bg-white/20 text-white" />
           </Carousel>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-24 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl font-bold mb-4">What Our Students Say</h2>
-            <p className="text-xl text-muted-foreground">
-              Hear from our global community of learners and achievers.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Alex Johnson",
-                role: "CS Senior",
-                quote: "The smart campus features made my academic life so much easier. The AI-powered scheduling is a game changer.",
-                avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&q=80"
-              },
-              {
-                name: "Sarah Chen",
-                role: "Data Science Lead",
-                quote: "Accessing virtual labs from my dorm helped me finish my research project ahead of schedule. Incredible platform!",
-                avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&q=80"
-              },
-              {
-                name: "Marcus Thorne",
-                role: "Alumni @ Google",
-                quote: "The Global Connect feature helped me land my first internship. The network here is truly world-class.",
-                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&q=80"
-              }
-            ].map((testimonial, i) => (
-              <Card key={i} className="bg-background border-none shadow-md hover:shadow-xl transition-all duration-300">
-                <CardContent className="pt-8">
-                  <Quote className="h-8 w-8 text-primary/20 mb-4" />
-                  <p className="text-lg mb-6 italic">"{testimonial.quote}"</p>
-                  <div className="flex items-center gap-4">
-                    <img src={testimonial.avatar} alt={testimonial.name} className="w-12 h-12 rounded-full border-2 border-primary/10" />
-                    <div>
-                      <div className="font-bold">{testimonial.name}</div>
-                      <div className="text-sm text-muted-foreground">{testimonial.role}</div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* News & Events Section */}
-      <section className="py-24 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-            <div className="max-w-xl">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">Latest Updates</h2>
-              <p className="text-muted-foreground text-lg">
-                Stay informed about the latest happenings and upcoming events at Smart Campus.
-              </p>
-            </div>
-            <Button variant="outline" className="rounded-full">View All Updates</Button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { title: "Annual Tech Symposium 2025", date: "Oct 15", category: "Event", image: "https://images.unsplash.com/photo-1540575861501-7ad0582371f3?w=500&q=80" },
-              { title: "New Research Lab Opening", date: "Sep 22", category: "News", image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=500&q=80" },
-              { title: "Alumni Meetup: Silicon Valley", date: "Nov 02", category: "Meetup", image: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=500&q=80" },
-              { title: "Scholarship Applications Open", date: "Aug 30", category: "Alert", image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=500&q=80" }
-            ].map((item, i) => (
-              <div key={i} className="group cursor-pointer">
-                <div className="relative aspect-[16/10] rounded-2xl overflow-hidden mb-4 shadow-sm group-hover:shadow-lg transition-all">
-                  <img src={item.image} alt={item.title} className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500" />
-                  <Badge className="absolute top-3 left-3 bg-white/90 text-primary hover:bg-white">{item.category}</Badge>
-                </div>
-                <div className="text-sm text-primary font-semibold mb-1">{item.date}</div>
-                <h3 className="text-xl font-bold leading-tight group-hover:text-primary transition-colors">{item.title}</h3>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 

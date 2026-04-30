@@ -2,11 +2,12 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Clock, Calendar, FileText, ChevronLeft, ArrowLeft, Download, Filter } from "lucide-react";
+import { Clock, Calendar, FileText, ChevronLeft, ArrowLeft, Download, Filter, BookOpen } from "lucide-react";
 import { attendanceService, AttendanceRecord } from "@/services/attendanceService";
 import { format, isSameDay, subDays } from 'date-fns';
 import { MOCK_STUDENTS } from "@/data/mockStudents";
-import { formatSubjectName } from "@/data/subjectMapping";
+
+import { MOCK_COURSES } from "@/data/mockCourses";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from 'react-router-dom';
 
@@ -97,6 +98,14 @@ const AttendanceDetails = () => {
         });
     };
 
+    // Lookup helper
+    const getSubjectName = (courseCode?: string): string => {
+        if (!courseCode) return '-';
+        const course = MOCK_COURSES.find(c => c.code === courseCode);
+        if (course) return course.name;
+        return courseCode;
+    };
+
     return (
         <div className="p-6 space-y-6 max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -161,17 +170,18 @@ const AttendanceDetails = () => {
                                             const record = getRecord(day, slot.period);
                                             const isAbsent = record?.status === 'Absent';
                                             const isPresent = record?.status === 'Present';
-                                            const subject = record ? formatSubjectName(record.course_code || record.subject_id || "Sub") : "-";
+                                            const subjectName = record ? getSubjectName(record.course_code || record.subject_id) : '-';
                                             
                                             return (
                                                 <TableCell key={slot.period} className="border text-center py-4 px-1">
                                                     {record ? (
-                                                        <div className="space-y-1">
+                                                        <div className="space-y-1.5">
                                                             <div className={`text-[11px] font-black uppercase tracking-tighter ${isAbsent ? 'text-rose-600' : 'text-blue-600'}`}>
                                                                 {record.status}
                                                             </div>
-                                                            <div className="text-[9px] font-bold text-muted-foreground bg-muted/50 py-0.5 rounded px-1 w-fit mx-auto">
-                                                                {subject}
+                                                            <div className="text-[9px] font-bold text-slate-700 dark:text-slate-200 bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900 py-0.5 rounded px-1.5 w-fit mx-auto flex items-center gap-0.5 max-w-[120px]">
+                                                                <BookOpen className="w-2.5 h-2.5 shrink-0 text-blue-500" />
+                                                                <span className="truncate" title={subjectName}>{subjectName}</span>
                                                             </div>
                                                         </div>
                                                     ) : (

@@ -58,6 +58,10 @@ const TimetableGeneratorInfo = lazy(() => import("./pages/features/TimetableGene
 const StudentRecordsInfo = lazy(() => import("./pages/features/StudentRecordsInfo"));
 const FacultyManagementInfo = lazy(() => import("./pages/features/FacultyManagementInfo"));
 const CampusLocator = lazy(() => import("./pages/CampusLocator"));
+const Modules = lazy(() => import("./pages/Modules"));
+const CampusLocatorInfo = lazy(() => import("./pages/features/CampusLocatorInfo"));
+const AcademicPlanningInfo = lazy(() => import("./pages/features/AcademicPlanningInfo"));
+const AdminControlInfo = lazy(() => import("./pages/features/AdminControlInfo"));
 
 
 // Lazy load UI overlays to reduce initial bundle size
@@ -137,6 +141,10 @@ const App = () => {
               <Route path="/features/timetable-generator" element={<TimetableGeneratorInfo />} />
               <Route path="/features/student-records" element={<StudentRecordsInfo />} />
               <Route path="/features/faculty-management" element={<FacultyManagementInfo />} />
+              <Route path="/features/campus-locator" element={<CampusLocatorInfo />} />
+              <Route path="/features/academic-planning" element={<AcademicPlanningInfo />} />
+              <Route path="/features/admin-control" element={<AdminControlInfo />} />
+              <Route path="/modules" element={<Modules />} />
               <Route path="/login">
                 <Route
                   index

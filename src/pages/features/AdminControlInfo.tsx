@@ -4,18 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { 
-    Users, Briefcase, BarChart3, UserCheck, Shield,
-    ArrowLeft, CheckCircle2, FileText, Globe, Star
+    Settings, Shield, Users, History, Sparkles,
+    ArrowLeft, CheckCircle2, Lock, Cpu, Eye
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Layout from "@/components/common/Layout";
 
-export default function FacultyManagementInfo() {
+export default function AdminControlInfo() {
     return (
         <Layout>
             <div className="pt-24 pb-20 bg-background overflow-hidden">
                 <div className="container mx-auto px-4">
-                    {/* Breadcrumb / Back */}
                     <Link to="/modules" className="inline-flex items-center gap-2 text-primary hover:gap-3 transition-all font-bold text-sm mb-12 group">
                         <ArrowLeft className="w-4 h-4" /> Back to Modules
                     </Link>
@@ -29,20 +28,20 @@ export default function FacultyManagementInfo() {
                             >
                                 <Badge className="bg-primary/10 text-primary border-none text-[10px] font-black tracking-widest uppercase px-3 py-1 mb-4">Core AI Module</Badge>
                                 <h1 className="text-4xl md:text-6xl font-black tracking-tighter leading-none mb-6 text-foreground">
-                                    Strategic <br />
-                                    <span className="text-primary italic">Faculty Engine</span>
+                                    Admin <br />
+                                    <span className="text-primary italic">Control Center</span>
                                 </h1>
                                 <p className="text-xl text-muted-foreground leading-relaxed max-w-lg">
-                                    Empowering the backbone of our institution with advanced tools for workload management, research tracking, and pedagogical excellence.
+                                    The brain of the campus. A unified mission control for managing user identities, system security, and institutional compliance.
                                 </p>
                             </motion.div>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 {[
-                                    { icon: Users, title: "Faculty Directory", desc: "Enterprise-wide directory with specialized expertise mapping." },
-                                    { icon: Briefcase, title: "Workload Analytics", desc: "Smart balancing of teaching hours and administrative duties." },
-                                    { icon: Star, title: "Research Tracking", desc: "Automated monitoring of publications, grants, and citations." },
-                                    { icon: Shield, title: "Credentials Vault", desc: "Secure management of professorial qualifications and IDs." }
+                                    { icon: Users, title: "Identity Management", desc: "Securely manage roles and permissions for students, faculty, and staff." },
+                                    { icon: Lock, title: "Access Security", desc: "Enterprise-grade encryption and multi-factor authentication controls." },
+                                    { icon: History, title: "Deep Auditing", desc: "Comprehensive logs of every system interaction for total transparency." },
+                                    { icon: Eye, title: "System Monitoring", desc: "Real-time health checks and performance metrics for the entire platform." }
                                 ].map((feature, i) => (
                                     <Card key={i} className="border-none shadow-md bg-muted/30">
                                         <CardContent className="p-4 flex gap-4 items-start">
@@ -59,10 +58,10 @@ export default function FacultyManagementInfo() {
                             </div>
 
                             <div className="flex gap-4">
-                                <Link to="/login/staff">
-                                    <Button size="lg" className="rounded-full px-8 shadow-xl shadow-primary/20 bg-primary hover:bg-primary/90">Sign In</Button>
+                                <Link to="/login/admin">
+                                    <Button size="lg" className="rounded-full px-8 shadow-xl shadow-primary/20 bg-primary hover:bg-primary/90">Go to Dashboard</Button>
                                 </Link>
-                                <Button size="lg" variant="outline" className="rounded-full px-8 border-primary/20 text-primary hover:bg-primary/5">Explore Directory</Button>
+                                <Button size="lg" variant="outline" className="rounded-full px-8 border-primary/20 text-primary hover:bg-primary/5">Security Audit</Button>
                             </div>
                         </div>
 
@@ -73,25 +72,24 @@ export default function FacultyManagementInfo() {
                             className="relative"
                         >
                             <div className="absolute -top-12 -right-12 h-64 w-64 bg-primary/10 rounded-full blur-3xl opacity-50" />
-                            <div className="absolute -bottom-12 -left-12 h-64 w-64 bg-red-500/10 rounded-full blur-3xl opacity-50" />
+                            <div className="absolute -bottom-12 -left-12 h-64 w-64 bg-slate-500/10 rounded-full blur-3xl opacity-50" />
                             <div className="relative rounded-[2.5rem] overflow-hidden shadow-2xl border-8 border-white dark:border-zinc-900 group">
                                 <img 
                                     src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&auto=format&fit=crop&q=80" 
-                                    alt="Faculty Management Dashboard" 
+                                    alt="Admin Mission Control" 
                                     className="w-full h-auto"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                             </div>
 
-                            {/* Floating Stats */}
-                            <div className="absolute -top-8 -right-8 bg-white dark:bg-zinc-800 p-6 rounded-3xl shadow-2xl border border-border/50">
+                            <div className="absolute -bottom-8 -right-8 bg-white dark:bg-zinc-800 p-6 rounded-3xl shadow-2xl border border-border/50 animate-pulse">
                                 <div className="flex items-center gap-4">
-                                    <div className="h-12 w-12 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-600">
-                                        <BarChart3 className="h-6 w-6" />
+                                    <div className="h-12 w-12 rounded-2xl bg-slate-500/10 flex items-center justify-center text-slate-600">
+                                        <Shield className="h-6 w-6" />
                                     </div>
                                     <div>
-                                        <div className="text-2xl font-black text-foreground leading-none">4.8/5</div>
-                                        <div className="text-[10px] uppercase font-black text-muted-foreground tracking-widest mt-1">Satisfaction Rate</div>
+                                        <div className="text-2xl font-black text-foreground leading-none">Secured</div>
+                                        <div className="text-[10px] uppercase font-black text-muted-foreground tracking-widest mt-1">Status</div>
                                     </div>
                                 </div>
                             </div>
@@ -100,26 +98,26 @@ export default function FacultyManagementInfo() {
 
                     <div className="space-y-16">
                         <div className="text-center max-w-2xl mx-auto">
-                            <h2 className="text-3xl font-black tracking-tight mb-4 italic">Operational Excellence</h2>
-                            <p className="text-muted-foreground">The Faculty Management module streamlines everything from leaves and attendance to course allocations and student mentoring.</p>
+                            <h2 className="text-3xl font-black tracking-tight mb-4 italic">Total Oversight</h2>
+                            <p className="text-muted-foreground">Comprehensive control over institutional data, ensuring privacy, security, and operational excellence.</p>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {[
                                 { 
-                                    title: "Course Allocation", 
-                                    desc: "Automated subject mapping based on faculty specialization, seniority, and workload efficiency.",
-                                    icon: Briefcase
+                                    title: "RBAC Controls", 
+                                    desc: "Fine-grained Role-Based Access Control to ensure users only see what they need to.",
+                                    icon: Lock
                                 },
                                 { 
-                                    title: "Publication Portal", 
-                                    desc: "A centralized hub for faculty to manage and showcase their research contributions to the global academic community.",
-                                    icon: Globe
+                                    title: "Institutional Policy", 
+                                    desc: "Digitize and enforce institutional policies across all platform modules automatically.",
+                                    icon: CheckCircle2
                                 },
                                 { 
-                                    title: "Leave Management", 
-                                    desc: "Seamless leave application and approval workflow with automated proxy allocation to avoid class disruptions.",
-                                    icon: UserCheck
+                                    title: "Data Integrity", 
+                                    desc: "AI-powered data validation to prevent errors and ensure consistent reporting across departments.",
+                                    icon: Cpu
                                 }
                             ].map((item, i) => (
                                 <div key={i} className="bg-white dark:bg-zinc-900/50 p-8 rounded-[2rem] border border-border/50 hover:border-primary/50 transition-colors group">
